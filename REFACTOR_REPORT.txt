@@ -1,0 +1,15 @@
+LAST WITNESS — FULL REFACTOR REPORT
+============================================================
+Master Source: Last_Witness_Chapter_2_Police_Station_PORTRAIT_UNLOCK_FIXED.html
+Source size: 30,240,760 bytes (28.84 MiB)
+Source SHA-256: 851d9c7f182d73391249322e26455547e0d0ced40e08f6a340033b66edd0c2cc
+
+Output:
+- index.html: 21,368 bytes
+- css/style.css: 24,060 bytes
+- JavaScript modules: 8
+- Unique extracted assets: 81
+- Base64 replacements: 110
+- Remaining Base64 data URIs: 0
+- Validation errors: 0
+- Validation warnings: 0

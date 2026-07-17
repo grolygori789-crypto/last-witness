@@ -1,0 +1,36 @@
+LAST WITNESS — REGRESSION TEST
+
+BOOT
+[ ] Splash และ Title แสดงครบ
+[ ] CSS และภาพทั้งหมดโหลด
+[ ] ไม่มีหน้าขาวหรือ broken image
+
+CHAPTER 1
+[ ] New Game
+[ ] Office dialogue
+[ ] Hotel 1807
+[ ] Phone: Messages / Calls / Notes
+[ ] Evidence / Deduction / Chapter Complete
+
+CHAPTER 2
+[ ] Chapter intro
+[ ] Office
+[ ] Victim Apartment และหลักฐานครบ
+[ ] Orchid Café และ Choice กับ Elena
+[ ] Police Station
+[ ] Kittisak / Somchai / Portraits
+
+SHARED SYSTEMS
+[ ] Character Journal
+[ ] Case File / Dialogue History
+[ ] Save / Load / Continue / Restart
+[ ] Thai / English
+[ ] Sound controls
+[ ] Developer Console
+
+AUDIO
+[ ] Title / Rain / Office / Crime
+[ ] Café / Police Station
+[ ] Click / Page / Vibration
+
+ถือว่าผ่านเมื่อไม่มี 404, ไม่มี uncaught JavaScript error และฟังก์ชันสำคัญครบ
