@@ -15,10 +15,8 @@ function localized(value){
   return value||"";
 }
 
-/* Keep police text language-neutral until each render. */
 policeText=function(en,th){return{en:en,th:th}};
 
-/* Replace dialogue renderer so already-open Police Station dialogue can re-render on language change. */
 runDialogue=function(container,lines,onComplete){
   let index=0,lastRecorded=-1;
   function draw(){
@@ -48,7 +46,6 @@ runDialogue=function(container,lines,onComplete){
   draw();
 };
 
-/* Wrap language refresh so all Police Station UI re-renders immediately. */
 const originalApplyLanguage=applyLanguage;
 applyLanguage=function(){
   originalApplyLanguage();
@@ -57,7 +54,6 @@ applyLanguage=function(){
   }
 };
 
-/* Make setPoliceUI consume deferred bilingual values safely. */
 const originalSetPoliceUI=setPoliceUI;
 setPoliceUI=function(){
   const oldPoliceText=policeText;
@@ -81,7 +77,6 @@ function revealPoliceEvidenceDetails(){
   $("#inspectPoliceEvidence").style.display="none";
 }
 
-/* Wrap the post-choice flow so opening evidence always starts in preview mode. */
 const originalRunPolicePostChoice=runPolicePostChoice;
 runPolicePostChoice=function(choice){
   originalRunPolicePostChoice(choice);
@@ -94,7 +89,6 @@ runPolicePostChoice=function(choice){
   observer.observe($("#policeEvidencePanel"),{attributes:true,attributeFilter:["class"]});
 };
 
-/* History follows the selected language for bilingual Police Station entries. */
 const historyButton=$("#historyButton");
 if(historyButton){
   historyButton.onclick=function(){
@@ -106,9 +100,6 @@ if(historyButton){
   };
 }
 
-/* Evidence registry used by Case File.
- * Unknown future evidence receives a safe fallback instead of crashing the menu.
- */
 const CASE_FILE_SPECIAL={
   tox_original_intake:{
     chapter:2,
@@ -151,42 +142,85 @@ function caseFileRecord(id){
   };
 }
 
-const caseButton=$("#caseButton");
-if(caseButton){
-  caseButton.onclick=function(){
-    const sections={1:[],2:[]};
+function renderCaseFile(){
+  const sections={1:[],2:[]};
 
-    Array.from(state.found).forEach(function(id){
-      const record=caseFileRecord(id);
-      const row='<div class="case-row"><b>'+record.title+'</b><div>'+record.description+"</div></div>";
-      sections[record.chapter===2?2:1].push(row);
-    });
+  Array.from(state.found).forEach(function(id){
+    const record=caseFileRecord(id);
+    const row='<div class="case-row"><b>'+record.title+'</b><div>'+record.description+"</div></div>";
+    sections[record.chapter===2?2:1].push(row);
+  });
 
-    let caseHtml="";
-    if(sections[1].length){
-      caseHtml+='<div class="case-section-title">'+L("chapter_i")+"</div>"+sections[1].join("");
-    }
-    if(sections[2].length){
-      caseHtml+='<div class="case-section-title">'+L("chapter_ii")+"</div>"+sections[2].join("");
-    }
+  let caseHtml="";
+  if(sections[1].length){
+    caseHtml+='<div class="case-section-title">'+L("chapter_i")+"</div>"+sections[1].join("");
+  }
+  if(sections[2].length){
+    caseHtml+='<div class="case-section-title">'+L("chapter_ii")+"</div>"+sections[2].join("");
+  }
 
-    $("#caseList").innerHTML=caseHtml||L("no_evidence");
-    $("#caseModal").classList.add("open");
-  };
+  $("#caseList").innerHTML=caseHtml||L("no_evidence");
 }
 
-/* Bind Police evidence controls. */
+function openCaseFile(){
+  renderCaseFile();
+
+  const drawer=$("#drawer");
+  const modal=$("#caseModal");
+  const phase=$("#policePhaseComplete");
+
+  if(drawer)drawer.classList.remove("open");
+
+  if(phase&&phase.style.display!=="none"){
+    phase.dataset.caseFilePaused="true";
+    phase.style.pointerEvents="none";
+    phase.setAttribute("aria-hidden","true");
+  }
+
+  modal.style.zIndex="220";
+  modal.style.pointerEvents="auto";
+  modal.classList.add("open");
+}
+
+function restorePolicePhaseCard(){
+  const phase=$("#policePhaseComplete");
+  if(phase&&phase.dataset.caseFilePaused==="true"){
+    delete phase.dataset.caseFilePaused;
+    phase.style.pointerEvents="";
+    phase.removeAttribute("aria-hidden");
+  }
+}
+
+const caseButton=$("#caseButton");
+if(caseButton){
+  caseButton.onclick=openCaseFile;
+
+  /* Capture phase prevents another bubbling handler or overlay state from cancelling the action. */
+  caseButton.addEventListener("click",function(event){
+    event.preventDefault();
+    event.stopPropagation();
+    openCaseFile();
+  },true);
+}
+
+const caseModal=$("#caseModal");
+if(caseModal){
+  caseModal.addEventListener("click",function(event){
+    if(event.target===caseModal)restorePolicePhaseCard();
+  });
+  caseModal.querySelectorAll(".closeModal").forEach(function(button){
+    button.addEventListener("click",restorePolicePhaseCard);
+  });
+}
+
 $("#inspectPoliceEvidence").onclick=revealPoliceEvidenceDetails;
 $("#policeEvidenceObject").onclick=revealPoliceEvidenceDetails;
 
-/* Ensure save icon consistency even if cached markup is restored. */
 $$(".saveButton").forEach(function(button){
   if(button.textContent.trim()==="S")button.textContent="💾";
 });
 
-/* Rebind Save buttons after the index replacement added/changed controls. */
 $$(".saveButton").forEach(function(button){button.onclick=manualSave});
 
-/* Initial localization pass for newly added data-i18n elements. */
 applyLanguage();
 })();
