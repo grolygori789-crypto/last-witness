@@ -1,81 +1,927 @@
-
-/* LAST WITNESS — Chapter II / Forensic Science Phase
- * Additive module. Preserves the existing engine, saves, UI and chapter flow.
+/* LAST WITNESS — Chapter II / Forensic Science
+ * Regression Fix 0.2.5
+ * Keeps the existing engine and restores the established Victim's Apartment UI pattern.
  */
-(function(){
-"use strict";
-const $f=(s)=>document.querySelector(s); const $$f=(s)=>Array.from(document.querySelectorAll(s));
-const PHASE="forensic2";
-const TEXT={
- en:{location:"Bangkok City Police Department • Forensic Science Unit",objective:"Trace the original laboratory record",compare:"Compare Records",choiceTitle:"What does the contradiction prove?",choices:{identity:"A valid credential proves access—not identity.",custody:"The physical sample and the digital timeline were handled separately.",accuse:"Someone inside the laboratory changed the record."},completeTitle:"THE RECORD SPLITS IN TWO",completeText:"The raw result may be genuine. The timeline around it is not.",continueME:"Continue to Medical Examiner",inspect:"Inspect",collect:"Add to Case File",close:"Close",added:"Evidence added",needAll:"Inspect all four records first."},
- th:{location:"กองพิสูจน์หลักฐานตำรวจนครบาล • หน่วยนิติวิทยาศาสตร์",objective:"ตรวจสอบต้นทางของบันทึกห้องปฏิบัติการ",compare:"เปรียบเทียบบันทึก",choiceTitle:"ความขัดแย้งนี้พิสูจน์อะไรได้แน่?",choices:{identity:"สิทธิ์ที่ถูกต้องยืนยันเพียงการเข้าถึง ไม่ได้ยืนยันตัวบุคคล",custody:"ตัวอย่างจริงกับลำดับเวลาในระบบถูกจัดการแยกกัน",accuse:"มีคนในห้องปฏิบัติการแก้ไขบันทึก"},completeTitle:"บันทึกเดียวกัน แต่ความจริงสองชั้น",completeText:"ผลตรวจดิบอาจเป็นของจริง ส่วนลำดับเวลาที่ห่อหุ้มมันไม่ใช่",continueME:"ไปยังแผนกนิติเวช",inspect:"ตรวจสอบ",collect:"เพิ่มในแฟ้มคดี",close:"ปิด",added:"เพิ่มหลักฐานแล้ว",needAll:"ต้องตรวจสอบหลักฐานให้ครบทั้งสี่ชิ้นก่อน"}
-};
-const t=()=>TEXT[(window.state&&state.language)==="th"?"th":"en"];
-const EVIDENCE={
- sealed_sample:{title:{en:"Sealed Toxicology Sample",th:"ตัวอย่างพิษวิทยาที่ปิดผนึก"},desc:{en:"Sample DV-1807-TX-04 remains physically sealed. Its label and accession number match the original laboratory intake.",th:"ตัวอย่าง DV-1807-TX-04 ยังปิดผนึกสมบูรณ์ หมายเลขบนฉลากตรงกับบันทึกรับตัวอย่างฉบับต้นทาง"},obs:{en:"The container shows no visible break in custody. Whatever was changed, it was not this label after sealing.",th:"ไม่พบร่องรอยว่าห่วงโซ่การครอบครองตัวอย่างจริงถูกทำลาย สิ่งที่ถูกเปลี่ยนจึงไม่น่าใช่ฉลากหลังการปิดผนึก"},kind:"vial"},
- accession_record:{title:{en:"Laboratory Accession Record",th:"บันทึกรับตัวอย่างของห้องปฏิบัติการ"},desc:{en:"The source record logs accession DV-1807-TX-04 at 06:17. The field was created before the police discovery time and was never regenerated.",th:"บันทึกต้นทางระบุว่ารับตัวอย่าง DV-1807-TX-04 เวลา 06:17 ก่อนเวลาพบศพอย่างเป็นทางการ และช่องข้อมูลนี้ไม่เคยถูกสร้างขึ้นใหม่"},obs:{en:"The impossible time originates here—not in the police copy. The anomaly predates every later export.",th:"เวลาที่เป็นไปไม่ได้เริ่มต้นจากระบบนี้ ไม่ใช่สำเนาของตำรวจ ความผิดปกติเกิดก่อนการส่งออกข้อมูลทั้งหมด"},kind:"document"},
- audit_trace:{title:{en:"Workstation Audit Trace",th:"บันทึกตรวจสอบเครื่องเวิร์กสเตชัน"},desc:{en:"A valid internal credential revised the collection time from 05:58 to 06:09. The command is attributed to workstation FS-12 while its local session was recorded offline.",th:"สิทธิ์ภายในที่ถูกต้องแก้เวลาเก็บตัวอย่างจาก 05:58 เป็น 06:09 คำสั่งถูกระบุว่ามาจากเครื่อง FS-12 ทั้งที่ระบบบันทึกว่าเซสชันภายในเครื่องปิดอยู่"},obs:{en:"The credential was accepted, but the machine state does not prove who issued the command—or from where.",th:"ระบบยอมรับสิทธิ์ดังกล่าว แต่สถานะของเครื่องไม่สามารถยืนยันได้ว่าใครเป็นผู้ส่งคำสั่ง หรือส่งมาจากที่ใด"},kind:"terminal"},
- batch_record:{title:{en:"Instrument Batch Record",th:"บันทึกรอบการทำงานของเครื่องวิเคราะห์"},desc:{en:"Analyzer TX-3 processed the sealed sample in Batch 0614-B. The raw result hash and instrument time remain unchanged.",th:"เครื่องวิเคราะห์ TX-3 ประมวลผลตัวอย่างที่ปิดผนึกในรอบ 0614-B ค่าแฮชของผลดิบและเวลาจากเครื่องไม่เคยเปลี่ยน"},obs:{en:"The scientific result and the administrative timeline are separate layers. One can remain authentic while the other is manipulated.",th:"ผลทางวิทยาศาสตร์กับลำดับเวลาทางธุรการเป็นข้อมูลคนละชั้น ชั้นหนึ่งอาจยังเป็นของจริง ขณะที่อีกชั้นถูกบิดเบือน"},kind:"batch"}
-};
-let local={started:false,found:new Set(),collected:new Set(),active:null,inspected:false,choice:null};
-function lang(v){return v[(window.state&&state.language)==="th"?"th":"en"]}
-function safePlay(id,volume){const a=$f(id);if(!a)return;try{a.pause();a.currentTime=0;if(volume!=null)a.volume=volume;a.play().catch(()=>{});}catch(e){}}
-function stopForensicHum(){const a=$f("#forensicHumAudio");if(a){a.pause();}}
-function showPhase(){
- $$f(".screen").forEach(s=>s.classList.remove("active"));$f("#forensic2").classList.add("active");
- if(window.state){state.screen=PHASE;state.chapter=Math.max(state.chapter||2,2);state.forensic=state.forensic||{};}
- safePlay("#forensicDoorAudio",.55); const hum=$f("#forensicHumAudio");if(hum){hum.volume=.10;hum.play().catch(()=>{});} updateUI();
- if(!local.started){local.started=true;setTimeout(()=>runIntro(),420);} else renderState();
- try{if(typeof autoSave==="function")autoSave();}catch(e){}
-}
-function portraitSrc(name,emotion){try{return typeof portrait==="function"?portrait(name,emotion||"neutral"):""}catch(e){return ""}}
-function dialogue(lines,onDone){
- const box=$f("#forensicDialogue");let i=0;box.classList.remove("hidden");
- function draw(){const x=lines[i],right=x.speaker==="North";box.className="dialogue"+(right?" right":""); const src=portraitSrc(x.speaker,x.emotion);box.innerHTML='<div class="portrait-wrap">'+(src?'<img class="portrait portrait-'+x.speaker+'" src="'+src+'">':'')+'</div><div class="dialogue-copy"><div class="speaker">'+x.speaker+'</div><div class="line">'+lang(x.text)+'</div></div><div class="next">'+(i===lines.length-1?(state&&state.language==="th"?"ต่อไป":"Continue"):(state&&state.language==="th"?"แตะ":"Tap"))+'</div>';}
- box.onclick=function(){safePlay("#clickAudio",.5);i++;if(i>=lines.length){box.classList.add("hidden");box.onclick=null;if(onDone)onDone();try{if(typeof autoSave==="function")autoSave();}catch(e){}}else draw();};draw();
-}
-function runIntro(){
- dialogue([
-  {speaker:"Benedict",emotion:"neutral",text:{en:"So this is where timestamps come to acquire a respectable education.",th:"ที่นี่สินะ สถานที่ที่เวลาถูกส่งมาเรียนให้ดูน่าเชื่อถือ"}},
-  {speaker:"Elena",emotion:"professional",text:{en:"Only the respectable ones. The others become paperwork.",th:"เฉพาะเวลาที่ประพฤติตัวดีค่ะ ที่เหลือกลายเป็นงานเอกสาร"}},
-  {speaker:"North",emotion:"focused",text:{en:"The police record is an export. I want the source transaction, the workstation audit and the instrument batch.",th:"บันทึกของตำรวจเป็นข้อมูลส่งออก ฉันต้องดูรายการต้นทาง บันทึกตรวจสอบเครื่อง และรอบการทำงานของเครื่องวิเคราะห์"}},
-  {speaker:"Elena",emotion:"neutral",text:{en:"Good. Then we separate what the laboratory measured from what the system later claimed happened.",th:"ดีค่ะ งั้นเราแยกสิ่งที่ห้องปฏิบัติการวัดได้ ออกจากสิ่งที่ระบบบอกว่าเกิดขึ้นภายหลัง"}}
- ],()=>{$f("#forensicObjective").textContent=t().objective;});
-}
-function markup(kind){
- if(kind==="vial")return '<div class="forensic-vial"></div>';
- if(kind==="document")return '<div class="forensic-document"><h4>BANGKOK CITY FORENSIC SCIENCE UNIT</h4><div>ACCESSION: DV-1807-TX-04</div><div>RECEIVED: 06:17</div><div>STATUS: SEALED / ACCEPTED</div><div class="rule"></div><div>SOURCE EVENT: INTAKE_CREATED</div><div>REGENERATED: NO</div><div class="alert">DISCOVERY RECORD: 06:20</div></div>';
- if(kind==="terminal")return '<div class="forensic-terminal">[AUDIT TRACE / FS-12]<br><span class="gold">05:58 COLLECTION_TIME</span><br>06:08 AUTH TOKEN ACCEPTED<br><span class="bad">06:09 FIELD REVISED → 06:09</span><br>06:09 LOCAL SESSION: OFFLINE<br>06:09 SOURCE ROUTE: UNRESOLVED<br><br>STATUS: CREDENTIAL VALID / IDENTITY UNVERIFIED</div>';
- return '<div class="forensic-batch"><strong>TX-3 · BATCH 0614-B</strong><br>SAMPLE: DV-1807-TX-04<br>RUN START: 06:42<br>RAW RESULT HASH: 7A-19-C4<br>HASH MODIFIED: NO<br>INSTRUMENT CLOCK DRIFT: +00:00:02<br><br><span class="ok">RAW DATA VERIFIED</span></div>';
-}
-function openEvidence(id){local.active=id;local.inspected=false;const e=EVIDENCE[id],p=$f("#forensicEvidencePanel");$f("#forensicEvidenceTitle").textContent=lang(e.title);$f("#forensicEvidenceDescription").textContent=lang(e.desc);$f("#forensicEvidenceObservation").textContent=lang(e.obs);$f("#forensicEvidenceObservation").style.display="none";$f("#forensicEvidenceObject").innerHTML=markup(e.kind);$f("#inspectForensicEvidence").style.display="block";$f("#collectForensicEvidence").style.display="none";p.classList.add("open");p.setAttribute("aria-hidden","false");safePlay(id==="sealed_sample"?"#forensicBarcodeAudio":"#pageAudio",.48);}
-function inspectEvidence(){local.inspected=true;$f("#forensicEvidenceObservation").style.display="block";$f("#inspectForensicEvidence").style.display="none";$f("#collectForensicEvidence").style.display="block";}
-function collectEvidence(){const id=local.active;if(!id)return;local.found.add(id);local.collected.add(id);if(window.state){state.forensic=state.forensic||{};state.forensic.found=Array.from(local.found);state.forensic.collected=Array.from(local.collected);state.found=state.found||new Set();try{state.found.add("forensic_"+id);}catch(e){}}const hs=$f('[data-forensic-clue="'+id+'"]');if(hs)hs.classList.add("found");closeEvidence();updateProgress();try{if(typeof autoSave==="function")autoSave();}catch(e){}if(local.found.size===4)$f("#reviewForensic").classList.add("show");}
-function closeEvidence(){$f("#forensicEvidencePanel").classList.remove("open");$f("#forensicEvidencePanel").setAttribute("aria-hidden","true");local.active=null;}
-function updateProgress(){const pct=64+local.found.size*5+(local.choice?6:0);$f("#forensicProgressText").textContent=pct+"%";$f("#forensicProgressFill").style.width=pct+"%";$f("#forensicObjective").textContent=local.found.size<4?t().objective:(state&&state.language==="th"?"เปรียบเทียบบันทึกทั้งสี่ชิ้น":"Compare the four records");}
-function startCompare(){if(local.found.size<4){try{if(typeof showBadge==="function")showBadge(t().needAll);}catch(e){}return;}dialogue([
- {speaker:"North",emotion:"focused",text:{en:"The sample is intact. The analyzer's raw hash is intact. Only the administrative time moved.",th:"ตัวอย่างยังสมบูรณ์ ค่าแฮชผลดิบจากเครื่องก็ยังสมบูรณ์ มีเพียงเวลาทางธุรการที่ถูกเลื่อน"}},
- {speaker:"Benedict",emotion:"serious",text:{en:"And the system points to a machine that insists it was asleep.",th:"และระบบชี้ไปยังเครื่องที่ยืนยันว่าตัวเองกำลังหลับอยู่"}},
- {speaker:"Elena",emotion:"thoughtful",text:{en:"A valid credential can survive a copied token, a remote route or a delayed sync. It tells us what permission was accepted—not whose hands were on the keyboard.",th:"สิทธิ์ที่ถูกต้องอาจผ่านโทเคนที่ถูกคัดลอก เส้นทางระยะไกล หรือการซิงก์ล่าช้า มันบอกได้เพียงว่าระบบยอมรับสิทธิ์ใด ไม่ได้บอกว่ามือของใครอยู่บนแป้นพิมพ์"}}
- ],()=>{$f("#forensicChoice").classList.remove("hidden");});}
-function choose(path){local.choice=path;if(window.state){state.forensic=state.forensic||{};state.forensic.choice=path;state.flags=state.flags||{};state.flags["forensic_"+path]=true;} $f("#forensicChoice").classList.add("hidden");let response;
- if(path==="identity")response=[{speaker:"North",emotion:"neutral",text:{en:"Exactly. Authentication is not attribution.",th:"ถูกต้อง การยืนยันสิทธิ์ไม่ใช่การยืนยันตัวบุคคล"}},{speaker:"Elena",emotion:"warm",text:{en:"Most investigators collapse those into one fact. You didn't.",th:"นักสืบส่วนใหญ่มักรวมสองเรื่องนี้เป็นข้อเท็จจริงเดียว คุณไม่ทำแบบนั้น"}}];
- else if(path==="custody")response=[{speaker:"Benedict",emotion:"serious",text:{en:"So the poison can be real while the story around it is manufactured.",th:"แปลว่าสารพิษอาจเป็นของจริง ขณะที่เรื่องราวรอบมันถูกสร้างขึ้น"}},{speaker:"Elena",emotion:"neutral",text:{en:"That is the safest conclusion the evidence supports.",th:"นั่นคือข้อสรุปที่ปลอดภัยที่สุดเท่าที่หลักฐานรองรับค่ะ"}}];
- else response=[{speaker:"Elena",emotion:"concerned",text:{en:"Possibly. But 'inside' describes a permission boundary, not a person. Accuse the boundary and it cannot defend itself.",th:"เป็นไปได้ค่ะ แต่คำว่า ‘คนใน’ อธิบายขอบเขตสิทธิ์ ไม่ใช่ตัวบุคคล กล่าวหาขอบเขตนั้นไป มันก็ปกป้องตัวเองไม่ได้"}},{speaker:"North",emotion:"skeptical",text:{en:"Then we don't accuse. We verify.",th:"งั้นเรายังไม่กล่าวหา เราตรวจสอบ"}}];
- dialogue(response.concat([{speaker:"Benedict",emotion:"serious",text:{en:"The database has told us what changed. The body may tell us why eleven minutes mattered.",th:"ฐานข้อมูลบอกแล้วว่าอะไรถูกเปลี่ยน ศพอาจบอกได้ว่าสิบเอ็ดนาทีนั้นสำคัญเพราะอะไร"}}]),finishPhase);}
-function finishPhase(){updateProgress();$f("#forensicPhaseComplete").style.display="block";$f("#forensicCompleteTitle").textContent=t().completeTitle;$f("#forensicCompleteText").textContent=t().completeText;$f("#continueMedicalExaminer").textContent=t().continueME;try{if(typeof autoSave==="function")autoSave();}catch(e){}}
-function updateUI(){$f("#forensicLocation").textContent=t().location;$f("#forensicObjective").textContent=t().objective;$f("#reviewForensic").textContent=t().compare;$f("#forensicChoiceTitle").textContent=t().choiceTitle;$$f("[data-forensic-choice]").forEach(b=>b.textContent=t().choices[b.dataset.forensicChoice]);$f("#inspectForensicEvidence").textContent=t().inspect;$f("#collectForensicEvidence").textContent=t().collect;$f("#closeForensicEvidence").textContent=t().close;$f("#forensicCompleteTitle").textContent=t().completeTitle;$f("#forensicCompleteText").textContent=t().completeText;$f("#continueMedicalExaminer").textContent=t().continueME;}
-function renderState(){if(window.state&&state.forensic){local.found=new Set(state.forensic.found||[]);local.collected=new Set(state.forensic.collected||[]);local.choice=state.forensic.choice||null;}local.found.forEach(id=>{const h=$f('[data-forensic-clue="'+id+'"]');if(h)h.classList.add("found")});if(local.found.size===4)$f("#reviewForensic").classList.add("show");if(local.choice)finishPhase();updateProgress();}
-function appendCaseEntries(){const list=$f("#caseList");if(!list||!window.state||!state.forensic)return; const ids=state.forensic.collected||[]; if(!ids.length)return; if(list.querySelector("[data-forensic-case-section]"))return;const title=document.createElement("div");title.className="case-section-title";title.dataset.forensicCaseSection="1";title.textContent=state.language==="th"?"บทที่ II · ห้องปฏิบัติการนิติวิทยาศาสตร์":"CHAPTER II · FORENSIC SCIENCE";list.appendChild(title);ids.forEach(id=>{const e=EVIDENCE[id];if(!e)return;const row=document.createElement("div");row.className="case-row";row.innerHTML='<b>'+lang(e.title)+'</b><div>'+lang(e.desc)+'</div>';list.appendChild(row);});}
-function bind(){
- $$f("[data-forensic-clue]").forEach(b=>b.addEventListener("click",()=>openEvidence(b.dataset.forensicClue)));
- $f("#inspectForensicEvidence").addEventListener("click",inspectEvidence);$f("#forensicEvidenceObject").addEventListener("click",inspectEvidence);$f("#collectForensicEvidence").addEventListener("click",collectEvidence);$f("#closeForensicEvidence").addEventListener("click",closeEvidence);$f("#reviewForensic").addEventListener("click",startCompare);$$f("[data-forensic-choice]").forEach(b=>b.addEventListener("click",()=>choose(b.dataset.forensicChoice)));
- $f("#continueMedicalExaminer").addEventListener("click",()=>{stopForensicHum();if(window.state){state.forensic=state.forensic||{};state.forensic.complete=true;}try{if(typeof autoSave==="function")autoSave();}catch(e){}alert(state&&state.language==="th"?"Phase Medical Examiner จะเชื่อมต่อจากจุดนี้":"Medical Examiner phase will continue from this point.");});
- const police=$f("#policeReturnTitle");if(police){police.addEventListener("click",function(ev){ev.preventDefault();ev.stopImmediatePropagation();$f("#policePhaseComplete").style.display="none";showPhase();},true);}
- const caseBtn=$f("#caseButton");if(caseBtn)caseBtn.addEventListener("click",()=>setTimeout(appendCaseEntries,0),true);
- const langButtons=$$f('[data-lang]');langButtons.forEach(b=>b.addEventListener("click",()=>setTimeout(updateUI,0)));
- const devGrid=$f("#developerModal .dev-grid");if(devGrid&&!$f('[data-dev-jump="forensic2"]')){const b=document.createElement("button");b.className="dev-button";b.dataset.devJump="forensic2";b.textContent="Forensic Science Lab";b.addEventListener("click",()=>{$f("#developerModal").classList.remove("open");showPhase();});devGrid.appendChild(b);}
- window.LastWitnessForensic={start:showPhase,updateLanguage:updateUI};
-}
-if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",bind);else bind();
+(function () {
+  "use strict";
+
+  const $ = (selector, root = document) => root.querySelector(selector);
+  const $$ = (selector, root = document) => Array.from(root.querySelectorAll(selector));
+  const PHASE_ID = "forensic2";
+  const EVIDENCE_IDS = ["sealed_sample", "accession_record", "audit_trace", "batch_record"];
+
+  const COPY = {
+    en: {
+      location: "Bangkok City Police Department • Forensic Science Unit",
+      objective: "Trace the original laboratory record",
+      remaining: (n) => `${n} record${n === 1 ? "" : "s"} remaining`,
+      compareObjective: "Compare the laboratory records",
+      sceneLabel: "CHAIN OF CUSTODY",
+      compare: "Compare Records",
+      choiceTitle: "What does the contradiction prove?",
+      choices: {
+        identity: "A valid credential proves access—not identity.",
+        custody: "The physical sample and the digital timeline were handled separately.",
+        route: "The record was deliberately altered through an authorized access path."
+      },
+      inspect: "Inspect",
+      collect: "Add to Case File",
+      close: "Close",
+      evidenceInspection: "Evidence Inspection",
+      caseEvidence: "Case Evidence",
+      tapEvidence: "Tap evidence to inspect",
+      tapContinue: "Tap to continue",
+      needAll: "Inspect all four records first.",
+      added: "Evidence added",
+      compareUnlocked: "Record comparison unlocked",
+      wipTitle: "WORK IN PROGRESS",
+      wipText: "The Medical Examiner phase is currently in development. Your progress has been saved.",
+      returnTitle: "Return to Title",
+      caseSection: "CHAPTER II · FORENSIC SCIENCE",
+      zoomOut: "Zoom out",
+      resetView: "Reset view",
+      zoomIn: "Zoom in"
+    },
+    th: {
+      location: "กองบัญชาการตำรวจนครบาล • หน่วยนิติวิทยาศาสตร์",
+      objective: "ตรวจสอบต้นทางของบันทึกห้องปฏิบัติการ",
+      remaining: (n) => `เหลือบันทึกที่ต้องตรวจอีก ${n} ชิ้น`,
+      compareObjective: "เปรียบเทียบบันทึกจากห้องปฏิบัติการ",
+      sceneLabel: "ห่วงโซ่การครอบครองหลักฐาน",
+      compare: "เปรียบเทียบบันทึก",
+      choiceTitle: "ความขัดแย้งนี้พิสูจน์อะไรได้แน่?",
+      choices: {
+        identity: "สิทธิ์ที่ถูกต้องยืนยันเพียงการเข้าถึง ไม่ได้ยืนยันตัวบุคคล",
+        custody: "ตัวอย่างจริงกับลำดับเวลาในระบบถูกจัดการแยกจากกัน",
+        route: "บันทึกถูกแก้ไขโดยผ่านช่องทางที่ระบบยอมรับสิทธิ์"
+      },
+      inspect: "ตรวจสอบ",
+      collect: "เพิ่มในแฟ้มคดี",
+      close: "ปิด",
+      evidenceInspection: "ตรวจสอบหลักฐาน",
+      caseEvidence: "หลักฐานในคดี",
+      tapEvidence: "แตะหลักฐานเพื่อตรวจสอบ",
+      tapContinue: "แตะเพื่อดำเนินต่อ",
+      needAll: "ต้องตรวจสอบบันทึกให้ครบทั้งสี่ชิ้นก่อน",
+      added: "เพิ่มหลักฐานแล้ว",
+      compareUnlocked: "ปลดล็อกการเปรียบเทียบบันทึกแล้ว",
+      wipTitle: "อยู่ระหว่างการพัฒนา",
+      wipText: "เนื้อหาช่วงแผนกนิติเวชกำลังอยู่ในขั้นตอนการพัฒนา ความคืบหน้าของคุณถูกบันทึกแล้ว",
+      returnTitle: "กลับหน้าหลัก",
+      caseSection: "บทที่ II · หน่วยนิติวิทยาศาสตร์",
+      zoomOut: "ย่อ",
+      resetView: "คืนขนาด",
+      zoomIn: "ขยาย"
+    }
+  };
+
+  const EVIDENCE = {
+    sealed_sample: {
+      title: { en: "Sealed Toxicology Sample", th: "ตัวอย่างพิษวิทยาที่ปิดผนึก" },
+      description: {
+        en: "Sample DV-1807-TX-04 remains physically sealed. Its label and accession number match the original laboratory intake.",
+        th: "ตัวอย่าง DV-1807-TX-04 ยังปิดผนึกสมบูรณ์ หมายเลขบนฉลากตรงกับบันทึกรับตัวอย่างฉบับต้นทาง"
+      },
+      observation: {
+        en: "No visible break appears in the physical chain of custody. The alteration occurred in a different layer of the record.",
+        th: "ไม่พบร่องรอยการขาดช่วงในห่วงโซ่การครอบครองตัวอย่างจริง การแก้ไขจึงเกิดขึ้นในข้อมูลอีกชั้นหนึ่ง"
+      },
+      kind: "vial"
+    },
+    accession_record: {
+      title: { en: "Laboratory Accession Record", th: "บันทึกรับตัวอย่างของห้องปฏิบัติการ" },
+      description: {
+        en: "The source record logs accession DV-1807-TX-04 at 06:17—three minutes before Daniel was officially discovered at 06:20. The entry was never regenerated.",
+        th: "บันทึกต้นทางระบุว่ารับตัวอย่าง DV-1807-TX-04 เวลา 06:17 ก่อนเวลาพบแดเนียลอย่างเป็นทางการเมื่อ 06:20 อยู่สามนาที และรายการนี้ไม่เคยถูกสร้างขึ้นใหม่"
+      },
+      observation: {
+        en: "The impossible timestamp exists in the laboratory source record, not only in the police export.",
+        th: "เวลาที่เป็นไปไม่ได้ปรากฏอยู่ในข้อมูลต้นทางของห้องปฏิบัติการ ไม่ได้เกิดขึ้นเฉพาะในสำเนาที่ส่งให้ตำรวจ"
+      },
+      kind: "document"
+    },
+    audit_trace: {
+      title: { en: "Workstation Audit Trace", th: "บันทึกตรวจสอบเครื่องเวิร์กสเตชัน" },
+      description: {
+        en: "A valid internal credential changed COLLECTION_TIME from 05:58 to 06:09—an eleven-minute shift. The command is attributed to workstation FS-12 while its local session was offline.",
+        th: "สิทธิ์ภายในที่ถูกต้องเปลี่ยน COLLECTION_TIME จาก 05:58 เป็น 06:09 ซึ่งต่างกันสิบเอ็ดนาที คำสั่งถูกระบุว่ามาจากเครื่อง FS-12 ทั้งที่เซสชันภายในเครื่องอยู่ในสถานะออฟไลน์"
+      },
+      observation: {
+        en: "The system proves that valid permission was accepted. It does not establish who used it or where the command originated.",
+        th: "ระบบยืนยันได้ว่ามีการใช้สิทธิ์ที่ถูกต้อง แต่ยังยืนยันไม่ได้ว่าใครเป็นผู้ใช้ หรือคำสั่งถูกส่งมาจากที่ใด"
+      },
+      kind: "terminal"
+    },
+    batch_record: {
+      title: { en: "Instrument Batch Record", th: "บันทึกรอบการทำงานของเครื่องวิเคราะห์" },
+      description: {
+        en: "Analyzer TX-3 processed the sealed sample in Batch 0614-B. The raw-result hash and instrument time remain unchanged.",
+        th: "เครื่องวิเคราะห์ TX-3 ประมวลผลตัวอย่างที่ปิดผนึกในรอบ 0614-B ค่าแฮชของผลดิบและเวลาจากเครื่องไม่เคยถูกแก้ไข"
+      },
+      observation: {
+        en: "The scientific result and the administrative timeline are separate layers. One can remain authentic while the other is manipulated.",
+        th: "ผลทางวิทยาศาสตร์กับลำดับเวลาทางธุรการเป็นข้อมูลคนละชั้น ชั้นหนึ่งอาจยังเป็นของจริง ขณะที่อีกชั้นถูกบิดเบือน"
+      },
+      kind: "batch"
+    }
+  };
+
+  const local = {
+    started: false,
+    found: new Set(),
+    collected: new Set(),
+    active: null,
+    inspected: false,
+    choice: null,
+    compared: false,
+    dialogue: null,
+    zoom: { scale: 1, x: 0, y: 0, dragging: false, startX: 0, startY: 0 }
+  };
+
+  function language() {
+    if (window.state && state.language === "th") return "th";
+    return document.documentElement.lang === "th" ? "th" : "en";
+  }
+
+  function text() { return COPY[language()]; }
+  function localized(value) { return value[language()] || value.en; }
+
+  function safePlay(selector, volume) {
+    const audio = $(selector);
+    if (!audio) return;
+    try {
+      audio.pause();
+      audio.currentTime = 0;
+      if (typeof volume === "number") audio.volume = volume;
+      audio.play().catch(() => {});
+    } catch (_) {}
+  }
+
+  function stopHum() {
+    const audio = $("#forensicHumAudio");
+    if (audio) audio.pause();
+  }
+
+  function normalizeMarkup() {
+    const panel = $("#forensicEvidencePanel");
+    if (panel) {
+      panel.innerHTML = `
+        <div class="evidence-card forensic-evidence-card">
+          <div class="eyebrow" id="forensicEvidenceKicker"></div>
+          <h3 id="forensicEvidenceTitle"></h3>
+          <div class="evidence-stage forensic-evidence-stage">
+            <div class="evidence-stamp" id="forensicEvidenceStamp"></div>
+            <div id="forensicEvidenceViewport" class="forensic-evidence-viewport">
+              <div id="forensicEvidenceObject" class="evidence-object forensic-evidence-object"></div>
+            </div>
+            <div id="forensicEvidenceHint" class="evidence-zoom-hint"></div>
+            <div class="forensic-zoom-controls" aria-label="Evidence zoom controls">
+              <button id="forensicZoomOut" class="forensic-zoom-button" type="button">−</button>
+              <button id="forensicZoomReset" class="forensic-zoom-reset" type="button">100%</button>
+              <button id="forensicZoomIn" class="forensic-zoom-button" type="button">＋</button>
+            </div>
+          </div>
+          <div id="forensicEvidenceMeta" class="evidence-meta">
+            <p id="forensicEvidenceDescription"></p>
+            <div id="forensicEvidenceObservation" class="evidence-observation"></div>
+          </div>
+          <div class="evidence-actions">
+            <button id="inspectForensicEvidence" class="ghost" type="button"></button>
+            <button id="collectForensicEvidence" class="primary" type="button"></button>
+            <button id="closeForensicEvidence" class="ghost evidence-collect-only" type="button"></button>
+          </div>
+        </div>`;
+    }
+
+    const oldAccuse = $('[data-forensic-choice="accuse"]');
+    if (oldAccuse) {
+      oldAccuse.dataset.forensicChoice = "route";
+    }
+
+    const complete = $("#forensicPhaseComplete");
+    if (complete) {
+      complete.innerHTML = `
+        <div class="eyebrow">LAST WITNESS</div>
+        <h2 id="forensicCompleteTitle"></h2>
+        <p id="forensicCompleteText"></p>
+        <button id="continueMedicalExaminer" class="primary" type="button"></button>`;
+    }
+  }
+
+  function evidenceMarkup(kind) {
+    if (kind === "vial") {
+      return `<div class="forensic-vial-document">
+        <div class="forensic-vial-cap"></div>
+        <div class="forensic-vial-body">
+          <div class="forensic-vial-label">
+            <strong>BANGKOK CITY FORENSIC SCIENCE UNIT</strong>
+            <span>SAMPLE: DV-1807-TX-04</span>
+            <span>TYPE: TOXICOLOGY</span>
+            <span>STATUS: SEALED</span>
+            <span>ACCESSION: 06:17</span>
+          </div>
+          <div class="forensic-seal">EVIDENCE SEAL INTACT</div>
+        </div>
+      </div>`;
+    }
+
+    if (kind === "document") {
+      return `<article class="forensic-document forensic-full-record">
+        <header>
+          <strong>BANGKOK CITY</strong>
+          <strong>FORENSIC SCIENCE UNIT</strong>
+          <small>LABORATORY ACCESSION RECORD</small>
+        </header>
+        <dl>
+          <dt>CASE</dt><dd>GRANDVIEW / 1807</dd>
+          <dt>ACCESSION</dt><dd>DV-1807-TX-04</dd>
+          <dt>SAMPLE TYPE</dt><dd>TOXICOLOGY</dd>
+          <dt>RECEIVED</dt><dd>06:17</dd>
+          <dt>STATUS</dt><dd>SEALED / ACCEPTED</dd>
+          <dt>SOURCE EVENT</dt><dd>INTAKE_CREATED</dd>
+          <dt>REGENERATED</dt><dd>NO</dd>
+        </dl>
+        <div class="forensic-record-alert">OFFICIAL DISCOVERY RECORD: 06:20</div>
+        <footer>CHAIN OF CUSTODY VERIFIED · SOURCE RECORD</footer>
+      </article>`;
+    }
+
+    if (kind === "terminal") {
+      return `<article class="forensic-terminal forensic-full-record">
+        <header>[AUDIT TRACE / FS-12]</header>
+        <pre>05:58  COLLECTION_TIME = 05:58
+06:08  AUTH TOKEN ACCEPTED
+06:09  FIELD REVISED
+       05:58 → 06:09
+06:09  LOCAL SESSION: OFFLINE
+06:09  SOURCE ROUTE: UNRESOLVED
+
+CREDENTIAL STATUS: VALID
+USER IDENTITY: UNVERIFIED
+TIME SHIFT: +00:11:00</pre>
+        <footer>AUTHENTICATION ≠ ATTRIBUTION</footer>
+      </article>`;
+    }
+
+    return `<article class="forensic-batch forensic-full-record">
+      <header>
+        <strong>TX-3 · INSTRUMENT BATCH 0614-B</strong>
+        <small>RAW ANALYTICAL RECORD</small>
+      </header>
+      <dl>
+        <dt>SAMPLE</dt><dd>DV-1807-TX-04</dd>
+        <dt>RUN START</dt><dd>06:42</dd>
+        <dt>RAW RESULT HASH</dt><dd>7A-19-C4</dd>
+        <dt>HASH MODIFIED</dt><dd>NO</dd>
+        <dt>CLOCK DRIFT</dt><dd>+00:00:02</dd>
+        <dt>VALIDATION</dt><dd>PASS</dd>
+      </dl>
+      <div class="forensic-record-ok">RAW DATA VERIFIED</div>
+      <footer>INSTRUMENT RECORD LOCKED AFTER VALIDATION</footer>
+    </article>`;
+  }
+
+  function resetZoom() {
+    local.zoom.scale = 1;
+    local.zoom.x = 0;
+    local.zoom.y = 0;
+    applyZoom();
+  }
+
+  function applyZoom() {
+    const object = $("#forensicEvidenceObject");
+    if (!object) return;
+    object.style.transform = `translate3d(${local.zoom.x}px, ${local.zoom.y}px, 0) scale(${local.zoom.scale})`;
+    const reset = $("#forensicZoomReset");
+    if (reset) reset.textContent = `${Math.round(local.zoom.scale * 100)}%`;
+  }
+
+  function zoomBy(delta) {
+    local.zoom.scale = Math.min(2.6, Math.max(1, local.zoom.scale + delta));
+    if (local.zoom.scale === 1) {
+      local.zoom.x = 0;
+      local.zoom.y = 0;
+    }
+    applyZoom();
+  }
+
+  function bindPanAndZoom() {
+    const viewport = $("#forensicEvidenceViewport");
+    if (!viewport) return;
+
+    let pinchDistance = 0;
+    let pinchScale = 1;
+
+    viewport.addEventListener("pointerdown", (event) => {
+      if (local.zoom.scale <= 1) return;
+      local.zoom.dragging = true;
+      local.zoom.startX = event.clientX - local.zoom.x;
+      local.zoom.startY = event.clientY - local.zoom.y;
+      viewport.setPointerCapture?.(event.pointerId);
+    });
+
+    viewport.addEventListener("pointermove", (event) => {
+      if (!local.zoom.dragging) return;
+      local.zoom.x = event.clientX - local.zoom.startX;
+      local.zoom.y = event.clientY - local.zoom.startY;
+      applyZoom();
+    });
+
+    const endDrag = () => { local.zoom.dragging = false; };
+    viewport.addEventListener("pointerup", endDrag);
+    viewport.addEventListener("pointercancel", endDrag);
+
+    viewport.addEventListener("touchstart", (event) => {
+      if (event.touches.length === 2) {
+        pinchDistance = Math.hypot(
+          event.touches[0].clientX - event.touches[1].clientX,
+          event.touches[0].clientY - event.touches[1].clientY
+        );
+        pinchScale = local.zoom.scale;
+      }
+    }, { passive: true });
+
+    viewport.addEventListener("touchmove", (event) => {
+      if (event.touches.length !== 2 || !pinchDistance) return;
+      const distance = Math.hypot(
+        event.touches[0].clientX - event.touches[1].clientX,
+        event.touches[0].clientY - event.touches[1].clientY
+      );
+      local.zoom.scale = Math.min(2.6, Math.max(1, pinchScale * (distance / pinchDistance)));
+      applyZoom();
+    }, { passive: true });
+  }
+
+  function currentProgressBase() {
+    if (window.state && Number.isFinite(Number(state.progress))) {
+      return Math.max(0, Math.min(100, Number(state.progress)));
+    }
+    const shown = parseInt($("#forensicProgressText")?.textContent || "", 10);
+    return Number.isFinite(shown) ? shown : 64;
+  }
+
+  const phaseBase = { value: null };
+
+  function updateProgress() {
+    if (phaseBase.value === null) phaseBase.value = currentProgressBase();
+    const milestones = local.found.size + (local.compared ? 1 : 0) + (local.choice ? 1 : 0);
+    const targetEnd = Math.max(phaseBase.value, 88);
+    const pct = Math.round(phaseBase.value + ((targetEnd - phaseBase.value) * milestones / 6));
+
+    const label = $("#forensicProgressText");
+    const fill = $("#forensicProgressFill");
+    if (label) label.textContent = `${pct}%`;
+    if (fill) fill.style.width = `${pct}%`;
+
+    if (window.state) {
+      state.progress = Math.max(Number(state.progress) || 0, pct);
+    }
+
+    updateObjective();
+  }
+
+  function updateObjective() {
+    const objective = $("#forensicObjective");
+    if (!objective) return;
+    const remaining = 4 - local.found.size;
+    if (remaining > 0) {
+      objective.innerHTML = `<span>${text().objective}</span><small>${text().remaining(remaining)}</small>`;
+    } else {
+      objective.textContent = text().compareObjective;
+    }
+  }
+
+  function portraitSource(name, emotion) {
+    try {
+      return typeof portrait === "function" ? portrait(name, emotion || "neutral") : "";
+    } catch (_) {
+      return "";
+    }
+  }
+
+  function renderDialogueLine() {
+    const session = local.dialogue;
+    const box = $("#forensicDialogue");
+    if (!session || !box) return;
+
+    const line = session.lines[session.index];
+    const right = line.speaker === "North";
+    const image = portraitSource(line.speaker, line.emotion);
+
+    box.className = `dialogue${right ? " right" : ""}`;
+    box.innerHTML = `
+      <div class="portrait-wrap">${image ? `<img class="portrait portrait-${line.speaker}" src="${image}" alt="">` : ""}</div>
+      <div class="dialogue-copy">
+        <div class="speaker">${line.speaker}</div>
+        <div class="line">${localized(line.text)}</div>
+      </div>
+      <div class="next">${text().tapContinue}</div>`;
+  }
+
+  function dialogue(lines, onDone) {
+    const box = $("#forensicDialogue");
+    if (!box) {
+      onDone?.();
+      return;
+    }
+
+    local.dialogue = { lines, index: 0, onDone };
+    box.classList.remove("hidden");
+    renderDialogueLine();
+
+    box.onclick = () => {
+      safePlay("#clickAudio", 0.5);
+      if (!local.dialogue) return;
+      local.dialogue.index += 1;
+      if (local.dialogue.index >= local.dialogue.lines.length) {
+        const done = local.dialogue.onDone;
+        local.dialogue = null;
+        box.classList.add("hidden");
+        box.onclick = null;
+        done?.();
+        try { if (typeof autoSave === "function") autoSave(); } catch (_) {}
+      } else {
+        renderDialogueLine();
+      }
+    };
+  }
+
+  function runIntro() {
+    dialogue([
+      {
+        speaker: "Benedict", emotion: "neutral",
+        text: {
+          en: "So this is where timestamps come to acquire a respectable education.",
+          th: "ที่นี่สินะ สถานที่ที่เวลาถูกส่งมาเรียนให้ดูน่าเชื่อถือ"
+        }
+      },
+      {
+        speaker: "Elena", emotion: "professional",
+        text: {
+          en: "Only the respectable ones. The others become paperwork.",
+          th: "เฉพาะเวลาที่ประพฤติตัวดีค่ะ ที่เหลือกลายเป็นงานเอกสาร"
+        }
+      },
+      {
+        speaker: "North", emotion: "focused",
+        text: {
+          en: "The police record is an export. I want the source transaction, the workstation audit and the instrument batch.",
+          th: "บันทึกของตำรวจเป็นข้อมูลส่งออก ฉันต้องดูรายการต้นทาง บันทึกตรวจสอบเครื่อง และรอบการทำงานของเครื่องวิเคราะห์"
+        }
+      },
+      {
+        speaker: "Elena", emotion: "neutral",
+        text: {
+          en: "Then we separate what the laboratory measured from what the system later claimed happened.",
+          th: "งั้นเราแยกสิ่งที่ห้องปฏิบัติการวัดได้ ออกจากสิ่งที่ระบบอ้างว่าเกิดขึ้นภายหลัง"
+        }
+      }
+    ], updateObjective);
+  }
+
+  function openEvidence(id) {
+    const evidence = EVIDENCE[id];
+    const panel = $("#forensicEvidencePanel");
+    if (!evidence || !panel) return;
+
+    local.active = id;
+    local.inspected = false;
+    resetZoom();
+
+    $("#forensicEvidenceTitle").textContent = localized(evidence.title);
+    $("#forensicEvidenceDescription").textContent = localized(evidence.description);
+    $("#forensicEvidenceObservation").textContent = localized(evidence.observation);
+    $("#forensicEvidenceObservation").style.display = "none";
+    $("#forensicEvidenceObject").innerHTML = evidenceMarkup(evidence.kind);
+
+    $("#inspectForensicEvidence").style.display = "";
+    $("#collectForensicEvidence").style.display = "none";
+    $("#closeForensicEvidence").style.display = "none";
+
+    panel.classList.add("open");
+    panel.setAttribute("aria-hidden", "false");
+    safePlay(id === "sealed_sample" ? "#forensicBarcodeAudio" : "#pageAudio", 0.48);
+    updateUI();
+  }
+
+  function inspectEvidence() {
+    if (!local.active || local.inspected) return;
+    local.inspected = true;
+    $("#forensicEvidenceObservation").style.display = "";
+    $("#inspectForensicEvidence").style.display = "none";
+    $("#collectForensicEvidence").style.display = "";
+    $("#closeForensicEvidence").style.display = "";
+    $("#forensicEvidenceHint").style.opacity = "0";
+  }
+
+  function closeEvidence() {
+    const panel = $("#forensicEvidencePanel");
+    if (!panel) return;
+    panel.classList.remove("open");
+    panel.setAttribute("aria-hidden", "true");
+    local.active = null;
+    local.inspected = false;
+    resetZoom();
+  }
+
+  function collectEvidence() {
+    const id = local.active;
+    if (!id) return;
+
+    const wasNew = !local.collected.has(id);
+    local.found.add(id);
+    local.collected.add(id);
+
+    if (window.state) {
+      state.forensic = state.forensic || {};
+      state.forensic.found = Array.from(local.found);
+      state.forensic.collected = Array.from(local.collected);
+      if (state.found && typeof state.found.add === "function") {
+        state.found.add(`forensic_${id}`);
+      }
+    }
+
+    const hotspot = $(`[data-forensic-clue="${id}"]`);
+    hotspot?.classList.add("found");
+
+    closeEvidence();
+    updateProgress();
+
+    if (wasNew) {
+      try { if (typeof showBadge === "function") showBadge(text().added); } catch (_) {}
+    }
+
+    if (local.found.size === 4) {
+      $("#reviewForensic")?.classList.add("show");
+      try { if (typeof showBadge === "function") showBadge(text().compareUnlocked); } catch (_) {}
+    }
+
+    try { if (typeof autoSave === "function") autoSave(); } catch (_) {}
+  }
+
+  function startCompare() {
+    if (local.found.size < 4) {
+      try { if (typeof showBadge === "function") showBadge(text().needAll); } catch (_) {}
+      return;
+    }
+
+    local.compared = true;
+    if (window.state) {
+      state.forensic = state.forensic || {};
+      state.forensic.compared = true;
+    }
+    updateProgress();
+
+    dialogue([
+      {
+        speaker: "North", emotion: "focused",
+        text: {
+          en: "The seal is intact. The analyzer's raw hash is intact. Only the administrative time moved.",
+          th: "ซีลยังสมบูรณ์ ค่าแฮชผลดิบจากเครื่องก็ยังสมบูรณ์ มีเพียงเวลาทางธุรการที่ถูกเลื่อน"
+        }
+      },
+      {
+        speaker: "Benedict", emotion: "serious",
+        text: {
+          en: "And the system points to a workstation that insists it was offline.",
+          th: "และระบบชี้ไปยังเครื่องที่ยืนยันว่าตัวเองออฟไลน์อยู่"
+        }
+      },
+      {
+        speaker: "Elena", emotion: "thoughtful",
+        text: {
+          en: "The credential was accepted. That confirms permission, not the person using it. A copied token, remote session or delayed synchronization could produce the same result.",
+          th: "ระบบยอมรับสิทธิ์การใช้งานค่ะ แต่นั่นยืนยันได้เพียงว่าสิทธิ์ถูกใช้ ไม่ได้ยืนยันว่าใครเป็นคนใช้ โทเคนที่ถูกคัดลอก การเชื่อมต่อระยะไกล หรือการซิงก์ล่าช้าก็สร้างผลแบบเดียวกันได้"
+        }
+      }
+    ], () => $("#forensicChoice")?.classList.remove("hidden"));
+  }
+
+  function choose(path) {
+    local.choice = path;
+    if (window.state) {
+      state.forensic = state.forensic || {};
+      state.forensic.choice = path;
+      state.flags = state.flags || {};
+      state.flags[`forensic_${path}`] = true;
+    }
+
+    $("#forensicChoice")?.classList.add("hidden");
+    updateProgress();
+
+    let response;
+    if (path === "identity") {
+      response = [
+        {
+          speaker: "North", emotion: "neutral",
+          text: {
+            en: "Authentication is not attribution.",
+            th: "การยืนยันสิทธิ์ไม่ใช่การยืนยันตัวบุคคล"
+          }
+        },
+        {
+          speaker: "Elena", emotion: "warm",
+          text: {
+            en: "Exactly. We know which permission the system trusted—not who exercised it.",
+            th: "ถูกต้องค่ะ เรารู้ว่าระบบเชื่อถือสิทธิ์ใด แต่ยังไม่รู้ว่าใครเป็นผู้ใช้สิทธิ์นั้น"
+          }
+        }
+      ];
+    } else if (path === "custody") {
+      response = [
+        {
+          speaker: "Benedict", emotion: "serious",
+          text: {
+            en: "So the toxicology can be genuine while the timeline around it is manufactured.",
+            th: "แปลว่าผลพิษวิทยาอาจเป็นของจริง ขณะที่ลำดับเวลารอบมันถูกสร้างขึ้น"
+          }
+        },
+        {
+          speaker: "Elena", emotion: "neutral",
+          text: {
+            en: "That is the furthest the evidence lets us go.",
+            th: "หลักฐานพาเราไปได้ไกลที่สุดเพียงเท่านี้ค่ะ"
+          }
+        }
+      ];
+    } else {
+      response = [
+        {
+          speaker: "North", emotion: "skeptical",
+          text: {
+            en: "The alteration used a route the system trusted. That still leaves the operator unresolved.",
+            th: "การแก้ไขผ่านช่องทางที่ระบบเชื่อถือ แต่ตัวผู้ใช้งานยังไม่ถูกยืนยัน"
+          }
+        },
+        {
+          speaker: "Elena", emotion: "concerned",
+          text: {
+            en: "Right. An authorized path is evidence of method, not identity.",
+            th: "ใช่ค่ะ ช่องทางที่ได้รับอนุญาตเป็นหลักฐานของวิธีการ ไม่ใช่ตัวตน"
+          }
+        }
+      ];
+    }
+
+    response.push({
+      speaker: "Benedict", emotion: "serious",
+      text: {
+        en: "The database tells us what changed. The body may tell us why eleven minutes mattered.",
+        th: "ฐานข้อมูลบอกแล้วว่าอะไรถูกเปลี่ยน ศพอาจบอกได้ว่าสิบเอ็ดนาทีนั้นสำคัญเพราะอะไร"
+      }
+    });
+
+    dialogue(response, finishPhase);
+  }
+
+  function finishPhase() {
+    const complete = $("#forensicPhaseComplete");
+    if (!complete) return;
+
+    if (window.state) {
+      state.forensic = state.forensic || {};
+      state.forensic.complete = true;
+      state.screen = PHASE_ID;
+    }
+
+    updateProgress();
+    updateUI();
+    complete.style.display = "block";
+
+    try { if (typeof autoSave === "function") autoSave(); } catch (_) {}
+  }
+
+  function returnToTitle() {
+    stopHum();
+    try { if (typeof autoSave === "function") autoSave(); } catch (_) {}
+
+    if (typeof showScreen === "function") {
+      showScreen("title");
+      return;
+    }
+
+    $$(".screen").forEach((screen) => screen.classList.remove("active"));
+    $("#title")?.classList.add("active");
+    if (window.state) state.screen = "title";
+  }
+
+  function updateUI() {
+    const copy = text();
+
+    const location = $("#forensicLocation");
+    const sceneLabel = $("#forensicSceneLabel");
+    const compare = $("#reviewForensic");
+    const choiceTitle = $("#forensicChoiceTitle");
+
+    if (location) location.textContent = copy.location;
+    if (sceneLabel) sceneLabel.textContent = copy.sceneLabel;
+    if (compare) compare.textContent = copy.compare;
+    if (choiceTitle) choiceTitle.textContent = copy.choiceTitle;
+
+    $$("[data-forensic-choice]").forEach((button) => {
+      const key = button.dataset.forensicChoice;
+      if (copy.choices[key]) button.textContent = copy.choices[key];
+    });
+
+    const kicker = $("#forensicEvidenceKicker");
+    const stamp = $("#forensicEvidenceStamp");
+    const hint = $("#forensicEvidenceHint");
+    if (kicker) kicker.textContent = copy.evidenceInspection;
+    if (stamp) stamp.textContent = copy.caseEvidence;
+    if (hint) hint.textContent = copy.tapEvidence;
+
+    const inspect = $("#inspectForensicEvidence");
+    const collect = $("#collectForensicEvidence");
+    const close = $("#closeForensicEvidence");
+    if (inspect) inspect.textContent = copy.inspect;
+    if (collect) collect.textContent = copy.collect;
+    if (close) close.textContent = copy.close;
+
+    $("#forensicZoomOut")?.setAttribute("aria-label", copy.zoomOut);
+    $("#forensicZoomReset")?.setAttribute("aria-label", copy.resetView);
+    $("#forensicZoomIn")?.setAttribute("aria-label", copy.zoomIn);
+
+    const completeTitle = $("#forensicCompleteTitle");
+    const completeText = $("#forensicCompleteText");
+    const completeButton = $("#continueMedicalExaminer");
+    if (completeTitle) completeTitle.textContent = copy.wipTitle;
+    if (completeText) completeText.textContent = copy.wipText;
+    if (completeButton) completeButton.textContent = copy.returnTitle;
+
+    if (local.active) {
+      const evidence = EVIDENCE[local.active];
+      if (evidence) {
+        $("#forensicEvidenceTitle").textContent = localized(evidence.title);
+        $("#forensicEvidenceDescription").textContent = localized(evidence.description);
+        $("#forensicEvidenceObservation").textContent = localized(evidence.observation);
+      }
+    }
+
+    if (local.dialogue) renderDialogueLine();
+    updateObjective();
+    refreshCaseEntries();
+  }
+
+  function appendCaseEntries() {
+    const list = $("#caseList");
+    if (!list || !window.state || !state.forensic) return;
+
+    const old = $('[data-forensic-case-section]', list);
+    old?.remove();
+    $$('[data-forensic-case-entry]', list).forEach((node) => node.remove());
+
+    const ids = state.forensic.collected || [];
+    if (!ids.length) return;
+
+    const heading = document.createElement("div");
+    heading.className = "case-section-title";
+    heading.dataset.forensicCaseSection = "1";
+    heading.textContent = text().caseSection;
+    list.appendChild(heading);
+
+    ids.forEach((id) => {
+      const evidence = EVIDENCE[id];
+      if (!evidence) return;
+      const row = document.createElement("div");
+      row.className = "case-row";
+      row.dataset.forensicCaseEntry = id;
+      row.innerHTML = `<b>${localized(evidence.title)}</b><div>${localized(evidence.description)}</div>`;
+      list.appendChild(row);
+    });
+  }
+
+  function refreshCaseEntries() {
+    if ($("#caseModal")?.classList.contains("open")) appendCaseEntries();
+  }
+
+  function restoreState() {
+    if (window.state && state.forensic) {
+      local.found = new Set(state.forensic.found || []);
+      local.collected = new Set(state.forensic.collected || []);
+      local.choice = state.forensic.choice || null;
+      local.compared = Boolean(state.forensic.compared);
+    }
+
+    local.found.forEach((id) => {
+      $(`[data-forensic-clue="${id}"]`)?.classList.add("found");
+    });
+
+    if (local.found.size === 4) $("#reviewForensic")?.classList.add("show");
+    if (local.choice) finishPhase();
+    updateProgress();
+  }
+
+  function showPhase() {
+    $$(".screen").forEach((screen) => screen.classList.remove("active"));
+    $("#forensic2")?.classList.add("active");
+
+    if (window.state) {
+      state.screen = PHASE_ID;
+      state.chapter = Math.max(Number(state.chapter) || 2, 2);
+      state.forensic = state.forensic || {};
+    }
+
+    safePlay("#forensicDoorAudio", 0.55);
+    const hum = $("#forensicHumAudio");
+    if (hum) {
+      hum.volume = 0.10;
+      hum.play().catch(() => {});
+    }
+
+    updateUI();
+    restoreState();
+
+    if (!local.started && !local.choice) {
+      local.started = true;
+      setTimeout(runIntro, 420);
+    }
+
+    try { if (typeof autoSave === "function") autoSave(); } catch (_) {}
+  }
+
+  function bind() {
+    normalizeMarkup();
+    bindPanAndZoom();
+    updateUI();
+
+    $$("[data-forensic-clue]").forEach((button) => {
+      button.addEventListener("click", () => openEvidence(button.dataset.forensicClue));
+    });
+
+    $("#inspectForensicEvidence")?.addEventListener("click", inspectEvidence);
+    $("#forensicEvidenceObject")?.addEventListener("click", inspectEvidence);
+    $("#collectForensicEvidence")?.addEventListener("click", collectEvidence);
+    $("#closeForensicEvidence")?.addEventListener("click", closeEvidence);
+    $("#reviewForensic")?.addEventListener("click", startCompare);
+
+    $("#forensicZoomOut")?.addEventListener("click", (event) => {
+      event.stopPropagation();
+      zoomBy(-0.25);
+    });
+    $("#forensicZoomReset")?.addEventListener("click", (event) => {
+      event.stopPropagation();
+      resetZoom();
+    });
+    $("#forensicZoomIn")?.addEventListener("click", (event) => {
+      event.stopPropagation();
+      zoomBy(0.25);
+    });
+
+    $$("[data-forensic-choice]").forEach((button) => {
+      button.addEventListener("click", () => choose(button.dataset.forensicChoice));
+    });
+
+    $("#continueMedicalExaminer")?.addEventListener("click", returnToTitle);
+
+    const policeContinue = $("#policeReturnTitle");
+    if (policeContinue) {
+      policeContinue.addEventListener("click", (event) => {
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        const complete = $("#policePhaseComplete");
+        if (complete) complete.style.display = "none";
+        showPhase();
+      }, true);
+    }
+
+    $("#caseButton")?.addEventListener("click", () => setTimeout(appendCaseEntries, 0), true);
+
+    document.addEventListener("click", (event) => {
+      if (event.target.closest?.("[data-lang]")) {
+        setTimeout(updateUI, 0);
+        setTimeout(updateUI, 80);
+      }
+    }, true);
+
+    new MutationObserver(() => updateUI()).observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ["lang"]
+    });
+
+    const devGrid = $("#developerModal .dev-grid");
+    if (devGrid && !$('[data-dev-jump="forensic2"]')) {
+      const button = document.createElement("button");
+      button.className = "dev-button";
+      button.dataset.devJump = PHASE_ID;
+      button.textContent = "Forensic Science Lab";
+      button.addEventListener("click", () => {
+        $("#developerModal")?.classList.remove("open");
+        showPhase();
+      });
+      devGrid.appendChild(button);
+    }
+
+    window.LastWitnessForensic = {
+      start: showPhase,
+      updateLanguage: updateUI,
+      openEvidence,
+      regressionVersion: "0.2.5"
+    };
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", bind, { once: true });
+  } else {
+    bind();
+  }
 })();
