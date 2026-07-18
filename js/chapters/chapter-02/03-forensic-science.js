@@ -440,7 +440,7 @@ TIME SHIFT: +00:11:00</pre>
 
     panel.classList.add("open");
     panel.setAttribute("aria-hidden", "false");
-    safePlay(id === "sealed_sample" ? "#forensicBarcodeAudio" : "#pageAudio", 0.48);
+    safePlay("#evidenceAudio", 0.55);
     syncForensicControls();
     updateUI();
   }
@@ -492,6 +492,7 @@ TIME SHIFT: +00:11:00</pre>
     updateProgress();
 
     if (wasNew) {
+      safePlay("#evidenceAudio", 0.55);
       try { if (typeof showBadge === "function") showBadge(text().added); } catch (_) {}
     }
 
@@ -783,8 +784,45 @@ TIME SHIFT: +00:11:00</pre>
     try { if (typeof autoSave === "function") autoSave(); } catch (_) {}
   }
 
+
+  function bindPoliceToForensicDirectly() {
+    const complete = $("#policePhaseComplete");
+    if (!complete) return;
+
+    let transitioning = false;
+    const continueNow = () => {
+      if (transitioning) return;
+      const visible = complete.style.display !== "none" &&
+        getComputedStyle(complete).display !== "none";
+      if (!visible) return;
+
+      transitioning = true;
+      complete.style.display = "none";
+      try {
+        if (window.state) {
+          state.policePhaseComplete = true;
+          state.screen = PHASE_ID;
+        }
+        if (typeof autoSave === "function") autoSave();
+      } catch (_) {}
+      setTimeout(() => {
+        showPhase();
+        transitioning = false;
+      }, 60);
+    };
+
+    new MutationObserver(continueNow).observe(complete, {
+      attributes: true,
+      attributeFilter: ["style", "class"]
+    });
+
+    document.addEventListener("lastwitness:police-complete", continueNow);
+    setTimeout(continueNow, 0);
+  }
+
   function bind() {
     normalizeMarkup();
+    bindPoliceToForensicDirectly();
     updateUI();
 
     $$("[data-forensic-clue]").forEach((button) => {
