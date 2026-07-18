@@ -135,7 +135,6 @@
     choice: null,
     compared: false,
     dialogue: null,
-    zoom: { scale: 1, x: 0, y: 0, dragging: false, startX: 0, startY: 0 }
   };
 
   function language() {
@@ -166,20 +165,13 @@
     const panel = $("#forensicEvidencePanel");
     if (panel) {
       panel.innerHTML = `
-        <div class="evidence-card forensic-evidence-card">
+        <div class="evidence-card">
           <div class="eyebrow" id="forensicEvidenceKicker"></div>
           <h3 id="forensicEvidenceTitle"></h3>
-          <div class="evidence-stage forensic-evidence-stage">
+          <div class="evidence-stage">
             <div class="evidence-stamp" id="forensicEvidenceStamp"></div>
-            <div id="forensicEvidenceViewport" class="forensic-evidence-viewport">
-              <div id="forensicEvidenceObject" class="evidence-object forensic-evidence-object"></div>
-            </div>
+            <div id="forensicEvidenceObject" class="evidence-object"></div>
             <div id="forensicEvidenceHint" class="evidence-zoom-hint"></div>
-            <div class="forensic-zoom-controls" aria-label="Evidence zoom controls">
-              <button id="forensicZoomOut" class="forensic-zoom-button" type="button">−</button>
-              <button id="forensicZoomReset" class="forensic-zoom-reset" type="button">100%</button>
-              <button id="forensicZoomIn" class="forensic-zoom-button" type="button">＋</button>
-            </div>
           </div>
           <div id="forensicEvidenceMeta" class="evidence-meta">
             <p id="forensicEvidenceDescription"></p>
@@ -194,9 +186,7 @@
     }
 
     const oldAccuse = $('[data-forensic-choice="accuse"]');
-    if (oldAccuse) {
-      oldAccuse.dataset.forensicChoice = "route";
-    }
+    if (oldAccuse) oldAccuse.dataset.forensicChoice = "route";
 
     const complete = $("#forensicPhaseComplete");
     if (complete) {
@@ -206,6 +196,9 @@
         <p id="forensicCompleteText"></p>
         <button id="continueMedicalExaminer" class="primary" type="button"></button>`;
     }
+
+    $("#reviewForensic")?.classList.remove("show");
+    $("#reviewForensic")?.setAttribute("hidden", "");
   }
 
   function evidenceMarkup(kind) {
@@ -281,77 +274,6 @@ TIME SHIFT: +00:11:00</pre>
     </article>`;
   }
 
-  function resetZoom() {
-    local.zoom.scale = 1;
-    local.zoom.x = 0;
-    local.zoom.y = 0;
-    applyZoom();
-  }
-
-  function applyZoom() {
-    const object = $("#forensicEvidenceObject");
-    if (!object) return;
-    object.style.transform = `translate3d(${local.zoom.x}px, ${local.zoom.y}px, 0) scale(${local.zoom.scale})`;
-    const reset = $("#forensicZoomReset");
-    if (reset) reset.textContent = `${Math.round(local.zoom.scale * 100)}%`;
-  }
-
-  function zoomBy(delta) {
-    local.zoom.scale = Math.min(2.6, Math.max(1, local.zoom.scale + delta));
-    if (local.zoom.scale === 1) {
-      local.zoom.x = 0;
-      local.zoom.y = 0;
-    }
-    applyZoom();
-  }
-
-  function bindPanAndZoom() {
-    const viewport = $("#forensicEvidenceViewport");
-    if (!viewport) return;
-
-    let pinchDistance = 0;
-    let pinchScale = 1;
-
-    viewport.addEventListener("pointerdown", (event) => {
-      if (local.zoom.scale <= 1) return;
-      local.zoom.dragging = true;
-      local.zoom.startX = event.clientX - local.zoom.x;
-      local.zoom.startY = event.clientY - local.zoom.y;
-      viewport.setPointerCapture?.(event.pointerId);
-    });
-
-    viewport.addEventListener("pointermove", (event) => {
-      if (!local.zoom.dragging) return;
-      local.zoom.x = event.clientX - local.zoom.startX;
-      local.zoom.y = event.clientY - local.zoom.startY;
-      applyZoom();
-    });
-
-    const endDrag = () => { local.zoom.dragging = false; };
-    viewport.addEventListener("pointerup", endDrag);
-    viewport.addEventListener("pointercancel", endDrag);
-
-    viewport.addEventListener("touchstart", (event) => {
-      if (event.touches.length === 2) {
-        pinchDistance = Math.hypot(
-          event.touches[0].clientX - event.touches[1].clientX,
-          event.touches[0].clientY - event.touches[1].clientY
-        );
-        pinchScale = local.zoom.scale;
-      }
-    }, { passive: true });
-
-    viewport.addEventListener("touchmove", (event) => {
-      if (event.touches.length !== 2 || !pinchDistance) return;
-      const distance = Math.hypot(
-        event.touches[0].clientX - event.touches[1].clientX,
-        event.touches[0].clientY - event.touches[1].clientY
-      );
-      local.zoom.scale = Math.min(2.6, Math.max(1, pinchScale * (distance / pinchDistance)));
-      applyZoom();
-    }, { passive: true });
-  }
-
   function currentProgressBase() {
     if (window.state && Number.isFinite(Number(state.progress))) {
       return Math.max(0, Math.min(100, Number(state.progress)));
@@ -361,6 +283,21 @@ TIME SHIFT: +00:11:00</pre>
   }
 
   const phaseBase = { value: null };
+
+  function syncForensicControls() {
+    const review = $("#reviewForensic");
+    if (!review) return;
+
+    const dialogueVisible = Boolean(local.dialogue) || !$("#forensicDialogue")?.classList.contains("hidden");
+    const evidenceOpen = $("#forensicEvidencePanel")?.classList.contains("open");
+    const choiceOpen = !$("#forensicChoice")?.classList.contains("hidden");
+    const completeOpen = $("#forensicPhaseComplete")?.style.display === "block";
+    const ready = local.found.size === 4 && !local.compared;
+
+    const shouldShow = ready && !dialogueVisible && !evidenceOpen && !choiceOpen && !completeOpen;
+    review.classList.toggle("show", shouldShow);
+    review.toggleAttribute("hidden", !shouldShow);
+  }
 
   function updateProgress() {
     if (phaseBase.value === null) phaseBase.value = currentProgressBase();
@@ -427,6 +364,7 @@ TIME SHIFT: +00:11:00</pre>
 
     local.dialogue = { lines, index: 0, onDone };
     box.classList.remove("hidden");
+    syncForensicControls();
     renderDialogueLine();
 
     box.onclick = () => {
@@ -439,6 +377,7 @@ TIME SHIFT: +00:11:00</pre>
         box.classList.add("hidden");
         box.onclick = null;
         done?.();
+        syncForensicControls();
         try { if (typeof autoSave === "function") autoSave(); } catch (_) {}
       } else {
         renderDialogueLine();
@@ -486,12 +425,13 @@ TIME SHIFT: +00:11:00</pre>
 
     local.active = id;
     local.inspected = false;
-    resetZoom();
 
     $("#forensicEvidenceTitle").textContent = localized(evidence.title);
     $("#forensicEvidenceDescription").textContent = localized(evidence.description);
     $("#forensicEvidenceObservation").textContent = localized(evidence.observation);
     $("#forensicEvidenceObservation").style.display = "none";
+    $("#forensicEvidenceMeta").classList.remove("show");
+    $("#forensicEvidenceObject").classList.remove("inspecting");
     $("#forensicEvidenceObject").innerHTML = evidenceMarkup(evidence.kind);
 
     $("#inspectForensicEvidence").style.display = "";
@@ -501,17 +441,19 @@ TIME SHIFT: +00:11:00</pre>
     panel.classList.add("open");
     panel.setAttribute("aria-hidden", "false");
     safePlay(id === "sealed_sample" ? "#forensicBarcodeAudio" : "#pageAudio", 0.48);
+    syncForensicControls();
     updateUI();
   }
 
   function inspectEvidence() {
     if (!local.active || local.inspected) return;
     local.inspected = true;
+    $("#forensicEvidenceObject").classList.add("inspecting");
+    $("#forensicEvidenceMeta").classList.add("show");
     $("#forensicEvidenceObservation").style.display = "";
     $("#inspectForensicEvidence").style.display = "none";
     $("#collectForensicEvidence").style.display = "";
     $("#closeForensicEvidence").style.display = "";
-    $("#forensicEvidenceHint").style.opacity = "0";
   }
 
   function closeEvidence() {
@@ -521,7 +463,9 @@ TIME SHIFT: +00:11:00</pre>
     panel.setAttribute("aria-hidden", "true");
     local.active = null;
     local.inspected = false;
-    resetZoom();
+    $("#forensicEvidenceObject")?.classList.remove("inspecting");
+    $("#forensicEvidenceMeta")?.classList.remove("show");
+    syncForensicControls();
   }
 
   function collectEvidence() {
@@ -552,9 +496,9 @@ TIME SHIFT: +00:11:00</pre>
     }
 
     if (local.found.size === 4) {
-      $("#reviewForensic")?.classList.add("show");
       try { if (typeof showBadge === "function") showBadge(text().compareUnlocked); } catch (_) {}
     }
+    syncForensicControls();
 
     try { if (typeof autoSave === "function") autoSave(); } catch (_) {}
   }
@@ -566,6 +510,7 @@ TIME SHIFT: +00:11:00</pre>
     }
 
     local.compared = true;
+    syncForensicControls();
     if (window.state) {
       state.forensic = state.forensic || {};
       state.forensic.compared = true;
@@ -687,6 +632,7 @@ TIME SHIFT: +00:11:00</pre>
     updateProgress();
     updateUI();
     complete.style.display = "block";
+    syncForensicControls();
 
     try { if (typeof autoSave === "function") autoSave(); } catch (_) {}
   }
@@ -737,9 +683,6 @@ TIME SHIFT: +00:11:00</pre>
     if (collect) collect.textContent = copy.collect;
     if (close) close.textContent = copy.close;
 
-    $("#forensicZoomOut")?.setAttribute("aria-label", copy.zoomOut);
-    $("#forensicZoomReset")?.setAttribute("aria-label", copy.resetView);
-    $("#forensicZoomIn")?.setAttribute("aria-label", copy.zoomIn);
 
     const completeTitle = $("#forensicCompleteTitle");
     const completeText = $("#forensicCompleteText");
@@ -806,9 +749,9 @@ TIME SHIFT: +00:11:00</pre>
       $(`[data-forensic-clue="${id}"]`)?.classList.add("found");
     });
 
-    if (local.found.size === 4) $("#reviewForensic")?.classList.add("show");
     if (local.choice) finishPhase();
     updateProgress();
+    syncForensicControls();
   }
 
   function showPhase() {
@@ -830,6 +773,7 @@ TIME SHIFT: +00:11:00</pre>
 
     updateUI();
     restoreState();
+    syncForensicControls();
 
     if (!local.started && !local.choice) {
       local.started = true;
@@ -841,7 +785,6 @@ TIME SHIFT: +00:11:00</pre>
 
   function bind() {
     normalizeMarkup();
-    bindPanAndZoom();
     updateUI();
 
     $$("[data-forensic-clue]").forEach((button) => {
@@ -853,19 +796,6 @@ TIME SHIFT: +00:11:00</pre>
     $("#collectForensicEvidence")?.addEventListener("click", collectEvidence);
     $("#closeForensicEvidence")?.addEventListener("click", closeEvidence);
     $("#reviewForensic")?.addEventListener("click", startCompare);
-
-    $("#forensicZoomOut")?.addEventListener("click", (event) => {
-      event.stopPropagation();
-      zoomBy(-0.25);
-    });
-    $("#forensicZoomReset")?.addEventListener("click", (event) => {
-      event.stopPropagation();
-      resetZoom();
-    });
-    $("#forensicZoomIn")?.addEventListener("click", (event) => {
-      event.stopPropagation();
-      zoomBy(0.25);
-    });
 
     $$("[data-forensic-choice]").forEach((button) => {
       button.addEventListener("click", () => choose(button.dataset.forensicChoice));
@@ -915,7 +845,7 @@ TIME SHIFT: +00:11:00</pre>
       start: showPhase,
       updateLanguage: updateUI,
       openEvidence,
-      regressionVersion: "0.2.5"
+      regressionVersion: "0.2.7"
     };
   }
 
