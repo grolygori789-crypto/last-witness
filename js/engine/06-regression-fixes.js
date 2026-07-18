@@ -3,6 +3,7 @@
  * 1) Live TH/EN switching for Police Station dialogue and UI
  * 2) Police Station save icon consistency
  * 3) Police evidence two-step inspection flow matching Victim's Apartment
+ * 4) Case File opens reliably and includes Police Station evidence
  */
 (function(){
 "use strict";
@@ -93,7 +94,7 @@ runPolicePostChoice=function(choice){
   observer.observe($("#policeEvidencePanel"),{attributes:true,attributeFilter:["class"]});
 };
 
-/* History also follows the selected language for bilingual Police Station entries. */
+/* History follows the selected language for bilingual Police Station entries. */
 const historyButton=$("#historyButton");
 if(historyButton){
   historyButton.onclick=function(){
@@ -105,7 +106,76 @@ if(historyButton){
   };
 }
 
-/* Bind newly added Police evidence controls. */
+/* Evidence registry used by Case File.
+ * Unknown future evidence receives a safe fallback instead of crashing the menu.
+ */
+const CASE_FILE_SPECIAL={
+  tox_original_intake:{
+    chapter:2,
+    title:{
+      en:"Original Toxicology Intake Record",
+      th:"บันทึกรับรายงานพิษวิทยาฉบับต้นฉบับ"
+    },
+    description:{
+      en:"The original report entered police custody at 06:17—three minutes before Daniel Voss was officially found. Its collection time was later moved forward by eleven minutes using a valid internal credential from a workstation recorded as offline.",
+      th:"รายงานต้นฉบับเข้าสู่ระบบของกลางเวลา 06:17 ก่อนพบศพ Daniel Voss อย่างเป็นทางการสามนาที เวลาเก็บตัวอย่างถูกเลื่อนไปข้างหน้าสิบเอ็ดนาทีด้วยสิทธิ์ภายในที่ถูกต้องจากเครื่องที่ระบบระบุว่าปิดอยู่"
+    }
+  }
+};
+
+function caseFileRecord(id){
+  const special=CASE_FILE_SPECIAL[id];
+  if(special){
+    return{
+      chapter:special.chapter,
+      title:localized(special.title),
+      description:localized(special.description)
+    };
+  }
+
+  const data=clueData[id];
+  if(data&&data.length>=2){
+    return{
+      chapter:APARTMENT_CLUES.includes(id)?2:1,
+      title:L(data[0]),
+      description:L(data[1])
+    };
+  }
+
+  return{
+    chapter:state.chapter>=2?2:1,
+    title:state.language==="th"?"หลักฐานที่บันทึกไว้":"Recorded Evidence",
+    description:state.language==="th"
+      ?"หลักฐานชิ้นนี้ถูกเพิ่มไว้ในแฟ้มคดีแล้ว"
+      :"This evidence has been added to the case file."
+  };
+}
+
+const caseButton=$("#caseButton");
+if(caseButton){
+  caseButton.onclick=function(){
+    const sections={1:[],2:[]};
+
+    Array.from(state.found).forEach(function(id){
+      const record=caseFileRecord(id);
+      const row='<div class="case-row"><b>'+record.title+'</b><div>'+record.description+"</div></div>";
+      sections[record.chapter===2?2:1].push(row);
+    });
+
+    let caseHtml="";
+    if(sections[1].length){
+      caseHtml+='<div class="case-section-title">'+L("chapter_i")+"</div>"+sections[1].join("");
+    }
+    if(sections[2].length){
+      caseHtml+='<div class="case-section-title">'+L("chapter_ii")+"</div>"+sections[2].join("");
+    }
+
+    $("#caseList").innerHTML=caseHtml||L("no_evidence");
+    $("#caseModal").classList.add("open");
+  };
+}
+
+/* Bind Police evidence controls. */
 $("#inspectPoliceEvidence").onclick=revealPoliceEvidenceDetails;
 $("#policeEvidenceObject").onclick=revealPoliceEvidenceDetails;
 
