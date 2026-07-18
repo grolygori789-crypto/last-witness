@@ -62,7 +62,6 @@
   <div id="apartmentDialogue" class="dialogue hidden"></div>
 </section>
 
-
 <section id="cafe2" class="screen">
   <img class="scene" src="assets/images/27566015eb48990f.png">
   <div class="overlay"></div>
@@ -85,7 +84,7 @@
   <div class="topbar">
     <span id="policeLocationLabel">Police Station • Evidence Division</span>
     <div class="hud">
-      <button class="icon saveButton" type="button">S</button>
+      <button class="icon saveButton" type="button">💾</button>
       <button class="icon menuButton" type="button">☰<i class="journal-alert" aria-hidden="true"></i></button>
     </div>
   </div>
@@ -102,7 +101,8 @@
       <div class="eyebrow" id="policeEvidenceKicker"></div>
       <h3 id="policeEvidenceTitle"></h3>
       <div class="evidence-stage">
-        <div class="evidence-object">
+        <div class="evidence-stamp" data-i18n="case_evidence">Case Evidence</div>
+        <div id="policeEvidenceObject" class="evidence-object">
           <svg viewBox="0 0 320 280" aria-hidden="true">
             <g transform="rotate(-2 160 140)">
               <rect x="52" y="22" width="216" height="238" rx="5" fill="#e8dfca" stroke="#766b59" stroke-width="4"/>
@@ -120,10 +120,16 @@
             </g>
           </svg>
         </div>
+        <div class="evidence-zoom-hint" data-i18n="tap_to_inspect">Tap evidence to inspect</div>
       </div>
-      <p id="policeEvidenceDescription"></p>
-      <div id="policeEvidenceObservation" class="evidence-observation"></div>
-      <button id="collectPoliceEvidence" class="primary" type="button"></button>
+      <div id="policeEvidenceMeta" class="evidence-meta">
+        <p id="policeEvidenceDescription"></p>
+        <div id="policeEvidenceObservation" class="evidence-observation"></div>
+      </div>
+      <div class="evidence-actions">
+        <button id="inspectPoliceEvidence" class="ghost" type="button" data-i18n="inspect_evidence">Inspect</button>
+        <button id="collectPoliceEvidence" class="primary" type="button"></button>
+      </div>
     </div>
   </div>
   <div id="policePhaseComplete" class="phase-card" style="display:none">
@@ -211,5 +217,6 @@
 <script src="js/chapters/chapter-02/01-cafe-police.js"></script>
 <script src="js/chapters/chapter-02/02-apartment-office.js"></script>
 <script src="js/chapters/chapter-01/chapter-01.js"></script>
+<script src="js/engine/06-regression-fixes.js"></script>
 </body>
 </html>
