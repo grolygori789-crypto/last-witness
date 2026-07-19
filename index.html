@@ -54,12 +54,10 @@
   <div class="topbar"><span data-i18n="location_victim_apartment">Victim's Apartment</span><div class="hud"><button class="icon saveButton">💾</button><button class="icon menuButton">☰<i class="journal-alert" aria-hidden="true"></i></button></div></div>
   <div class="progress"><span class="progressText">0%</span><div class="progress-bar"><div class="progress-fill"></div></div></div>
   <div id="apartmentObjective" class="apartment-objective"></div>
-
   <button class="apartment-hotspot apt-hs-mug" data-apt-clue="apt_mug" aria-label="Inspect mug"><i></i></button>
   <button class="apartment-hotspot apt-hs-table" data-apt-clue="apt_documents" aria-label="Inspect documents"><i></i></button>
   <button class="apartment-hotspot apt-hs-board" data-apt-clue="apt_board" aria-label="Inspect investigation board"><i></i></button>
   <button class="apartment-hotspot apt-hs-laptop" data-apt-clue="apt_laptop" aria-label="Inspect laptop"><i></i></button>
-
   <button id="reviewApartment" class="primary apartment-review" data-i18n="review_apartment">Review the Apartment</button>
   <div id="apartmentDialogue" class="dialogue hidden"></div>
 </section>
@@ -85,10 +83,7 @@
   <div class="overlay"></div>
   <div class="topbar">
     <span id="policeLocationLabel">Police Station • Evidence Division</span>
-    <div class="hud">
-      <button class="icon saveButton" type="button">💾</button>
-      <button class="icon menuButton" type="button">☰<i class="journal-alert" aria-hidden="true"></i></button>
-    </div>
+    <div class="hud"><button class="icon saveButton" type="button">💾</button><button class="icon menuButton" type="button">☰<i class="journal-alert" aria-hidden="true"></i></button></div>
   </div>
   <div id="policeObjective" class="apartment-objective"></div>
   <div id="policeDialogue" class="dialogue hidden"></div>
@@ -105,60 +100,24 @@
       <div class="evidence-stage">
         <div class="evidence-stamp" data-i18n="case_evidence">Case Evidence</div>
         <div id="policeEvidenceObject" class="evidence-object">
-          <svg viewBox="0 0 320 280" aria-hidden="true">
-            <g transform="rotate(-2 160 140)">
-              <rect x="52" y="22" width="216" height="238" rx="5" fill="#e8dfca" stroke="#766b59" stroke-width="4"/>
-              <rect x="72" y="43" width="176" height="24" fill="#29313a"/>
-              <text x="160" y="59" text-anchor="middle" fill="#f1eee8" font-size="11" font-family="monospace">EVIDENCE INTAKE LOG</text>
-              <g fill="#35312b" font-family="monospace" font-size="12">
-                <text x="78" y="98">06:17  TOX-ORIGINAL</text>
-                <text x="78" y="127">SUBJECT: DANIEL VOSS</text>
-                <text x="78" y="156">COLLECTED: 05:58</text>
-                <text x="78" y="185">REVISED: 06:09</text>
-              </g>
-              <rect x="70" y="137" width="181" height="61" fill="none" stroke="#a73e37" stroke-width="3"/>
-              <path d="M83 220h150" stroke="#786d5c" stroke-width="2"/>
-              <text x="160" y="240" text-anchor="middle" fill="#9f352f" font-size="13" font-family="monospace">11 MINUTES</text>
-            </g>
-          </svg>
+          <svg viewBox="0 0 320 280" aria-hidden="true"><g transform="rotate(-2 160 140)"><rect x="52" y="22" width="216" height="238" rx="5" fill="#e8dfca" stroke="#766b59" stroke-width="4"/><rect x="72" y="43" width="176" height="24" fill="#29313a"/><text x="160" y="59" text-anchor="middle" fill="#f1eee8" font-size="11" font-family="monospace">EVIDENCE INTAKE LOG</text><g fill="#35312b" font-family="monospace" font-size="12"><text x="78" y="98">06:17  TOX-ORIGINAL</text><text x="78" y="127">SUBJECT: DANIEL VOSS</text><text x="78" y="156">COLLECTED: 05:58</text><text x="78" y="185">REVISED: 06:09</text></g><rect x="70" y="137" width="181" height="61" fill="none" stroke="#a73e37" stroke-width="3"/><path d="M83 220h150" stroke="#786d5c" stroke-width="2"/><text x="160" y="240" text-anchor="middle" fill="#9f352f" font-size="13" font-family="monospace">11 MINUTES</text></g></svg>
         </div>
         <div class="evidence-zoom-hint" data-i18n="tap_to_inspect">Tap evidence to inspect</div>
       </div>
-      <div id="policeEvidenceMeta" class="evidence-meta">
-        <p id="policeEvidenceDescription"></p>
-        <div id="policeEvidenceObservation" class="evidence-observation"></div>
-      </div>
-      <div class="evidence-actions">
-        <button id="inspectPoliceEvidence" class="ghost" type="button" data-i18n="inspect_evidence">Inspect</button>
-        <button id="collectPoliceEvidence" class="primary" type="button"></button>
-      </div>
+      <div id="policeEvidenceMeta" class="evidence-meta"><p id="policeEvidenceDescription"></p><div id="policeEvidenceObservation" class="evidence-observation"></div></div>
+      <div class="evidence-actions"><button id="inspectPoliceEvidence" class="ghost" type="button" data-i18n="inspect_evidence">Inspect</button><button id="collectPoliceEvidence" class="primary" type="button"></button></div>
     </div>
   </div>
-  <div id="policePhaseComplete" class="phase-card" style="display:none">
-    <div class="eyebrow">LAST WITNESS</div>
-    <h2 id="policeCompleteTitle"></h2>
-    <p id="policeCompleteText"></p>
-    <button id="policeReturnTitle" class="primary" type="button"></button>
-  </div>
+  <div id="policePhaseComplete" class="phase-card" style="display:none"><div class="eyebrow">LAST WITNESS</div><h2 id="policeCompleteTitle"></h2><p id="policeCompleteText"></p><button id="policeReturnTitle" class="primary" type="button"></button></div>
 </section>
+
 <div id="apartmentEvidence" class="evidence-panel" aria-hidden="true">
   <div class="evidence-card">
     <div class="eyebrow" data-i18n="evidence_inspection">Evidence Inspection</div>
     <h3 id="apartmentEvidenceTitle"></h3>
-    <div class="evidence-stage">
-      <div class="evidence-stamp" data-i18n="case_evidence">Case Evidence</div>
-      <div id="apartmentEvidenceObject" class="evidence-object"></div>
-      <div class="evidence-zoom-hint" data-i18n="tap_to_inspect">Tap evidence to inspect</div>
-    </div>
-    <div id="apartmentEvidenceMeta" class="evidence-meta">
-      <p id="apartmentEvidenceDescription"></p>
-      <div id="apartmentEvidenceObservation" class="evidence-observation"></div>
-    </div>
-    <div class="evidence-actions">
-      <button id="inspectApartmentEvidence" class="ghost" data-i18n="inspect_evidence">Inspect</button>
-      <button id="collectApartmentEvidence" class="primary" data-i18n="collect_evidence">Collect Evidence</button>
-      <button id="closeApartmentEvidence" class="ghost evidence-collect-only" data-i18n="close">Close</button>
-    </div>
+    <div class="evidence-stage"><div class="evidence-stamp" data-i18n="case_evidence">Case Evidence</div><div id="apartmentEvidenceObject" class="evidence-object"></div><div class="evidence-zoom-hint" data-i18n="tap_to_inspect">Tap evidence to inspect</div></div>
+    <div id="apartmentEvidenceMeta" class="evidence-meta"><p id="apartmentEvidenceDescription"></p><div id="apartmentEvidenceObservation" class="evidence-observation"></div></div>
+    <div class="evidence-actions"><button id="inspectApartmentEvidence" class="ghost" data-i18n="inspect_evidence">Inspect</button><button id="collectApartmentEvidence" class="primary" data-i18n="collect_evidence">Collect Evidence</button><button id="closeApartmentEvidence" class="ghost evidence-collect-only" data-i18n="close">Close</button></div>
   </div>
 </div>
 
@@ -169,133 +128,51 @@
   <div class="progress"><span id="forensicProgressText" class="progressText">64%</span><div class="progress-bar"><div id="forensicProgressFill" class="progress-fill" style="width:64%"></div></div></div>
   <div id="forensicObjective" class="forensic-objective">Trace the original laboratory record</div>
   <div id="forensicSceneLabel" class="forensic-scene-label">CHAIN OF CUSTODY</div>
-
   <button class="forensic-hotspot fh-sample" data-forensic-clue="sealed_sample" aria-label="Inspect sealed sample"><i></i><span>Sample</span></button>
   <button class="forensic-hotspot fh-intake" data-forensic-clue="accession_record" aria-label="Inspect accession record"><i></i><span>Intake</span></button>
   <button class="forensic-hotspot fh-terminal" data-forensic-clue="audit_trace" aria-label="Inspect audit trace"><i></i><span>Terminal</span></button>
   <button class="forensic-hotspot fh-instrument" data-forensic-clue="batch_record" aria-label="Inspect instrument batch"><i></i><span>Analyzer</span></button>
-
   <div id="forensicDialogue" class="dialogue hidden"></div>
   <button id="reviewForensic" class="primary forensic-review" type="button">Compare Records</button>
-
-  <div id="forensicChoice" class="choice-panel hidden">
-    <div id="forensicChoiceTitle" class="choice-title">What does the contradiction prove?</div>
-    <button class="choice-option" data-forensic-choice="identity">A valid credential proves access—not identity.</button>
-    <button class="choice-option" data-forensic-choice="custody">The physical sample and the digital timeline were handled separately.</button>
-    <button class="choice-option" data-forensic-choice="accuse">Someone inside the laboratory changed the record.</button>
-  </div>
-
-  <div id="forensicPhaseComplete" class="phase-card" style="display:none">
-    <div class="eyebrow">LAST WITNESS</div>
-    <h2 id="forensicCompleteTitle">THE RECORD SPLITS IN TWO</h2>
-    <p id="forensicCompleteText">The raw result may be genuine. The timeline around it is not.</p>
-    <button id="continueMedicalExaminer" class="primary" type="button">Continue to Medical Examiner</button>
-  </div>
+  <div id="forensicChoice" class="choice-panel hidden"><div id="forensicChoiceTitle" class="choice-title">What does the contradiction prove?</div><button class="choice-option" data-forensic-choice="identity">A valid credential proves access—not identity.</button><button class="choice-option" data-forensic-choice="custody">The physical sample and the digital timeline were handled separately.</button><button class="choice-option" data-forensic-choice="accuse">Someone inside the laboratory changed the record.</button></div>
+  <div id="forensicPhaseComplete" class="phase-card" style="display:none"><div class="eyebrow">LAST WITNESS</div><h2 id="forensicCompleteTitle">THE RECORD SPLITS IN TWO</h2><p id="forensicCompleteText">The raw result may be genuine. The timeline around it is not.</p><button id="continueMedicalExaminer" class="primary" type="button">Continue to Medical Examiner</button></div>
 </section>
 
 <div id="forensicEvidencePanel" class="evidence-panel" aria-hidden="true">
   <div class="evidence-card forensic-evidence-card">
-    <div class="eyebrow" id="forensicEvidenceKicker">Evidence Inspection</div>
-    <h3 id="forensicEvidenceTitle"></h3>
-    <div class="evidence-stage forensic-evidence-stage">
-      <div class="evidence-stamp">CASE EVIDENCE</div>
-      <div id="forensicEvidenceObject" class="evidence-object forensic-evidence-object"></div>
-      <div class="evidence-zoom-hint">Tap evidence to inspect</div>
-    </div>
-    <div id="forensicEvidenceMeta" class="evidence-meta">
-      <p id="forensicEvidenceDescription"></p>
-      <div id="forensicEvidenceObservation" class="evidence-observation"></div>
-    </div>
-    <div class="evidence-actions">
-      <button id="inspectForensicEvidence" class="ghost" type="button">Inspect</button>
-      <button id="collectForensicEvidence" class="primary" type="button">Add to Case File</button>
-      <button id="closeForensicEvidence" class="ghost" type="button">Close</button>
-    </div>
+    <div class="eyebrow" id="forensicEvidenceKicker">Evidence Inspection</div><h3 id="forensicEvidenceTitle"></h3>
+    <div class="evidence-stage forensic-evidence-stage"><div class="evidence-stamp">CASE EVIDENCE</div><div id="forensicEvidenceObject" class="evidence-object forensic-evidence-object"></div><div class="evidence-zoom-hint">Tap evidence to inspect</div></div>
+    <div id="forensicEvidenceMeta" class="evidence-meta"><p id="forensicEvidenceDescription"></p><div id="forensicEvidenceObservation" class="evidence-observation"></div></div>
+    <div class="evidence-actions"><button id="inspectForensicEvidence" class="ghost" type="button">Inspect</button><button id="collectForensicEvidence" class="primary" type="button">Add to Case File</button><button id="closeForensicEvidence" class="ghost" type="button">Close</button></div>
   </div>
 </div>
 
 <section id="medical2" class="screen medical-screen" aria-label="Bangkok City Medical Examiner">
   <img class="scene" src="assets/images/medical-examiner-canon.png" alt="Bangkok City Medical Examiner">
   <div class="overlay medical-overlay"></div>
-
-  <div class="topbar">
-    <span id="medicalLocation">Bangkok City Medical Examiner</span>
-    <div class="hud">
-      <button class="icon saveButton" type="button">💾</button>
-      <button class="icon menuButton" type="button">☰<i class="journal-alert" aria-hidden="true"></i></button>
-    </div>
-  </div>
-
-  <div class="progress">
-    <span id="medicalProgressText" class="progressText">88%</span>
-    <div class="progress-bar"><div id="medicalProgressFill" class="progress-fill" style="width:88%"></div></div>
-  </div>
-
+  <div class="topbar"><span id="medicalLocation">Bangkok City Medical Examiner</span><div class="hud"><button class="icon saveButton" type="button">💾</button><button class="icon menuButton" type="button">☰<i class="journal-alert" aria-hidden="true"></i></button></div></div>
+  <div class="progress"><span id="medicalProgressText" class="progressText">88%</span><div class="progress-bar"><div id="medicalProgressFill" class="progress-fill" style="width:88%"></div></div></div>
   <div id="medicalObjective" class="apartment-objective"></div>
   <div id="medicalSceneLabel" class="medical-scene-label">THE BODY KEEPS ITS OWN TIME</div>
-
   <button class="medical-hotspot mh-body" data-medical-clue="postmortem" aria-label="Inspect Daniel's body"><i></i><span>Body</span></button>
   <button class="medical-hotspot mh-tag" data-medical-clue="identity_tag" aria-label="Inspect identification tag"><i></i><span>Tag</span></button>
   <button class="medical-hotspot mh-report" data-medical-clue="autopsy_report" aria-label="Inspect preliminary autopsy report"><i></i><span>Report</span></button>
   <button class="medical-hotspot mh-sample" data-medical-clue="toxicology_sample" aria-label="Inspect toxicology sample"><i></i><span>Sample</span></button>
-
   <div id="medicalDialogue" class="dialogue hidden"></div>
-
   <button id="reviewMedical" class="primary medical-review" type="button"></button>
-
-  <div id="medicalChoice" class="choice-panel hidden">
-    <div id="medicalChoiceTitle" class="choice-title"></div>
-    <button class="choice-option" data-medical-choice="timeline"></button>
-    <button class="choice-option" data-medical-choice="old_cases"></button>
-    <button class="choice-option" data-medical-choice="access"></button>
-  </div>
-<h2 id="chapter3WipTitle">CHAPTER III</h2>
-    <p id="chapter3WipText">This chapter is currently in development. Your Chapter II progress has been saved.</p>
-    <button id="chapter3WipReturnTitle" class="primary" type="button">Return to Title</button>
-  </div>
+  <div id="medicalChoice" class="choice-panel hidden"><div id="medicalChoiceTitle" class="choice-title"></div><button class="choice-option" data-medical-choice="timeline"></button><button class="choice-option" data-medical-choice="old_cases"></button><button class="choice-option" data-medical-choice="access"></button></div>
 </section>
 
 <section id="chapter2Complete" class="screen chapter chapter2-ending" aria-label="Chapter II Complete">
-  <div class="chapter-card">
-    <div class="eyebrow" id="chapter2CompleteEyebrow">Case Closed</div>
-    <h2 id="chapter2CompleteTitle">CHAPTER II COMPLETE</h2>
-    <p>
-      <b id="chapter2CompleteCase">THE ELEVEN-MINUTE LIE</b><br>
-      <span id="chapter2CompleteText">The science is genuine. The timeline around it was engineered. The investigation continues.</span>
-    </p>
-    <button id="continueChapter3" class="primary" type="button">Continue</button>
-    <button id="chapter2ReturnTitle" class="ghost" type="button">Return to Title</button>
-  </div>
+  <div class="chapter-card"><div class="eyebrow" id="chapter2CompleteEyebrow">Case Closed</div><h2 id="chapter2CompleteTitle">CHAPTER II COMPLETE</h2><p><b id="chapter2CompleteCase">THE ELEVEN-MINUTE LIE</b><br><span id="chapter2CompleteText">The science is genuine. The timeline around it was engineered. The investigation continues.</span></p><button id="continueChapter3" class="primary" type="button">Continue</button><button id="chapter2ReturnTitle" class="ghost" type="button">Return to Title</button></div>
 </section>
 
 <section id="chapter3Wip" class="screen chapter chapter3-wip" aria-label="Chapter III Work in Progress">
-  <div class="chapter-card">
-    <div class="eyebrow">LAST WITNESS</div>
-    <h2 id="chapter3WipTitle">CHAPTER III</h2>
-    <p id="chapter3WipText">This chapter is currently in development. Your Chapter II progress has been saved.</p>
-    <button id="chapter3WipReturnTitle" class="primary" type="button">Return to Title</button>
-  </div>
+  <div class="chapter-card"><div class="eyebrow">LAST WITNESS</div><h2 id="chapter3WipTitle">CHAPTER III</h2><p id="chapter3WipText">This chapter is currently in development. Your Chapter II progress has been saved.</p><button id="chapter3WipReturnTitle" class="primary" type="button">Return to Title</button></div>
 </section>
 
 <div id="medicalEvidencePanel" class="evidence-panel" aria-hidden="true">
-  <div class="evidence-card">
-    <div class="eyebrow" id="medicalEvidenceKicker"></div>
-    <h3 id="medicalEvidenceTitle"></h3>
-    <div class="evidence-stage">
-      <div class="evidence-stamp" id="medicalEvidenceStamp"></div>
-      <div id="medicalEvidenceObject" class="evidence-object"></div>
-      <div id="medicalEvidenceHint" class="evidence-zoom-hint"></div>
-    </div>
-    <div id="medicalEvidenceMeta" class="evidence-meta">
-      <p id="medicalEvidenceDescription"></p>
-      <div id="medicalEvidenceObservation" class="evidence-observation"></div>
-    </div>
-    <div class="evidence-actions">
-      <button id="inspectMedicalEvidence" class="ghost" type="button"></button>
-      <button id="collectMedicalEvidence" class="primary" type="button"></button>
-      <button id="closeMedicalEvidence" class="ghost evidence-collect-only" type="button"></button>
-    </div>
-  </div>
+  <div class="evidence-card"><div class="eyebrow" id="medicalEvidenceKicker"></div><h3 id="medicalEvidenceTitle"></h3><div class="evidence-stage"><div class="evidence-stamp" id="medicalEvidenceStamp"></div><div id="medicalEvidenceObject" class="evidence-object"></div><div id="medicalEvidenceHint" class="evidence-zoom-hint"></div></div><div id="medicalEvidenceMeta" class="evidence-meta"><p id="medicalEvidenceDescription"></p><div id="medicalEvidenceObservation" class="evidence-observation"></div></div><div class="evidence-actions"><button id="inspectMedicalEvidence" class="ghost" type="button"></button><button id="collectMedicalEvidence" class="primary" type="button"></button><button id="closeMedicalEvidence" class="ghost evidence-collect-only" type="button"></button></div></div>
 </div>
 
 <section id="chapter" class="screen chapter"><div class="chapter-card"><div class="eyebrow" data-i18n="case_closed">Case Closed</div><h2 data-i18n="chapter_complete">CHAPTER 1 COMPLETE</h2><p><b data-i18n="room_1807">ROOM 1807</b><br><span data-i18n="investigation_continues">The investigation continues.</span></p><div class="progress"><span class="progressText">100%</span><div class="progress-bar"><div class="progress-fill" style="width:100%"></div></div></div><button id="continueChapter2" class="primary" data-i18n="continue_chapter2">Continue to Chapter II</button><button id="returnTitle" class="ghost" data-i18n="return_title">Return to Title</button></div></section>
@@ -304,41 +181,11 @@
 <div id="drawer" class="drawer"><aside class="drawer-panel"><h3 data-i18n="game_menu">Game Menu</h3><button id="resume" class="menu-button" data-i18n="resume">Resume</button><button class="menu-button saveButton">💾 <span data-i18n="save_game">Save Game</span><small data-i18n="overwrite_save">Overwrite the manual save</small></button><button id="loadManual" class="menu-button" data-i18n="load_game">Load Game</button><button id="historyButton" class="menu-button" data-i18n="dialogue_history">Dialogue History</button><button id="caseButton" class="menu-button" data-i18n="case_file">Case File</button><button id="charactersButton" class="menu-button" data-i18n="characters" type="button">Characters<i class="journal-alert journal-menu-alert" aria-hidden="true"></i></button><button id="settingsButton" class="menu-button" data-i18n="settings">Settings</button><button id="developerMenuButton" class="menu-button" data-i18n="developer_console" style="display:none">Developer Console</button><button id="restart" class="menu-button" data-i18n="restart_chapter">Restart Chapter</button><button id="titleButton" class="menu-button" data-i18n="return_title">Return to Title</button></aside></div>
 <div id="historyModal" class="modal"><div class="modal-card"><h3 data-i18n="dialogue_history">Dialogue History</h3><div id="historyList"></div><button class="ghost closeModal" data-i18n="close">Close</button></div></div>
 <div id="caseModal" class="modal"><div class="modal-card"><h3 data-i18n="case_file">Case File</h3><div id="caseList"></div><button class="ghost closeModal" data-i18n="close">Close</button></div></div>
-<div id="charactersModal" class="modal"><div class="modal-card"><h3 data-i18n="characters">Characters</h3>
-<div id="journalFirstOpen" class="journal-first-open">
-  <div><div class="journal-first-icon">J</div><h4 data-i18n="journal_unlocked">Character Journal Unlocked</h4><p data-i18n="north_added">North added to the journal</p></div>
-</div>
-<div id="characterGrid" class="character-grid"></div><div id="characterDetail" class="character-detail" style="display:none"></div><button id="charactersBack" class="ghost" style="display:none" data-i18n="back">Back</button><button class="ghost closeModal" data-i18n="close">Close</button></div></div><div id="settingsModal" class="modal"><div class="modal-card"><h3 data-i18n="settings">Settings</h3><label data-i18n="language">Language</label><div class="settings-language"><button type="button" data-lang="th">ไทย</button><button type="button" data-lang="en">English</button></div><label><span data-i18n="master_sound">Master Sound</span> <input id="soundToggle" type="checkbox" checked></label><br><br><label><span data-i18n="music">Music</span> <input id="musicRange" type="range" min="0" max="1" step=".05" value=".33"></label><br><br><label><span data-i18n="sfx">SFX</span> <input id="sfxRange" type="range" min="0" max="1" step=".05" value=".55"></label><button id="settingsVersion" class="settings-version" type="button">LAST WITNESS · BUILD 0.3.6</button><button class="ghost closeModal" data-i18n="close">Close</button></div></div>
+<div id="charactersModal" class="modal"><div class="modal-card"><h3 data-i18n="characters">Characters</h3><div id="journalFirstOpen" class="journal-first-open"><div><div class="journal-first-icon">J</div><h4 data-i18n="journal_unlocked">Character Journal Unlocked</h4><p data-i18n="north_added">North added to the journal</p></div></div><div id="characterGrid" class="character-grid"></div><div id="characterDetail" class="character-detail" style="display:none"></div><button id="charactersBack" class="ghost" style="display:none" data-i18n="back">Back</button><button class="ghost closeModal" data-i18n="close">Close</button></div></div>
+<div id="settingsModal" class="modal"><div class="modal-card"><h3 data-i18n="settings">Settings</h3><label data-i18n="language">Language</label><div class="settings-language"><button type="button" data-lang="th">ไทย</button><button type="button" data-lang="en">English</button></div><label><span data-i18n="master_sound">Master Sound</span> <input id="soundToggle" type="checkbox" checked></label><br><br><label><span data-i18n="music">Music</span> <input id="musicRange" type="range" min="0" max="1" step=".05" value=".33"></label><br><br><label><span data-i18n="sfx">SFX</span> <input id="sfxRange" type="range" min="0" max="1" step=".05" value=".55"></label><button id="settingsVersion" class="settings-version" type="button">LAST WITNESS · BUILD 0.3.8</button><button class="ghost closeModal" data-i18n="close">Close</button></div></div>
 
-<div id="devAccessModal" class="modal"><div class="modal-card">
-<h3 data-i18n="developer_access">Developer Access</h3>
-<label data-i18n="enter_access_code">Enter Access Code</label>
-<input id="devAccessCode" class="dev-access-input" type="password" autocomplete="off" autocapitalize="none" spellcheck="false">
-<div id="devAccessStatus" class="dev-status"></div>
-<button id="devAccessSubmit" class="primary" data-i18n="authenticate">Authenticate</button>
-<button class="ghost closeModal" data-i18n="close">Close</button>
-</div></div>
-
-<div id="developerModal" class="modal"><div class="modal-card">
-<div class="dev-console-head"><strong>LAST WITNESS</strong><small data-i18n="developer_internal">Developer Console · Internal Access</small></div>
-<div class="dev-section-title" data-i18n="jump_location">Jump Location</div>
-<div class="dev-grid">
-<button class="dev-button" data-dev-jump="office2" data-i18n="dev_office">Chapter II · Office</button>
-<button class="dev-button" data-dev-jump="apartment2" data-i18n="dev_apartment">Victim's Apartment</button>
-<button class="dev-button" data-dev-jump="cafe2" data-i18n="dev_cafe">Orchid Café</button>
-<button class="dev-button" data-dev-jump="police2" data-i18n="dev_police">Police Station</button>
-</div>
-<div class="dev-section-title" data-i18n="developer_tools">Developer Tools</div>
-<div class="dev-grid">
-<button id="devUnlockCharacters" class="dev-button" data-i18n="unlock_characters">Unlock Characters</button>
-<button id="devUnlockEvidence" class="dev-button" data-i18n="unlock_evidence">Unlock Evidence</button>
-<button id="devResetChoices" class="dev-button" data-i18n="reset_choice_flags">Reset Choice Flags</button>
-<button id="devResetSave" class="dev-button danger" data-i18n="reset_all_saves">Reset All Saves</button>
-</div>
-<button id="devLockAccess" class="ghost" data-i18n="lock_developer_access">Lock Developer Access</button>
-<button class="ghost closeModal" data-i18n="close">Close</button>
-</div></div>
-
+<div id="devAccessModal" class="modal"><div class="modal-card"><h3 data-i18n="developer_access">Developer Access</h3><label data-i18n="enter_access_code">Enter Access Code</label><input id="devAccessCode" class="dev-access-input" type="password" autocomplete="off" autocapitalize="none" spellcheck="false"><div id="devAccessStatus" class="dev-status"></div><button id="devAccessSubmit" class="primary" data-i18n="authenticate">Authenticate</button><button class="ghost closeModal" data-i18n="close">Close</button></div></div>
+<div id="developerModal" class="modal"><div class="modal-card"><div class="dev-console-head"><strong>LAST WITNESS</strong><small data-i18n="developer_internal">Developer Console · Internal Access</small></div><div class="dev-section-title" data-i18n="jump_location">Jump Location</div><div class="dev-grid"><button class="dev-button" data-dev-jump="office2" data-i18n="dev_office">Chapter II · Office</button><button class="dev-button" data-dev-jump="apartment2" data-i18n="dev_apartment">Victim's Apartment</button><button class="dev-button" data-dev-jump="cafe2" data-i18n="dev_cafe">Orchid Café</button><button class="dev-button" data-dev-jump="police2" data-i18n="dev_police">Police Station</button></div><div class="dev-section-title" data-i18n="developer_tools">Developer Tools</div><div class="dev-grid"><button id="devUnlockCharacters" class="dev-button" data-i18n="unlock_characters">Unlock Characters</button><button id="devUnlockEvidence" class="dev-button" data-i18n="unlock_evidence">Unlock Evidence</button><button id="devResetChoices" class="dev-button" data-i18n="reset_choice_flags">Reset Choice Flags</button><button id="devResetSave" class="dev-button danger" data-i18n="reset_all_saves">Reset All Saves</button></div><button id="devLockAccess" class="ghost" data-i18n="lock_developer_access">Lock Developer Access</button><button class="ghost closeModal" data-i18n="close">Close</button></div></div>
 <div id="devAccessFlash" class="dev-access-flash"><div><strong data-i18n="auth_success">AUTHENTICATION SUCCESSFUL</strong><br><small data-i18n="console_unlocked">DEVELOPER CONSOLE UNLOCKED</small></div></div>
 
 <audio id="medicalRefrigeratorAudio" loop src="assets/audio/refrigerator-hum.mp3"></audio>
@@ -369,5 +216,6 @@
 <script src="js/chapters/chapter-02/04-medical-examiner.js"></script>
 <script src="js/chapters/chapter-02/05-chapter2-integration.js"></script>
 <script src="js/engine/06-content-registry-dev.js"></script>
+<script src="js/engine/09-defect-hotfix.js"></script>
 </body>
 </html>
