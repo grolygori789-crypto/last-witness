@@ -1,0 +1,62 @@
+{
+  "results": {
+    "page_errors_initial": [],
+    "characters_button_visible": true,
+    "initial_ids": [
+      "benedict",
+      "north"
+    ],
+    "elena_unlocked": true,
+    "red_dot_after_unlock": true,
+    "characters_modal_open": true,
+    "red_dot_cleared": true,
+    "ratchata_card": true,
+    "ratchata_persist_local": true,
+    "dev_character_ids": [
+      "benedict",
+      "north",
+      "elena",
+      "ratchata",
+      "somchai",
+      "kittisak"
+    ],
+    "dev_all_characters": true,
+    "dev_no_unread": true,
+    "dev_evidence_count": 16,
+    "forensic_all": true,
+    "medical_all": true,
+    "hotspots_found": 16,
+    "case_registry_rows": 20,
+    "chapter2_active": true,
+    "medical_inactive": true,
+    "ending_progress_count": 0,
+    "ending_buttons": [
+      "Continue",
+      "Return to Title"
+    ],
+    "wip_active": true,
+    "title_active": true,
+    "title_audio": {
+      "theme": 2,
+      "rain": 2,
+      "medical": true,
+      "forensic": true
+    },
+    "thai_character_name": "ดร. รัชตะ ซิงห์"
+  },
+  "passes": {
+    "no_runtime_errors": true,
+    "menu_visible": true,
+    "base_only_initial": true,
+    "normal_unlock_notification": true,
+    "ratchata_registry": true,
+    "dev_characters": true,
+    "dev_evidence": true,
+    "case_file": true,
+    "ending_clean": true,
+    "wip_flow": true,
+    "title_audio_isolated": true,
+    "thai_registry": true
+  },
+  "all_passed": true
+}

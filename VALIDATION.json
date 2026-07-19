@@ -1,0 +1,24 @@
+{
+  "04-medical-examiner.js": {
+    "syntax_ok": true,
+    "error": ""
+  },
+  "05-chapter2-integration.js": {
+    "syntax_ok": true,
+    "error": ""
+  },
+  "chapter2_complete_id_count": 1,
+  "chapter3_wip_id_count": 1,
+  "characters_button_id_count": 1,
+  "chapter2_is_separate_screen": true,
+  "chapter3_is_separate_screen": true,
+  "medical_contains_end_card": false,
+  "build_version": true,
+  "layout_screenshot_created": true,
+  "chromium_returncode": -6,
+  "playwright_ending_screenshot": "QA-chapter2-ending-360x800.png",
+  "playwright_characters_screenshot": "QA-characters-menu-360x800.png",
+  "characters_visible_in_harness": true,
+  "characters_before_settings_in_harness": true,
+  "ending_has_two_buttons_in_harness": true
+}

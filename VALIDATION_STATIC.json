@@ -1,0 +1,18 @@
+{
+  "04-medical-examiner.js": {
+    "syntax_ok": true,
+    "error": ""
+  },
+  "05-chapter2-integration.js": {
+    "syntax_ok": true,
+    "error": ""
+  },
+  "06-content-registry-dev.js": {
+    "syntax_ok": true,
+    "error": ""
+  },
+  "characters_button_count": 1,
+  "registry_script_count": 1,
+  "ending_progress_removed": true,
+  "continue_label": true
+}
