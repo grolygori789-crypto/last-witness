@@ -275,10 +275,23 @@
   }
 
   function finish(){
-    if(window.state){state.medical=state.medical||{};state.medical.complete=true;state.screen="medical2";state.progress=100;}
-    updateProgress();$("#chapter2Complete").style.display="block";
+    if(window.state){
+      state.medical=state.medical||{};
+      state.medical.complete=true;
+      state.screen="chapter2Complete";
+      state.progress=100;
+    }
+    updateProgress();
+    stopMedicalAudio();
     play("#chapterAudio",.65);
     try{if(typeof autoSave==="function")autoSave();}catch(_){}
+
+    if(window.LastWitnessChapter2Integration?.showChapter2Complete){
+      window.LastWitnessChapter2Integration.showChapter2Complete();
+    }else{
+      $$(".screen").forEach(s=>s.classList.remove("active"));
+      $("#chapter2Complete")?.classList.add("active");
+    }
   }
 
   function returnTitle(){
@@ -307,23 +320,25 @@
     }
     local.found.forEach(id=>$(`[data-medical-clue="${id}"]`)?.classList.add("found"));
     if(state?.medical?.ratchataMet)addRatchataJournal();
-    if(state?.medical?.complete)$("#chapter2Complete").style.display="block";
+    if(state?.medical?.complete){
+      setTimeout(()=>{
+        if(window.LastWitnessChapter2Integration?.showChapter2Complete){
+          window.LastWitnessChapter2Integration.showChapter2Complete();
+        }
+      },0);
+    }
     updateProgress();
   }
 
   function addRatchataJournal(){
-    if(!window.state)return;
-    state.medical=state.medical||{};state.medical.ratchataMet=true;
-    const grid=$("#characterGrid");if(!grid||$('[data-character="Ratchata"]',grid))return;
-    const card=document.createElement("button");
-    card.className="character-card character-ratchata";card.dataset.character="Ratchata";
-    card.innerHTML=`<img src="assets/images/ratchata/profile.png" alt=""><strong>Dr. Ratchata Singh</strong><small>Senior Medical Examiner · 43</small>`;
-    card.onclick=()=>{
-      const detail=$("#characterDetail");if(!detail)return;
-      grid.style.display="none";detail.style.display="block";$("#charactersBack").style.display="";
-      detail.innerHTML=`<img src="assets/images/ratchata/profile.png" alt=""><h3>Dr. Ratchata Singh</h3><p>${lang()==="th"?"แพทย์นิติเวชอาวุโส อายุ 43 ปี สุขุม แม่นยำ และมีอารมณ์ขันหน้าตาย ชุดสครับแมวโครงกระดูกเป็นรสนิยมส่วนตัว ไม่ใช่หลักฐาน":"Senior Medical Examiner, age 43. Precise, professionally restrained and dry-witted. The skeleton-cat scrubs are personal taste, not evidence."}</p>`;
-    };
-    grid.appendChild(card);
+    if(window.LastWitnessContentRegistry?.unlockCharacter){
+      window.LastWitnessContentRegistry.unlockCharacter("ratchata", { unread: true, source: "story" });
+      return;
+    }
+    if(window.state){
+      state.medical=state.medical||{};
+      state.medical.ratchataMet=true;
+    }
   }
 
   function appendCase(){
