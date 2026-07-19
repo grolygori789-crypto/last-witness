@@ -208,3 +208,99 @@ img.portrait-somchai-fallback{
   max-height: 21svh !important;
   overflow-y: auto !important;
 }
+
+
+/* 0.2.9 — forensic evidence readability: high contrast, full record, no zoom. */
+.forensic-evidence-stage {
+  background: linear-gradient(145deg,#d9dedc 0%,#b9c4c3 100%) !important;
+}
+.forensic-evidence-stage .evidence-stamp {
+  color: rgba(118,83,30,.52) !important;
+  border-color: rgba(156,112,46,.42) !important;
+  background: rgba(255,248,228,.26) !important;
+}
+.forensic-evidence-stage .evidence-zoom-hint {
+  left: 50% !important;
+  right: auto !important;
+  bottom: 10px !important;
+  transform: translateX(-50%) !important;
+  width: max-content !important;
+  max-width: 84% !important;
+  padding: 5px 10px !important;
+  border-radius: 999px !important;
+  color: rgba(255,255,255,.88) !important;
+  background: rgba(8,12,14,.64) !important;
+  text-shadow: none !important;
+  font-size: 9px !important;
+  letter-spacing: .08em !important;
+}
+.forensic-document {
+  background: #efe8d6 !important;
+  color: #17191b !important;
+  border: 1px solid rgba(55,45,28,.28) !important;
+  box-shadow: 0 14px 30px rgba(0,0,0,.34) !important;
+}
+.forensic-document *,
+.forensic-batch * {
+  color: inherit !important;
+  text-shadow: none !important;
+  opacity: 1 !important;
+}
+.forensic-document header strong { color:#111416 !important; }
+.forensic-document header small { color:#5a5142 !important; }
+.forensic-document dt { color:#6b604d !important; }
+.forensic-document dd { color:#17191b !important; }
+.forensic-record-alert {
+  color:#7f201c !important;
+  background:rgba(157,45,38,.06) !important;
+  border-color:#9c302a !important;
+}
+.forensic-document footer { color:#514a3d !important; }
+
+.forensic-terminal {
+  background:#071216 !important;
+  color:#b8eadb !important;
+  border-color:#26383e !important;
+}
+.forensic-terminal header { color:#e2c277 !important; }
+.forensic-terminal pre { color:#b8eadb !important; text-shadow:none !important; }
+.forensic-terminal footer { color:#f1a09b !important; }
+
+.forensic-batch {
+  background:#e6eceb !important;
+  color:#11191b !important;
+  border-left-color:#587e86 !important;
+}
+.forensic-batch header strong { color:#172326 !important; }
+.forensic-batch header small { color:#536a70 !important; }
+.forensic-batch dt { color:#64767a !important; }
+.forensic-batch dd { color:#11191b !important; }
+.forensic-record-ok {
+  color:#175d3d !important;
+  background:rgba(45,123,84,.07) !important;
+  border-color:#34775a !important;
+}
+.forensic-batch footer { color:#526467 !important; }
+
+.forensic-vial-label {
+  background:#eee7d4 !important;
+  color:#151719 !important;
+  text-shadow:none !important;
+}
+.forensic-vial-label * { color:#151719 !important; opacity:1 !important; }
+
+/* Fit every record fully inside the same non-zoom evidence stage. */
+.forensic-document,
+.forensic-terminal,
+.forensic-batch {
+  width:min(90%,350px) !important;
+  max-height:calc(100% - 14px) !important;
+  overflow:hidden !important;
+  font-size:10px !important;
+  line-height:1.3 !important;
+}
+.forensic-terminal pre { white-space:pre-wrap !important; }
+.forensic-full-record dl {
+  grid-template-columns:78px minmax(0,1fr) !important;
+  gap:4px 8px !important;
+}
