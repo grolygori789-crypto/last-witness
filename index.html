@@ -249,20 +249,27 @@
     <button class="choice-option" data-medical-choice="old_cases"></button>
     <button class="choice-option" data-medical-choice="access"></button>
   </div>
+<h2 id="chapter3WipTitle">CHAPTER III</h2>
+    <p id="chapter3WipText">This chapter is currently in development. Your Chapter II progress has been saved.</p>
+    <button id="chapter3WipReturnTitle" class="primary" type="button">Return to Title</button>
+  </div>
+</section>
 
-  <div id="chapter2Complete" class="chapter-card medical-complete" style="display:none">
+<section id="chapter2Complete" class="screen chapter chapter2-ending" aria-label="Chapter II Complete">
+  <div class="chapter-card">
     <div class="eyebrow" id="chapter2CompleteEyebrow">Case Closed</div>
     <h2 id="chapter2CompleteTitle">CHAPTER II COMPLETE</h2>
-    <p><b id="chapter2CompleteCase">THE ELEVEN-MINUTE LIE</b><br><span id="chapter2CompleteText"></span></p>
-    <div class="progress">
-      <span class="progressText">100%</span>
-      <div class="progress-bar"><div class="progress-fill" style="width:100%"></div></div>
-    </div>
-    <button id="continueChapter3" class="primary" type="button">Continue to Chapter III</button>
+    <p>
+      <b id="chapter2CompleteCase">THE ELEVEN-MINUTE LIE</b><br>
+      <span id="chapter2CompleteText">The science is genuine. The timeline around it was engineered. The investigation continues.</span>
+    </p>
+    <button id="continueChapter3" class="primary" type="button">Continue</button>
     <button id="chapter2ReturnTitle" class="ghost" type="button">Return to Title</button>
   </div>
+</section>
 
-  <div id="chapter3Wip" class="phase-card medical-complete" style="display:none">
+<section id="chapter3Wip" class="screen chapter chapter3-wip" aria-label="Chapter III Work in Progress">
+  <div class="chapter-card">
     <div class="eyebrow">LAST WITNESS</div>
     <h2 id="chapter3WipTitle">CHAPTER III</h2>
     <p id="chapter3WipText">This chapter is currently in development. Your Chapter II progress has been saved.</p>
@@ -294,14 +301,14 @@
 <section id="chapter" class="screen chapter"><div class="chapter-card"><div class="eyebrow" data-i18n="case_closed">Case Closed</div><h2 data-i18n="chapter_complete">CHAPTER 1 COMPLETE</h2><p><b data-i18n="room_1807">ROOM 1807</b><br><span data-i18n="investigation_continues">The investigation continues.</span></p><div class="progress"><span class="progressText">100%</span><div class="progress-bar"><div class="progress-fill" style="width:100%"></div></div></div><button id="continueChapter2" class="primary" data-i18n="continue_chapter2">Continue to Chapter II</button><button id="returnTitle" class="ghost" data-i18n="return_title">Return to Title</button></div></section>
 
 <div id="saveIndicator" class="save-indicator" data-i18n="saved">Saved</div><div id="badge" class="badge"></div>
-<div id="drawer" class="drawer"><aside class="drawer-panel"><h3 data-i18n="game_menu">Game Menu</h3><button id="resume" class="menu-button" data-i18n="resume">Resume</button><button class="menu-button saveButton">💾 <span data-i18n="save_game">Save Game</span><small data-i18n="overwrite_save">Overwrite the manual save</small></button><button id="loadManual" class="menu-button" data-i18n="load_game">Load Game</button><button id="historyButton" class="menu-button" data-i18n="dialogue_history">Dialogue History</button><button id="caseButton" class="menu-button" data-i18n="case_file">Case File</button><button id="charactersButton" class="menu-button" data-i18n="characters">Characters<i class="journal-alert journal-menu-alert" aria-hidden="true"></i></button><button id="settingsButton" class="menu-button" data-i18n="settings">Settings</button><button id="developerMenuButton" class="menu-button" data-i18n="developer_console" style="display:none">Developer Console</button><button id="restart" class="menu-button" data-i18n="restart_chapter">Restart Chapter</button><button id="titleButton" class="menu-button" data-i18n="return_title">Return to Title</button></aside></div>
+<div id="drawer" class="drawer"><aside class="drawer-panel"><h3 data-i18n="game_menu">Game Menu</h3><button id="resume" class="menu-button" data-i18n="resume">Resume</button><button class="menu-button saveButton">💾 <span data-i18n="save_game">Save Game</span><small data-i18n="overwrite_save">Overwrite the manual save</small></button><button id="loadManual" class="menu-button" data-i18n="load_game">Load Game</button><button id="historyButton" class="menu-button" data-i18n="dialogue_history">Dialogue History</button><button id="caseButton" class="menu-button" data-i18n="case_file">Case File</button><button id="charactersButton" class="menu-button" data-i18n="characters" type="button">Characters<i class="journal-alert journal-menu-alert" aria-hidden="true"></i></button><button id="settingsButton" class="menu-button" data-i18n="settings">Settings</button><button id="developerMenuButton" class="menu-button" data-i18n="developer_console" style="display:none">Developer Console</button><button id="restart" class="menu-button" data-i18n="restart_chapter">Restart Chapter</button><button id="titleButton" class="menu-button" data-i18n="return_title">Return to Title</button></aside></div>
 <div id="historyModal" class="modal"><div class="modal-card"><h3 data-i18n="dialogue_history">Dialogue History</h3><div id="historyList"></div><button class="ghost closeModal" data-i18n="close">Close</button></div></div>
 <div id="caseModal" class="modal"><div class="modal-card"><h3 data-i18n="case_file">Case File</h3><div id="caseList"></div><button class="ghost closeModal" data-i18n="close">Close</button></div></div>
 <div id="charactersModal" class="modal"><div class="modal-card"><h3 data-i18n="characters">Characters</h3>
 <div id="journalFirstOpen" class="journal-first-open">
   <div><div class="journal-first-icon">J</div><h4 data-i18n="journal_unlocked">Character Journal Unlocked</h4><p data-i18n="north_added">North added to the journal</p></div>
 </div>
-<div id="characterGrid" class="character-grid"></div><div id="characterDetail" class="character-detail" style="display:none"></div><button id="charactersBack" class="ghost" style="display:none" data-i18n="back">Back</button><button class="ghost closeModal" data-i18n="close">Close</button></div></div><div id="settingsModal" class="modal"><div class="modal-card"><h3 data-i18n="settings">Settings</h3><label data-i18n="language">Language</label><div class="settings-language"><button type="button" data-lang="th">ไทย</button><button type="button" data-lang="en">English</button></div><label><span data-i18n="master_sound">Master Sound</span> <input id="soundToggle" type="checkbox" checked></label><br><br><label><span data-i18n="music">Music</span> <input id="musicRange" type="range" min="0" max="1" step=".05" value=".33"></label><br><br><label><span data-i18n="sfx">SFX</span> <input id="sfxRange" type="range" min="0" max="1" step=".05" value=".55"></label><button id="settingsVersion" class="settings-version" type="button">LAST WITNESS · BUILD 0.3.1</button><button class="ghost closeModal" data-i18n="close">Close</button></div></div>
+<div id="characterGrid" class="character-grid"></div><div id="characterDetail" class="character-detail" style="display:none"></div><button id="charactersBack" class="ghost" style="display:none" data-i18n="back">Back</button><button class="ghost closeModal" data-i18n="close">Close</button></div></div><div id="settingsModal" class="modal"><div class="modal-card"><h3 data-i18n="settings">Settings</h3><label data-i18n="language">Language</label><div class="settings-language"><button type="button" data-lang="th">ไทย</button><button type="button" data-lang="en">English</button></div><label><span data-i18n="master_sound">Master Sound</span> <input id="soundToggle" type="checkbox" checked></label><br><br><label><span data-i18n="music">Music</span> <input id="musicRange" type="range" min="0" max="1" step=".05" value=".33"></label><br><br><label><span data-i18n="sfx">SFX</span> <input id="sfxRange" type="range" min="0" max="1" step=".05" value=".55"></label><button id="settingsVersion" class="settings-version" type="button">LAST WITNESS · BUILD 0.3.4</button><button class="ghost closeModal" data-i18n="close">Close</button></div></div>
 
 <div id="devAccessModal" class="modal"><div class="modal-card">
 <h3 data-i18n="developer_access">Developer Access</h3>
@@ -361,5 +368,6 @@
 <script src="js/engine/08-stability-repair.js"></script>
 <script src="js/chapters/chapter-02/04-medical-examiner.js"></script>
 <script src="js/chapters/chapter-02/05-chapter2-integration.js"></script>
+<script src="js/engine/06-content-registry-dev.js"></script>
 </body>
 </html>
