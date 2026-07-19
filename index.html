@@ -9,6 +9,7 @@
 <title>Last Witness — Chapter 1</title>
 <link rel="stylesheet" href="css/style.css">
 <link rel="stylesheet" href="css/forensic-phase.css">
+<link rel="stylesheet" href="css/medical-examiner.css">
 </head>
 <body>
 <main id="game">
@@ -213,6 +214,71 @@
   </div>
 </div>
 
+<section id="medical2" class="screen medical-screen" aria-label="Bangkok City Medical Examiner">
+  <img class="scene" src="assets/images/medical-examiner-canon.png" alt="Bangkok City Medical Examiner">
+  <div class="overlay medical-overlay"></div>
+
+  <div class="topbar">
+    <span id="medicalLocation">Bangkok City Medical Examiner</span>
+    <div class="hud">
+      <button class="icon saveButton" type="button">💾</button>
+      <button class="icon menuButton" type="button">☰<i class="journal-alert" aria-hidden="true"></i></button>
+    </div>
+  </div>
+
+  <div class="progress">
+    <span id="medicalProgressText" class="progressText">88%</span>
+    <div class="progress-bar"><div id="medicalProgressFill" class="progress-fill" style="width:88%"></div></div>
+  </div>
+
+  <div id="medicalObjective" class="apartment-objective"></div>
+  <div id="medicalSceneLabel" class="medical-scene-label">THE BODY KEEPS ITS OWN TIME</div>
+
+  <button class="medical-hotspot mh-body" data-medical-clue="postmortem" aria-label="Inspect Daniel's body"><i></i><span>Body</span></button>
+  <button class="medical-hotspot mh-tag" data-medical-clue="identity_tag" aria-label="Inspect identification tag"><i></i><span>Tag</span></button>
+  <button class="medical-hotspot mh-report" data-medical-clue="autopsy_report" aria-label="Inspect preliminary autopsy report"><i></i><span>Report</span></button>
+  <button class="medical-hotspot mh-sample" data-medical-clue="toxicology_sample" aria-label="Inspect toxicology sample"><i></i><span>Sample</span></button>
+
+  <div id="medicalDialogue" class="dialogue hidden"></div>
+
+  <button id="reviewMedical" class="primary medical-review" type="button"></button>
+
+  <div id="medicalChoice" class="choice-panel hidden">
+    <div id="medicalChoiceTitle" class="choice-title"></div>
+    <button class="choice-option" data-medical-choice="timeline"></button>
+    <button class="choice-option" data-medical-choice="old_cases"></button>
+    <button class="choice-option" data-medical-choice="access"></button>
+  </div>
+
+  <div id="chapter2Complete" class="phase-card medical-complete" style="display:none">
+    <div class="eyebrow">LAST WITNESS</div>
+    <h2 id="chapter2CompleteTitle"></h2>
+    <p id="chapter2CompleteText"></p>
+    <button id="chapter2ReturnTitle" class="primary" type="button"></button>
+  </div>
+</section>
+
+<div id="medicalEvidencePanel" class="evidence-panel" aria-hidden="true">
+  <div class="evidence-card">
+    <div class="eyebrow" id="medicalEvidenceKicker"></div>
+    <h3 id="medicalEvidenceTitle"></h3>
+    <div class="evidence-stage">
+      <div class="evidence-stamp" id="medicalEvidenceStamp"></div>
+      <div id="medicalEvidenceObject" class="evidence-object"></div>
+      <div id="medicalEvidenceHint" class="evidence-zoom-hint"></div>
+    </div>
+    <div id="medicalEvidenceMeta" class="evidence-meta">
+      <p id="medicalEvidenceDescription"></p>
+      <div id="medicalEvidenceObservation" class="evidence-observation"></div>
+    </div>
+    <div class="evidence-actions">
+      <button id="inspectMedicalEvidence" class="ghost" type="button"></button>
+      <button id="collectMedicalEvidence" class="primary" type="button"></button>
+      <button id="closeMedicalEvidence" class="ghost evidence-collect-only" type="button"></button>
+    </div>
+  </div>
+</div>
+
 <section id="chapter" class="screen chapter"><div class="chapter-card"><div class="eyebrow" data-i18n="case_closed">Case Closed</div><h2 data-i18n="chapter_complete">CHAPTER 1 COMPLETE</h2><p><b data-i18n="room_1807">ROOM 1807</b><br><span data-i18n="investigation_continues">The investigation continues.</span></p><div class="progress"><span class="progressText">100%</span><div class="progress-bar"><div class="progress-fill" style="width:100%"></div></div></div><button id="continueChapter2" class="primary" data-i18n="continue_chapter2">Continue to Chapter II</button><button id="returnTitle" class="ghost" data-i18n="return_title">Return to Title</button></div></section>
 
 <div id="saveIndicator" class="save-indicator" data-i18n="saved">Saved</div><div id="badge" class="badge"></div>
@@ -223,7 +289,7 @@
 <div id="journalFirstOpen" class="journal-first-open">
   <div><div class="journal-first-icon">J</div><h4 data-i18n="journal_unlocked">Character Journal Unlocked</h4><p data-i18n="north_added">North added to the journal</p></div>
 </div>
-<div id="characterGrid" class="character-grid"></div><div id="characterDetail" class="character-detail" style="display:none"></div><button id="charactersBack" class="ghost" style="display:none" data-i18n="back">Back</button><button class="ghost closeModal" data-i18n="close">Close</button></div></div><div id="settingsModal" class="modal"><div class="modal-card"><h3 data-i18n="settings">Settings</h3><label data-i18n="language">Language</label><div class="settings-language"><button type="button" data-lang="th">ไทย</button><button type="button" data-lang="en">English</button></div><label><span data-i18n="master_sound">Master Sound</span> <input id="soundToggle" type="checkbox" checked></label><br><br><label><span data-i18n="music">Music</span> <input id="musicRange" type="range" min="0" max="1" step=".05" value=".33"></label><br><br><label><span data-i18n="sfx">SFX</span> <input id="sfxRange" type="range" min="0" max="1" step=".05" value=".55"></label><button id="settingsVersion" class="settings-version" type="button">LAST WITNESS · BUILD 0.2.9</button><button class="ghost closeModal" data-i18n="close">Close</button></div></div>
+<div id="characterGrid" class="character-grid"></div><div id="characterDetail" class="character-detail" style="display:none"></div><button id="charactersBack" class="ghost" style="display:none" data-i18n="back">Back</button><button class="ghost closeModal" data-i18n="close">Close</button></div></div><div id="settingsModal" class="modal"><div class="modal-card"><h3 data-i18n="settings">Settings</h3><label data-i18n="language">Language</label><div class="settings-language"><button type="button" data-lang="th">ไทย</button><button type="button" data-lang="en">English</button></div><label><span data-i18n="master_sound">Master Sound</span> <input id="soundToggle" type="checkbox" checked></label><br><br><label><span data-i18n="music">Music</span> <input id="musicRange" type="range" min="0" max="1" step=".05" value=".33"></label><br><br><label><span data-i18n="sfx">SFX</span> <input id="sfxRange" type="range" min="0" max="1" step=".05" value=".55"></label><button id="settingsVersion" class="settings-version" type="button">LAST WITNESS · BUILD 0.3.0</button><button class="ghost closeModal" data-i18n="close">Close</button></div></div>
 
 <div id="devAccessModal" class="modal"><div class="modal-card">
 <h3 data-i18n="developer_access">Developer Access</h3>
@@ -256,6 +322,10 @@
 
 <div id="devAccessFlash" class="dev-access-flash"><div><strong data-i18n="auth_success">AUTHENTICATION SUCCESSFUL</strong><br><small data-i18n="console_unlocked">DEVELOPER CONSOLE UNLOCKED</small></div></div>
 
+<audio id="medicalRefrigeratorAudio" loop src="assets/audio/refrigerator-hum.mp3"></audio>
+<audio id="medicalMachineAudio" loop src="assets/audio/laboratory-machine-hum.mp3"></audio>
+<audio id="medicalDoorAudio" src="assets/audio/access-door-beep.mp3"></audio>
+<audio id="medicalBarcodeAudio" src="assets/audio/barcode-scanner-first.mp3"></audio>
 <audio id="forensicHumAudio" loop src="assets/audio/laboratory-machine-hum.mp3"></audio>
 <audio id="forensicDoorAudio" src="assets/audio/access-door-beep.mp3"></audio>
 <audio id="forensicBarcodeAudio" src="assets/audio/barcode-scanner-first.mp3"></audio>
@@ -277,5 +347,6 @@
 <script src="js/chapters/chapter-02/03-forensic-science.js"></script>
 <script src="js/engine/07-dialogue-continuity.js"></script>
 <script src="js/engine/08-stability-repair.js"></script>
+<script src="js/chapters/chapter-02/04-medical-examiner.js"></script>
 </body>
 </html>
