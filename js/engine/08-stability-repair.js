@@ -130,11 +130,29 @@
     } catch (_) {}
   }
 
+
+  let lastImmediateClickAt = 0;
+
+  function playImmediateDialogueClick(event) {
+    const target = event.target.closest?.(".dialogue:not(.hidden), .dialogue .next");
+    if (!target) return;
+    const audio = $("#clickAudio");
+    if (!audio) return;
+    lastImmediateClickAt = performance.now();
+    try {
+      audio.pause();
+      audio.currentTime = 0.035;
+      audio.volume = 0.5;
+      audio.play().catch(() => {});
+    } catch (_) {}
+  }
+
   function bind() {
     refreshReviewButtons();
     repairAllPortraits();
     preventPoliceCompletionCard();
 
+    document.addEventListener("pointerdown", playImmediateDialogueClick, true);
     document.addEventListener("click", playEvidenceSound, true);
 
     new MutationObserver((mutations) => {
