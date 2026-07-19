@@ -282,11 +282,13 @@
   }
 
   function returnTitle(){
+    if(window.LastWitnessChapter2Integration?.returnToTitle){
+      window.LastWitnessChapter2Integration.returnToTitle();
+      return;
+    }
     stopMedicalAudio();
     try{if(typeof autoSave==="function")autoSave();}catch(_){}
     if(typeof showScreen==="function")showScreen("title");
-    else{$$(".screen").forEach(s=>s.classList.remove("active"));$("#title")?.classList.add("active");}
-    const theme=$("#themeAudio");if(theme){theme.volume=.33;theme.play().catch(()=>{});}
   }
 
   function show(){
