@@ -368,7 +368,6 @@ TIME SHIFT: +00:11:00</pre>
     renderDialogueLine();
 
     box.onclick = () => {
-      safePlay("#clickAudio", 0.5);
       if (!local.dialogue) return;
       local.dialogue.index += 1;
       if (local.dialogue.index >= local.dialogue.lines.length) {
@@ -492,7 +491,6 @@ TIME SHIFT: +00:11:00</pre>
     updateProgress();
 
     if (wasNew) {
-      safePlay("#evidenceAudio", 0.55);
       try { if (typeof showBadge === "function") showBadge(text().added); } catch (_) {}
     }
 
@@ -640,16 +638,29 @@ TIME SHIFT: +00:11:00</pre>
 
   function returnToTitle() {
     stopHum();
+    ["#policeAudio", "#cafeAudio", "#morningOfficeAudio", "#officeAudio", "#crimeAudio", "#rainAudio"].forEach((selector) => {
+      const audio = $(selector);
+      if (audio) audio.pause();
+    });
     try { if (typeof autoSave === "function") autoSave(); } catch (_) {}
 
     if (typeof showScreen === "function") {
       showScreen("title");
-      return;
+    } else {
+      $$(".screen").forEach((screen) => screen.classList.remove("active"));
+      $("#title")?.classList.add("active");
+      if (window.state) state.screen = "title";
     }
 
-    $$(".screen").forEach((screen) => screen.classList.remove("active"));
-    $("#title")?.classList.add("active");
-    if (window.state) state.screen = "title";
+    const theme = $("#themeAudio");
+    if (theme) {
+      try {
+        theme.loop = true;
+        theme.volume = 0.42;
+        if (theme.currentTime >= theme.duration - 0.2 || !Number.isFinite(theme.currentTime)) theme.currentTime = 0;
+        theme.play().catch(() => {});
+      } catch (_) {}
+    }
   }
 
   function updateUI() {
