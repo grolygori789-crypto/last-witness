@@ -164,18 +164,71 @@ html[lang="th"] .medical-hotspot span{text-transform:none;letter-spacing:.02em}
 /* Stable Character Journal registry. */
 #charactersButton { position:relative !important; }
 .journal-alert.show { display:block !important; opacity:1 !important; }
-.character-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; }
-.character-card { position:relative; min-width:0; padding:0; overflow:hidden; border-radius:11px; border:1px solid rgba(255,255,255,.14); background:#0b0c10; color:#f5efe7; text-align:left; }
-.character-card img { display:block; width:100%; aspect-ratio:4/5; object-fit:cover; object-position:center 18%; background:#05070a; }
-.character-card[data-character-id="ratchata"] img { object-fit:contain; object-position:center bottom; }
-.character-card-copy { padding:10px; }
-.character-card strong,.character-card small { display:block; }
-.character-card small { margin-top:4px; color:#baa57c; font-size:10px; line-height:1.3; }
-.character-detail-head { display:grid; grid-template-columns:112px 1fr; gap:14px; align-items:start; }
-.character-detail-head img { width:112px; height:142px; object-fit:cover; object-position:center 18%; border-radius:9px; background:#05070a; }
-.character-detail-head[data-character-id="ratchata"] img { object-fit:contain; object-position:center bottom; }
-.character-detail h3 { margin:0 0 4px; }
-.character-detail .character-role { color:#d5b77e; font-size:11px; text-transform:uppercase; letter-spacing:.08em; }
-.character-detail .character-bio { margin-top:13px; line-height:1.55; }
 .case-section-title { margin-top:18px; color:#d5b77e; font-size:10px; letter-spacing:.12em; text-transform:uppercase; }
 .dev-badge { display:inline-block; margin-left:7px; padding:2px 6px; border-radius:999px; background:#7c2e2e; color:#fff; font-size:8px; letter-spacing:.08em; }
+
+
+/* 0.3.5 — Preserve the original Character Journal UI exactly.
+   Registry logic may populate entries, but it must not redesign this screen. */
+#charactersModal .character-grid {
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:10px;
+}
+#charactersModal .character-card {
+  min-width:0;
+  padding:8px;
+  background:#151821;
+  color:#fff;
+  border:1px solid #444;
+  border-radius:0;
+  text-align:left;
+  overflow:hidden;
+}
+#charactersModal .character-card img {
+  display:block;
+  width:100%;
+  height:150px;
+  aspect-ratio:auto;
+  object-fit:contain;
+  object-position:center;
+  background:#05070a;
+}
+#charactersModal .character-name {
+  margin-top:5px;
+  font-weight:800;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+#charactersModal .character-status {
+  margin-top:2px;
+  color:#bbb;
+  font-size:11px;
+  line-height:1.35;
+  white-space:normal;
+  overflow-wrap:anywhere;
+}
+#charactersModal .character-detail-head {
+  display:flex;
+  gap:12px;
+  align-items:flex-start;
+}
+#charactersModal .character-detail-head img {
+  flex:0 0 130px;
+  width:130px;
+  height:170px;
+  object-fit:contain;
+  object-position:center;
+  background:#05070a;
+}
+#charactersModal .character-notes {
+  margin-top:15px;
+  line-height:1.5;
+}
+#charactersModal .character-empty {
+  grid-column:1/-1;
+  padding:18px 4px;
+  color:#bbb;
+  text-align:center;
+}
