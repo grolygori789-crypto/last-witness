@@ -56,3 +56,26 @@ html[lang="th"] .medical-hotspot span{text-transform:none;letter-spacing:.02em}
 
 .portrait-Ratchata{object-fit:contain!important;object-position:center bottom!important;background:#05070a!important}
 .character-ratchata img{object-fit:contain;object-position:center bottom;background:#05070a}
+
+
+/* Chapter II ending mirrors the Chapter I completion screen. */
+#chapter2Complete.chapter-card {
+  position: absolute;
+  z-index: 50;
+  left: 5%;
+  right: 5%;
+  top: 50%;
+  transform: translateY(-50%);
+  max-height: calc(100svh - var(--top) - var(--bottom) - 34px);
+  overflow-y: auto;
+}
+#chapter2Complete .primary,
+#chapter2Complete .ghost {
+  width: 100%;
+}
+#chapter2Complete .ghost {
+  margin-top: 10px;
+}
+#chapter3Wip {
+  z-index: 51;
+}
