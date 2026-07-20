@@ -1,4 +1,4 @@
-/* LAST WITNESS — Defect Repair 0.4.2
+/* LAST WITNESS — Defect Repair 0.4.3
  * Replace js/engine/10-defect-repair-0.4.0.js with this file.
  * Loaded last. Repairs splash click, café dialogue continuity, police ambience,
  * forensic evidence timing/review, medical markers, and Character Journal timing.
@@ -75,6 +75,23 @@
         playOneShot(click, Number(window.state?.sfx) || .55, 190);
       }
     }, true);
+
+    // The base game already owns onclick. This fallback only runs if another
+    // late hotfix prevented that handler from changing the splash screen.
+    enter.addEventListener("click", ()=>{
+      setTimeout(()=>{
+        if($("#splash")?.classList.contains("active")){
+          try{
+            if(typeof show === "function") show("title");
+            else{
+              $$(".screen").forEach(screen=>screen.classList.remove("active"));
+              $("#title")?.classList.add("active");
+              if(window.state) state.screen = "title";
+            }
+          }catch(_){}
+        }
+      }, 0);
+    }, false);
   }
 
   function repairCafeDialogue(){
@@ -318,14 +335,10 @@
     document.addEventListener("click", ()=>setTimeout(repairScreen, 0), true);
     document.addEventListener("pointerup", ()=>setTimeout(repairScreen, 0), true);
 
-    new MutationObserver(()=>repairScreen()).observe(document.body, {
-      subtree:true,
-      childList:true,
-      attributes:true,
-      attributeFilter:["class","style","aria-hidden"]
-    });
-
-    setInterval(repairScreen, 500);
+    // Do not observe style/class mutations here. repairScreen itself updates
+    // those attributes, which previously created a self-triggering loop and
+    // could freeze the splash screen before Tap to begin completed.
+    setInterval(repairScreen, 750);
   }
 
   if(document.readyState === "loading"){
