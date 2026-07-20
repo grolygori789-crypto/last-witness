@@ -1,4 +1,4 @@
-/* LAST WITNESS — Defect Repair 0.4.5
+/* LAST WITNESS — Defect Repair 0.4.6
  * Replace js/engine/10-defect-repair-0.4.0.js with this file.
  * Loaded last. Repairs splash click, café dialogue continuity, police ambience,
  * forensic evidence timing/review, medical markers, and Character Journal timing.
@@ -66,17 +66,33 @@
       const original = "assets/audio/b3dccd7733a71a6d.mp3";
       if(!click.getAttribute("src")?.endsWith("b3dccd7733a71a6d.mp3")){
         click.src = original;
+        click.preload = "auto";
         click.load();
       }
 
-      click.currentTime = 0;
-      click.volume = Math.max(.18, Math.min(.72, Number(window.state?.sfx) || .55));
+      /*
+       * The original asset contains a long silent lead-in. Starting at 0 and
+       * stopping after 165 ms plays silence in Chrome. Seek to the final
+       * 220 ms, where the real mouse-switch transient is located.
+       */
+      const duration = Number(click.duration);
+      const startAt = Number.isFinite(duration) && duration > .24
+        ? Math.max(0, duration - .22)
+        : .69;
+
+      click.currentTime = startAt;
+      click.volume = Math.max(.28, Math.min(.78, Number(window.state?.sfx) || .55));
+
       const promise = click.play();
       if(promise?.catch) promise.catch(()=>{});
 
-      // A real mouse switch transient is extremely short. Stop the original
-      // clip before any tail/noise can continue, then rewind for the next press.
-      clickStopTimer = setTimeout(()=>stopAudio(click, true), 165);
+      // One short real-time click only; no full clip, tail, loop or second play.
+      clickStopTimer = setTimeout(()=>{
+        try{
+          click.pause();
+          click.currentTime = startAt;
+        }catch(_){}
+      }, 205);
     }catch(_){}
   }
 
@@ -96,6 +112,12 @@
     const enter = $("#enter");
     if(!enter || enter.dataset.lwClickFixed === "1") return;
     enter.dataset.lwClickFixed = "1";
+
+    const click = $("#clickAudio");
+    if(click){
+      click.preload = "auto";
+      try{ click.load(); }catch(_){}
+    }
 
     // Use the same HTMLAudioElement that worked in the original build.
     // pointerdown is a direct user gesture, so Chrome permits immediate audio.
