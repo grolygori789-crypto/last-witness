@@ -1,4 +1,4 @@
-/* LAST WITNESS — Defect Repair 0.4.3
+/* LAST WITNESS — Defect Repair 0.4.4
  * Replace js/engine/10-defect-repair-0.4.0.js with this file.
  * Loaded last. Repairs splash click, café dialogue continuity, police ambience,
  * forensic evidence timing/review, medical markers, and Character Journal timing.
@@ -14,6 +14,11 @@
   let clickStopTimer = 0;
   let policeRetryTimer = 0;
   let lastScreen = "";
+  let splashClickBuffer = null;
+  let splashClickContext = null;
+  let splashClickStart = 0;
+  let splashPointerPlayedAt = 0;
+  let originalFeatureToast = null;
 
   function activeScreen(){
     return $(".screen.active")?.id || window.state?.screen || "";
@@ -47,51 +52,120 @@
     }catch(_){}
   }
 
-  function installOriginalMouseClick(){
-    const click = $("#clickAudio");
-    if(!click) return;
+  async function prepareMouseClick(){
+    if(splashClickBuffer) return;
+    try{
+      const response = await fetch("assets/audio/b3dccd7733a71a6d.mp3", {cache:"force-cache"});
+      if(!response.ok) return;
+      const bytes = await response.arrayBuffer();
+      const AudioCtx = window.AudioContext || window.webkitAudioContext;
+      if(!AudioCtx) return;
+      splashClickContext = splashClickContext || new AudioCtx();
+      splashClickBuffer = await splashClickContext.decodeAudioData(bytes.slice(0));
 
-    const original = "assets/audio/b3dccd7733a71a6d.mp3";
-    if(!click.getAttribute("src")?.endsWith("b3dccd7733a71a6d.mp3")){
-      stopAudio(click);
-      click.src = original;
-      click.preload = "auto";
-      click.loop = false;
-      try{ click.load(); }catch(_){}
+      // Find the first genuine mouse-click transient rather than assuming that
+      // the MP3 begins exactly on the click.
+      const channel = splashClickBuffer.getChannelData(0);
+      const sampleRate = splashClickBuffer.sampleRate;
+      const windowSize = Math.max(32, Math.floor(sampleRate * 0.002));
+      const searchLimit = Math.min(channel.length, Math.floor(sampleRate * 1.5));
+      let peakEnergy = 0;
+      let peakIndex = 0;
+
+      for(let i=0;i<searchLimit-windowSize;i+=windowSize){
+        let energy = 0;
+        for(let j=0;j<windowSize;j++){
+          const value = channel[i+j];
+          energy += value * value;
+        }
+        energy /= windowSize;
+        if(energy > peakEnergy){
+          peakEnergy = energy;
+          peakIndex = i;
+        }
+      }
+
+      splashClickStart = Math.max(0, (peakIndex / sampleRate) - 0.012);
+    }catch(_){}
+  }
+
+  function playTrimmedMouseClick(){
+    if(!audioAllowed()) return;
+
+    if(splashClickBuffer && splashClickContext){
+      try{
+        splashClickContext.resume?.();
+        const source = splashClickContext.createBufferSource();
+        const gain = splashClickContext.createGain();
+        source.buffer = splashClickBuffer;
+        gain.gain.value = Math.max(.12, Math.min(.7, Number(window.state?.sfx) || .55));
+        source.connect(gain);
+        gain.connect(splashClickContext.destination);
+
+        const duration = Math.min(.135, Math.max(.075, splashClickBuffer.duration - splashClickStart));
+        source.start(0, splashClickStart, duration);
+        return;
+      }catch(_){}
     }
 
+    // Safe fallback while the decoded buffer is still loading.
+    const click = $("#clickAudio");
+    if(!click) return;
+    try{
+      click.pause();
+      click.src = "assets/audio/b3dccd7733a71a6d.mp3";
+      click.loop = false;
+      click.currentTime = splashClickStart || 0;
+      click.volume = Math.max(.12, Math.min(.7, Number(window.state?.sfx) || .55));
+      click.play().catch(()=>{});
+      clearTimeout(clickStopTimer);
+      clickStopTimer = setTimeout(()=>stopAudio(click, true), 135);
+    }catch(_){}
+  }
+
+  function openTitleFromSplash(){
+    if(!$("#splash")?.classList.contains("active")) return;
+    try{
+      if(typeof show === "function") show("title");
+      else{
+        $$(".screen").forEach(screen=>screen.classList.remove("active"));
+        $("#title")?.classList.add("active");
+        if(window.state) state.screen = "title";
+      }
+    }catch(_){}
+  }
+
+  function installOriginalMouseClick(){
     const enter = $("#enter");
     if(!enter || enter.dataset.lwClickFixed === "1") return;
     enter.dataset.lwClickFixed = "1";
+    prepareMouseClick();
 
-    // Pointerdown gives immediate feedback before the screen transition.
+    // Own the splash interaction completely so the base onclick cannot play
+    // a second, full-length copy of the same sound.
     enter.addEventListener("pointerdown", ()=>{
-      playOneShot(click, Number(window.state?.sfx) || .55, 190);
+      splashPointerPlayedAt = performance.now();
+      playTrimmedMouseClick();
     }, true);
 
-    // Keyboard activation still gets the same short mouse click.
-    enter.addEventListener("keydown", (event)=>{
+    enter.addEventListener("click", event=>{
+      event.preventDefault();
+      event.stopImmediatePropagation();
+
+      // Keyboard-generated clicks have no preceding pointerdown.
+      if(performance.now() - splashPointerPlayedAt > 260){
+        playTrimmedMouseClick();
+      }
+      openTitleFromSplash();
+    }, true);
+
+    enter.addEventListener("keydown", event=>{
       if(event.key === "Enter" || event.key === " "){
-        playOneShot(click, Number(window.state?.sfx) || .55, 190);
+        event.preventDefault();
+        playTrimmedMouseClick();
+        openTitleFromSplash();
       }
     }, true);
-
-    // The base game already owns onclick. This fallback only runs if another
-    // late hotfix prevented that handler from changing the splash screen.
-    enter.addEventListener("click", ()=>{
-      setTimeout(()=>{
-        if($("#splash")?.classList.contains("active")){
-          try{
-            if(typeof show === "function") show("title");
-            else{
-              $$(".screen").forEach(screen=>screen.classList.remove("active"));
-              $("#title")?.classList.add("active");
-              if(window.state) state.screen = "title";
-            }
-          }catch(_){}
-        }
-      }, 0);
-    }, false);
   }
 
   function repairCafeDialogue(){
@@ -256,24 +330,44 @@
   }
 
   function journalIntroductionComplete(){
-    const screen = activeScreen();
     if(!chapterTwoReached()) return false;
-    if(screen !== "office2") return true;
 
-    // During the first office exchange, the choice panel is still hidden.
-    return Boolean(window.state?.flags?.chapter2_first_choice) ||
-      !$("#office2Choice")?.classList.contains("hidden") ||
-      window.state?.checkpoint === "ch2_office_after_choice";
+    const checkpoint = String(window.state?.checkpoint || "");
+    const screen = activeScreen();
+
+    // The feature becomes available only after the complete post-choice
+    // conversation with North has ended. At that moment the base story changes
+    // the checkpoint to ch2_apartment_arrival before leaving the office.
+    if(window.state?.flags?.chapter2_character_feature_unlocked) return true;
+    if(checkpoint === "ch2_apartment_arrival") return true;
+    if(["apartment2","cafe2","police2","forensic2","medical2",
+        "chapter2Complete","chapter3Wip"].includes(screen)) return true;
+    return false;
+  }
+
+  function installFeatureToastGuard(){
+    if(originalFeatureToast || typeof window.showFeatureToast !== "function") return;
+    originalFeatureToast = window.showFeatureToast;
+    window.showFeatureToast = function(){
+      if(window.state?.flags?.chapter2_character_feature_unlocked){
+        return originalFeatureToast.apply(this, arguments);
+      }
+    };
+  }
+
+  function showJournalToastOnce(){
+    if(!originalFeatureToast || window.state?.flags?.chapter2_character_toast_shown) return;
+    state.flags.chapter2_character_toast_shown = true;
+    try{ originalFeatureToast(); }catch(_){}
   }
 
   function syncCharacterJournal(){
     const button = $("#charactersButton");
     if(!button || !window.state) return;
 
-    const available = journalIntroductionComplete();
-    button.style.display = available ? "" : "none";
-
+    state.flags = state.flags || {};
     state.journal = state.journal || {unlocked:false,seen:false,introShown:false};
+    state.characters = state.characters || {};
 
     if(!chapterTwoReached()){
       state.journal.unlocked = false;
@@ -283,31 +377,58 @@
       return;
     }
 
-    if(available && !state.journal.unlocked){
-      state.characters = state.characters || {};
+    const available = journalIntroductionComplete();
+
+    // Neutralise the premature unlock performed by startChapter2().
+    if(!available){
+      state.journal.unlocked = false;
+      state.journal.seen = true;
+      state.journal.introShown = false;
+      button.style.display = "none";
+      $$(".journal-alert").forEach(dot=>dot.classList.remove("show"));
+      return;
+    }
+
+    button.style.display = "";
+
+    if(!state.flags.chapter2_character_feature_unlocked){
+      state.flags.chapter2_character_feature_unlocked = true;
       state.characters.Benedict = true;
       state.characters.North = true;
       state.journal.unlocked = true;
       state.journal.seen = false;
-      state.journal.introShown = true;
-      try{ window.showFeatureToast?.(); }catch(_){}
+      state.journal.introShown = false;
+      showJournalToastOnce();
+      try{ if(typeof autoSave === "function") autoSave(); }catch(_){}
+    }else{
+      state.journal.unlocked = true;
     }
 
     const unread = Boolean(state.journal.unlocked && !state.journal.seen);
     $$(".journal-alert").forEach(dot=>dot.classList.toggle("show", unread));
 
+    // Opening Character Journal counts as viewing the update. The base handler
+    // also sets seen=true; this capture handler guarantees the red dot clears
+    // before the modal is drawn.
+    if(button.dataset.lwSeenFixed !== "1"){
+      button.dataset.lwSeenFixed = "1";
+      button.addEventListener("click", ()=>{
+        state.journal.seen = true;
+        $$(".journal-alert").forEach(dot=>dot.classList.remove("show"));
+        try{ if(typeof autoSave === "function") autoSave(); }catch(_){}
+      }, true);
+    }
+
     // New characters stay hidden until their first introduction is complete.
     if(activeScreen() === "cafe2" && !state.flags?.cafe_first_elena_choice && !state.flags?.cafe_complete){
-      if(state.characters) state.characters.Elena = false;
+      state.characters.Elena = false;
     }
     if(activeScreen() === "police2" && !state.flags?.police_intro_complete){
-      if(state.characters){
-        state.characters.Somchai = false;
-        state.characters.Kittisak = false;
-      }
+      state.characters.Somchai = false;
+      state.characters.Kittisak = false;
     }
     if(activeScreen() === "medical2" && !state.medical?.ratchataMet){
-      state.characters && (state.characters.Ratchata = false);
+      state.characters.Ratchata = false;
     }
   }
 
@@ -315,6 +436,7 @@
     const screen = activeScreen();
 
     installOriginalMouseClick();
+    installFeatureToastGuard();
     repairCafeDialogue();
     installPoliceAmbience();
     syncForensicReview();
@@ -328,6 +450,7 @@
   }
 
   function bind(){
+    installFeatureToastGuard();
     installOriginalMouseClick();
     installEvidenceTiming();
     repairScreen();
@@ -335,10 +458,9 @@
     document.addEventListener("click", ()=>setTimeout(repairScreen, 0), true);
     document.addEventListener("pointerup", ()=>setTimeout(repairScreen, 0), true);
 
-    // Do not observe style/class mutations here. repairScreen itself updates
-    // those attributes, which previously created a self-triggering loop and
-    // could freeze the splash screen before Tap to begin completed.
-    setInterval(repairScreen, 750);
+    // Avoid observing class/style changes because repairScreen writes those
+    // attributes itself. Event hooks plus this light interval are sufficient.
+    setInterval(repairScreen, 300);
   }
 
   if(document.readyState === "loading"){
