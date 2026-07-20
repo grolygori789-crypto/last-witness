@@ -1,4 +1,4 @@
-/* LAST WITNESS — Chapter II Defect Hotfix 0.3.8
+/* LAST WITNESS — Chapter II Defect Hotfix 0.3.9
  * Load this file LAST, after 06-content-registry-dev.js.
  * Fixes story-state leakage, premature evidence markers/actions,
  * phase audio lifecycle, immediate click feedback, Police evidence SFX,
@@ -38,7 +38,9 @@
   ];
 
   let immediateClickAt = 0;
+  let clickStopTimer = 0;
   let routeRepairQueued = false;
+  const activeEvidence = { forensic: null, medical: null };
 
   function activeScreenId() {
     return $(".screen.active")?.id || window.state?.screen || "";
@@ -110,26 +112,50 @@
     }
   }
 
-  function getStoryCollected(phase, ids) {
+  function phaseArray(phase, key, ids) {
+    const value = window.state?.[phase]?.[key];
+    return Array.isArray(value) ? value.filter((id) => ids.includes(id)) : [];
+  }
+
+  function getStoryFound(phase, ids) {
     if (!window.state) return [];
 
-    const found = state.found;
-    const phaseState = state[phase] || {};
-    const savedCollected = Array.isArray(phaseState.collected)
-      ? phaseState.collected
-      : [];
+    const result = new Set(phaseArray(phase, "found", ids));
+    const globalFound = state.found;
 
-    /*
-     * Story collection writes a prefixed marker into state.found:
-     * forensic_<id> / medical_<id>.
-     * The broken developer registry wrote only the plain id, so prefixed
-     * markers are the authoritative source whenever state.found exists.
-     */
-    if (found && typeof found.has === "function") {
-      return ids.filter((id) => found.has(`${phase}_${id}`));
+    if (globalFound && typeof globalFound.has === "function") {
+      ids.forEach((id) => {
+        if (globalFound.has(`${phase}_${id}`)) result.add(id);
+      });
     }
 
-    return savedCollected.filter((id) => ids.includes(id));
+    return [...result];
+  }
+
+  function getStoryCollected(phase, ids) {
+    if (!window.state) return [];
+    return phaseArray(phase, "collected", ids);
+  }
+
+  function ensurePhaseEvidence(phase, id, collected = false) {
+    const ids = phase === "forensic" ? FORENSIC_IDS : MEDICAL_IDS;
+    if (!ids.includes(id) || !window.state) return;
+
+    state[phase] = state[phase] || {};
+
+    const found = new Set(phaseArray(phase, "found", ids));
+    found.add(id);
+    state[phase].found = [...found];
+
+    if (collected) {
+      const saved = new Set(phaseArray(phase, "collected", ids));
+      saved.add(id);
+      state[phase].collected = [...saved];
+    }
+
+    if (state.found && typeof state.found.add === "function") {
+      state.found.add(`${phase}_${id}`);
+    }
   }
 
   function removeRegistryLeaks() {
@@ -144,28 +170,29 @@
   }
 
   function syncEvidencePhase(phase, ids) {
-    if (!window.state) return [];
+    if (!window.state) return { found: [], collected: [] };
 
+    const found = getStoryFound(phase, ids);
     const collected = getStoryCollected(phase, ids);
+
     state[phase] = state[phase] || {};
-    state[phase].found = [...collected];
+    state[phase].found = [...found];
     state[phase].collected = [...collected];
 
     ids.forEach((id) => {
       const hotspot = $(`[data-${phase}-clue="${id}"]`);
-      hotspot?.classList.toggle("found", collected.includes(id));
+      hotspot?.classList.toggle("found", found.includes(id));
 
-      // Remove plain developer-only evidence markers. Keep story markers.
       if (
         state.found &&
         typeof state.found.delete === "function" &&
-        !collected.includes(id)
+        !found.includes(id)
       ) {
         state.found.delete(id);
       }
     });
 
-    return collected;
+    return { found, collected };
   }
 
   function syncEvidenceProgression() {
@@ -177,7 +204,7 @@
     const compare = $("#reviewForensic");
     if (compare) {
       const ready =
-        forensic.length === FORENSIC_IDS.length &&
+        forensic.found.length === FORENSIC_IDS.length &&
         !state.forensic?.choice;
 
       compare.classList.toggle("show", ready);
@@ -191,7 +218,7 @@
     const review = $("#reviewMedical");
     if (review) {
       const ready =
-        medical.length === MEDICAL_IDS.length &&
+        medical.found.length === MEDICAL_IDS.length &&
         !state.medical?.choice;
 
       review.classList.toggle("show", ready);
@@ -202,27 +229,54 @@
     }
   }
 
+  function chapterTwoScreen(screen) {
+    return [
+      "office2",
+      "apartment2",
+      "cafe2",
+      "police2",
+      "forensic2",
+      "medical2",
+      "chapter2Complete",
+      "chapter3Wip"
+    ].includes(screen);
+  }
+
   function characterIdsFromStory() {
     if (!window.state) return ["Benedict"];
 
-    const result = ["Benedict"];
     const screen = activeScreenId();
-    const chapterTwo =
-      Number(state.chapter) >= 2 ||
-      [
-        "office2",
-        "apartment2",
-        "cafe2",
-        "police2",
-        "forensic2",
-        "medical2",
-        "chapter2Complete",
-        "chapter3Wip"
-      ].includes(screen);
+    const result = ["Benedict"];
+    const inChapterTwo =
+      chapterTwoScreen(screen) || Number(state.chapter) >= 2;
 
-    if (chapterTwo) result.push("North");
+    if (!inChapterTwo) return result;
+
+    result.push("North");
+
+    const hasReachedForensic = [
+      "forensic2",
+      "medical2",
+      "chapter2Complete",
+      "chapter3Wip"
+    ].includes(screen);
+
+    const hasReachedPolice = [
+      "police2",
+      "forensic2",
+      "medical2",
+      "chapter2Complete",
+      "chapter3Wip"
+    ].includes(screen);
+
+    const hasReachedMedical = [
+      "medical2",
+      "chapter2Complete",
+      "chapter3Wip"
+    ].includes(screen);
 
     if (
+      hasReachedForensic ||
       state.characters?.Elena === true ||
       state.flags?.elena_unlocked === true ||
       state.flags?.cafe_intro_complete === true
@@ -231,6 +285,7 @@
     }
 
     if (
+      hasReachedPolice ||
       state.characters?.Somchai === true ||
       state.flags?.police_intro_complete === true
     ) {
@@ -238,17 +293,29 @@
     }
 
     if (
+      hasReachedPolice ||
       state.characters?.Kittisak === true ||
       state.flags?.police_intro_complete === true
     ) {
       result.push("Kittisak");
     }
 
-    if (state.medical?.ratchataMet === true) {
+    if (hasReachedMedical || state.medical?.ratchataMet === true) {
       result.push("Ratchata");
     }
 
     return [...new Set(result)];
+  }
+
+  function syncCharacterMenuVisibility() {
+    const button = $("#charactersButton");
+    if (!button) return;
+
+    const visible =
+      chapterTwoScreen(activeScreenId()) ||
+      Number(window.state?.chapter) >= 2;
+
+    button.style.display = visible ? "" : "none";
   }
 
   function journalData(name) {
@@ -439,17 +506,30 @@
     const audio = $("#clickAudio");
     if (!audio || window.state?.sound === false) return;
 
-    immediateClickAt = performance.now();
+    const now = performance.now();
+    if (now - immediateClickAt < 140) return;
+    immediateClickAt = now;
 
-    /*
-     * Skip the silent attack at the beginning of the source file.
-     * Pointerdown runs before click, so feedback is heard at physical touch.
-     */
-    playAudio(
-      "clickAudio",
-      Number(window.state?.sfx) || 0.55,
-      0.075
-    );
+    clearTimeout(clickStopTimer);
+
+    try {
+      audio.pause();
+      audio.currentTime = 0;
+      audio.loop = false;
+      audio.volume = Math.max(
+        0,
+        Math.min(1, Number(window.state?.sfx) || 0.55)
+      );
+      audio.play().catch(() => {});
+
+      // One press = one short click. Never allow the source tail to drag on.
+      clickStopTimer = window.setTimeout(() => {
+        try {
+          audio.pause();
+          audio.currentTime = 0;
+        } catch (_) {}
+      }, 105);
+    } catch (_) {}
   }
 
   function installClickDeduplication() {
@@ -461,7 +541,7 @@
     function wrappedPlay(name) {
       if (
         name === "click" &&
-        performance.now() - immediateClickAt < 220
+        performance.now() - immediateClickAt < 520
       ) {
         return;
       }
@@ -473,15 +553,72 @@
     window.play = wrappedPlay;
   }
 
-  function policeEvidenceCollectedSound(event) {
-    if (!event.target.closest?.("#collectPoliceEvidence")) return;
-
-    // Match the positive evidence feedback used by the apartment phase.
+  function playEvidenceFeedback() {
     playAudio(
-      $("#pageAudio") ? "pageAudio" : "evidenceAudio",
+      $("#evidenceAudio") ? "evidenceAudio" : "pageAudio",
       Number(window.state?.sfx) || 0.55,
       0
     );
+  }
+
+  function policeEvidenceFeedback(event) {
+    const button = event.target.closest?.(
+      "#inspectPoliceEvidence, #collectPoliceEvidence"
+    );
+    if (!button) return;
+
+    // Inspection and collection both receive the same completion feedback
+    // pattern used by the Victim Apartment evidence panel.
+    window.setTimeout(playEvidenceFeedback, 0);
+  }
+
+  function trackPhaseEvidence(event) {
+    const forensicHotspot = event.target.closest?.("[data-forensic-clue]");
+    if (forensicHotspot) {
+      activeEvidence.forensic = forensicHotspot.dataset.forensicClue;
+      return;
+    }
+
+    const medicalHotspot = event.target.closest?.("[data-medical-clue]");
+    if (medicalHotspot) {
+      activeEvidence.medical = medicalHotspot.dataset.medicalClue;
+      return;
+    }
+
+    if (event.target.closest?.("#inspectForensicEvidence")) {
+      const id = activeEvidence.forensic || state.forensic?.active;
+      if (id) {
+        ensurePhaseEvidence("forensic", id, false);
+        requestAnimationFrame(syncEvidenceProgression);
+      }
+      return;
+    }
+
+    if (event.target.closest?.("#collectForensicEvidence")) {
+      const id = activeEvidence.forensic || state.forensic?.active;
+      if (id) {
+        ensurePhaseEvidence("forensic", id, true);
+        requestAnimationFrame(syncEvidenceProgression);
+      }
+      return;
+    }
+
+    if (event.target.closest?.("#inspectMedicalEvidence")) {
+      const id = activeEvidence.medical || state.medical?.active;
+      if (id) {
+        ensurePhaseEvidence("medical", id, false);
+        requestAnimationFrame(syncEvidenceProgression);
+      }
+      return;
+    }
+
+    if (event.target.closest?.("#collectMedicalEvidence")) {
+      const id = activeEvidence.medical || state.medical?.active;
+      if (id) {
+        ensurePhaseEvidence("medical", id, true);
+        requestAnimationFrame(syncEvidenceProgression);
+      }
+    }
   }
 
   function removeBrokenMedicalDuplicates() {
@@ -723,6 +860,7 @@
       removeRegistryLeaks();
       syncEvidenceProgression();
       removeBrokenMedicalDuplicates();
+      syncCharacterMenuVisibility();
       enforceAudioForScreen(screen || activeScreenId());
     });
   }
@@ -732,6 +870,7 @@
     syncEvidenceProgression();
     removeBrokenMedicalDuplicates();
     renderStoryCharacters();
+    syncCharacterMenuVisibility();
     enforceAudioForScreen();
     installClickDeduplication();
     wrapPhaseRoutes();
@@ -742,7 +881,8 @@
     repairAll();
 
     document.addEventListener("pointerdown", playImmediateClick, true);
-    document.addEventListener("click", policeEvidenceCollectedSound, true);
+    document.addEventListener("click", policeEvidenceFeedback, true);
+    document.addEventListener("click", trackPhaseEvidence, true);
     document.addEventListener("click", openStoryCharacters, true);
     document.addEventListener("click", backToCharacterGrid, true);
     document.addEventListener("click", robustReturnToTitle, true);
