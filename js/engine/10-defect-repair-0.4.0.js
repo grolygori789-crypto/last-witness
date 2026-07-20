@@ -1,4 +1,4 @@
-/* LAST WITNESS — Defect Repair 0.4.3
+/* LAST WITNESS — Defect Repair 0.4.7
  * Replace js/engine/10-defect-repair-0.4.0.js with this file.
  * Loaded last. Repairs splash click, café dialogue continuity, police ambience,
  * forensic evidence timing/review, medical markers, and Character Journal timing.
@@ -14,6 +14,8 @@
   let clickStopTimer = 0;
   let policeRetryTimer = 0;
   let lastScreen = "";
+  let splashMouseClick = null;
+  let splashClickAt = 0;
 
   function activeScreen(){
     return $(".screen.active")?.id || window.state?.screen || "";
@@ -48,50 +50,64 @@
   }
 
   function installOriginalMouseClick(){
-    const click = $("#clickAudio");
-    if(!click) return;
-
-    const original = "assets/audio/b3dccd7733a71a6d.mp3";
-    if(!click.getAttribute("src")?.endsWith("b3dccd7733a71a6d.mp3")){
-      stopAudio(click);
-      click.src = original;
-      click.preload = "auto";
-      click.loop = false;
-      try{ click.load(); }catch(_){}
-    }
-
     const enter = $("#enter");
     if(!enter || enter.dataset.lwClickFixed === "1") return;
     enter.dataset.lwClickFixed = "1";
 
-    // Pointerdown gives immediate feedback before the screen transition.
+    const legacy = $("#clickAudio");
+    splashMouseClick = new Audio("assets/audio/ui-mouse-click-short.wav?v=047");
+    splashMouseClick.preload = "auto";
+    splashMouseClick.loop = false;
+    splashMouseClick.playsInline = true;
+    try{ splashMouseClick.load(); }catch(_){}
+
+    function playSplashMouseClick(){
+      if(!audioAllowed()) return;
+
+      const raw = Number(window.state?.sfx);
+      const sfx = Number.isFinite(raw) ? raw : .55;
+      if(sfx <= 0) return;
+
+      // 09-defect-hotfix runs first on document pointerdown. Its source begins
+      // with silence, so stop it immediately and let only this cropped mouse
+      // click be audible. Do not interfere with the original title onclick.
+      stopAudio(legacy, true);
+
+      try{
+        splashMouseClick.pause();
+        splashMouseClick.currentTime = 0;
+        splashMouseClick.volume = Math.min(1, Math.max(.82, sfx * 1.55));
+        const result = splashMouseClick.play();
+        if(result?.catch) result.catch(()=>{});
+      }catch(_){}
+    }
+
     enter.addEventListener("pointerdown", ()=>{
-      playOneShot(click, Number(window.state?.sfx) || .55, 190);
+      splashClickAt = performance.now();
+      playSplashMouseClick();
     }, true);
 
-    // Keyboard activation still gets the same short mouse click.
-    enter.addEventListener("keydown", (event)=>{
+    enter.addEventListener("keydown", event=>{
       if(event.key === "Enter" || event.key === " "){
-        playOneShot(click, Number(window.state?.sfx) || .55, 190);
+        splashClickAt = performance.now();
+        playSplashMouseClick();
       }
     }, true);
 
-    // The base game already owns onclick. This fallback only runs if another
-    // late hotfix prevented that handler from changing the splash screen.
-    enter.addEventListener("click", ()=>{
-      setTimeout(()=>{
-        if($("#splash")?.classList.contains("active")){
-          try{
-            if(typeof show === "function") show("title");
-            else{
-              $$(".screen").forEach(screen=>screen.classList.remove("active"));
-              $("#title")?.classList.add("active");
-              if(window.state) state.screen = "title";
-            }
-          }catch(_){}
+    // Preserve the game's original onclick route, but suppress only its second
+    // full-length click copy when this dedicated splash cue has just played.
+    if(typeof window.play === "function" && !window.play.__lwSplashMouseFix){
+      const originalPlay = window.play;
+      function wrappedPlay(name){
+        if(name === "click" && activeScreen() === "splash" &&
+           performance.now() - splashClickAt < 700){
+          return;
         }
-      }, 0);
-    }, false);
+        return originalPlay.apply(this, arguments);
+      }
+      wrappedPlay.__lwSplashMouseFix = true;
+      window.play = wrappedPlay;
+    }
   }
 
   function repairCafeDialogue(){
@@ -270,44 +286,47 @@
     const button = $("#charactersButton");
     if(!button || !window.state) return;
 
-    const available = journalIntroductionComplete();
-    button.style.display = available ? "" : "none";
+    state.flags = state.flags || {};
+    state.journal = state.journal || {unlocked:false,seen:true,introShown:false};
+    state.characters = state.characters || {};
 
-    state.journal = state.journal || {unlocked:false,seen:false,introShown:false};
+    const unlocked = Boolean(
+      state.flags.chapter2_character_feature_unlocked &&
+      state.journal.unlocked
+    );
 
-    if(!chapterTwoReached()){
-      state.journal.unlocked = false;
-      state.journal.seen = true;
-      button.style.display = "none";
-      $$(".journal-alert").forEach(dot=>dot.classList.remove("show"));
-      return;
-    }
+    // hidden prevents 09-defect-hotfix or show() from briefly exposing the
+    // menu before the complete post-choice conversation has finished.
+    button.hidden = !unlocked;
+    button.style.display = unlocked ? "" : "none";
 
-    if(available && !state.journal.unlocked){
-      state.characters = state.characters || {};
-      state.characters.Benedict = true;
-      state.characters.North = true;
-      state.journal.unlocked = true;
-      state.journal.seen = false;
-      state.journal.introShown = true;
-      try{ window.showFeatureToast?.(); }catch(_){}
-    }
-
-    const unread = Boolean(state.journal.unlocked && !state.journal.seen);
+    const unread = Boolean(unlocked && !state.journal.seen);
     $$(".journal-alert").forEach(dot=>dot.classList.toggle("show", unread));
 
-    // New characters stay hidden until their first introduction is complete.
+    // 09 opens the Character modal from a document-level click handler and
+    // stops later click handlers. Mark it read on pointerdown, before that
+    // handler runs, so every red dot clears immediately and stays cleared.
+    if(button.dataset.lwSeenFixed !== "1"){
+      button.dataset.lwSeenFixed = "1";
+      button.addEventListener("pointerdown", ()=>{
+        if(!state.journal?.unlocked) return;
+        state.journal.seen = true;
+        $$(".journal-alert").forEach(dot=>dot.classList.remove("show"));
+        try{ if(typeof syncJournalAlert === "function") syncJournalAlert(); }catch(_){}
+        try{ if(typeof autoSave === "function") autoSave(); }catch(_){}
+      }, true);
+    }
+
+    // New characters remain gated by their own first completed introduction.
     if(activeScreen() === "cafe2" && !state.flags?.cafe_first_elena_choice && !state.flags?.cafe_complete){
-      if(state.characters) state.characters.Elena = false;
+      state.characters.Elena = false;
     }
     if(activeScreen() === "police2" && !state.flags?.police_intro_complete){
-      if(state.characters){
-        state.characters.Somchai = false;
-        state.characters.Kittisak = false;
-      }
+      state.characters.Somchai = false;
+      state.characters.Kittisak = false;
     }
     if(activeScreen() === "medical2" && !state.medical?.ratchataMet){
-      state.characters && (state.characters.Ratchata = false);
+      state.characters.Ratchata = false;
     }
   }
 
@@ -335,10 +354,7 @@
     document.addEventListener("click", ()=>setTimeout(repairScreen, 0), true);
     document.addEventListener("pointerup", ()=>setTimeout(repairScreen, 0), true);
 
-    // Do not observe style/class mutations here. repairScreen itself updates
-    // those attributes, which previously created a self-triggering loop and
-    // could freeze the splash screen before Tap to begin completed.
-    setInterval(repairScreen, 750);
+    setInterval(repairScreen, 250);
   }
 
   if(document.readyState === "loading"){
