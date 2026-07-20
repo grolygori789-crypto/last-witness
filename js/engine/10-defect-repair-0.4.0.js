@@ -1,4 +1,4 @@
-/* LAST WITNESS — Defect Repair 0.4.6
+/* LAST WITNESS — Defect Repair 0.4.5
  * Replace js/engine/10-defect-repair-0.4.0.js with this file.
  * Loaded last. Repairs splash click, café dialogue continuity, police ambience,
  * forensic evidence timing/review, medical markers, and Character Journal timing.
@@ -14,9 +14,6 @@
   let clickStopTimer = 0;
   let policeRetryTimer = 0;
   let lastScreen = "";
-  let splashClickBuffer = null;
-  let splashClickContext = null;
-  let splashClickStart = 0;
   let splashPointerPlayedAt = 0;
   let originalFeatureToast = null;
 
@@ -52,47 +49,23 @@
     }catch(_){}
   }
 
-  function playRealtimeMouseClick(){
+  const splashMouseClick = new Audio("assets/audio/ui-mouse-click-short.wav?v=045");
+  splashMouseClick.preload = "auto";
+  splashMouseClick.loop = false;
+
+  function prepareMouseClick(){
+    try{ splashMouseClick.load(); }catch(_){}
+  }
+
+  function playTrimmedMouseClick(){
     if(!audioAllowed()) return;
-    const click = $("#clickAudio");
-    if(!click) return;
-
     try{
-      clearTimeout(clickStopTimer);
-      click.pause();
-      click.loop = false;
-      click.muted = false;
-
-      const original = "assets/audio/b3dccd7733a71a6d.mp3";
-      if(!click.getAttribute("src")?.endsWith("b3dccd7733a71a6d.mp3")){
-        click.src = original;
-        click.preload = "auto";
-        click.load();
-      }
-
-      /*
-       * The original asset contains a long silent lead-in. Starting at 0 and
-       * stopping after 165 ms plays silence in Chrome. Seek to the final
-       * 220 ms, where the real mouse-switch transient is located.
-       */
-      const duration = Number(click.duration);
-      const startAt = Number.isFinite(duration) && duration > .24
-        ? Math.max(0, duration - .22)
-        : .69;
-
-      click.currentTime = startAt;
-      click.volume = Math.max(.28, Math.min(.78, Number(window.state?.sfx) || .55));
-
-      const promise = click.play();
-      if(promise?.catch) promise.catch(()=>{});
-
-      // One short real-time click only; no full clip, tail, loop or second play.
-      clickStopTimer = setTimeout(()=>{
-        try{
-          click.pause();
-          click.currentTime = startAt;
-        }catch(_){}
-      }, 205);
+      splashMouseClick.pause();
+      splashMouseClick.currentTime = 0;
+      splashMouseClick.loop = false;
+      splashMouseClick.volume = Math.max(.18, Math.min(.8, Number(window.state?.sfx) || .58));
+      const result = splashMouseClick.play();
+      if(result?.catch) result.catch(()=>{});
     }catch(_){}
   }
 
@@ -112,60 +85,33 @@
     const enter = $("#enter");
     if(!enter || enter.dataset.lwClickFixed === "1") return;
     enter.dataset.lwClickFixed = "1";
+    prepareMouseClick();
 
-    const click = $("#clickAudio");
-    if(click){
-      click.preload = "auto";
-      try{ click.load(); }catch(_){}
-    }
-
-    // Use the same HTMLAudioElement that worked in the original build.
-    // pointerdown is a direct user gesture, so Chrome permits immediate audio.
+    // Own the splash interaction completely so the base onclick cannot play
+    // a second, full-length copy of the same sound.
     enter.addEventListener("pointerdown", ()=>{
       splashPointerPlayedAt = performance.now();
-      playRealtimeMouseClick();
+      playTrimmedMouseClick();
     }, true);
 
-    // Replace the base onclick so it changes screen but cannot replay the full
-    // click clip. Pointer users already received feedback on pointerdown.
-    enter.onclick = function(event){
-      event?.preventDefault?.();
-      if(performance.now() - splashPointerPlayedAt > 300){
-        playRealtimeMouseClick();
+    enter.addEventListener("click", event=>{
+      event.preventDefault();
+      event.stopImmediatePropagation();
+
+      // Keyboard-generated clicks have no preceding pointerdown.
+      if(performance.now() - splashPointerPlayedAt > 260){
+        playTrimmedMouseClick();
       }
       openTitleFromSplash();
-    };
+    }, true);
 
     enter.addEventListener("keydown", event=>{
       if(event.key === "Enter" || event.key === " "){
         event.preventDefault();
-        splashPointerPlayedAt = performance.now();
-        playRealtimeMouseClick();
+        playTrimmedMouseClick();
         openTitleFromSplash();
       }
     }, true);
-  }
-
-  function unlockNorthJournalAfterOfficeConversation(){
-    if(!window.state || activeScreen() !== "office2") return;
-    if(!state.flags?.chapter2_first_choice) return;
-    if(!$("#office2Dialogue")?.classList.contains("hidden")) return;
-
-    state.journal = state.journal || {unlocked:false,seen:false,introShown:false};
-    if(state.flags.north_journal_unlock_complete) return;
-
-    state.flags.north_journal_unlock_complete = true;
-    state.characters = state.characters || {};
-    state.characters.Benedict = true;
-    state.characters.North = true;
-    state.journal.unlocked = true;
-    state.journal.seen = false;
-    state.journal.introShown = false;
-
-    $("#charactersButton")?.style.removeProperty("display");
-    try{ if(typeof showFeatureToast === "function") showFeatureToast(); }catch(_){}
-    try{ if(typeof syncJournalAlert === "function") syncJournalAlert(); }catch(_){}
-    try{ if(typeof autoSave === "function") autoSave(); }catch(_){}
   }
 
   function repairCafeDialogue(){
@@ -441,7 +387,6 @@
     installPoliceAmbience();
     syncForensicReview();
     resetFreshMedicalMarkers();
-    unlockNorthJournalAfterOfficeConversation();
     syncCharacterJournal();
 
     if(lastScreen !== screen){
@@ -458,10 +403,6 @@
 
     document.addEventListener("click", ()=>setTimeout(repairScreen, 0), true);
     document.addEventListener("pointerup", ()=>setTimeout(repairScreen, 0), true);
-    $("#office2Dialogue")?.addEventListener("click", ()=>setTimeout(()=>{
-      unlockNorthJournalAfterOfficeConversation();
-      syncCharacterJournal();
-    }, 0), true);
 
     // Avoid observing class/style changes because repairScreen writes those
     // attributes itself. Event hooks plus this light interval are sufficient.
