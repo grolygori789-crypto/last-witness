@@ -1,4 +1,4 @@
-/* LAST WITNESS — Defect Repair 0.4.9
+/* LAST WITNESS — Defect Repair 0.4.10
  * Replace js/engine/10-defect-repair-0.4.0.js with this file.
  * Loaded last. Repairs splash click, café dialogue continuity, police ambience,
  * forensic evidence timing/review, medical markers, and Character Journal timing.
@@ -10,6 +10,7 @@
   const $$ = (s, r=document) => Array.from(r.querySelectorAll(s));
   const FORENSIC_IDS = ["sealed_sample","accession_record","audit_trace","batch_record"];
   const MEDICAL_IDS = ["postmortem","identity_tag","autopsy_report","toxicology_sample"];
+  const MEDICAL_MARKER_FIX_VERSION = "0.4.10";
 
   let clickStopTimer = 0;
   let policeRetryTimer = 0;
@@ -22,8 +23,9 @@
   let medicalStartWrapped = false;
   let volumeHooksInstalled = false;
   let lastTitleNormalizeAt = 0;
+  let chapterTwoEndingMusicStarted = false;
 
-  const POLICE_SOURCE = "assets/audio/c9db4b3d64d7ef62.mp3?v=049";
+  const POLICE_SOURCE = "assets/audio/c9db4b3d64d7ef62.mp3?v=0410";
   const POLICE_LOOP_START = 4.6;
   const POLICE_LOOP_END = 49.6;
   const policeWebAudio = {
@@ -69,7 +71,7 @@
   }
 
   function createShortMouseClick(){
-    const audio = new Audio("assets/audio/ui-mouse-click-short.wav?v=049");
+    const audio = new Audio("assets/audio/ui-mouse-click-short.wav?v=0410");
     audio.preload = "auto";
     audio.loop = false;
     audio.playsInline = true;
@@ -104,7 +106,7 @@
       const now = performance.now();
       if(now - dialogueClickAt < 90) return;
       dialogueClickAt = now;
-      playShortMouseClick(dialogueMouseClick, .58, 1.35);
+      playShortMouseClick(dialogueMouseClick, .42, 1.0);
     }, true);
 
     if(typeof window.play === "function" && !window.play.__lwDialogueMouseFix){
@@ -143,7 +145,7 @@
       try{
         splashMouseClick.pause();
         splashMouseClick.currentTime = 0;
-        splashMouseClick.volume = Math.min(1, Math.max(.82, sfx * 1.55));
+        splashMouseClick.volume = Math.min(1, Math.max(.60, sfx * 1.15));
         const result = splashMouseClick.play();
         if(result?.catch) result.catch(()=>{});
       }catch(_){}
@@ -207,8 +209,8 @@
   }
 
   function policeVolume(){
-    // 65% lower than the former .76 * music profile.
-    return masterMusic() * .27;
+    // Raised by about 18.5% from the 0.4.9 mix while remaining background-level.
+    return masterMusic() * .32;
   }
 
   function stopPoliceWebAudio(){
@@ -527,17 +529,24 @@
   function clearFreshMedicalEvidence(){
     if(!window.state) return;
     state.medical = state.medical || {};
-    if(state.medical.complete || state.medical.choice) {
+
+    // Never erase a genuinely completed/branched Medical Examiner phase.
+    if(state.medical.complete || state.medical.choice){
+      state.medical.markerBaselineVersion = MEDICAL_MARKER_FIX_VERSION;
       state.medical.evidenceSessionInitialized = true;
       return;
     }
-    if(state.medical.evidenceSessionInitialized) return;
 
-    // One-time migration/reset: old builds could carry four stale green markers
-    // into the first Medical Examiner entry. A new evidence session begins yellow.
+    // 0.4.9 used evidenceSessionInitialized, so defective saves could skip the
+    // reset forever. Use a versioned baseline instead. The first incomplete
+    // Medical entry under this build always starts exactly like Forensic:
+    // no collected evidence and four yellow hotspots.
+    if(state.medical.markerBaselineVersion === MEDICAL_MARKER_FIX_VERSION) return;
+
     state.medical.found = [];
     state.medical.collected = [];
     MEDICAL_IDS.forEach(id=>state.found?.delete?.(`medical_${id}`));
+    state.medical.markerBaselineVersion = MEDICAL_MARKER_FIX_VERSION;
     state.medical.evidenceSessionInitialized = true;
   }
 
@@ -728,8 +737,44 @@
     }
   }
 
-  function silenceEndingScreen(){
-    stopAllInvestigationAudio();
+  function stopNonEndingInvestigationAudio(){
+    stopPoliceAmbience();
+    ["officeAudio","crimeAudio","morningOfficeAudio","cafeAudio","forensicHumAudio",
+     "medicalRefrigeratorAudio","medicalMachineAudio","vibrateAudio"].forEach(id=>{
+      stopAudio($("#"+id), true);
+    });
+  }
+
+  function maintainChapterTwoEndingMusic(restart=false){
+    stopNonEndingInvestigationAudio();
+    stopAudio($("#themeAudio"), true);
+    stopAudio($("#rainAudio"), true);
+
+    const chapter = $("#chapterAudio");
+    if(!chapter) return;
+    if(!audioAllowed()){
+      stopAudio(chapter, true);
+      return;
+    }
+
+    chapter.loop = false;
+    chapter.volume = masterMusic();
+
+    try{
+      if(restart && !chapterTwoEndingMusicStarted){
+        chapter.pause();
+        chapter.currentTime = 0;
+        chapterTwoEndingMusicStarted = true;
+        chapter.play().catch(()=>{});
+      }else if(!chapterTwoEndingMusicStarted && chapter.paused && !chapter.ended && chapter.currentTime <= .05){
+        chapterTwoEndingMusicStarted = true;
+        chapter.play().catch(()=>{});
+      }
+    }catch(_){}
+  }
+
+  function silenceChapterThreeIfNoEndingMusic(){
+    stopNonEndingInvestigationAudio();
     stopAudio($("#themeAudio"), true);
     stopAudio($("#rainAudio"), true);
   }
@@ -740,6 +785,10 @@
 
     document.addEventListener("click", event=>{
       if(event.target.closest?.("#chapter3WipReturnTitle,#chapter2ReturnTitle")){
+        // End-card music belongs only to the ending sequence. Stop it before
+        // the older Return-to-Title handler can start the Title mix.
+        stopAudio($("#chapterAudio"), true);
+        chapterTwoEndingMusicStarted = false;
         // The older integration starts a different fixed rain mix. Normalize after it runs.
         setTimeout(normalizeTitleAudio, 0);
         setTimeout(normalizeTitleAudio, 90);
@@ -771,7 +820,8 @@
           applySceneVolumeProfile();
           if(screen === "police2") installPoliceAmbience();
           if(screen === "medical2") ensureMedicalAmbience(false);
-          if(screen === "chapter2Complete" || screen === "chapter3Wip") silenceEndingScreen();
+          if(screen === "chapter2Complete") maintainChapterTwoEndingMusic(true);
+          if(screen === "chapter3Wip") silenceChapterThreeIfNoEndingMusic();
         }, 0);
         return result;
       }
@@ -805,8 +855,16 @@
       stopAudio($("#medicalMachineAudio"), true);
     }
 
-    if(screen === "chapter2Complete" || screen === "chapter3Wip"){
-      silenceEndingScreen();
+    if(screen === "chapter2Complete"){
+      maintainChapterTwoEndingMusic(previous !== screen);
+    }else if(screen === "chapter3Wip"){
+      // Keep the same one-shot Chapter I ending cue if it is still playing,
+      // but never introduce rain/theme on this screen.
+      silenceChapterThreeIfNoEndingMusic();
+    }
+
+    if(!["chapter2Complete","chapter3Wip"].includes(screen)){
+      chapterTwoEndingMusicStarted = false;
     }
 
     if(previous !== screen){
