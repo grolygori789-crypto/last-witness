@@ -88,6 +88,33 @@ runDialogue($("#apartmentDialogue"),[
 {speaker:"Benedict",emotion:"neutral",key:"apt_review_05"}
 ],()=>{play("steps");setTimeout(()=>{show("cafe2");runCafeOpening()},600)})
 }
+
+function unlockChapter2CharacterJournal(){
+state.flags=state.flags||{};
+state.characters=state.characters||{};
+state.journal=state.journal||{unlocked:false,seen:true,introShown:false};
+
+if(state.flags.chapter2_character_feature_unlocked)return;
+
+state.flags.chapter2_character_feature_unlocked=true;
+state.characters.Benedict=true;
+state.characters.North=true;
+state.journal.unlocked=true;
+state.journal.seen=false;
+state.journal.introShown=false;
+
+const button=$("#charactersButton");
+if(button){button.hidden=false;button.style.display=""}
+
+if(!state.flags.chapter2_character_toast_shown){
+state.flags.chapter2_character_toast_shown=true;
+showFeatureToast()
+}
+
+syncJournalAlert();
+autoSave()
+}
+
 function runChapter2PostChoice(choice){
 const responseKey={warm:"c2_07_warm",observant:"c2_07_observant",direct:"c2_07_direct"}[choice]||"c2_07_direct";
 runDialogue($("#office2Dialogue"),[
@@ -102,7 +129,12 @@ runDialogue($("#office2Dialogue"),[
 {speaker:"North",emotion:"neutral",key:"c2_15"},
 {speaker:"Benedict",emotion:"smile",key:"c2_16"},
 {speaker:"North",emotion:"dry",key:"c2_17"}
-],()=>{state.checkpoint="ch2_apartment_arrival";autoSave();play("steps");setTimeout(()=>{show("apartment2");runApartmentOpening()},550)})
+],()=>{
+state.checkpoint="ch2_apartment_arrival";
+unlockChapter2CharacterJournal();
+play("steps");
+setTimeout(()=>{show("apartment2");runApartmentOpening()},550)
+})
 }
 function applyChapter2Choice(choice){
 state.personality[choice]=(state.personality[choice]||0)+1;
@@ -128,7 +160,23 @@ if(state.checkpoint==="ch2_office_after_choice"&&state.flags.chapter2_first_choi
 else runChapter2Opening()
 }
 function startChapter2(){
-stopChapterAudio();state.chapter=2;state.checkpoint="ch2_office_opening";state.characters.North=true;
-state.journal.unlocked=true;state.journal.seen=false;
-showChapterIntro(2,()=>{show("office2");autoSave();setTimeout(()=>{showFeatureToast();syncJournalAlert()},850);setTimeout(runChapter2Opening,350)})
+stopChapterAudio();
+state.chapter=2;
+state.checkpoint="ch2_office_opening";
+state.characters=state.characters||{};
+state.characters.North=true;
+state.flags=state.flags||{};
+state.flags.chapter2_character_feature_unlocked=false;
+state.flags.chapter2_character_toast_shown=false;
+state.journal={unlocked:false,seen:true,introShown:false};
+
+const button=$("#charactersButton");
+if(button){button.hidden=true;button.style.display="none"}
+syncJournalAlert();
+
+showChapterIntro(2,()=>{
+show("office2");
+autoSave();
+setTimeout(runChapter2Opening,350)
+})
 }
