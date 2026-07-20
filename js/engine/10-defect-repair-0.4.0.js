@@ -1,4 +1,4 @@
-/* LAST WITNESS — Defect Repair 0.4.0
+/* LAST WITNESS — Defect Repair 0.4.1
  * Loaded after 09-defect-hotfix.js.
  * Deterministic repairs for click/evidence audio, police ambience,
  * character unlock timing, phase evidence state and portrait alignment.
@@ -281,12 +281,38 @@
     });
   }
 
-  function periodicRepair(){
-    fixCharacterVisibility();
-    repairCharacterGrid();
-    replaceCafeLine();
-    ensurePoliceLoop();
-    repairMedicalMarkers();
+  function repairAfterInteraction(){
+    window.setTimeout(()=>{
+      replaceCafeLine();
+      fixCharacterVisibility();
+      repairCharacterGrid();
+      ensurePoliceLoop();
+      repairMedicalMarkers();
+    },0);
+  }
+
+  function enterFallback(){
+    const splash=$("#splash");
+    if(!splash?.classList.contains("active"))return;
+
+    $$(".screen").forEach(s=>s.classList.remove("active"));
+    $("#title")?.classList.add("active");
+    if(window.state)state.screen="title";
+
+    try{
+      const theme=$("#themeAudio");
+      const rain=$("#rainAudio");
+      if(theme&&window.state?.sound!==false){
+        theme.loop=true;
+        theme.volume=Number(state?.music)||.33;
+        theme.play().catch(()=>{});
+      }
+      if(rain&&window.state?.sound!==false){
+        rain.loop=true;
+        rain.volume=(Number(state?.music)||.33)*.48;
+        rain.play().catch(()=>{});
+      }
+    }catch(_){}
   }
 
   function bind(){
@@ -296,17 +322,11 @@
 
     document.addEventListener("pointerdown",onPointerDown,true);
     document.addEventListener("click",onClick,true);
+    document.addEventListener("click",repairAfterInteraction,true);
 
-    const observer=new MutationObserver(()=>{
-      replaceCafeLine();
-      fixCharacterVisibility();
-      repairCharacterGrid();
-      ensurePoliceLoop();
-      repairMedicalMarkers();
-    });
-    observer.observe($("#game")||document.body,{subtree:true,childList:true,attributes:true,attributeFilter:["class","style"]});
-
-    setInterval(periodicRepair,700);
+    $("#enter")?.addEventListener("click",()=>{
+      window.setTimeout(enterFallback,80);
+    },false);
   }
 
   if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",bind,{once:true});
