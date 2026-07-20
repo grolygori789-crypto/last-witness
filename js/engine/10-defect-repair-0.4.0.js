@@ -1,4 +1,4 @@
-/* LAST WITNESS — Defect Repair 0.4.7
+/* LAST WITNESS — Defect Repair 0.4.8
  * Replace js/engine/10-defect-repair-0.4.0.js with this file.
  * Loaded last. Repairs splash click, café dialogue continuity, police ambience,
  * forensic evidence timing/review, medical markers, and Character Journal timing.
@@ -15,7 +15,9 @@
   let policeRetryTimer = 0;
   let lastScreen = "";
   let splashMouseClick = null;
+  let dialogueMouseClick = null;
   let splashClickAt = 0;
+  let dialogueClickAt = 0;
 
   function activeScreen(){
     return $(".screen.active")?.id || window.state?.screen || "";
@@ -49,17 +51,65 @@
     }catch(_){}
   }
 
+  function createShortMouseClick(){
+    const audio = new Audio("assets/audio/ui-mouse-click-short.wav?v=048");
+    audio.preload = "auto";
+    audio.loop = false;
+    audio.playsInline = true;
+    try{ audio.load(); }catch(_){}
+    return audio;
+  }
+
+  function playShortMouseClick(audio, minimumVolume=.28, gain=1){
+    if(!audioAllowed()) return;
+    const raw = Number(window.state?.sfx);
+    const sfx = Number.isFinite(raw) ? raw : .55;
+    if(sfx <= 0) return;
+    stopAudio($("#clickAudio"), true);
+    try{
+      audio.pause();
+      audio.currentTime = 0;
+      audio.loop = false;
+      audio.volume = Math.max(0, Math.min(1, Math.max(minimumVolume, sfx * gain)));
+      const result = audio.play();
+      if(result?.catch) result.catch(()=>{});
+    }catch(_){}
+  }
+
+  function installDialogueMouseClick(){
+    if(document.documentElement.dataset.lwDialogueClickFixed === "1") return;
+    document.documentElement.dataset.lwDialogueClickFixed = "1";
+    dialogueMouseClick = createShortMouseClick();
+
+    document.addEventListener("pointerdown", event=>{
+      const dialogue = event.target.closest?.(".dialogue:not(.hidden)");
+      if(!dialogue) return;
+      const now = performance.now();
+      if(now - dialogueClickAt < 90) return;
+      dialogueClickAt = now;
+      playShortMouseClick(dialogueMouseClick, .58, 1.35);
+    }, true);
+
+    if(typeof window.play === "function" && !window.play.__lwDialogueMouseFix){
+      const originalPlay = window.play;
+      function wrappedPlay(name){
+        if(name === "click" && performance.now() - dialogueClickAt < 520){
+          return;
+        }
+        return originalPlay.apply(this, arguments);
+      }
+      wrappedPlay.__lwDialogueMouseFix = true;
+      window.play = wrappedPlay;
+    }
+  }
+
   function installOriginalMouseClick(){
     const enter = $("#enter");
     if(!enter || enter.dataset.lwClickFixed === "1") return;
     enter.dataset.lwClickFixed = "1";
 
     const legacy = $("#clickAudio");
-    splashMouseClick = new Audio("assets/audio/ui-mouse-click-short.wav?v=047");
-    splashMouseClick.preload = "auto";
-    splashMouseClick.loop = false;
-    splashMouseClick.playsInline = true;
-    try{ splashMouseClick.load(); }catch(_){}
+    splashMouseClick = createShortMouseClick();
 
     function playSplashMouseClick(){
       if(!audioAllowed()) return;
@@ -138,13 +188,16 @@
     const police = $("#policeAudio");
     if(!police) return;
 
-    // This is the cropped version made from the clean opening section.
-    const cleanSource = "assets/audio/police-station-seamless.wav";
-    if(!police.getAttribute("src")?.endsWith("police-station-seamless.wav")){
+    // Restore the established police-station recording with the typewriter.
+    // The previous repair incorrectly replaced it with a refrigerator-like loop.
+    const policeSource = "assets/audio/c9db4b3d64d7ef62.mp3";
+    const currentSource = police.getAttribute("src") || "";
+    if(!currentSource.endsWith("c9db4b3d64d7ef62.mp3")){
       stopAudio(police);
-      police.src = cleanSource;
+      police.src = policeSource;
       police.preload = "auto";
       police.loop = true;
+      police.dataset.lwPoliceCueReady = "0";
       try{ police.load(); }catch(_){}
     }
 
@@ -154,21 +207,32 @@
       return;
     }
 
+    stopAudio($("#medicalRefrigeratorAudio"), true);
+    stopAudio($("#medicalMachineAudio"), true);
+
     police.loop = true;
-    police.volume = Math.max(.08, Math.min(.28, (Number(window.state?.music) || .33) * .62));
+    police.volume = Math.max(.10, Math.min(.34, (Number(window.state?.music) || .33) * .76));
+
+    const startPolice = ()=>{
+      if(activeScreen() !== "police2" || !audioAllowed()) return;
+      try{
+        if(police.dataset.lwPoliceCueReady !== "1" || police.currentTime < 4.45){
+          police.currentTime = 4.6;
+          police.dataset.lwPoliceCueReady = "1";
+        }
+        if(police.paused){
+          const result = police.play();
+          if(result?.catch) result.catch(()=>{});
+        }
+      }catch(_){}
+    };
+
+    if(police.readyState >= 1) startPolice();
+    else police.addEventListener("loadedmetadata", startPolice, {once:true});
 
     if(police.paused){
-      const result = police.play();
-      if(result?.catch){
-        result.catch(()=>{
-          clearTimeout(policeRetryTimer);
-          policeRetryTimer = setTimeout(()=>{
-            if(activeScreen() === "police2" && police.paused && audioAllowed()){
-              police.play().catch(()=>{});
-            }
-          }, 180);
-        });
-      }
+      clearTimeout(policeRetryTimer);
+      policeRetryTimer = setTimeout(startPolice, 220);
     }
   }
 
@@ -216,28 +280,94 @@
   }
 
   function syncForensicReview(){
-    if(activeScreen() !== "forensic2") return;
+    if(activeScreen() !== "forensic2" || !window.state) return;
     const review = $("#reviewForensic");
+    const dialogue = $("#forensicDialogue");
+    const choice = $("#forensicChoice");
+    const complete = $("#forensicPhaseComplete");
     if(!review) return;
 
-    const found = new Set(window.state?.forensic?.found || []);
+    state.forensic = state.forensic || {};
+    const found = new Set(state.forensic.found || []);
     FORENSIC_IDS.forEach(id=>{
-      if(window.state?.found?.has?.(`forensic_${id}`)) found.add(id);
+      if(state.found?.has?.(`forensic_${id}`)) found.add(id);
     });
 
     const panelOpen = $("#forensicEvidencePanel")?.classList.contains("open");
-    const dialogueOpen = !$("#forensicDialogue")?.classList.contains("hidden");
-    const choiceOpen = !$("#forensicChoice")?.classList.contains("hidden");
-    const completeOpen = $("#forensicPhaseComplete")?.style.display === "block";
+    const dialogueOpen = Boolean(dialogue && !dialogue.classList.contains("hidden"));
+    const choiceOpen = Boolean(choice && !choice.classList.contains("hidden"));
+    const completeOpen = Boolean(complete && getComputedStyle(complete).display !== "none");
+    const compared = Boolean(state.forensic.compared);
+    const chosen = Boolean(state.forensic.choice);
     const ready = found.size === FORENSIC_IDS.length &&
-      !window.state?.forensic?.compared &&
-      !window.state?.forensic?.choice &&
-      !panelOpen && !dialogueOpen && !choiceOpen && !completeOpen;
+      !compared && !chosen && !panelOpen && !dialogueOpen && !choiceOpen && !completeOpen;
 
-    review.classList.toggle("show", ready);
-    review.toggleAttribute("hidden", !ready);
-    review.disabled = !ready;
-    review.style.pointerEvents = ready ? "auto" : "";
+    if(ready){
+      review.hidden = false;
+      review.removeAttribute("hidden");
+      review.disabled = false;
+      review.classList.add("show");
+      review.style.removeProperty("display");
+      review.style.pointerEvents = "auto";
+      review.style.opacity = "1";
+    }else{
+      review.classList.remove("show");
+      review.hidden = true;
+      review.setAttribute("hidden", "");
+      review.disabled = true;
+      review.style.display = "none";
+      review.style.pointerEvents = "none";
+      review.style.opacity = "0";
+    }
+
+    // 09-defect-hotfix can re-show the disabled Compare button after comparison.
+    // Once the comparison dialogue finishes, expose the deduction choices instead.
+    if(compared && !chosen && !dialogueOpen && !completeOpen && choice){
+      choice.classList.remove("hidden");
+      choice.hidden = false;
+      choice.style.display = "";
+      choice.style.opacity = "1";
+      choice.style.pointerEvents = "auto";
+      $$('button', choice).forEach(button=>{
+        button.disabled = false;
+        button.style.pointerEvents = "auto";
+        button.style.opacity = "1";
+      });
+    }
+
+    const continueButton = $("#continueMedicalExaminer");
+    if(continueButton){
+      continueButton.disabled = false;
+      continueButton.hidden = false;
+      continueButton.style.opacity = "1";
+      continueButton.style.pointerEvents = "auto";
+    }
+  }
+
+  function installForensicContinuation(){
+    const button = $("#continueMedicalExaminer");
+    if(!button || button.dataset.lwContinueFixed === "1") return;
+    button.dataset.lwContinueFixed = "1";
+    button.addEventListener("click", event=>{
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      $("#forensicPhaseComplete")?.style.setProperty("display", "none");
+      stopAudio($("#forensicHumAudio"), true);
+      try{
+        if(window.state){
+          state.forensic = state.forensic || {};
+          state.forensic.complete = true;
+          state.screen = "medical2";
+        }
+        if(window.LastWitnessChapter2Integration?.enterMedicalExaminer){
+          window.LastWitnessChapter2Integration.enterMedicalExaminer();
+        }else if(window.LastWitnessMedicalExaminer?.start){
+          window.LastWitnessMedicalExaminer.start();
+        }else if(typeof show === "function"){
+          show("medical2");
+        }
+      }catch(_){}
+    }, true);
   }
 
   function resetFreshMedicalMarkers(){
@@ -334,6 +464,8 @@
     const screen = activeScreen();
 
     installOriginalMouseClick();
+    installDialogueMouseClick();
+    installForensicContinuation();
     repairCafeDialogue();
     installPoliceAmbience();
     syncForensicReview();
@@ -348,6 +480,8 @@
 
   function bind(){
     installOriginalMouseClick();
+    installDialogueMouseClick();
+    installForensicContinuation();
     installEvidenceTiming();
     repairScreen();
 
