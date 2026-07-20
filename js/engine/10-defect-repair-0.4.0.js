@@ -1,4 +1,4 @@
-/* LAST WITNESS — Defect Repair 0.4.10
+/* LAST WITNESS — Defect Repair 0.4.11
  * Replace js/engine/10-defect-repair-0.4.0.js with this file.
  * Loaded last. Repairs splash click, café dialogue continuity, police ambience,
  * forensic evidence timing/review, medical markers, and Character Journal timing.
@@ -25,7 +25,7 @@
   let lastTitleNormalizeAt = 0;
   let chapterTwoEndingMusicStarted = false;
 
-  const POLICE_SOURCE = "assets/audio/c9db4b3d64d7ef62.mp3?v=0410";
+  const POLICE_SOURCE = "assets/audio/c9db4b3d64d7ef62.mp3?v=0411";
   const POLICE_LOOP_START = 4.6;
   const POLICE_LOOP_END = 49.6;
   const policeWebAudio = {
@@ -71,7 +71,7 @@
   }
 
   function createShortMouseClick(){
-    const audio = new Audio("assets/audio/ui-mouse-click-short.wav?v=0410");
+    const audio = new Audio("assets/audio/ui-mouse-click-short.wav?v=0411");
     audio.preload = "auto";
     audio.loop = false;
     audio.playsInline = true;
@@ -95,6 +95,24 @@
     }catch(_){}
   }
 
+
+  function installMedicalMarkerPalette(){
+    if($("#lwMedicalMarkerPalette")) return;
+    const style = document.createElement("style");
+    style.id = "lwMedicalMarkerPalette";
+    style.textContent = `
+      .medical-hotspot i{
+        background:#ddb363!important;
+        box-shadow:0 0 0 8px rgba(221,179,99,.17),0 0 24px rgba(221,179,99,.78)!important;
+      }
+      .medical-hotspot.found i{
+        background:#86b79a!important;
+        box-shadow:0 0 0 8px rgba(134,183,154,.17)!important;
+      }
+    `;
+    document.head.appendChild(style);
+  }
+
   function installDialogueMouseClick(){
     if(document.documentElement.dataset.lwDialogueClickFixed === "1") return;
     document.documentElement.dataset.lwDialogueClickFixed = "1";
@@ -106,7 +124,7 @@
       const now = performance.now();
       if(now - dialogueClickAt < 90) return;
       dialogueClickAt = now;
-      playShortMouseClick(dialogueMouseClick, .42, 1.0);
+      playShortMouseClick(dialogueMouseClick, .10, .36);
     }, true);
 
     if(typeof window.play === "function" && !window.play.__lwDialogueMouseFix){
@@ -209,8 +227,8 @@
   }
 
   function policeVolume(){
-    // Raised by about 18.5% from the 0.4.9 mix while remaining background-level.
-    return masterMusic() * .32;
+    // Refined background level: audible room tone without competing with dialogue.
+    return masterMusic() * .27;
   }
 
   function stopPoliceWebAudio(){
@@ -578,12 +596,12 @@
 
     if(fridge){
       fridge.loop = true;
-      fridge.volume = music * .17;
+      fridge.volume = music * .115;
       if(fridge.paused) fridge.play().catch(()=>{});
     }
     if(machine){
       machine.loop = true;
-      machine.volume = music * .04;
+      machine.volume = music * .025;
       if(machine.paused) machine.play().catch(()=>{});
     }
     if(playDoor && door && door.paused){
@@ -691,21 +709,21 @@
       if(audio) audio.volume = Math.max(0, Math.min(1, value));
     };
 
-    // The requested ambience is roughly 65% lower than the former mix.
-    set("officeAudio", music * .29);
-    set("crimeAudio", music * .35);
-    set("morningOfficeAudio", music * .25);
-    set("cafeAudio", music * .27);
-    set("forensicHumAudio", music * .105);
-    set("medicalRefrigeratorAudio", music * .17);
-    set("medicalMachineAudio", music * .04);
+    // Refined low-profile ambience: present as room tone, never foreground.
+    set("officeAudio", music * .22);
+    set("crimeAudio", music * .16);
+    set("morningOfficeAudio", music * .19);
+    set("cafeAudio", music * .20);
+    set("forensicHumAudio", music * .075);
+    set("medicalRefrigeratorAudio", music * .115);
+    set("medicalMachineAudio", music * .025);
 
     if(screen === "title"){
       // Exact same mix as the original first Title entry.
       set("themeAudio", music);
       set("rainAudio", music * .48);
     }else if(screen === "office"){
-      set("rainAudio", music * .168);
+      set("rainAudio", music * .105);
     }
 
     if(policeWebAudio.gain) policeWebAudio.gain.gain.value = policeVolume();
@@ -836,6 +854,7 @@
 
     installOriginalMouseClick();
     installDialogueMouseClick();
+    installMedicalMarkerPalette();
     installForensicContinuation();
     installMedicalStartGuard();
     installVolumeHooks();
@@ -883,6 +902,7 @@
   function bind(){
     installOriginalMouseClick();
     installDialogueMouseClick();
+    installMedicalMarkerPalette();
     installForensicContinuation();
     installEvidenceTiming();
     installMedicalStartGuard();
