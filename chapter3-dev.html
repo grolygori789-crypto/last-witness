@@ -107,6 +107,7 @@
       <button id="ch3LoadMenu" class="menu-button" type="button">Load Game</button>
       <button id="ch3HistoryMenu" class="menu-button" type="button">Dialogue History</button>
       <button id="ch3CaseMenu" class="menu-button" type="button">Case File</button>
+      <button id="ch3CharactersMenu" class="menu-button" type="button">Characters</button>
       <button id="ch3SettingsMenu" class="menu-button" type="button">Settings</button>
       <button id="ch3RestartMenu" class="menu-button" type="button">Restart Phase</button>
       <button id="ch3EntryMenu" class="menu-button" type="button">Return to Chapter III Entry</button>
@@ -115,7 +116,8 @@
 
   <div id="ch3HistoryModal" class="modal"><div class="modal-card"><h3 id="ch3HistoryTitle">Dialogue History</h3><div id="ch3HistoryList"></div><button class="ghost ch3-close-modal" type="button">Close</button></div></div>
   <div id="ch3CaseModal" class="modal"><div class="modal-card"><h3 id="ch3CaseTitle">Case File</h3><div id="ch3CaseList"></div><button class="ghost ch3-close-modal" type="button">Close</button></div></div>
-  <div id="ch3SettingsModal" class="modal"><div class="modal-card"><h3 id="ch3SettingsTitle">Settings</h3><label id="ch3LanguageLabel">Language</label><div class="settings-language"><button type="button" data-lang="th">ไทย</button><button type="button" data-lang="en">English</button></div><label><span id="ch3MusicLabel">Music</span> <input id="ch3MusicRange" type="range" min="0" max="1" step=".05" value=".33"></label><br><br><label><span id="ch3SfxLabel">SFX</span> <input id="ch3SfxRange" type="range" min="0" max="1" step=".05" value=".55"></label><button class="ghost ch3-close-modal" type="button">Close</button></div></div>
+  <div id="ch3CharactersModal" class="modal"><div class="modal-card"><h3 id="ch3CharactersTitle">Characters</h3><div id="ch3CharacterGrid" class="character-grid"></div><div id="ch3CharacterDetail" class="character-detail" style="display:none"></div><button id="ch3CharactersBack" class="ghost" style="display:none" type="button">Back</button><button class="ghost ch3-close-modal" type="button">Close</button></div></div>
+  <div id="ch3SettingsModal" class="modal"><div class="modal-card"><h3 id="ch3SettingsTitle">Settings</h3><label id="ch3LanguageLabel">Language</label><div class="settings-language"><button type="button" data-lang="th">ไทย</button><button type="button" data-lang="en">English</button></div><label><span id="ch3MasterSoundLabel">Master Sound</span> <input id="ch3SoundToggle" type="checkbox" checked></label><br><br><label><span id="ch3MusicLabel">Music</span> <input id="ch3MusicRange" type="range" min="0" max="1" step=".05" value=".33"></label><br><br><label><span id="ch3SfxLabel">SFX</span> <input id="ch3SfxRange" type="range" min="0" max="1" step=".05" value=".55"></label><button class="ghost ch3-close-modal" type="button">Close</button></div></div>
 
   <div id="saveIndicator" class="save-indicator">Saved</div>
   <div id="badge" class="badge"></div>
@@ -124,7 +126,6 @@
   <audio id="ch3MusicAudio" loop preload="auto" src="assets/audio/chapter-03/modern-noir.mp3"></audio>
   <audio id="ch3ClickAudio" preload="auto" src="assets/audio/b3dccd7733a71a6d.mp3"></audio>
   <audio id="ch3PageAudio" preload="auto" src="assets/audio/ae0db994456b758a.mp3"></audio>
-  <audio id="ch3ChapterAudio" preload="auto" src="assets/audio/ffd9068b18abb7dc.mp3"></audio>
 </main>
 <script src="js/chapters/chapter-03/01-title-phase1.js"></script>
 </body>
