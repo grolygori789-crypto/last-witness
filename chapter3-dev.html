@@ -1,22 +1,131 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
-  <meta name="theme-color" content="#050609">
-  <title>LAST WITNESS — Chapter III Development Entry</title>
-  <link rel="stylesheet" href="css/chapter-03.css">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+<meta name="theme-color" content="#050609">
+<title>Last Witness — Chapter III</title>
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/chapter-03.css">
 </head>
 <body>
-  <main id="chapter3DevApp" aria-live="polite"></main>
+<main id="game">
+  <section id="chapterIntro" class="chapter-intro" aria-hidden="true">
+    <div class="chapter-intro-card">
+      <div class="chapter-intro-brand">LAST WITNESS</div>
+      <div id="chapterIntroNumber" class="chapter-intro-number">CHAPTER III</div>
+      <div id="chapterIntroTitle" class="chapter-intro-title">THE BORROWED MINUTES</div>
+      <div class="chapter-intro-rule"></div>
+    </div>
+  </section>
 
-  <!-- Existing repository ambience; the new score remains unmodified and is mixed in code. -->
-  <audio id="ch3OfficeAmbience" loop preload="auto" src="assets/audio/92a4d3a256f07b22.mp3"></audio>
-  <audio id="ch3InvestigationMusic" preload="auto" src="assets/audio/chapter-03/modern-noir.mp3"></audio>
-  <audio id="ch3Click" preload="auto" src="assets/audio/b3dccd7733a71a6d.mp3"></audio>
-  <audio id="ch3Page" preload="auto" src="assets/audio/ae0db994456b758a.mp3"></audio>
-  <audio id="ch3Chapter" preload="auto" src="assets/audio/ffd9068b18abb7dc.mp3"></audio>
+  <section id="chapter3Route" class="screen chapter active" aria-label="Chapter III Development Entry">
+    <div class="language-switch" aria-label="Language">
+      <button type="button" data-lang="th">TH</button><button type="button" data-lang="en">EN</button>
+    </div>
+    <div class="chapter-card ch3-route-card">
+      <div class="eyebrow">LAST WITNESS</div>
+      <h2 id="ch3RouteTitle">CHAPTER III</h2>
+      <p id="ch3RouteText">Choose the Chapter II lead for this development playthrough.</p>
+      <button id="ch3SavedRoute" class="primary" type="button" hidden></button>
+      <button class="ghost ch3-route-button" data-route="timeline" type="button">Altered Timeline</button>
+      <button class="ghost ch3-route-button" data-route="old_cases" type="button">Older Cases</button>
+      <button class="ghost ch3-route-button" data-route="access" type="button">Personnel Access</button>
+    </div>
+  </section>
 
-  <script src="js/chapters/chapter-03/01-title-phase1.js"></script>
+  <section id="chapter3Day" class="screen chapter" aria-label="Day 3 Bangkok">
+    <div class="chapter-card ch3-day-card">
+      <div class="eyebrow" id="ch3DayEyebrow">INVESTIGATION DAY</div>
+      <h2 id="ch3DayTitle">DAY 3</h2>
+      <p><b id="ch3DayLocation">BANGKOK · 08:40 AM</b><br><span id="ch3DayText">The official record has crossed a border.</span></p>
+    </div>
+  </section>
+
+  <section id="chapter3Office" class="screen chapter3-office" aria-label="Detective Office Day 3">
+    <img class="scene" src="assets/images/e49ae621ba4833ff.png" alt="Detective Office">
+    <div class="overlay"></div>
+    <div class="topbar">
+      <span id="ch3Location">Detective Office • Day 3</span>
+      <div class="hud"><button id="ch3SaveButton" class="icon" type="button">💾</button><button id="ch3MenuButton" class="icon" type="button">☰</button></div>
+    </div>
+    <div id="ch3Objective" class="apartment-objective"><strong>Objective</strong> · Reconstruct the eleven-minute sequence</div>
+    <div id="ch3SceneLabel" class="cafe-scene-label">THE MISSING PASSENGER</div>
+    <div class="progress"><span id="ch3ProgressText" class="progressText">0%</span><div class="progress-bar"><div id="ch3ProgressFill" class="progress-fill" style="width:0%"></div></div></div>
+    <div id="ch3Dialogue" class="dialogue hidden"></div>
+    <button id="ch3PuzzleButton" class="primary apartment-review" type="button">Reconstruct Timeline</button>
+    <div id="ch3Choice" class="choice-panel hidden">
+      <div id="ch3ChoiceTitle" class="choice-title">Choose the first Singapore lead</div>
+      <button class="choice-option" data-approach="system" type="button">Follow the system</button>
+      <button class="choice-option" data-approach="daniel" type="button">Follow Daniel</button>
+      <button class="choice-option" data-approach="operator" type="button">Follow the operator</button>
+    </div>
+    <div id="ch3PhaseComplete" class="phase-card" style="display:none">
+      <div class="eyebrow">LAST WITNESS</div>
+      <h2 id="ch3CompleteTitle">THE RECORD CROSSED A BORDER</h2>
+      <p id="ch3CompleteText">Daniel never reached Singapore. His credential did.</p>
+      <button id="ch3ContinuePhase2" class="primary" type="button">Continue to Phase II</button>
+    </div>
+  </section>
+
+  <section id="chapter3Phase2Wip" class="screen chapter" aria-label="Chapter III Phase II">
+    <div class="chapter-card">
+      <div class="eyebrow">LAST WITNESS</div>
+      <h2 id="ch3Phase2Title">PHASE I COMPLETE</h2>
+      <p id="ch3Phase2Text">The Singapore departure sequence will continue in Phase II.</p>
+      <button id="ch3ReturnEntry" class="primary" type="button">Return to Chapter III Entry</button>
+    </div>
+  </section>
+
+  <div id="ch3PuzzleModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="ch3PuzzleTitle">
+    <div class="modal-card ch3-puzzle-card">
+      <div class="eyebrow" id="ch3PuzzleEyebrow">TIMELINE RECONSTRUCTION</div>
+      <h3 id="ch3PuzzleTitle">Put the official events in order</h3>
+      <p id="ch3PuzzleHelp">Tap each event from earliest to latest. The sequence can be reset without penalty.</p>
+      <div class="ch3-puzzle-columns">
+        <div>
+          <div class="case-section-title" id="ch3AvailableTitle">Available Events</div>
+          <div id="ch3AvailableEvents" class="ch3-event-list"></div>
+        </div>
+        <div>
+          <div class="case-section-title" id="ch3SelectedTitle">Your Sequence</div>
+          <div id="ch3SelectedEvents" class="ch3-event-list ch3-selected-list"></div>
+        </div>
+      </div>
+      <div id="ch3PuzzleStatus" class="ch3-puzzle-status" aria-live="polite"></div>
+      <button id="ch3ConfirmPuzzle" class="primary" type="button">Confirm Sequence</button>
+      <button id="ch3ResetPuzzle" class="ghost" type="button">Reset</button>
+      <button id="ch3ClosePuzzle" class="ghost" type="button">Return to Office</button>
+    </div>
+  </div>
+
+  <div id="drawer" class="drawer">
+    <aside class="drawer-panel">
+      <h3 id="ch3MenuTitle">Game Menu</h3>
+      <button id="ch3ResumeMenu" class="menu-button" type="button">Resume</button>
+      <button id="ch3SaveMenu" class="menu-button" type="button">💾 <span id="ch3SaveLabel">Save Game</span><small id="ch3SaveSmall">Save this Chapter III checkpoint</small></button>
+      <button id="ch3LoadMenu" class="menu-button" type="button">Load Game</button>
+      <button id="ch3HistoryMenu" class="menu-button" type="button">Dialogue History</button>
+      <button id="ch3CaseMenu" class="menu-button" type="button">Case File</button>
+      <button id="ch3SettingsMenu" class="menu-button" type="button">Settings</button>
+      <button id="ch3RestartMenu" class="menu-button" type="button">Restart Phase</button>
+      <button id="ch3EntryMenu" class="menu-button" type="button">Return to Chapter III Entry</button>
+    </aside>
+  </div>
+
+  <div id="ch3HistoryModal" class="modal"><div class="modal-card"><h3 id="ch3HistoryTitle">Dialogue History</h3><div id="ch3HistoryList"></div><button class="ghost ch3-close-modal" type="button">Close</button></div></div>
+  <div id="ch3CaseModal" class="modal"><div class="modal-card"><h3 id="ch3CaseTitle">Case File</h3><div id="ch3CaseList"></div><button class="ghost ch3-close-modal" type="button">Close</button></div></div>
+  <div id="ch3SettingsModal" class="modal"><div class="modal-card"><h3 id="ch3SettingsTitle">Settings</h3><label id="ch3LanguageLabel">Language</label><div class="settings-language"><button type="button" data-lang="th">ไทย</button><button type="button" data-lang="en">English</button></div><label><span id="ch3MusicLabel">Music</span> <input id="ch3MusicRange" type="range" min="0" max="1" step=".05" value=".33"></label><br><br><label><span id="ch3SfxLabel">SFX</span> <input id="ch3SfxRange" type="range" min="0" max="1" step=".05" value=".55"></label><button class="ghost ch3-close-modal" type="button">Close</button></div></div>
+
+  <div id="saveIndicator" class="save-indicator">Saved</div>
+  <div id="badge" class="badge"></div>
+
+  <audio id="ch3OfficeAudio" loop preload="auto" src="assets/audio/92a4d3a256f07b22.mp3"></audio>
+  <audio id="ch3MusicAudio" loop preload="auto" src="assets/audio/chapter-03/modern-noir.mp3"></audio>
+  <audio id="ch3ClickAudio" preload="auto" src="assets/audio/b3dccd7733a71a6d.mp3"></audio>
+  <audio id="ch3PageAudio" preload="auto" src="assets/audio/ae0db994456b758a.mp3"></audio>
+  <audio id="ch3ChapterAudio" preload="auto" src="assets/audio/ffd9068b18abb7dc.mp3"></audio>
+</main>
+<script src="js/chapters/chapter-03/01-title-phase1.js"></script>
 </body>
 </html>
