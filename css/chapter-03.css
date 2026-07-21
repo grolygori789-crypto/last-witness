@@ -33,3 +33,21 @@
 .ch3-puzzle-status.error{border:1px solid rgba(197,106,100,.45);color:#e2aaa6}
 
 @media(min-width:620px){.ch3-puzzle-columns{grid-template-columns:1fr 1fr}}
+
+
+/* Defect repair 0.4.1 — Chapter III continuity polish */
+.ch3-character-avatar{
+  grid-column:1;grid-row:1/4;width:78px;height:88px;border-radius:9px;
+  display:grid;place-items:center;background:linear-gradient(160deg,#282630,#0b0c10);
+  border:1px solid rgba(221,181,109,.25);color:var(--gold);font:500 30px Georgia,serif;
+}
+.ch3-detail-avatar{
+  width:88px;height:104px;flex:0 0 88px;border-radius:10px;display:grid;place-items:center;
+  background:linear-gradient(160deg,#282630,#0b0c10);border:1px solid rgba(221,181,109,.25);
+  color:var(--gold);font:500 34px Georgia,serif;
+}
+.ch3-character-copy{grid-column:2;grid-row:1/4;min-width:0}
+.ch3-character-name{font-size:14px;line-height:1.2;font-weight:800}
+.ch3-character-status{margin-top:4px;color:#baa57c;font-size:11px}
+.ch3-character-note{margin-top:9px;color:#d8cec0;font-size:12px;line-height:1.45}
+#ch3PuzzleModal:not(.open){pointer-events:none}
