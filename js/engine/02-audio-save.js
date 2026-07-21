@@ -1,6 +1,6 @@
 /* Last Witness Full Refactor
  * Audio, save/load and portrait registration
- * Chapter I-II journal timing + scene ambience repair 0.4.13
+ * Chapter I-II journal timing + scene ambience repair 0.4.14
  */
 
 function extendedAudio(){
@@ -92,7 +92,7 @@ function anyDialogueActive(screen){
 const panel=$("#"+screen);
 if(!panel)return false;
 return Boolean(Array.from(panel.querySelectorAll(".dialogue")).some(box=>
-!box.classList.contains("hidden")&&getComputedStyle(box).display!=="none"
+!box.hidden&&!box.classList.contains("hidden")
 ))
 }
 function ambientFloorFor(id){
@@ -165,6 +165,11 @@ legacyLateChapterTwo
 }catch(_){return false}
 }
 let journalVisibilitySyncing=false;
+function setImportantStyle(element,property,value){
+if(!element)return;
+if(element.style.getPropertyValue(property)===value&&element.style.getPropertyPriority(property)==="important")return;
+element.style.setProperty(property,value,"important")
+}
 function syncCharacterJournalVisibility(){
 if(journalVisibilitySyncing)return;
 const button=$("#charactersButton");
@@ -172,12 +177,14 @@ if(!button)return;
 journalVisibilitySyncing=true;
 try{
 const visible=canonicalJournalUnlocked();
-button.hidden=!visible;
-button.toggleAttribute("aria-hidden",!visible);
-button.style.setProperty("display",visible?"block":"none","important");
-button.style.setProperty("visibility",visible?"visible":"hidden","important");
-button.style.setProperty("opacity",visible?"1":"0","important");
-button.style.setProperty("pointer-events",visible?"auto":"none","important");
+const hidden=!visible;
+if(button.hidden!==hidden)button.hidden=hidden;
+const ariaValue=hidden?"true":"false";
+if(button.getAttribute("aria-hidden")!==ariaValue)button.setAttribute("aria-hidden",ariaValue);
+setImportantStyle(button,"display",visible?"block":"none");
+setImportantStyle(button,"visibility",visible?"visible":"hidden");
+setImportantStyle(button,"opacity",visible?"1":"0");
+setImportantStyle(button,"pointer-events",visible?"auto":"none");
 
 if(typeof state!=="undefined"){
 state.lwJournalEnabled=visible;
@@ -194,38 +201,68 @@ localStorage.setItem(storeKey,JSON.stringify(registry))
 journalVisibilitySyncing=false
 }
 }
+let chapter12SyncFrame=0;
+let chapter12SyncJournal=false;
+let chapter12SyncAudio=false;
+function scheduleChapter12Sync(journal=true,audio=true){
+chapter12SyncJournal=chapter12SyncJournal||journal;
+chapter12SyncAudio=chapter12SyncAudio||audio;
+if(chapter12SyncFrame)return;
+chapter12SyncFrame=requestAnimationFrame(()=>{
+chapter12SyncFrame=0;
+const runJournal=chapter12SyncJournal;
+const runAudio=chapter12SyncAudio;
+chapter12SyncJournal=false;
+chapter12SyncAudio=false;
+if(runJournal)syncCharacterJournalVisibility();
+if(runAudio)syncExtendedAmbience()
+})
+}
 function installChapter12SystemRepair(){
 if(window.__lastWitnessChapter12SystemRepair)return;
 window.__lastWitnessChapter12SystemRepair=true;
 installAmbientVolumeGuards();
 
-const root=$("#game")||document.body;
-const observer=new MutationObserver(()=>{
-queueMicrotask(()=>{
-syncCharacterJournalVisibility();
-syncExtendedAmbience()
-})
+// Observe only the elements that carry relevant state. The previous broad
+// subtree observer watched every style/class mutation and then wrote those
+// same attributes again, creating a self-sustaining callback loop.
+const button=$("#charactersButton");
+if(button){
+const journalObserver=new MutationObserver(()=>scheduleChapter12Sync(true,false));
+journalObserver.observe(button,{attributes:true,attributeFilter:["style","hidden","aria-hidden"]})
+}
+
+$$(".screen").forEach(screen=>{
+const screenObserver=new MutationObserver(()=>scheduleChapter12Sync(true,true));
+screenObserver.observe(screen,{attributes:true,attributeFilter:["class"]})
 });
-observer.observe(root,{subtree:true,childList:true,attributes:true,attributeFilter:["class","style","hidden"]});
+
+["#forensicDialogue","#medicalDialogue"].forEach(selector=>{
+const dialogue=$(selector);
+if(!dialogue)return;
+const dialogueObserver=new MutationObserver(()=>scheduleChapter12Sync(false,true));
+dialogueObserver.observe(dialogue,{attributes:true,attributeFilter:["class","hidden"]})
+});
 
 const musicRange=$("#musicRange");
 const soundToggle=$("#soundToggle");
-musicRange&&musicRange.addEventListener("input",()=>{setVolumes();syncExtendedAmbience()},true);
-soundToggle&&soundToggle.addEventListener("change",()=>setTimeout(()=>syncExtendedAmbience(),0),true);
+musicRange&&musicRange.addEventListener("input",()=>{setVolumes();scheduleChapter12Sync(false,true)},true);
+soundToggle&&soundToggle.addEventListener("change",()=>setTimeout(()=>scheduleChapter12Sync(false,true),0),true);
 
 document.addEventListener("visibilitychange",()=>{
 if(document.hidden)return;
-syncCharacterJournalVisibility();
-syncExtendedAmbience()
+scheduleChapter12Sync(true,true)
 });
 
 syncCharacterJournalVisibility();
 syncExtendedAmbience();
+// Low-frequency safety check only. Story and dialogue changes are handled by
+// targeted observers above, so this no longer churns the main thread.
 setInterval(()=>{
 syncCharacterJournalVisibility();
 const screen=$(".screen.active")?.id||state.screen||"";
 if(screen==="forensic2"||screen==="medical2")syncExtendedAmbience(screen)
-},1400)
+},4000)
 }
 
 function setVolumes(){
