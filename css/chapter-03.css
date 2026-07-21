@@ -51,3 +51,8 @@
 .ch3-character-status{margin-top:4px;color:#baa57c;font-size:11px}
 .ch3-character-note{margin-top:9px;color:#d8cec0;font-size:12px;line-height:1.45}
 #ch3PuzzleModal:not(.open){pointer-events:none}
+
+/* Defect repair 0.4.2 — deterministic puzzle states */
+.ch3-puzzle-status:empty{display:none}
+#ch3ConfirmPuzzle:disabled,
+#ch3ResetPuzzle:disabled{opacity:.34;filter:grayscale(1);pointer-events:none}
