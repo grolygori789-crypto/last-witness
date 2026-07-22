@@ -1,4 +1,4 @@
-/* LAST WITNESS — Chapter II / Medical Examiner 0.5.6
+/* LAST WITNESS — Chapter II / Medical Examiner 0.5.9
  * Deterministic inspect/collect state, immediate hotspot feedback and reliable review.
  */
 (function(){
@@ -54,10 +54,21 @@ function intro(){
   {speaker:"Benedict",emotion:"neutral",text:{en:"Please tell me the body kept better records than the database.",th:"ช่วยบอกทีว่าร่างกายเก็บบันทึกได้ดีกว่าฐานข้อมูล"}},
   {speaker:"Ratchata",emotion:"dry_amused",text:{en:"It did. The body did not have administrator access.",th:"ดีกว่าครับ ร่างกายไม่มีสิทธิ์ผู้ดูแลระบบ"}},
   {speaker:"North",emotion:"focused",text:{en:"Dr. Singh?",th:"ดร. ซิงห์?"}},
-  {speaker:"Ratchata",emotion:"warm_smile",text:{en:"Ratchata. Forty-three. Senior medical examiner. The skeleton cats are not part of the accreditation.",th:"รัชตะครับ อายุสี่สิบสาม แพทย์นิติเวชอาวุโส ส่วนแมวโครงกระดูกไม่ได้อยู่ในใบรับรองวิชาชีพ"}},
-  {speaker:"Elena",emotion:"neutral",text:{en:"We need an independent death window and confirmation that the reference sample is intact.",th:"เราต้องการช่วงเวลาตายที่เป็นอิสระจากระบบ และยืนยันว่าตัวอย่างอ้างอิงยังสมบูรณ์"}},
-  {speaker:"Ratchata",emotion:"serious",text:{en:"Then we begin with what the body can prove. Not what anyone wants it to prove.",th:"งั้นเริ่มจากสิ่งที่ร่างกายพิสูจน์ได้ ไม่ใช่สิ่งที่ใครอยากให้มันพิสูจน์"}}
- ],()=>{if(window.state){state.medical=state.medical||{};state.medical.ratchataMet=true;}addRatchataJournal();updateObjective();});
+  {speaker:"Ratchata",emotion:"warm_smile",text:{en:"Ratchata. Forty-three. Senior medical examiner. The skeleton cats are not part of the accreditation.",th:"รัชตะครับ อายุสี่สิบสาม แพทย์นิติเวชอาวุโส ส่วนแมวโครงกระดูกไม่ได้อยู่ในใบรับรองวิชาชีพ"}}
+ ],()=>{
+  /* Unlock at the exact story beat where the player learns his name and role.
+   * Chapter III must only reuse the existing entry, never introduce it late. */
+  if(window.state){
+   state.medical=state.medical||{};
+   state.medical.ratchataMet=true;
+   state.medical.ratchataJournalUnlocked=true;
+  }
+  addRatchataJournal();
+  dialogue([
+   {speaker:"Elena",emotion:"neutral",text:{en:"We need an independent death window and confirmation that the reference sample is intact.",th:"เราต้องการช่วงเวลาตายที่เป็นอิสระจากระบบ และยืนยันว่าตัวอย่างอ้างอิงยังสมบูรณ์"}},
+   {speaker:"Ratchata",emotion:"serious",text:{en:"Then we begin with what the body can prove. Not what anyone wants it to prove.",th:"งั้นเริ่มจากสิ่งที่ร่างกายพิสูจน์ได้ ไม่ใช่สิ่งที่ใครอยากให้มันพิสูจน์"}}
+  ],updateObjective);
+ });
 }
 function evidenceMarkup(kind){
  if(kind==="body")return `<div class="medical-body-card"><div class="medical-body-silhouette"></div><b>Daniel Voss</b><br>Biological window independent of database timestamps.</div>`;
@@ -239,7 +250,7 @@ function bind(){
   const b=document.createElement("button");b.className="dev-button";b.dataset.devJump="medical2";b.textContent="Medical Examiner";
   b.onclick=()=>{$("#developerModal")?.classList.remove("open");show();};devGrid.appendChild(b);
  }
- window.LastWitnessMedicalExaminer={start:show,updateLanguage:updateUI,version:"0.5.6"};
+ window.LastWitnessMedicalExaminer={start:show,updateLanguage:updateUI,version:"0.5.9"};
  updateUI();
 }
 if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",bind,{once:true});else bind();
