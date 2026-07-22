@@ -1,6 +1,6 @@
 /* Last Witness Full Refactor
  * Audio, save/load and portrait registration
- * Restored stable core before authoritative runtime repair 0.4.15
+ * Stable production core + Chapter III save compatibility 0.5.0
  */
 
 function setVolumes(){
@@ -43,7 +43,7 @@ else if(screen==="cafe2"){AUDIO.cafe.play().catch(()=>{})}
 else if(screen==="police2"){AUDIO.police.currentTime=4.6;AUDIO.police.play().catch(()=>{})}
 else if(["crime","phone","deduction"].includes(screen)){AUDIO.crime.play().catch(()=>{})}
 }
-function snapshot(){return{screen:state.screen,found:Array.from(state.found),history:state.history,time:Date.now(),chapter:state.chapter,checkpoint:state.checkpoint,characters:state.characters,relationships:state.relationships,flags:state.flags,personality:state.personality,journal:state.journal}}
+function snapshot(){return{screen:state.screen,found:Array.from(state.found),history:state.history,time:Date.now(),chapter:state.chapter,checkpoint:state.checkpoint,characters:state.characters,relationships:state.relationships,flags:state.flags,personality:state.personality,journal:state.journal,forensic:state.forensic||{},medical:state.medical||{},chapter3:state.chapter3||{}}}
 function autoSave(){if(["splash","title"].includes(state.screen))return;localStorage.setItem(SAVE.auto,JSON.stringify(snapshot()));flashSave(L("auto_saved"))}
 function manualSave(){localStorage.setItem(SAVE.manual,JSON.stringify(snapshot()));flashSave(L("manual_saved"))}
 function restore(data){
@@ -52,12 +52,17 @@ state.characters=Object.assign({Benedict:true,North:state.chapter>=2,Elena:false
 state.relationships=data.relationships||{North:{trust:70,respect:78,attachment:58,suspicion:3}};
 if(!state.relationships.Elena)state.relationships.Elena={trust:35,respect:52,attachment:18,suspicion:10};
 state.flags=data.flags||{};state.personality=data.personality||{warm:0,observant:0,direct:0};
-state.journal=Object.assign({unlocked:state.chapter>=2,seen:false,introShown:false},data.journal||{});
+const target=data.screen||"crime";
+const lateChapterTwo=["apartment2","cafe2","police2","forensic2","medical2","chapter2Complete","chapter3Wip","chapter3Office","chapter3Phase2Wip"].includes(target);
+const journalUnlocked=Boolean(data.journal&&data.journal.unlocked===true||state.flags.chapter2_character_feature_unlocked===true||Number(state.chapter)>2||lateChapterTwo);
+state.journal=Object.assign({unlocked:journalUnlocked,seen:false,introShown:false},data.journal||{});
+state.forensic=data.forensic||{};
+state.medical=data.medical||{};
+state.chapter3=data.chapter3||{};
 if(state.chapter===2&&!state.flags.police_intro_complete){
 state.characters.Kittisak=false;
 state.characters.Somchai=false
 }
-const target=data.screen||"crime";
 show(target);
 if(state.chapter===2&&target==="office2")setTimeout(resumeChapter2Office,350);
 if(state.chapter===2&&target==="apartment2")setTimeout(runApartmentOpening,350);
