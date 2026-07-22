@@ -1,6 +1,6 @@
 /* Last Witness Full Refactor
  * Chapter 2 apartment and office progression
- * Character Journal unlock truth fix 0.5.3
+ * Character Journal and fresh phase-state fix 0.5.5
  */
 
 function revealApartmentEvidenceDetails(){
@@ -200,6 +200,20 @@ state.flags.chapter2_character_journal_opened=false;
 state.journal={unlocked:false,seen:true,introShown:false};
 state.lwJournalEnabled=false;
 state.lwCharactersUnread=[];
+
+/* A new Chapter II run must never inherit completed Forensic/Medical evidence
+ * from an older save in the same tab. Reset both state and visible hotspots. */
+state.forensic={};
+state.medical={};
+[
+ "police_intro_started","police_intro_complete","police_approach","police_evidence_collected","police_phase_complete",
+ "forensic_identity","forensic_custody","forensic_route",
+ "chapter3_timeline","chapter3_old_cases","chapter3_access"
+].forEach(key=>delete state.flags[key]);
+$$('[data-forensic-clue],[data-medical-clue]').forEach(node=>node.classList.remove("found"));
+$("#forensicPhaseComplete")?.style.setProperty("display","none");
+$("#reviewForensic")?.classList.remove("show");
+$("#reviewMedical")?.classList.remove("show");
 
 const button=$("#charactersButton");
 if(button){
