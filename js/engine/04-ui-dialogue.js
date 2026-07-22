@@ -1,4 +1,4 @@
-/* LAST WITNESS — Screen, UI and Dialogue Runtime 0.5.3
+/* LAST WITNESS — Screen, UI and Dialogue Runtime 0.5.4
  * Shared Chapter I–III routing with a direct Chapter II journal guard.
  */
 function showChapterIntro(chapter,onComplete){
@@ -69,7 +69,7 @@ autoSave()
 }
 function addClue(id){
 if(state.found.has(id))return;
-state.found.add(id);play('page');showBadge(L('new_evidence')+L(clueData[id][0]));refreshCrime();updateProgress();autoSave()
+state.found.add(id);const chapter1Evidence=['phone','blood','laptop','suitcase','message','calls','note'];const chapter1Complete=chapter1Evidence.every(clue=>state.found.has(clue));if(chapter1Complete&&window.LastWitnessAudioCue?.playCompletion)window.LastWitnessAudioCue.playCompletion();else if(window.LastWitnessAudioCue?.playCollection)window.LastWitnessAudioCue.playCollection();else play('page');showBadge(L('new_evidence')+L(clueData[id][0]));refreshCrime();updateProgress();autoSave()
 }
 function runDialogue(container,lines,onComplete){
 let index=0,lastRecorded=-1;

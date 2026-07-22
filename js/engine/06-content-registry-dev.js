@@ -1,4 +1,4 @@
-/* LAST WITNESS — Canon Character Journal + Registry/Dev Integration 0.5.3
+/* LAST WITNESS — Canon Character Journal + Registry/Dev Integration 0.5.4
  * Story-gated journal visibility, canonical relationship metrics and no polling.
  */
 (function(){
@@ -20,8 +20,10 @@ const CHARACTERS={
  elena:{name:{en:"Elena",th:"เอเลนา"},role:{en:"Forensic Analyst",th:"นักวิเคราะห์นิติวิทยาศาสตร์"},status:{en:"Professional Contact",th:"ผู้ร่วมงานในคดี"},bio:{en:"A capable forensic analyst whose technical knowledge becomes central to the investigation.",th:"นักวิเคราะห์นิติวิทยาศาสตร์ฝีมือดี ผู้มีความรู้ทางเทคนิคที่สำคัญต่อการสืบสวน"},portrait:"Elena",relation:{label:{en:"Relationship",th:"ความสัมพันธ์"},value:56},metrics:[{key:"trust",label:{en:"Trust",th:"ความไว้วางใจ"},value:35},{key:"respect",label:{en:"Respect",th:"ความนับถือ"},value:52},{key:"attachment",label:{en:"Affection",th:"ความผูกพัน"},value:18},{key:"suspicion",label:{en:"Suspicion",th:"ความสงสัย"},value:10}]},
  somchai:{name:{en:"Somchai",th:"สมชาย"},role:{en:"Police Officer",th:"เจ้าหน้าที่ตำรวจ"},status:{en:"Cooperative",th:"ให้ความร่วมมือ"},bio:{en:"A Bangkok police officer connected to the official handling of the case.",th:"เจ้าหน้าที่ตำรวจนครบาลที่เกี่ยวข้องกับการดำเนินคดีอย่างเป็นทางการ"},portrait:"Somchai",relation:{label:{en:"Cooperation",th:"ความร่วมมือ"},value:61},metrics:[{key:"cooperation",label:{en:"Cooperation",th:"ความร่วมมือ"},value:61},{key:"credibility",label:{en:"Credibility",th:"ความน่าเชื่อถือ"},value:58},{key:"respect",label:{en:"Professional Respect",th:"ความนับถือทางวิชาชีพ"},value:64},{key:"suspicion",label:{en:"Suspicion",th:"ความสงสัย"},value:22}]},
  kittisak:{name:{en:"Kittisak",th:"กิตติศักดิ์"},role:{en:"Police Officer",th:"เจ้าหน้าที่ตำรวจ"},status:{en:"Reserved",th:"ระมัดระวังตัว"},bio:{en:"A disciplined officer whose account helps define the police timeline.",th:"เจ้าหน้าที่ผู้เคร่งครัด ซึ่งคำให้การช่วยกำหนดลำดับเวลาฝั่งตำรวจ"},portrait:"Kittisak",relation:{label:{en:"Cooperation",th:"ความร่วมมือ"},value:48},metrics:[{key:"cooperation",label:{en:"Cooperation",th:"ความร่วมมือ"},value:48},{key:"credibility",label:{en:"Credibility",th:"ความน่าเชื่อถือ"},value:62},{key:"respect",label:{en:"Professional Respect",th:"ความนับถือทางวิชาชีพ"},value:55},{key:"suspicion",label:{en:"Suspicion",th:"ความระแวง"},value:35}]},
- ratchata:{name:{en:"Dr. Ratchata Singh",th:"ดร. รัชตะ ซิงห์"},age:43,role:{en:"Senior Medical Examiner",th:"แพทย์นิติเวชอาวุโส"},status:{en:"Independent Expert",th:"ผู้เชี่ยวชาญอิสระ"},bio:{en:"A Thai Sikh forensic pathologist: dry-witted and uncompromising about what the body can actually prove.",th:"แพทย์นิติเวชชาวไทยเชื้อสายซิกข์ พูดมุกหน้าตาย และเคร่งครัดกับสิ่งที่ร่างกายพิสูจน์ได้จริง"},src:"assets/images/ratchata/profile.png",relation:{label:{en:"Professional Trust",th:"ความไว้วางใจทางวิชาชีพ"},value:67},metrics:[{key:"trust",label:{en:"Professional Trust",th:"ความไว้วางใจทางวิชาชีพ"},value:67},{key:"credibility",label:{en:"Credibility",th:"ความน่าเชื่อถือ"},value:91},{key:"respect",label:{en:"Professional Respect",th:"ความนับถือทางวิชาชีพ"},value:82},{key:"suspicion",label:{en:"Suspicion",th:"ความสงสัย"},value:8}]}
+ ratchata:{name:{en:"Ratchata (Dr. Singh)",th:"รัชตะ (ดร. ซิงห์)"},age:43,role:{en:"Senior Medical Examiner",th:"แพทย์นิติเวชอาวุโส"},status:{en:"Independent Expert",th:"ผู้เชี่ยวชาญอิสระ"},bio:{en:"A Thai Sikh forensic pathologist: dry-witted and uncompromising about what the body can actually prove.",th:"แพทย์นิติเวชชาวไทยเชื้อสายซิกข์ พูดมุกหน้าตาย และเคร่งครัดกับสิ่งที่ร่างกายพิสูจน์ได้จริง"},src:"assets/images/ratchata/profile.png?v=054",relation:{label:{en:"Professional Trust",th:"ความไว้วางใจทางวิชาชีพ"},value:67},metrics:[{key:"trust",label:{en:"Professional Trust",th:"ความไว้วางใจทางวิชาชีพ"},value:67},{key:"credibility",label:{en:"Credibility",th:"ความน่าเชื่อถือ"},value:91},{key:"respect",label:{en:"Professional Respect",th:"ความนับถือทางวิชาชีพ"},value:82},{key:"suspicion",label:{en:"Suspicion",th:"ความสงสัย"},value:8}]}
 };
+
+let characterRenderSignature="";
 
 const EVIDENCE={
  phone:{phase:"Room 1807",title:{en:"Victim's Phone",th:"โทรศัพท์ของผู้ตาย"}},blood:{phase:"Room 1807",title:{en:"Blood-stained Cloth",th:"ผ้าเปื้อนเลือด"}},laptop:{phase:"Room 1807",title:{en:"Victim's Laptop",th:"แล็ปท็อปของผู้ตาย"}},suitcase:{phase:"Room 1807",title:{en:"Suitcase",th:"กระเป๋าเดินทาง"}},
@@ -141,6 +143,7 @@ function unlockChapter2North(options={}){
 }
 function enableJournal(){return unlockChapter2North({showToast:false});}
 function characterSource(c){if(c.src)return c.src;try{return typeof portrait==='function'?portrait(c.portrait,'neutral'):'';}catch(_){return'';}}
+function preloadRatchata(){['assets/images/ratchata/profile.png?v=054','assets/images/ratchata/neutral.png?v=054'].forEach(src=>{const image=new Image();image.decoding='async';image.src=src;});}
 
 function unlockCharacter(id,opt={}){
  ensureState();if(!CHARACTERS[id])return false;
@@ -150,7 +153,7 @@ function unlockCharacter(id,opt={}){
  const storyName=STORY_NAMES[id];if(storyName){state.characters=state.characters||{};state.characters[storyName]=true;}
  if(opt.unread!==false&&fresh&&!state.lwCharactersUnread.includes(id))state.lwCharactersUnread.push(id);
  if(id==='ratchata'){state.medical=state.medical||{};state.medical.ratchataMet=true;}
- persist();renderCharacters();updateDots();
+ persist();renderCharacters(true);updateDots();
  if(fresh&&opt.source!=='dev')try{showBadge(language()==='th'?`เพิ่มตัวละคร: ${CHARACTERS[id].name.th}`:`Character added: ${CHARACTERS[id].name.en}`);}catch(_){}
  return fresh;
 }
@@ -176,14 +179,18 @@ function averageFor(id,c){
 function relationSummary(id,c){const value=averageFor(id,c);return `<div class="relation-summary"><div class="relation-label-row"><span>${language()==='th'?'ความสัมพันธ์':'Relationship'}</span><strong>${value}%</strong></div><div class="relation-bar"><div class="relation-fill" style="width:${value}%"></div></div></div>`;}
 function relationMetrics(id,c){return `<div class="relation-metrics">${dynamicMetrics(id,c).map(m=>`<div class="relation-metric ${m.key==='suspicion'?'suspicion':''}"><div class="relation-metric-head"><span>${m.label[language()]||m.label.en}</span><strong>${clamp(m.value)}%</strong></div><div class="relation-bar"><div class="relation-fill" style="width:${clamp(m.value)}%"></div></div></div>`).join('')}</div>`;}
 
-function renderCharacters(){
+function renderCharacters(force=false){
  ensureState();const grid=$("#characterGrid");if(!grid)return;
- if(!canonicalJournalEnabled()){grid.innerHTML='';return;}
+ if(!canonicalJournalEnabled()){if(grid.innerHTML)grid.innerHTML="";characterRenderSignature="";return;}
  const ids=state.lwCharactersUnlocked.filter(id=>CHARACTERS[id]);
- grid.innerHTML=ids.map(id=>{const c=CHARACTERS[id],src=characterSource(c);return `<button type="button" class="character-card" data-character="${id}">${src?`<img src="${src}" alt="">`:''}<div class="character-name">${c.name[language()]}</div><div class="character-status">${c.status[language()]||c.role[language()]}</div>${relationSummary(id,c)}</button>`;}).join('');
+ const signature=language()+"|"+ids.map(id=>{const c=CHARACTERS[id];return id+":"+characterSource(c)+":"+averageFor(id,c);}).join("|");
+ if(!force&&signature===characterRenderSignature&&grid.children.length===ids.length)return;
+ characterRenderSignature=signature;
+ grid.innerHTML=ids.map(id=>{const c=CHARACTERS[id],src=characterSource(c);return `<button type="button" class="character-card" data-character="${id}">${src?`<img src="${src}" alt="" loading="eager" decoding="sync" data-character-image="${id}">`:""}<div class="character-name">${c.name[language()]}</div><div class="character-status">${c.status[language()]||c.role[language()]}</div>${relationSummary(id,c)}</button>`;}).join("");
+ $$('[data-character-image="ratchata"]',grid).forEach(image=>{image.addEventListener("error",()=>{if(image.dataset.retry==="1")return;image.dataset.retry="1";image.src="assets/images/ratchata/neutral.png?v=054";},{once:true});});
  $$('[data-character]',grid).forEach(button=>button.addEventListener('click',()=>showDetail(button.dataset.character)));
 }
-function showDetail(id){const c=CHARACTERS[id],grid=$("#characterGrid"),detail=$("#characterDetail"),back=$("#charactersBack");if(!c||!detail)return;const src=characterSource(c);detail.innerHTML=`<div class="character-detail-head">${src?`<img src="${src}" alt="">`:''}<div><div class="character-name">${c.name[language()]}</div><div class="character-status">${c.role[language()]}${c.age?` · ${c.age}`:''}</div></div></div>${relationMetrics(id,c)}<div class="character-notes">${c.bio[language()]}</div>`;if(grid)grid.style.display='none';detail.style.display='block';if(back)back.style.display='block';}
+function showDetail(id){const c=CHARACTERS[id],grid=$("#characterGrid"),detail=$("#characterDetail"),back=$("#charactersBack");if(!c||!detail)return;const src=characterSource(c);detail.innerHTML=`<div class="character-detail-head">${src?`<img src="${src}" alt="" loading="eager" decoding="sync" data-detail-image="${id}">`:''}<div><div class="character-name">${c.name[language()]}</div><div class="character-status">${c.role[language()]}${c.age?` · ${c.age}`:''}</div></div></div>${relationMetrics(id,c)}<div class="character-notes">${c.bio[language()]}</div>`;const image=detail.querySelector('[data-detail-image="ratchata"]');if(image)image.addEventListener('error',()=>{if(image.dataset.retry==='1')return;image.dataset.retry='1';image.src='assets/images/ratchata/neutral.png?v=054';},{once:true});if(grid)grid.style.display='none';detail.style.display='block';if(back)back.style.display='block';}
 function markCharactersRead(){ensureState();state.lwCharactersUnread=[];state.journal.seen=true;state.flags.chapter2_character_journal_opened=true;persist();updateDots();}
 function openCharacters(event){const button=event.target.closest?.('#charactersButton');if(!button)return;event.preventDefault();event.stopPropagation();event.stopImmediatePropagation();if(!canonicalJournalEnabled()){updateJournalVisibility();return;}$("#drawer")?.classList.remove('open');renderCharacters();const grid=$("#characterGrid"),detail=$("#characterDetail"),back=$("#charactersBack");if(grid)grid.style.display='grid';if(detail)detail.style.display='none';if(back)back.style.display='none';$("#charactersModal")?.classList.add('open');markCharactersRead();}
 function backToGrid(event){if(!event.target.closest?.('#charactersBack'))return;event.preventDefault();const grid=$("#characterGrid"),detail=$("#characterDetail"),back=$("#charactersBack");if(grid)grid.style.display='grid';if(detail)detail.style.display='none';if(back)back.style.display='none';}
@@ -191,7 +198,7 @@ function backToGrid(event){if(!event.target.closest?.('#charactersBack'))return;
 function evidenceKeyFromElement(el){for(const a of ['data-clue','data-apt-clue','data-forensic-clue','data-medical-clue'])if(el.hasAttribute?.(a))return el.getAttribute(a);return null;}
 function unlockEvidence(id){ensureState();if(!EVIDENCE[id])return false;if(!state.lwEvidenceUnlocked.includes(id))state.lwEvidenceUnlocked.push(id);try{state.found?.add?.(id);}catch(_){}const el=$(`[data-clue="${id}"],[data-apt-clue="${id}"],[data-forensic-clue="${id}"],[data-medical-clue="${id}"]`);el?.classList.add('found');return true;}
 function renderRegistryEvidence(){ensureState();const list=$("#caseList");if(!list)return;list.querySelectorAll('[data-registry-evidence]').forEach(n=>n.remove());let last='';state.lwEvidenceUnlocked.filter(id=>EVIDENCE[id]).forEach(id=>{const e=EVIDENCE[id];if(e.phase!==last){last=e.phase;const h=document.createElement('div');h.className='case-section-title';h.dataset.registryEvidence='section';h.textContent=e.phase;list.appendChild(h);}const row=document.createElement('div');row.className='case-row';row.dataset.registryEvidence=id;row.innerHTML=`<b>${e.title[language()]}</b><div>${language()==='th'?'ปลดล็อกในโหมดนักพัฒนา':'Unlocked in developer mode.'}</div>`;list.appendChild(row);});}
-function devUnlockCharacters(event){event?.preventDefault();event?.stopImmediatePropagation();enableJournal();Object.keys(CHARACTERS).forEach(id=>unlockCharacter(id,{unread:false,source:'dev'}));state.lwCharactersUnread=[];persist();renderCharacters();updateDots();try{showBadge(language()==='th'?'ปลดล็อกตัวละครครบแล้ว':'All characters unlocked');}catch(_){} }
+function devUnlockCharacters(event){event?.preventDefault();event?.stopImmediatePropagation();enableJournal();Object.keys(CHARACTERS).forEach(id=>unlockCharacter(id,{unread:false,source:'dev'}));state.lwCharactersUnread=[];persist();renderCharacters(true);updateDots();try{showBadge(language()==='th'?'ปลดล็อกตัวละครครบแล้ว':'All characters unlocked');}catch(_){} }
 function devUnlockEvidence(event){event?.preventDefault();event?.stopImmediatePropagation();Object.keys(EVIDENCE).forEach(unlockEvidence);persist();renderRegistryEvidence();try{showBadge(language()==='th'?'ปลดล็อกหลักฐานครบแล้ว':'All evidence unlocked');}catch(_){} }
 
 function observeDialogueUnlocks(){const sessions=new WeakMap();const map={elena:'elena',somchai:'somchai',kittisak:'kittisak',ratchata:'ratchata'};const observer=new MutationObserver(records=>records.forEach(record=>{const box=record.target.closest?.('.dialogue')||record.target;if(!box?.classList?.contains('dialogue'))return;const set=sessions.get(box)||new Set();const speaker=box.querySelector('.speaker')?.textContent?.trim()?.toLowerCase();if(map[speaker])set.add(map[speaker]);sessions.set(box,set);if(box.classList.contains('hidden')||getComputedStyle(box).display==='none'){set.forEach(id=>unlockCharacter(id,{unread:true,source:'story'}));set.clear();}}));$$('.dialogue').forEach(box=>observer.observe(box,{subtree:true,childList:true,attributes:true,attributeFilter:['class']}));}
@@ -199,14 +206,14 @@ function observeScreens(){const observer=new MutationObserver(()=>{ensureState()
 
 function bind(){
  ensureState();
- updateJournalVisibility();renderCharacters();updateDots();observeDialogueUnlocks();observeScreens();
+ preloadRatchata();updateJournalVisibility();renderCharacters(true);updateDots();observeDialogueUnlocks();observeScreens();
  window.addEventListener("lastwitness:journal-unlocked",()=>{unlockChapter2North({showToast:false});updateJournalVisibility();renderCharacters();updateDots();});
  document.addEventListener('click',openCharacters,true);document.addEventListener('click',backToGrid,true);
- document.addEventListener('click',event=>{if(event.target.closest?.('[data-lang]'))setTimeout(()=>{renderCharacters();renderRegistryEvidence();},0);},true);
+ document.addEventListener('click',event=>{if(event.target.closest?.('[data-lang]'))setTimeout(()=>{renderCharacters(true);renderRegistryEvidence();},0);},true);
  $("#caseButton")?.addEventListener('click',()=>setTimeout(renderRegistryEvidence,0),true);
  $("#devUnlockCharacters")?.addEventListener('click',devUnlockCharacters,true);
  $("#devUnlockEvidence")?.addEventListener('click',devUnlockEvidence,true);
- window.LastWitnessContentRegistry={characters:CHARACTERS,evidence:EVIDENCE,unlockCharacter,unlockEvidence,renderCharacters,renderEvidence:renderRegistryEvidence,devUnlockCharacters,devUnlockEvidence,enableJournal,unlockChapter2North,updateVisibility:updateJournalVisibility,updateDots,canonicalJournalEnabled,version:'0.5.3'};
+ window.LastWitnessContentRegistry={characters:CHARACTERS,evidence:EVIDENCE,unlockCharacter,unlockEvidence,renderCharacters,renderEvidence:renderRegistryEvidence,devUnlockCharacters,devUnlockEvidence,enableJournal,unlockChapter2North,updateVisibility:updateJournalVisibility,updateDots,canonicalJournalEnabled,version:'0.5.4'};
 }
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',bind,{once:true});else bind();
 })();
