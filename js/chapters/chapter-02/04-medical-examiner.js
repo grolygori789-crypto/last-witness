@@ -1,4 +1,4 @@
-/* LAST WITNESS — Chapter II / Medical Examiner 0.5.9
+/* LAST WITNESS — Chapter II / Medical Examiner 0.6.0
  * Deterministic inspect/collect state, immediate hotspot feedback and reliable review.
  */
 (function(){
@@ -250,7 +250,7 @@ function bind(){
   const b=document.createElement("button");b.className="dev-button";b.dataset.devJump="medical2";b.textContent="Medical Examiner";
   b.onclick=()=>{$("#developerModal")?.classList.remove("open");show();};devGrid.appendChild(b);
  }
- window.LastWitnessMedicalExaminer={start:show,updateLanguage:updateUI,version:"0.5.9"};
+ window.LastWitnessMedicalExaminer={start:show,updateLanguage:updateUI,version:"0.6.0"};
  updateUI();
 }
 if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",bind,{once:true});else bind();
