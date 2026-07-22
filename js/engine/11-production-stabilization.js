@@ -1,11 +1,11 @@
-/* LAST WITNESS — Core Audio & Evidence Runtime 0.5.6
+/* LAST WITNESS — Core Audio & Evidence Runtime 0.5.9
  * Single scene-audio owner, immediate Case File cue, clean Room 1807 score,
  * fresh Medical state and controlled Chapter III puzzle cue.
  */
 (function(){
 "use strict";
-if(window.__lwProductionStabilization056)return;
-window.__lwProductionStabilization056=true;
+if(window.__lwProductionStabilization058)return;
+window.__lwProductionStabilization058=true;
 
 const $=(s,r=document)=>r.querySelector(s);
 const $$=(s,r=document)=>Array.from(r.querySelectorAll(s));
@@ -15,14 +15,14 @@ const FORENSIC_IDS=["sealed_sample","accession_record","audit_trace","batch_reco
 const MEDICAL_IDS=["postmortem","identity_tag","autopsy_report","toxicology_sample"];
 const LOOP_IDS=["themeAudio","rainAudio","officeAudio","crimeAudio","room1807Audio","apartmentAudio","morningOfficeAudio","cafeAudio","policeAudio","forensicHumAudio","medicalRefrigeratorAudio","medicalMachineAudio"];
 const PAGE_SOURCE="assets/audio/ae0db994456b758a.mp3";
-const PUZZLE_SOURCE="assets/audio/puzzle-success.wav?v=056";
-const SCANNER_SOURCE="assets/audio/medical-scanner-soft.wav?v=056";
+const PUZZLE_SOURCE="assets/audio/puzzle-success.wav?v=057";
+const SCANNER_SOURCE="assets/audio/medical-scanner-soft.wav?v=057";
 const ROOM_1807_SOURCE="assets/audio/chapter-03/modern-noir.mp3";
 let lastScreen="";
 let syncQueued=false;
 let forensicTransitioning=false;
-let pagePool=[],pageIndex=0,puzzleAudio=null,scannerPool=[],scannerIndex=0;
-let collectionPointer=null;
+let inspectionAudio=null,puzzleAudio=null,scannerPool=[],scannerIndex=0;
+let currentEvidenceContext=null;
 
 function gameState(){try{return state;}catch(_){return window.state||null;}}
 function activeScreen(){const s=gameState();return $(".screen.active")?.id||s?.screen||"";}
@@ -55,13 +55,14 @@ function ensureLoopAudio(id,src){
  return audio;
 }
 function prepareOneShots(){
- if(!pagePool.length)pagePool=Array.from({length:5},()=>createAudio(PAGE_SOURCE));
+ if(!inspectionAudio)inspectionAudio=createAudio(PAGE_SOURCE);
  if(!scannerPool.length)scannerPool=Array.from({length:3},()=>createAudio(SCANNER_SOURCE));
  if(!puzzleAudio)puzzleAudio=createAudio(PUZZLE_SOURCE);
 }
 function stopPuzzleCue(){stopElement(puzzleAudio,true);}
+function stopInspectionCue(){stopElement(inspectionAudio,true);}
 function stopOneShots(){
- pagePool.forEach(a=>stopElement(a,true));
+ stopInspectionCue();
  scannerPool.forEach(a=>stopElement(a,true));
  stopPuzzleCue();
 }
@@ -77,10 +78,18 @@ function playPool(pool,index,volume){
   return true;
  }catch(_){return false;}
 }
-function playCaseFileCue(finalCue=false){
+function playInspectionCue(){
  prepareOneShots();
- const volume=clamp(sfxLevel()*(finalCue?0.52:0.46),0.15,finalCue?0.32:0.28);
- return playPool(pagePool,pageIndex++,volume);
+ if(!soundOn()||sfxLevel()<=0||!inspectionAudio)return false;
+ try{
+  inspectionAudio.pause();
+  inspectionAudio.currentTime=0;
+  inspectionAudio.loop=false;
+  inspectionAudio.muted=false;
+  inspectionAudio.volume=clamp(sfxLevel()*0.48,0.16,0.29);
+  const result=inspectionAudio.play();if(result?.catch)result.catch(()=>{});
+  return true;
+ }catch(_){return false;}
 }
 function playPuzzleCue(){
  prepareOneShots();if(!soundOn()||sfxLevel()<=0)return;
@@ -110,12 +119,12 @@ function volumeProfile(screen){
  const m=musicLevel(),p={};
  if(screen==="title"){p.themeAudio=m;p.rainAudio=m*0.48;}
  else if(screen==="office"){p.officeAudio=m*0.50*dialogueDuck;p.rainAudio=m*0.14*dialogueDuck;}
- else if(["crime","phone","deduction"].includes(screen)){p.room1807Audio=m*0.30*dialogueDuck*evidenceDuck;p.rainAudio=m*0.08*dialogueDuck;}
+ else if(["crime","phone","deduction"].includes(screen)){p.room1807Audio=m*0.46*dialogueDuck*evidenceDuck;p.rainAudio=m*0.08*dialogueDuck;}
  else if(screen==="office2"||screen==="chapter3Office"){p.morningOfficeAudio=m*0.50*dialogueDuck;}
  else if(screen==="apartment2"){p.apartmentAudio=m*0.58*dialogueDuck*evidenceDuck;}
  else if(screen==="cafe2"){p.cafeAudio=m*0.30*dialogueDuck;}
  else if(screen==="police2"){p.policeAudio=m*0.05*dialogueDuck;}
- else if(screen==="forensic2"){p.forensicHumAudio=m*0.20*dialogueDuck*evidenceDuck;}
+ else if(screen==="forensic2"){p.forensicHumAudio=m*0.10*dialogueDuck*evidenceDuck;}
  else if(screen==="medical2"){p.medicalRefrigeratorAudio=m*0.26*dialogueDuck*evidenceDuck;}
  return p;
 }
@@ -144,35 +153,56 @@ function queueAudioSync(){
  if(syncQueued)return;syncQueued=true;
  requestAnimationFrame(()=>{syncQueued=false;applySceneAudio();});
 }
-function phaseCount(phase){
- const s=gameState();
- if(phase==="apartment")return APARTMENT_IDS.filter(id=>s?.found?.has?.(id)).length;
- if(phase==="forensic")return new Set(s?.forensic?.collected||[]).size;
- if(phase==="medical")return new Set(s?.medical?.collected||[]).size;
- if(phase==="police")return s?.flags?.police_evidence_collected?1:0;
- return 0;
+function collectedForContext(context){
+ const s=gameState();if(!context)return false;
+ if(context.phase==="apartment")return Boolean(s?.found?.has?.(context.id));
+ if(context.phase==="forensic")return new Set(s?.forensic?.collected||[]).has(context.id);
+ if(context.phase==="medical")return new Set(s?.medical?.collected||[]).has(context.id);
+ if(context.phase==="police")return Boolean(s?.flags?.police_evidence_collected);
+ return false;
 }
-function phaseTotal(phase){return phase==="police"?1:4;}
-function phaseForCollect(button){
- if(button?.id==="collectApartmentEvidence")return"apartment";
- if(button?.id==="collectForensicEvidence")return"forensic";
- if(button?.id==="collectMedicalEvidence")return"medical";
- if(button?.id==="collectPoliceEvidence")return"police";
- return"";
+function evidenceContextFromTarget(target){
+ const hotspot=target.closest?.("[data-apt-clue],[data-forensic-clue],[data-medical-clue],[data-police-clue]");
+ if(!hotspot)return null;
+ if(hotspot.dataset.aptClue)return{phase:"apartment",id:hotspot.dataset.aptClue};
+ if(hotspot.dataset.forensicClue)return{phase:"forensic",id:hotspot.dataset.forensicClue};
+ if(hotspot.dataset.medicalClue)return{phase:"medical",id:hotspot.dataset.medicalClue};
+ if(hotspot.dataset.policeClue)return{phase:"police",id:hotspot.dataset.policeClue};
+ return null;
 }
-function onCollectionPointer(event){
- const button=event.target.closest?.("#collectApartmentEvidence,#collectForensicEvidence,#collectMedicalEvidence,#collectPoliceEvidence");
- if(!button||button.disabled||getComputedStyle(button).display==="none")return;
- const phase=phaseForCollect(button);if(!phase)return;
- const before=phaseCount(phase);
- collectionPointer={button,phase,before};
- /* Play on pointerdown, exactly when the player commits the action. */
- playCaseFileCue(before+1>=phaseTotal(phase));
+function restoreInspectAffordance(context){
+ if(!context)return;
+ const collected=collectedForContext(context);
+ const map={
+  apartment:{panel:"#apartmentEvidence",object:"#apartmentEvidenceObject",meta:"#apartmentEvidenceMeta",inspect:"#inspectApartmentEvidence",collect:"#collectApartmentEvidence",close:"#closeApartmentEvidence"},
+  forensic:{panel:"#forensicEvidencePanel",object:"#forensicEvidenceObject",meta:"#forensicEvidenceMeta",inspect:"#inspectForensicEvidence",collect:"#collectForensicEvidence",close:"#closeForensicEvidence"},
+  medical:{panel:"#medicalEvidencePanel",object:"#medicalEvidenceObject",meta:"#medicalEvidenceMeta",inspect:"#inspectMedicalEvidence",collect:"#collectMedicalEvidence",close:"#closeMedicalEvidence"},
+  police:{panel:"#policeEvidencePanel",object:"#policeEvidenceObject",meta:"#policeEvidenceMeta",inspect:"#inspectPoliceEvidence",collect:"#collectPoliceEvidence",close:"#closePoliceEvidence"}
+ }[context.phase];
+ if(!map)return;
+ $(map.object)?.classList.remove("inspecting");
+ $(map.meta)?.classList.remove("show");
+ const observation=$(map.meta)?.querySelector?.(".evidence-observation");
+ if(observation)observation.style.display="none";
+ const inspect=$(map.inspect);if(inspect)inspect.style.display="";
+ const collect=$(map.collect);if(collect)collect.style.display=collected?"none":"none";
+ const close=$(map.close);if(close)close.style.display=collected?"":"none";
 }
-function onCollectionClick(event){
- const button=event.target.closest?.("#collectApartmentEvidence,#collectForensicEvidence,#collectMedicalEvidence,#collectPoliceEvidence");
- if(!button||!collectionPointer||collectionPointer.button!==button)return;
- collectionPointer=null;
+function handleEvidencePointer(event){
+ const context=evidenceContextFromTarget(event.target);
+ if(context){
+  currentEvidenceContext=context;
+  setTimeout(()=>restoreInspectAffordance(context),0);
+  return;
+ }
+ const inspectTarget=event.target.closest?.("#inspectApartmentEvidence,#apartmentEvidenceObject,#inspectForensicEvidence,#forensicEvidenceObject,#inspectMedicalEvidence,#medicalEvidenceObject,#inspectPoliceEvidence,#policeEvidenceObject");
+ if(inspectTarget){
+  playInspectionCue();
+  return;
+ }
+ if(event.target.closest?.("#closeApartmentEvidence,#closeForensicEvidence,#closeMedicalEvidence,#closePoliceEvidence")){
+  stopInspectionCue();
+ }
 }
 function repairMedicalEvidence(event){
  if(event.target.closest?.("[data-medical-clue]")){
@@ -198,6 +228,7 @@ function clearMedicalHotspots(){
 function prepareFreshMedicalPhase(){
  const s=gameState();if(!s)return;
  s.medical={started:true,inspected:[],found:[],collected:[],active:null,choice:null,complete:false,ratchataMet:false};
+ MEDICAL_IDS.forEach(id=>{try{s.found?.delete?.("medical_"+id);}catch(_){}});
  clearMedicalHotspots();
 }
 function enterMedicalDirectly(){
@@ -221,23 +252,23 @@ function installForensicTransition(){
 }
 function installPlayBridge(){
  const original=window.play;
- if(typeof original==="function"&&!original.__lwEvidenceBridge056){
+ if(typeof original==="function"&&!original.__lwEvidenceBridge057){
   const wrapped=function(name){
-   if(name==="page"){playCaseFileCue(false);return;}
+   if(name==="page")return;
    return original.apply(this,arguments);
   };
-  wrapped.__lwEvidenceBridge056=true;window.play=wrapped;
+  wrapped.__lwEvidenceBridge057=true;window.play=wrapped;
  }
 }
 function installRouting(){
  const original=window.show;
- if(typeof original==="function"&&!original.__lwProductionRoute056){
+ if(typeof original==="function"&&!original.__lwProductionRoute058){
   const wrapped=function(){
    stopOneShots();stopInvestigationLoops();
    const result=original.apply(this,arguments);
    queueAudioSync();window.LastWitnessContentRegistry?.updateVisibility?.();return result;
   };
-  wrapped.__lwProductionRoute056=true;window.show=wrapped;
+  wrapped.__lwProductionRoute058=true;window.show=wrapped;
  }
  const originalSet=window.setVolumes;
  window.setVolumes=function(){
@@ -277,22 +308,25 @@ function bindSettings(){
 }
 function bind(){
  ensureLoopAudio("room1807Audio",ROOM_1807_SOURCE);
- ensureLoopAudio("apartmentAudio","assets/audio/victim-apartment-score.mp3?v=056");
+ ensureLoopAudio("apartmentAudio","assets/audio/victim-apartment-score.mp3?v=057");
  prepareOneShots();applyChapterNaming();installGapGuard();suppressLegacyEvidenceAudio();installSoftScanner();
  installPlayBridge();installRouting();installObservers();installForensicTransition();bindSettings();
- document.addEventListener("pointerdown",onCollectionPointer,true);
- document.addEventListener("click",onCollectionClick,false);
+ document.addEventListener("pointerdown",event=>{
+  if(event.target.closest?.("#continueMedicalExaminer"))prepareFreshMedicalPhase();
+  handleEvidencePointer(event);
+ },true);
  document.addEventListener("click",repairMedicalEvidence,true);
  window.LastWitnessAudioCue={
-  playCollection:()=>playCaseFileCue(false),
-  playCompletion:()=>playCaseFileCue(true),
+  playCollection:()=>{},
+  playCompletion:()=>{},
+  playInspection:playInspectionCue,
   playPuzzleSuccess:playPuzzleCue,
   stopPuzzleSuccess:stopPuzzleCue,
   playSoftScanner,
   stopEvidenceCue:stopOneShots,
-  version:"0.5.6"
+  version:"0.5.9"
  };
- window.LastWitnessProductionAudio={refresh:queueAudioSync,apply:applySceneAudio,stopEvidenceCue:stopOneShots,profile:volumeProfile,version:"0.5.6"};
+ window.LastWitnessProductionAudio={refresh:queueAudioSync,apply:applySceneAudio,stopEvidenceCue:stopOneShots,profile:volumeProfile,version:"0.5.9"};
  window.LastWitnessContentRegistry?.updateVisibility?.();queueAudioSync();
 }
 if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",bind,{once:true});else bind();

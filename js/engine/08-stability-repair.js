@@ -1,18 +1,12 @@
-/* LAST WITNESS — Static UI Stability 0.5.6
- * Single local mechanical-click owner. No network audio, no fallback tick,
- * no polling and no competing audio controller.
+/* LAST WITNESS — Static UI Stability 0.5.9
+ * One physical pointerdown = one immediate local click.
+ * A single audio voice cancels any previous click, so rapid tapping cannot queue.
  */
 (function(){
 "use strict";
-if(window.__lwStabilityRepair056)return;
-window.__lwStabilityRepair056=true;
 
 const $=(selector,root=document)=>root.querySelector(selector);
 const $$=(selector,root=document)=>Array.from(root.querySelectorAll(selector));
-const CLICK_POOL_SIZE=5;
-let clickPool=[];
-let clickIndex=0;
-let lastClickAt=-Infinity;
 
 function gameState(){try{return state;}catch(_){return window.state||null;}}
 function soundEnabled(){return gameState()?.sound!==false;}
@@ -86,58 +80,171 @@ function installHeadphonesRecommendation(){
   document.head.appendChild(style);
  }
 }
-function createLocalClick(){
+
+let clickVoice=null;
+let lastPointerStamp=-Infinity;
+
+function prepareClickVoice(){
+ if(clickVoice)return clickVoice;
  const source=$("#clickAudio")?.getAttribute("src")||"assets/audio/b3dccd7733a71a6d.mp3";
- const audio=new Audio(source);
- audio.preload="auto";audio.loop=false;audio.load();
- return audio;
+ clickVoice=new Audio(source);
+ clickVoice.preload="auto";
+ clickVoice.loop=false;
+ clickVoice.load();
+
+ const legacy=$("#clickAudio");
+ if(legacy){
+  try{legacy.pause();legacy.currentTime=0;}catch(_){}
+  legacy.muted=true;
+  legacy.volume=0;
+  legacy.play=()=>Promise.resolve();
+ }
+ return clickVoice;
 }
-function prepareClickPool(){
- if(clickPool.length)return;
- clickPool=Array.from({length:CLICK_POOL_SIZE},createLocalClick);
-}
-function playImmediateClick(force=false){
+function playImmediateClick(){
  if(!soundEnabled()||sfxLevel()<=0)return;
- const now=performance.now();
- if(!force&&now-lastClickAt<52)return;
- lastClickAt=now;
- prepareClickPool();
- const audio=clickPool[clickIndex++%CLICK_POOL_SIZE];
+ const audio=prepareClickVoice();
  try{
-  audio.pause();audio.currentTime=0;audio.loop=false;audio.muted=false;
-  audio.volume=Math.max(0.14,Math.min(0.25,sfxLevel()*0.40));
-  const result=audio.play();if(result?.catch)result.catch(()=>{});
+  /* Cancel the previous transient before starting the new one.
+   * This prevents rapid taps from leaving queued tails. */
+  audio.pause();
+  audio.currentTime=0;
+  audio.loop=false;
+  audio.muted=false;
+  audio.volume=Math.max(0.14,Math.min(0.24,sfxLevel()*0.38));
+  const result=audio.play();
+  if(result?.catch)result.catch(()=>{});
  }catch(_){}
 }
 function actionable(event){
  return event.target.closest?.('#enter,#newGame,#continueGame,#loadTitle,button:not(:disabled),.dialogue:not(.hidden),[role="button"]');
 }
+function pointerClickOwner(event){
+ if(!actionable(event))return;
+ /* Some Android WebViews can emit a duplicate pointerdown with the same
+  * timestamp during gesture promotion. Ignore only that duplicate event. */
+ if(event.timeStamp===lastPointerStamp)return;
+ lastPointerStamp=event.timeStamp;
+ playImmediateClick();
+}
 function installClick(){
- if(window.__lwCoreClickInstalled)return;
- window.__lwCoreClickInstalled=true;
- prepareClickPool();
- document.addEventListener("pointerdown",event=>{if(actionable(event))playImmediateClick();},true);
- document.addEventListener("keydown",event=>{if((event.key==="Enter"||event.key===" ")&&actionable(event))playImmediateClick();},true);
+ prepareClickVoice();
+
+ if(window.__lwPointerClickHandler){
+  document.removeEventListener("pointerdown",window.__lwPointerClickHandler,true);
+ }
+ window.__lwPointerClickHandler=pointerClickOwner;
+ document.addEventListener("pointerdown",pointerClickOwner,true);
+
+ /* Legacy onclick handlers still call play("click"). They must be silent.
+  * Pointerdown above is the only click owner. */
  const original=window.play;
  window.play=function(name){
-  if(name==="click"){if(performance.now()-lastClickAt>=80)playImmediateClick(true);return;}
+  if(name==="click")return;
   return typeof original==="function"?original.apply(this,arguments):undefined;
  };
  window.play.__lwCoreClick=true;
+
+ window.LastWitnessImmediateClick={play:playImmediateClick,version:"0.5.9"};
 }
+
+function repairCharacterJournal(){
+ const back=$("#charactersBack");
+ /* Chapter I installed a legacy onclick renderer. The canonical registry has
+  * its own capture handler; keeping both causes the old grid to overwrite it. */
+ if(back)back.onclick=null;
+
+ const registry=window.LastWitnessContentRegistry;
+ const ratchata=registry?.characters?.ratchata;
+ if(ratchata){
+  ratchata.name.en="Ratchata (Dr.Singh)";
+  ratchata.src="assets/images/ratchata/profile.png";
+  registry.renderCharacters?.(true);
+ }
+}
+
+
+function unlockStoryCharacter(id,flag){
+ const s=gameState();
+ const registry=window.LastWitnessContentRegistry;
+ if(!s||!registry?.unlockCharacter||!flag)return false;
+ s.flags=s.flags||{};
+ const marker=`journal_story_${id}_unlocked`;
+ if(s.flags[marker]===true)return false;
+ const fresh=registry.unlockCharacter(id,{unread:true,source:"story"});
+ s.flags[marker]=true;
+ try{if(typeof autoSave==="function")autoSave();}catch(_){}
+ return fresh;
+}
+function reconcileStoryCharacters(){
+ const s=gameState();if(!s)return;
+ s.flags=s.flags||{};
+ const screen=$(".screen.active")?.id||s.screen||"";
+
+ /* North: Character Journal is introduced only after the Chapter II office
+  * conversation has completed. */
+ if(s.flags.chapter2_character_feature_unlocked===true&&s.journal?.unlocked===true){
+  unlockStoryCharacter("north",true);
+ }
+
+ /* Elena: first meaningful introduction is completed at Orchid Café. */
+ if(s.flags.cafe_intro_complete===true||
+    ["police2","forensic2","medical2","chapter2Complete","chapter3Office","chapter3Phase2Wip"].includes(screen)){
+  unlockStoryCharacter("elena",true);
+ }
+
+ /* Somchai and Kittisak: both receive names, roles and meaningful interaction
+  * during the Police Station introduction. They must exist before leaving it. */
+ if(s.flags.police_intro_complete===true||
+    ["forensic2","medical2","chapter2Complete","chapter3Office","chapter3Phase2Wip"].includes(screen)){
+  unlockStoryCharacter("somchai",true);
+  unlockStoryCharacter("kittisak",true);
+ }
+
+ /* Ratchata: introduced and unlocked in Medical Examiner. This fallback only
+  * repairs saves that already passed that beat, never introduces him in Ch. III. */
+ if(s.medical?.ratchataMet===true||s.medical?.ratchataJournalUnlocked===true||
+    ["chapter2Complete","chapter3Office","chapter3Phase2Wip"].includes(screen)){
+  unlockStoryCharacter("ratchata",true);
+ }
+}
+function installStoryCharacterGates(){
+ reconcileStoryCharacters();
+ const observer=new MutationObserver(()=>reconcileStoryCharacters());
+ $$(".screen").forEach(screen=>observer.observe(screen,{attributes:true,attributeFilter:["class"]}));
+ window.addEventListener("lastwitness:journal-unlocked",reconcileStoryCharacters);
+ document.addEventListener("click",event=>{
+  if(event.target.closest?.("#continueChapter2,#continueMedicalExaminer,#continueChapter3,[data-lang]")){
+   setTimeout(reconcileStoryCharacters,0);
+  }
+ },true);
+ window.LastWitnessStoryCharacterGates={
+  reconcile:reconcileStoryCharacters,
+  version:"0.5.9"
+ };
+}
+
 function bind(){
  try{const s=gameState();if(s&&!window.state)window.state=s;}catch(_){}
- refreshReviewButtons();repairAllPortraits();preventPoliceCompletionCard();installHeadphonesRecommendation();installClick();
+ refreshReviewButtons();
+ repairAllPortraits();
+ preventPoliceCompletionCard();
+ installHeadphonesRecommendation();
+ installClick();
+ repairCharacterJournal();
+ installStoryCharacterGates();
+
  const bodyObserver=new MutationObserver(mutations=>{
   for(const mutation of mutations){
    mutation.addedNodes.forEach(node=>{if(node.nodeType===1)repairAllPortraits(node);});
   }
-  refreshReviewButtons();preventPoliceCompletionCard();
+  refreshReviewButtons();
+  preventPoliceCompletionCard();
  });
  bodyObserver.observe(document.body,{subtree:true,childList:true});
+
  const card=$("#policePhaseComplete");
  if(card)new MutationObserver(preventPoliceCompletionCard).observe(card,{attributes:true,attributeFilter:["style","class"]});
- window.LastWitnessImmediateClick={play:()=>playImmediateClick(true),version:"0.5.6"};
 }
 if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",bind,{once:true});else bind();
 })();
