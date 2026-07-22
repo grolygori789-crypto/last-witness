@@ -1,9 +1,9 @@
-/* LAST WITNESS — Chapter III / Phase I 0.5.0
+/* LAST WITNESS — Chapter III / Phase I 0.5.4
  * THE BORROWED MINUTES — shared production runtime integration.
  */
 (function(){
 "use strict";
-if(window.LastWitnessChapter3?.version==="0.5.0")return;
+if(window.LastWitnessChapter3?.version==="0.5.4")return;
 const $=(s,r=document)=>r.querySelector(s);
 const $$=(s,r=document)=>Array.from(r.querySelectorAll(s));
 const ORDER=["credential","draft","sample","revision","accession","discovery"];
@@ -138,7 +138,7 @@ function confirmPuzzle(){
  const status=$("#ch3TimelineStatus");
  if(!correct){status.textContent=copy().wrong;status.className="ch3-timeline-status error";return;}
  status.textContent=copy().success;status.className="ch3-timeline-status success";
- ensureState();state.chapter3.timelineComplete=true;state.checkpoint="ch3_timeline_complete";updateProgress(62);autoSave();window.LastWitnessAudioCue?.playCompletion?.();
+ ensureState();state.chapter3.timelineComplete=true;state.checkpoint="ch3_timeline_complete";updateProgress(62);autoSave();window.LastWitnessAudioCue?.playPuzzleSuccess?.();
  setTimeout(()=>{
   closePuzzle();$("#openCh3Timeline").style.display="none";
   playDialogue([
@@ -195,5 +195,5 @@ function bind(){
 }
 
 inject();
-window.LastWitnessChapter3={startFromChapter2,resumeFromState,updateLanguage,openPuzzle,version:"0.5.0"};
+window.LastWitnessChapter3={startFromChapter2,resumeFromState,updateLanguage,openPuzzle,version:"0.5.4"};
 })();
