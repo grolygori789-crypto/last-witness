@@ -1,4 +1,4 @@
-/* LAST WITNESS — Chapter II / Chapter III Production Integration 0.6.3
+/* LAST WITNESS — Chapter II / Chapter III Production Integration 0.6.6
  * Owns the Medical transition and loads Chapter III on demand.
  * Production Runtime 11 is loaded once by 08-stability-repair.js.
  */
@@ -6,6 +6,7 @@
 "use strict";
 const $=(s,r=document)=>r.querySelector(s);
 const $$=(s,r=document)=>Array.from(r.querySelectorAll(s));
+let medicalTransitioning=false;
 function language(){try{return window.state?.language==="th"?"th":"en";}catch(_){return document.documentElement.lang==="th"?"th":"en";}}
 function stopAudio(audio,reset=true){if(!audio)return;try{audio.pause();if(reset)audio.currentTime=0;}catch(_){}}
 function activateScreen(id){$$('.screen').forEach(screen=>screen.classList.remove('active'));const target=document.getElementById(id);target?.classList.add('active');if(window.state&&target)state.screen=target.id;}
@@ -36,14 +37,45 @@ function returnToTitle(){
 }
 function enterMedicalExaminer(event){
  event?.preventDefault();event?.stopImmediatePropagation();
- $("#forensicPhaseComplete")?.style.setProperty("display","none");
+ if(medicalTransitioning)return;
+ medicalTransitioning=true;
+ const complete=$("#forensicPhaseComplete");
+ if(complete){complete.style.setProperty("display","none","important");complete.setAttribute("aria-hidden","true");}
  stopAudio($("#forensicHumAudio"),true);
  window.LastWitnessAudioCue?.stopEvidenceCue?.();
  if(window.state){
   state.medical={started:true,inspected:[],found:[],collected:[],active:null,choice:null,complete:false,ratchataMet:false,ratchataJournalUnlocked:false};
   ["postmortem","identity_tag","autopsy_report","toxicology_sample"].forEach(id=>{try{state.found?.delete?.("medical_"+id);}catch(_){}});
  }
- window.LastWitnessMedicalExaminer?.startFresh?.();
+ const medical=window.LastWitnessMedicalExaminer;
+ try{
+  if(medical?.startFresh)medical.startFresh();
+  else if(medical?.start)medical.start();
+ }finally{
+  /* Release the short transition lock after the synchronous screen change.
+   * forensicIsComplete() also requires state.screen === "forensic2", so
+   * queued callbacks cannot reopen Medical after the screen has changed. */
+  medicalTransitioning=false;
+ }
+}
+function forensicIsComplete(){
+ try{return Boolean(window.state&&state.screen==="forensic2"&&(state.forensic?.complete===true||state.forensic?.choice));}
+ catch(_){return false;}
+}
+function transitionCompletedForensic(){
+ if(!forensicIsComplete())return false;
+ enterMedicalExaminer();
+ return true;
+}
+function installDirectForensicTransition(){
+ if(!$("#lwDirectForensicMedical065")){
+  const style=document.createElement("style");
+  style.id="lwDirectForensicMedical065";
+  style.textContent="#forensicPhaseComplete{display:none!important}";
+  document.head.appendChild(style);
+ }
+ const complete=$("#forensicPhaseComplete");
+ if(complete){complete.style.setProperty("display","none","important");complete.setAttribute("aria-hidden","true");}
 }
 function addStylesheetOnce(href,id){if(document.getElementById(id))return;const link=document.createElement("link");link.id=id;link.rel="stylesheet";link.href=href;document.head.appendChild(link);}
 function loadScriptOnce(src,id){
@@ -81,12 +113,18 @@ function localizeEnding(){
 }
 function bind(){
  localizeEnding();
+ installDirectForensicTransition();
  $("#continueChapter3")?.addEventListener("click",startChapter3,true);
  $("#chapter2ReturnTitle")?.addEventListener("click",returnToTitle,true);
  $("#chapter3WipReturnTitle")?.addEventListener("click",returnToTitle,true);
  $("#continueMedicalExaminer")?.addEventListener("click",enterMedicalExaminer,true);
- document.addEventListener("click",event=>{if(event.target.closest?.("[data-lang]"))setTimeout(localizeEnding,0);},true);
- window.LastWitnessChapter2Integration={showChapter2Complete,returnToTitle,enterMedicalExaminer,startChapter3,ensureProductionRuntime,titleAudioState,version:"0.6.3"};
+ document.addEventListener("click",event=>{
+  if(event.target.closest?.("[data-lang]"))setTimeout(localizeEnding,0);
+  if(event.target.closest?.("#forensicDialogue"))setTimeout(transitionCompletedForensic,0);
+  if(event.target.closest?.("#continueGame,#loadTitle,#loadManual"))setTimeout(transitionCompletedForensic,80);
+ },true);
+ queueMicrotask(transitionCompletedForensic);
+ window.LastWitnessChapter2Integration={showChapter2Complete,returnToTitle,enterMedicalExaminer,transitionCompletedForensic,startChapter3,ensureProductionRuntime,titleAudioState,version:"0.6.6"};
 }
 if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",bind,{once:true});else bind();
 })();
