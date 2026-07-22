@@ -1,4 +1,4 @@
-/* LAST WITNESS — Runtime Bootstrap, UI & Journal Stability 0.6.1
+/* LAST WITNESS — Deterministic UI Click & Medical Hotspot Fix 0.6.2
  * One physical pointerdown = one immediate local click.
  * A single audio voice cancels any previous click, so rapid tapping cannot queue.
  */
@@ -81,62 +81,106 @@ function installHeadphonesRecommendation(){
  }
 }
 
-let uiVoiceInstance=null;
-function prepareKnownClickVoice(){
- if(uiVoiceInstance)return uiVoiceInstance;
+const clickPool=[];
+let clickPoolIndex=0;
+
+function prepareClickPool(){
+ if(clickPool.length)return clickPool;
+ const source=$("#clickAudio")?.getAttribute("src")||"assets/audio/b3dccd7733a71a6d.mp3";
+
+ for(let i=0;i<4;i++){
+  const audio=new Audio(source);
+  audio.preload="auto";
+  audio.loop=false;
+  audio.volume=0.07;
+  audio.load();
+  clickPool.push(audio);
+ }
+
+ /* Disable only the legacy global click path. The pool above is the sole owner. */
  const legacy=$("#clickAudio");
- const source=legacy?.getAttribute("src")||"assets/audio/b3dccd7733a71a6d.mp3";
- uiVoiceInstance=new Audio(source);
- uiVoiceInstance.preload="auto";
- uiVoiceInstance.loop=false;
- uiVoiceInstance.load();
  if(legacy){
   try{legacy.pause();legacy.currentTime=0;}catch(_){}
   legacy.muted=true;
   legacy.volume=0;
   legacy.play=()=>Promise.resolve();
  }
- return uiVoiceInstance;
+ return clickPool;
 }
+
 function playSemanticUI(kind){
  if(!soundEnabled()||sfxLevel()<=0||!kind)return;
- const audio=prepareKnownClickVoice();
+
+ const pool=prepareClickPool();
+ const audio=pool[clickPoolIndex++%pool.length];
+
  try{
   audio.pause();
   audio.currentTime=0;
   audio.loop=false;
   audio.muted=false;
-  audio.playbackRate=kind==="confirm"?0.96:kind==="back"?1.06:1;
-  const scalar=kind==="confirm"?0.34:kind==="back"?0.27:0.30;
-  audio.volume=Math.max(0.10,Math.min(0.20,sfxLevel()*scalar));
-  audio.play().catch(()=>{});
+  audio.playbackRate=1;
+
+  /* Kept deliberately quiet. Confirm is only slightly firmer than navigation. */
+  const base=kind==="confirm"?0.085:kind==="back"?0.065:0.07;
+  audio.volume=Math.max(0.035,Math.min(0.095,base*sfxLevel()/0.55));
+
+  const result=audio.play();
+  if(result?.catch)result.catch(()=>{});
  }catch(_){}
 }
+
 function semanticAction(target){
  if(!target?.closest)return null;
 
- /* These systems own their own feedback. A generic click here creates fatigue
-  * or competes with narrative audio. */
- if(target.closest('.dialogue,[data-apt-clue],[data-forensic-clue],[data-medical-clue],[data-police-clue],#apartmentEvidenceObject,#forensicEvidenceObject,#medicalEvidenceObject,#policeEvidenceObject,#inspectApartmentEvidence,#inspectForensicEvidence,#inspectMedicalEvidence,#inspectPoliceEvidence,#collectApartmentEvidence,#collectForensicEvidence,#collectMedicalEvidence,#collectPoliceEvidence,[data-ch3],[id^="ch3"]'))return null;
+ /* These actions have their own feedback or are intentionally silent. */
+ if(target.closest(
+  '.dialogue,'+
+  '[data-apt-clue],[data-forensic-clue],[data-medical-clue],[data-police-clue],'+
+  '#apartmentEvidenceObject,#forensicEvidenceObject,#medicalEvidenceObject,#policeEvidenceObject,'+
+  '#inspectApartmentEvidence,#inspectForensicEvidence,#inspectMedicalEvidence,#inspectPoliceEvidence,'+
+  '#collectApartmentEvidence,#collectForensicEvidence,#collectMedicalEvidence,#collectPoliceEvidence,'+
+  '[data-ch3],[id^="ch3"]'
+ ))return null;
 
- if(target.closest('#charactersBack,#backToCrime,#summaryBack,.closeModal,#resume,#closePhoneUI,#closeApartmentEvidence,#closeForensicEvidence,#closeMedicalEvidence,#closePoliceEvidence'))return"back";
+ if(target.closest(
+  '#charactersBack,#backToCrime,#summaryBack,.closeModal,#resume,#closePhoneUI,'+
+  '#closeApartmentEvidence,#closeForensicEvidence,#closeMedicalEvidence,#closePoliceEvidence'
+ ))return"back";
 
- if(target.closest('.choice-option,[data-choice],[data-cafe-choice],[data-police-choice],[data-forensic-choice],[data-medical-choice],#makeDeduction,#reviewEvidence,#reviewApartment,#reviewForensic,#reviewMedical,#continueMedicalExaminer,#continueChapter3'))return"confirm";
+ if(target.closest(
+  '.choice-option,[data-choice],[data-cafe-choice],[data-police-choice],'+
+  '[data-forensic-choice],[data-medical-choice],#makeDeduction,#reviewEvidence,'+
+  '#reviewApartment,#reviewForensic,#reviewMedical,#continueMedicalExaminer,#continueChapter3'
+ ))return"confirm";
 
- if(target.closest('#enter,#newGame,#continueGame,#loadTitle,.menuButton,.saveButton,.icon,#historyButton,#caseButton,#charactersButton,#settingsButton,#loadManual,#restart,#titleButton,[data-lang],button.ghost,button.primary'))return"soft";
+ if(target.closest(
+  '#enter,#newGame,#continueGame,#loadTitle,.menuButton,.saveButton,.icon,'+
+  '#historyButton,#caseButton,#charactersButton,#settingsButton,#loadManual,'+
+  '#restart,#titleButton,[data-lang],button.ghost,button.primary'
+ ))return"soft";
+
  return null;
 }
-function semanticPointerOwner(event){
+
+function semanticClickOwner(event){
  const kind=semanticAction(event.target);
  if(kind)playSemanticUI(kind);
 }
+
 function installClick(){
- prepareKnownClickVoice();
+ prepareClickPool();
+
  if(window.__lwPointerClickHandler){
   document.removeEventListener("pointerdown",window.__lwPointerClickHandler,true);
+  document.removeEventListener("click",window.__lwPointerClickHandler,true);
  }
- window.__lwPointerClickHandler=semanticPointerOwner;
- document.addEventListener("pointerdown",semanticPointerOwner,true);
+
+ window.__lwPointerClickHandler=semanticClickOwner;
+
+ /* Use the actual click event so the sound aligns with the accepted action,
+  * rather than firing early on pointerdown. */
+ document.addEventListener("click",semanticClickOwner,true);
 
  const original=window.play;
  window.play=function(name){
@@ -144,19 +188,38 @@ function installClick(){
   return typeof original==="function"?original.apply(this,arguments):undefined;
  };
  window.play.__lwCoreClick=true;
- window.LastWitnessImmediateClick={play:playSemanticUI,version:"0.6.1"};
+
+ window.LastWitnessImmediateClick={
+  play:playSemanticUI,
+  version:"0.6.2"
+ };
 }
-function loadProductionRuntime(){
- if(window.LastWitnessProductionAudio||window.__lwProductionStabilization061)return;
- const existing=Array.from(document.scripts).find(script=>
-  /js\/engine\/11-production-stabilization\.js/.test(script.src||"")
- );
- if(existing)return;
- const script=document.createElement("script");
- script.src="js/engine/11-production-stabilization.js?v=061";
- script.async=false;
- script.dataset.lwRuntimeLoader="061";
- document.body.appendChild(script);
+
+function installMedicalHotspotPalette(){
+ if($("#lwMedicalHotspotPalette062"))return;
+
+ const style=document.createElement("style");
+ style.id="lwMedicalHotspotPalette062";
+
+ /* Canonical state:
+  * yellow = unexplored
+  * green  = inspected/found
+  * The original stylesheet had these states reversed. */
+ style.textContent=`
+  .medical-hotspot i{
+   background:#d9b56b!important;
+   box-shadow:
+    0 0 0 8px rgba(217,181,107,.17),
+    0 0 24px rgba(217,181,107,.58)!important;
+  }
+  .medical-hotspot.found i{
+   background:#7fc9aa!important;
+   box-shadow:
+    0 0 0 8px rgba(127,201,170,.18),
+    0 0 24px rgba(127,201,170,.68)!important;
+  }
+ `;
+ document.head.appendChild(style);
 }
 
 function repairCharacterJournal(){
@@ -235,7 +298,7 @@ function installStoryCharacterGates(){
 
  window.LastWitnessStoryCharacterGates={
   reconcile:reconcileStoryCharacters,
-  version:"0.6.1"
+  version:"0.6.2"
  };
 }
 function bind(){
@@ -245,6 +308,7 @@ function bind(){
  preventPoliceCompletionCard();
  installHeadphonesRecommendation();
  installClick();
+ installMedicalHotspotPalette();
  repairCharacterJournal();
  installStoryCharacterGates();
  loadProductionRuntime();
