@@ -1,4 +1,4 @@
-/* LAST WITNESS — Chapter II / Medical Examiner 0.6.1
+/* LAST WITNESS — Chapter II / Medical Examiner 0.6.3
  * Deterministic inspect/collect state, immediate hotspot feedback and reliable review.
  */
 (function(){
@@ -272,16 +272,6 @@ function bind(){
  $$("[data-medical-choice]").forEach(b=>b.addEventListener("click",()=>choose(b.dataset.medicalChoice)));
  $("#chapter2ReturnTitle")?.addEventListener("click",returnTitle);
  $("#caseButton")?.addEventListener("click",()=>setTimeout(appendCase,0),true);
- $("#continueMedicalExaminer")?.addEventListener("click",e=>{
- e.preventDefault();e.stopImmediatePropagation();
- $("#forensicPhaseComplete").style.display="none";
- const f=$("#forensicHumAudio");if(f)f.pause();
- if(window.state){
-  state.medical={started:true,inspected:[],found:[],collected:[],active:null,choice:null,complete:false,ratchataMet:false,ratchataJournalUnlocked:false};
- }
- resetFreshState();
- show();
-},true);
  document.addEventListener("click",e=>{if(e.target.closest?.("[data-lang]"))setTimeout(updateUI,0);},true);
  const devGrid=$("#developerModal .dev-grid");
  if(devGrid&&!$('[data-dev-jump="medical2"]')){
@@ -290,10 +280,16 @@ function bind(){
  }
  window.LastWitnessMedicalExaminer={
  start:show,
- startFresh:()=>{resetFreshState();show();},
+ startFresh:()=>{
+  if(window.state){
+   state.medical={started:true,inspected:[],found:[],collected:[],active:null,choice:null,complete:false,ratchataMet:false,ratchataJournalUnlocked:false};
+   ["postmortem","identity_tag","autopsy_report","toxicology_sample"].forEach(id=>{try{state.found?.delete?.("medical_"+id);}catch(_){}});
+  }
+  resetFreshState();show();
+ },
  resetFreshState,
  updateLanguage:updateUI,
- version:"0.6.1"
+ version:"0.6.3"
 };
  updateUI();
 }
