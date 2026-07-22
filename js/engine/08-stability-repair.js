@@ -1,4 +1,4 @@
-/* LAST WITNESS — Semantic UI & Journal Stability 0.6.0
+/* LAST WITNESS — Runtime Bootstrap, UI & Journal Stability 0.6.1
  * One physical pointerdown = one immediate local click.
  * A single audio voice cancels any previous click, so rapid tapping cannot queue.
  */
@@ -81,33 +81,82 @@ function installHeadphonesRecommendation(){
  }
 }
 
-const UI_SOURCES={soft:"assets/audio/ui/soft-ui.wav?v=060",confirm:"assets/audio/ui/choice-confirm.wav?v=060",back:"assets/audio/ui/back-close.wav?v=060"};
-const uiVoices=new Map();
-function uiVoice(kind){if(uiVoices.has(kind))return uiVoices.get(kind);const a=new Audio(UI_SOURCES[kind]||UI_SOURCES.soft);a.preload="auto";a.loop=false;a.load();uiVoices.set(kind,a);return a;}
+let uiVoiceInstance=null;
+function prepareKnownClickVoice(){
+ if(uiVoiceInstance)return uiVoiceInstance;
+ const legacy=$("#clickAudio");
+ const source=legacy?.getAttribute("src")||"assets/audio/b3dccd7733a71a6d.mp3";
+ uiVoiceInstance=new Audio(source);
+ uiVoiceInstance.preload="auto";
+ uiVoiceInstance.loop=false;
+ uiVoiceInstance.load();
+ if(legacy){
+  try{legacy.pause();legacy.currentTime=0;}catch(_){}
+  legacy.muted=true;
+  legacy.volume=0;
+  legacy.play=()=>Promise.resolve();
+ }
+ return uiVoiceInstance;
+}
 function playSemanticUI(kind){
  if(!soundEnabled()||sfxLevel()<=0||!kind)return;
- const a=uiVoice(kind);
- try{a.pause();a.currentTime=0;a.muted=false;a.loop=false;const scalar=kind==="confirm"?.30:kind==="back"?.20:.16;a.volume=Math.max(.045,Math.min(.18,sfxLevel()*scalar));a.play().catch(()=>{});}catch(_){}
+ const audio=prepareKnownClickVoice();
+ try{
+  audio.pause();
+  audio.currentTime=0;
+  audio.loop=false;
+  audio.muted=false;
+  audio.playbackRate=kind==="confirm"?0.96:kind==="back"?1.06:1;
+  const scalar=kind==="confirm"?0.34:kind==="back"?0.27:0.30;
+  audio.volume=Math.max(0.10,Math.min(0.20,sfxLevel()*scalar));
+  audio.play().catch(()=>{});
+ }catch(_){}
 }
 function semanticAction(target){
  if(!target?.closest)return null;
+
+ /* These systems own their own feedback. A generic click here creates fatigue
+  * or competes with narrative audio. */
  if(target.closest('.dialogue,[data-apt-clue],[data-forensic-clue],[data-medical-clue],[data-police-clue],#apartmentEvidenceObject,#forensicEvidenceObject,#medicalEvidenceObject,#policeEvidenceObject,#inspectApartmentEvidence,#inspectForensicEvidence,#inspectMedicalEvidence,#inspectPoliceEvidence,#collectApartmentEvidence,#collectForensicEvidence,#collectMedicalEvidence,#collectPoliceEvidence,[data-ch3],[id^="ch3"]'))return null;
+
  if(target.closest('#charactersBack,#backToCrime,#summaryBack,.closeModal,#resume,#closePhoneUI,#closeApartmentEvidence,#closeForensicEvidence,#closeMedicalEvidence,#closePoliceEvidence'))return"back";
+
  if(target.closest('.choice-option,[data-choice],[data-cafe-choice],[data-police-choice],[data-forensic-choice],[data-medical-choice],#makeDeduction,#reviewEvidence,#reviewApartment,#reviewForensic,#reviewMedical,#continueMedicalExaminer,#continueChapter3'))return"confirm";
+
  if(target.closest('#enter,#newGame,#continueGame,#loadTitle,.menuButton,.saveButton,.icon,#historyButton,#caseButton,#charactersButton,#settingsButton,#loadManual,#restart,#titleButton,[data-lang],button.ghost,button.primary'))return"soft";
  return null;
 }
-function semanticPointerOwner(event){const kind=semanticAction(event.target);if(kind)playSemanticUI(kind);}
+function semanticPointerOwner(event){
+ const kind=semanticAction(event.target);
+ if(kind)playSemanticUI(kind);
+}
 function installClick(){
- if(window.__lwPointerClickHandler)document.removeEventListener("pointerdown",window.__lwPointerClickHandler,true);
+ prepareKnownClickVoice();
+ if(window.__lwPointerClickHandler){
+  document.removeEventListener("pointerdown",window.__lwPointerClickHandler,true);
+ }
  window.__lwPointerClickHandler=semanticPointerOwner;
  document.addEventListener("pointerdown",semanticPointerOwner,true);
- const legacy=$("#clickAudio");
- if(legacy){try{legacy.pause();legacy.currentTime=0;}catch(_){}legacy.muted=true;legacy.volume=0;legacy.play=()=>Promise.resolve();}
+
  const original=window.play;
- window.play=function(name){if(name==="click")return;return typeof original==="function"?original.apply(this,arguments):undefined;};
+ window.play=function(name){
+  if(name==="click")return;
+  return typeof original==="function"?original.apply(this,arguments):undefined;
+ };
  window.play.__lwCoreClick=true;
- window.LastWitnessImmediateClick={play:playSemanticUI,version:"0.6.0"};
+ window.LastWitnessImmediateClick={play:playSemanticUI,version:"0.6.1"};
+}
+function loadProductionRuntime(){
+ if(window.LastWitnessProductionAudio||window.__lwProductionStabilization061)return;
+ const existing=Array.from(document.scripts).find(script=>
+  /js\/engine\/11-production-stabilization\.js/.test(script.src||"")
+ );
+ if(existing)return;
+ const script=document.createElement("script");
+ script.src="js/engine/11-production-stabilization.js?v=061";
+ script.async=false;
+ script.dataset.lwRuntimeLoader="061";
+ document.body.appendChild(script);
 }
 
 function repairCharacterJournal(){
@@ -142,52 +191,53 @@ function unlockStoryCharacter(id,flag){
 function reconcileStoryCharacters(){
  const s=gameState();if(!s)return;
  s.flags=s.flags||{};
- const screen=$(".screen.active")?.id||s.screen||"";
 
- /* North: Character Journal is introduced only after the Chapter II office
-  * conversation has completed. */
- if(s.flags.chapter2_character_feature_unlocked===true&&s.journal?.unlocked===true){
+ /* Repair only from completed story beats. Never infer a new-character
+  * notification merely because the player entered a later screen. */
+ if(s.flags.chapter2_character_choice_made===true){
   unlockStoryCharacter("north",true);
  }
-
- /* Elena: first meaningful introduction is completed at Orchid Café. */
- if(s.flags.cafe_intro_complete===true||
-    ["police2","forensic2","medical2","chapter2Complete","chapter3Office","chapter3Phase2Wip"].includes(screen)){
+ if(s.flags.cafe_character_choice_made===true){
   unlockStoryCharacter("elena",true);
  }
-
- /* Somchai and Kittisak: both receive names, roles and meaningful interaction
-  * during the Police Station introduction. They must exist before leaving it. */
- if(s.flags.police_intro_complete===true||
-    ["forensic2","medical2","chapter2Complete","chapter3Office","chapter3Phase2Wip"].includes(screen)){
+ if(s.flags.police_character_choice_made===true){
   unlockStoryCharacter("somchai",true);
   unlockStoryCharacter("kittisak",true);
  }
-
- /* Ratchata: introduced and unlocked in Medical Examiner. This fallback only
-  * repairs saves that already passed that beat, never introduces him in Ch. III. */
- if(s.medical?.ratchataMet===true||s.medical?.ratchataJournalUnlocked===true||
-    ["chapter2Complete","chapter3Office","chapter3Phase2Wip"].includes(screen)){
+ if(s.medical?.ratchataJournalUnlocked===true){
   unlockStoryCharacter("ratchata",true);
  }
 }
 function installStoryCharacterGates(){
  reconcileStoryCharacters();
  window.addEventListener("load",()=>setTimeout(reconcileStoryCharacters,0),{once:true});
- const observer=new MutationObserver(()=>reconcileStoryCharacters());
- $$(".screen").forEach(screen=>observer.observe(screen,{attributes:true,attributeFilter:["class"]}));
- window.addEventListener("lastwitness:journal-unlocked",reconcileStoryCharacters);
+
  document.addEventListener("click",event=>{
-  if(event.target.closest?.("#continueChapter2,#continueMedicalExaminer,#continueChapter3,[data-lang]")){
-   setTimeout(reconcileStoryCharacters,0);
+  const s=gameState();if(!s)return;
+  s.flags=s.flags||{};
+
+  if(event.target.closest?.("#office2 [data-choice]")){
+   s.flags.chapter2_character_choice_made=true;
+   setTimeout(()=>unlockStoryCharacter("north",true),0);
+  }
+  if(event.target.closest?.("#cafe2 [data-cafe-choice]")){
+   s.flags.cafe_character_choice_made=true;
+   setTimeout(()=>unlockStoryCharacter("elena",true),0);
+  }
+  if(event.target.closest?.("#police2 [data-police-choice]")){
+   s.flags.police_character_choice_made=true;
+   setTimeout(()=>{
+    unlockStoryCharacter("somchai",true);
+    unlockStoryCharacter("kittisak",true);
+   },0);
   }
  },true);
+
  window.LastWitnessStoryCharacterGates={
   reconcile:reconcileStoryCharacters,
-  version:"0.6.0"
+  version:"0.6.1"
  };
 }
-
 function bind(){
  try{const s=gameState();if(s&&!window.state)window.state=s;}catch(_){}
  refreshReviewButtons();
@@ -197,6 +247,7 @@ function bind(){
  installClick();
  repairCharacterJournal();
  installStoryCharacterGates();
+ loadProductionRuntime();
 
  const bodyObserver=new MutationObserver(mutations=>{
   for(const mutation of mutations){

@@ -1,11 +1,11 @@
-/* LAST WITNESS — Production Audio & Evidence Runtime 0.6.0
+/* LAST WITNESS — Production Audio, Evidence & Scene Runtime 0.6.1
  * Single scene-audio owner, immediate Case File cue, clean Room 1807 score,
  * fresh Medical state and controlled Chapter III puzzle cue.
  */
 (function(){
 "use strict";
-if(window.__lwProductionStabilization060)return;
-window.__lwProductionStabilization060=true;
+if(window.__lwProductionStabilization061)return;
+window.__lwProductionStabilization061=true;
 
 const $=(s,r=document)=>r.querySelector(s);
 const $$=(s,r=document)=>Array.from(r.querySelectorAll(s));
@@ -122,9 +122,9 @@ function volumeProfile(screen){
  const m=musicLevel(),p={};
  if(screen==="title"){p.themeAudio=m;p.rainAudio=m*0.48;}
  else if(screen==="office"){p.officeAudio=m*0.50*dialogueDuck;p.rainAudio=m*0.14*dialogueDuck;}
- else if(["crime","phone","deduction"].includes(screen)){p.room1807Audio=m*0.46*dialogueDuck*evidenceDuck;p.rainAudio=m*0.08*dialogueDuck;}
+ else if(["crime","phone","deduction"].includes(screen)){p.room1807Audio=m*0.38*dialogueDuck*evidenceDuck;p.rainAudio=m*0.08*dialogueDuck;}
  else if(screen==="office2"||screen==="chapter3Office"){p.morningOfficeAudio=m*0.50*dialogueDuck;}
- else if(screen==="apartment2"){p.apartmentAudio=m*0.58*dialogueDuck*evidenceDuck;}
+ else if(screen==="apartment2"){p.apartmentAudio=m*0.48*dialogueDuck*evidenceDuck;}
  else if(screen==="cafe2"){p.cafeAudio=m*0.30*dialogueDuck;}
  else if(screen==="police2"){p.policeAudio=m*0.05*dialogueDuck;}
  else if(screen==="forensic2"){p.forensicHumAudio=m*0.045*dialogueDuck*evidenceDuck;}
@@ -216,13 +216,14 @@ function handleEvidencePointer(event){
  const context=evidenceContextFromTarget(event.target);
  if(context){
   currentEvidenceContext=context;
-  const wasCollected=collectedForContext(context);
-  if(wasCollected)playInspectionCue();
   setTimeout(()=>restoreInspectAffordance(context),0);
   return;
  }
  const inspectTarget=event.target.closest?.("#inspectApartmentEvidence,#apartmentEvidenceObject,#inspectForensicEvidence,#forensicEvidenceObject,#inspectMedicalEvidence,#medicalEvidenceObject,#inspectPoliceEvidence,#policeEvidenceObject");
- if(inspectTarget){playInspectionCue();return;}
+ if(inspectTarget){
+  if(currentEvidenceContext&&collectedForContext(currentEvidenceContext))return;
+  playInspectionCue();return;
+ }
  if(event.target.closest?.("#closeApartmentEvidence,#closeForensicEvidence,#closeMedicalEvidence,#closePoliceEvidence"))stopInspectionCue();
 }
 function repairMedicalEvidence(event){
@@ -253,6 +254,7 @@ function prepareFreshMedicalPhase(){
  const s=gameState();if(!s)return;
  currentEvidenceContext=null;closeAllEvidencePanels();
  s.medical={started:true,inspected:[],found:[],collected:[],active:null,choice:null,complete:false,ratchataMet:false,ratchataJournalUnlocked:false};
+ window.LastWitnessMedicalExaminer?.resetFreshState?.();
  MEDICAL_IDS.forEach(id=>{try{s.found?.delete?.("medical_"+id);}catch(_){}});
  clearMedicalHotspots();
 }
@@ -287,14 +289,14 @@ function installPlayBridge(){
 }
 function installRouting(){
  const original=window.show;
- if(typeof original==="function"&&!original.__lwProductionRoute060){
+ if(typeof original==="function"&&!original.__lwProductionRoute061){
   const wrapped=function(){
-   stopOneShots();stopInvestigationLoops();
+   stopOneShots();stopInvestigationLoops();closeAllEvidencePanels();
    try{const c=$("#clickAudio");if(c){c.pause();c.currentTime=0;}}catch(_){}
    const result=original.apply(this,arguments);
    queueAudioSync();window.LastWitnessContentRegistry?.updateVisibility?.();return result;
   };
-  wrapped.__lwProductionRoute060=true;window.show=wrapped;
+  wrapped.__lwProductionRoute061=true;window.show=wrapped;
  }
  const originalSet=window.setVolumes;
  window.setVolumes=function(){
@@ -352,9 +354,9 @@ function bind(){
   stopPuzzleSuccess:stopPuzzleCue,
   playSoftScanner,
   stopEvidenceCue:stopOneShots,
-  version:"0.6.0"
+  version:"0.6.1"
  };
- window.LastWitnessProductionAudio={refresh:queueAudioSync,apply:applySceneAudio,stopEvidenceCue:stopOneShots,profile:volumeProfile,version:"0.6.0"};
+ window.LastWitnessProductionAudio={refresh:queueAudioSync,apply:applySceneAudio,stopEvidenceCue:stopOneShots,profile:volumeProfile,version:"0.6.1"};
  window.LastWitnessContentRegistry?.updateVisibility?.();queueAudioSync();
 }
 if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",bind,{once:true});else bind();
