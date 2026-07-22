@@ -1,6 +1,6 @@
 /* Last Witness Full Refactor
  * Chapter 2 apartment and office progression
- * Character Journal unlock truth fix 0.5.2
+ * Character Journal unlock truth fix 0.5.3
  */
 
 function revealApartmentEvidenceDetails(){
@@ -133,6 +133,7 @@ if(firstUnlock&&!state.flags.chapter2_character_toast_shown){
 try{window.LastWitnessContentRegistry?.updateVisibility?.();}catch(_){ }
 try{window.LastWitnessContentRegistry?.renderCharacters?.();}catch(_){ }
 try{window.LastWitnessContentRegistry?.updateDots?.();}catch(_){ }
+try{window.dispatchEvent(new CustomEvent("lastwitness:journal-unlocked",{detail:{character:"north"}}));}catch(_){ }
 syncJournalAlert();
 autoSave()
 }
