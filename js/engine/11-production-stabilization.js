@@ -1,11 +1,11 @@
-/* LAST WITNESS — Core Audio & Evidence Runtime 0.5.9
+/* LAST WITNESS — Production Audio & Evidence Runtime 0.6.0
  * Single scene-audio owner, immediate Case File cue, clean Room 1807 score,
  * fresh Medical state and controlled Chapter III puzzle cue.
  */
 (function(){
 "use strict";
-if(window.__lwProductionStabilization058)return;
-window.__lwProductionStabilization058=true;
+if(window.__lwProductionStabilization060)return;
+window.__lwProductionStabilization060=true;
 
 const $=(s,r=document)=>r.querySelector(s);
 const $$=(s,r=document)=>Array.from(r.querySelectorAll(s));
@@ -18,6 +18,9 @@ const PAGE_SOURCE="assets/audio/ae0db994456b758a.mp3";
 const PUZZLE_SOURCE="assets/audio/puzzle-success.wav?v=057";
 const SCANNER_SOURCE="assets/audio/medical-scanner-soft.wav?v=057";
 const ROOM_1807_SOURCE="assets/audio/chapter-03/modern-noir.mp3";
+const FORENSIC_ROOM_SOURCE="assets/audio/ambience/forensic-soft-room.wav?v=060";
+const MEDICAL_ROOM_SOURCE="assets/audio/ambience/medical-soft-room.wav?v=060";
+const APARTMENT_LOOP_TRIM=2.45;
 let lastScreen="";
 let syncQueued=false;
 let forensicTransitioning=false;
@@ -124,14 +127,27 @@ function volumeProfile(screen){
  else if(screen==="apartment2"){p.apartmentAudio=m*0.58*dialogueDuck*evidenceDuck;}
  else if(screen==="cafe2"){p.cafeAudio=m*0.30*dialogueDuck;}
  else if(screen==="police2"){p.policeAudio=m*0.05*dialogueDuck;}
- else if(screen==="forensic2"){p.forensicHumAudio=m*0.10*dialogueDuck*evidenceDuck;}
- else if(screen==="medical2"){p.medicalRefrigeratorAudio=m*0.26*dialogueDuck*evidenceDuck;}
+ else if(screen==="forensic2"){p.forensicHumAudio=m*0.045*dialogueDuck*evidenceDuck;}
+ else if(screen==="medical2"){p.medicalRefrigeratorAudio=m*0.115*dialogueDuck*evidenceDuck;}
  return p;
+}
+function installApartmentLoopGuard(audio){
+ if(!audio||audio.dataset.lwGapless060==="1")return;
+ audio.dataset.lwGapless060="1";audio.loop=false;
+ audio.addEventListener("timeupdate",()=>{
+  if(activeScreen()!=="apartment2")return;
+  const d=Number(audio.duration);
+  if(Number.isFinite(d)&&d>APARTMENT_LOOP_TRIM+1&&audio.currentTime>=d-APARTMENT_LOOP_TRIM){
+   try{audio.currentTime=.04;if(audio.paused&&soundOn())audio.play().catch(()=>{});}catch(_){}
+  }
+ });
+ audio.addEventListener("ended",()=>{if(activeScreen()==="apartment2"&&soundOn()){try{audio.currentTime=.04;audio.play().catch(()=>{});}catch(_){}}});
 }
 function startLoop(id,volume){
  const audio=$("#"+id);if(!audio||!soundOn())return;
  try{
-  audio.loop=true;audio.muted=false;audio.volume=clamp(volume);
+  if(id==="apartmentAudio"){installApartmentLoopGuard(audio);audio.loop=false;}else audio.loop=true;
+  audio.muted=false;audio.volume=clamp(volume);
   if(id==="policeAudio"&&audio.paused){
    const d=Number(audio.duration);if(Number.isFinite(d)&&d>12)audio.currentTime=12;
   }
@@ -180,29 +196,34 @@ function restoreInspectAffordance(context){
   police:{panel:"#policeEvidencePanel",object:"#policeEvidenceObject",meta:"#policeEvidenceMeta",inspect:"#inspectPoliceEvidence",collect:"#collectPoliceEvidence",close:"#closePoliceEvidence"}
  }[context.phase];
  if(!map)return;
- $(map.object)?.classList.remove("inspecting");
- $(map.meta)?.classList.remove("show");
- const observation=$(map.meta)?.querySelector?.(".evidence-observation");
- if(observation)observation.style.display="none";
- const inspect=$(map.inspect);if(inspect)inspect.style.display="";
- const collect=$(map.collect);if(collect)collect.style.display=collected?"none":"none";
- const close=$(map.close);if(close)close.style.display=collected?"":"none";
+ const object=$(map.object),meta=$(map.meta),observation=meta?.querySelector?.(".evidence-observation");
+ const inspect=$(map.inspect),collect=$(map.collect),close=$(map.close);
+ if(collected){
+  object?.classList.add("inspecting");meta?.classList.add("show");
+  if(observation)observation.style.display="";
+  if(inspect)inspect.style.display="none";
+  if(collect)collect.style.display="none";
+  if(close)close.style.display="";
+ }else{
+  object?.classList.remove("inspecting");meta?.classList.remove("show");
+  if(observation)observation.style.display="none";
+  if(inspect)inspect.style.display="";
+  if(collect)collect.style.display="none";
+  if(close)close.style.display="none";
+ }
 }
 function handleEvidencePointer(event){
  const context=evidenceContextFromTarget(event.target);
  if(context){
   currentEvidenceContext=context;
+  const wasCollected=collectedForContext(context);
+  if(wasCollected)playInspectionCue();
   setTimeout(()=>restoreInspectAffordance(context),0);
   return;
  }
  const inspectTarget=event.target.closest?.("#inspectApartmentEvidence,#apartmentEvidenceObject,#inspectForensicEvidence,#forensicEvidenceObject,#inspectMedicalEvidence,#medicalEvidenceObject,#inspectPoliceEvidence,#policeEvidenceObject");
- if(inspectTarget){
-  playInspectionCue();
-  return;
- }
- if(event.target.closest?.("#closeApartmentEvidence,#closeForensicEvidence,#closeMedicalEvidence,#closePoliceEvidence")){
-  stopInspectionCue();
- }
+ if(inspectTarget){playInspectionCue();return;}
+ if(event.target.closest?.("#closeApartmentEvidence,#closeForensicEvidence,#closeMedicalEvidence,#closePoliceEvidence"))stopInspectionCue();
 }
 function repairMedicalEvidence(event){
  if(event.target.closest?.("[data-medical-clue]")){
@@ -221,13 +242,17 @@ function repairMedicalEvidence(event){
   setTimeout(()=>$("#medicalEvidenceMeta")?.classList.remove("show"),0);
  }
 }
+function closeAllEvidencePanels(){
+ ["apartmentEvidence","policeEvidencePanel","forensicEvidencePanel","medicalEvidencePanel"].forEach(id=>{const panel=$("#"+id);if(panel){panel.classList.remove("open");panel.setAttribute("aria-hidden","true");}});
+}
 function clearMedicalHotspots(){
  $$('[data-medical-clue]').forEach(node=>node.classList.remove("found"));
  $("#reviewMedical")?.classList.remove("show");
 }
 function prepareFreshMedicalPhase(){
  const s=gameState();if(!s)return;
- s.medical={started:true,inspected:[],found:[],collected:[],active:null,choice:null,complete:false,ratchataMet:false};
+ currentEvidenceContext=null;closeAllEvidencePanels();
+ s.medical={started:true,inspected:[],found:[],collected:[],active:null,choice:null,complete:false,ratchataMet:false,ratchataJournalUnlocked:false};
  MEDICAL_IDS.forEach(id=>{try{s.found?.delete?.("medical_"+id);}catch(_){}});
  clearMedicalHotspots();
 }
@@ -262,13 +287,14 @@ function installPlayBridge(){
 }
 function installRouting(){
  const original=window.show;
- if(typeof original==="function"&&!original.__lwProductionRoute058){
+ if(typeof original==="function"&&!original.__lwProductionRoute060){
   const wrapped=function(){
    stopOneShots();stopInvestigationLoops();
+   try{const c=$("#clickAudio");if(c){c.pause();c.currentTime=0;}}catch(_){}
    const result=original.apply(this,arguments);
    queueAudioSync();window.LastWitnessContentRegistry?.updateVisibility?.();return result;
   };
-  wrapped.__lwProductionRoute058=true;window.show=wrapped;
+  wrapped.__lwProductionRoute060=true;window.show=wrapped;
  }
  const originalSet=window.setVolumes;
  window.setVolumes=function(){
@@ -308,7 +334,9 @@ function bindSettings(){
 }
 function bind(){
  ensureLoopAudio("room1807Audio",ROOM_1807_SOURCE);
- ensureLoopAudio("apartmentAudio","assets/audio/victim-apartment-score.mp3?v=057");
+ ensureLoopAudio("apartmentAudio","assets/audio/victim-apartment-score.mp3?v=060");
+ ensureLoopAudio("forensicHumAudio",FORENSIC_ROOM_SOURCE);
+ ensureLoopAudio("medicalRefrigeratorAudio",MEDICAL_ROOM_SOURCE);
  prepareOneShots();applyChapterNaming();installGapGuard();suppressLegacyEvidenceAudio();installSoftScanner();
  installPlayBridge();installRouting();installObservers();installForensicTransition();bindSettings();
  document.addEventListener("pointerdown",event=>{
@@ -324,9 +352,9 @@ function bind(){
   stopPuzzleSuccess:stopPuzzleCue,
   playSoftScanner,
   stopEvidenceCue:stopOneShots,
-  version:"0.5.9"
+  version:"0.6.0"
  };
- window.LastWitnessProductionAudio={refresh:queueAudioSync,apply:applySceneAudio,stopEvidenceCue:stopOneShots,profile:volumeProfile,version:"0.5.9"};
+ window.LastWitnessProductionAudio={refresh:queueAudioSync,apply:applySceneAudio,stopEvidenceCue:stopOneShots,profile:volumeProfile,version:"0.6.0"};
  window.LastWitnessContentRegistry?.updateVisibility?.();queueAudioSync();
 }
 if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",bind,{once:true});else bind();

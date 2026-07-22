@@ -1,4 +1,4 @@
-/* LAST WITNESS — Static UI Stability 0.5.9
+/* LAST WITNESS — Semantic UI & Journal Stability 0.6.0
  * One physical pointerdown = one immediate local click.
  * A single audio voice cancels any previous click, so rapid tapping cannot queue.
  */
@@ -81,71 +81,33 @@ function installHeadphonesRecommendation(){
  }
 }
 
-let clickVoice=null;
-let lastPointerStamp=-Infinity;
-
-function prepareClickVoice(){
- if(clickVoice)return clickVoice;
- const source=$("#clickAudio")?.getAttribute("src")||"assets/audio/b3dccd7733a71a6d.mp3";
- clickVoice=new Audio(source);
- clickVoice.preload="auto";
- clickVoice.loop=false;
- clickVoice.load();
-
- const legacy=$("#clickAudio");
- if(legacy){
-  try{legacy.pause();legacy.currentTime=0;}catch(_){}
-  legacy.muted=true;
-  legacy.volume=0;
-  legacy.play=()=>Promise.resolve();
- }
- return clickVoice;
+const UI_SOURCES={soft:"assets/audio/ui/soft-ui.wav?v=060",confirm:"assets/audio/ui/choice-confirm.wav?v=060",back:"assets/audio/ui/back-close.wav?v=060"};
+const uiVoices=new Map();
+function uiVoice(kind){if(uiVoices.has(kind))return uiVoices.get(kind);const a=new Audio(UI_SOURCES[kind]||UI_SOURCES.soft);a.preload="auto";a.loop=false;a.load();uiVoices.set(kind,a);return a;}
+function playSemanticUI(kind){
+ if(!soundEnabled()||sfxLevel()<=0||!kind)return;
+ const a=uiVoice(kind);
+ try{a.pause();a.currentTime=0;a.muted=false;a.loop=false;const scalar=kind==="confirm"?.30:kind==="back"?.20:.16;a.volume=Math.max(.045,Math.min(.18,sfxLevel()*scalar));a.play().catch(()=>{});}catch(_){}
 }
-function playImmediateClick(){
- if(!soundEnabled()||sfxLevel()<=0)return;
- const audio=prepareClickVoice();
- try{
-  /* Cancel the previous transient before starting the new one.
-   * This prevents rapid taps from leaving queued tails. */
-  audio.pause();
-  audio.currentTime=0;
-  audio.loop=false;
-  audio.muted=false;
-  audio.volume=Math.max(0.14,Math.min(0.24,sfxLevel()*0.38));
-  const result=audio.play();
-  if(result?.catch)result.catch(()=>{});
- }catch(_){}
+function semanticAction(target){
+ if(!target?.closest)return null;
+ if(target.closest('.dialogue,[data-apt-clue],[data-forensic-clue],[data-medical-clue],[data-police-clue],#apartmentEvidenceObject,#forensicEvidenceObject,#medicalEvidenceObject,#policeEvidenceObject,#inspectApartmentEvidence,#inspectForensicEvidence,#inspectMedicalEvidence,#inspectPoliceEvidence,#collectApartmentEvidence,#collectForensicEvidence,#collectMedicalEvidence,#collectPoliceEvidence,[data-ch3],[id^="ch3"]'))return null;
+ if(target.closest('#charactersBack,#backToCrime,#summaryBack,.closeModal,#resume,#closePhoneUI,#closeApartmentEvidence,#closeForensicEvidence,#closeMedicalEvidence,#closePoliceEvidence'))return"back";
+ if(target.closest('.choice-option,[data-choice],[data-cafe-choice],[data-police-choice],[data-forensic-choice],[data-medical-choice],#makeDeduction,#reviewEvidence,#reviewApartment,#reviewForensic,#reviewMedical,#continueMedicalExaminer,#continueChapter3'))return"confirm";
+ if(target.closest('#enter,#newGame,#continueGame,#loadTitle,.menuButton,.saveButton,.icon,#historyButton,#caseButton,#charactersButton,#settingsButton,#loadManual,#restart,#titleButton,[data-lang],button.ghost,button.primary'))return"soft";
+ return null;
 }
-function actionable(event){
- return event.target.closest?.('#enter,#newGame,#continueGame,#loadTitle,button:not(:disabled),.dialogue:not(.hidden),[role="button"]');
-}
-function pointerClickOwner(event){
- if(!actionable(event))return;
- /* Some Android WebViews can emit a duplicate pointerdown with the same
-  * timestamp during gesture promotion. Ignore only that duplicate event. */
- if(event.timeStamp===lastPointerStamp)return;
- lastPointerStamp=event.timeStamp;
- playImmediateClick();
-}
+function semanticPointerOwner(event){const kind=semanticAction(event.target);if(kind)playSemanticUI(kind);}
 function installClick(){
- prepareClickVoice();
-
- if(window.__lwPointerClickHandler){
-  document.removeEventListener("pointerdown",window.__lwPointerClickHandler,true);
- }
- window.__lwPointerClickHandler=pointerClickOwner;
- document.addEventListener("pointerdown",pointerClickOwner,true);
-
- /* Legacy onclick handlers still call play("click"). They must be silent.
-  * Pointerdown above is the only click owner. */
+ if(window.__lwPointerClickHandler)document.removeEventListener("pointerdown",window.__lwPointerClickHandler,true);
+ window.__lwPointerClickHandler=semanticPointerOwner;
+ document.addEventListener("pointerdown",semanticPointerOwner,true);
+ const legacy=$("#clickAudio");
+ if(legacy){try{legacy.pause();legacy.currentTime=0;}catch(_){}legacy.muted=true;legacy.volume=0;legacy.play=()=>Promise.resolve();}
  const original=window.play;
- window.play=function(name){
-  if(name==="click")return;
-  return typeof original==="function"?original.apply(this,arguments):undefined;
- };
+ window.play=function(name){if(name==="click")return;return typeof original==="function"?original.apply(this,arguments):undefined;};
  window.play.__lwCoreClick=true;
-
- window.LastWitnessImmediateClick={play:playImmediateClick,version:"0.5.9"};
+ window.LastWitnessImmediateClick={play:playSemanticUI,version:"0.6.0"};
 }
 
 function repairCharacterJournal(){
@@ -170,7 +132,8 @@ function unlockStoryCharacter(id,flag){
  if(!s||!registry?.unlockCharacter||!flag)return false;
  s.flags=s.flags||{};
  const marker=`journal_story_${id}_unlocked`;
- if(s.flags[marker]===true)return false;
+ const alreadyListed=Array.isArray(s.lwCharactersUnlocked)&&s.lwCharactersUnlocked.includes(id);
+ if(s.flags[marker]===true&&alreadyListed)return false;
  const fresh=registry.unlockCharacter(id,{unread:true,source:"story"});
  s.flags[marker]=true;
  try{if(typeof autoSave==="function")autoSave();}catch(_){}
@@ -210,6 +173,7 @@ function reconcileStoryCharacters(){
 }
 function installStoryCharacterGates(){
  reconcileStoryCharacters();
+ window.addEventListener("load",()=>setTimeout(reconcileStoryCharacters,0),{once:true});
  const observer=new MutationObserver(()=>reconcileStoryCharacters());
  $$(".screen").forEach(screen=>observer.observe(screen,{attributes:true,attributeFilter:["class"]}));
  window.addEventListener("lastwitness:journal-unlocked",reconcileStoryCharacters);
@@ -220,7 +184,7 @@ function installStoryCharacterGates(){
  },true);
  window.LastWitnessStoryCharacterGates={
   reconcile:reconcileStoryCharacters,
-  version:"0.5.9"
+  version:"0.6.0"
  };
 }
 
