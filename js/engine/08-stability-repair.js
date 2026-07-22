@@ -1,4 +1,4 @@
-/* LAST WITNESS — Embedded WAV UI & Phone Audio Isolation 0.6.4
+/* LAST WITNESS — Embedded WAV UI, Character Affordance & Runtime Loader 0.6.9
  * One physical pointerdown = one immediate embedded-WAV click.
  * No network decode, delayed promise queue or legacy MP3 click owner.
  */
@@ -176,15 +176,15 @@ function semanticAction(target){
  if(target.closest(
   '.dialogue,'+
   '[data-apt-clue],[data-forensic-clue],[data-medical-clue],[data-police-clue],'+
-  '#apartmentEvidenceObject,#forensicEvidenceObject,#medicalEvidenceObject,#policeEvidenceObject,'+
-  '#inspectApartmentEvidence,#inspectForensicEvidence,#inspectMedicalEvidence,#inspectPoliceEvidence,'+
-  '#collectApartmentEvidence,#collectForensicEvidence,#collectMedicalEvidence,#collectPoliceEvidence,'+
+  '#room1807EvidenceObject,#apartmentEvidenceObject,#forensicEvidenceObject,#medicalEvidenceObject,#policeEvidenceObject,'+
+  '#inspectRoom1807Evidence,#inspectApartmentEvidence,#inspectForensicEvidence,#inspectMedicalEvidence,#inspectPoliceEvidence,'+
+  '#collectRoom1807Evidence,#collectApartmentEvidence,#collectForensicEvidence,#collectMedicalEvidence,#collectPoliceEvidence,'+
   '[data-ch3],[id^="ch3"]'
  ))return null;
 
  if(target.closest(
   '#charactersBack,#backToCrime,#summaryBack,.closeModal,#resume,#closePhoneUI,#closeSheet,'+
-  '#closeApartmentEvidence,#closeForensicEvidence,#closeMedicalEvidence,#closePoliceEvidence'
+  '#closeRoom1807Evidence,#closeApartmentEvidence,#closeForensicEvidence,#closeMedicalEvidence,#closePoliceEvidence'
  ))return"back";
 
  if(target.closest(
@@ -293,7 +293,7 @@ function installClick(){
   play:kind=>playSemanticUI(kind,"manual"),
   stopPhone:stopLegacyPhoneTransients,
   stats:uiClickStats,
-  version:"0.6.4"
+  version:"0.6.9"
  };
 }
 
@@ -303,7 +303,7 @@ function loadProductionRuntime(){
  if(script)return;
  script=document.createElement("script");
  script.id="lwProductionStabilizationScript";
- script.src="js/engine/11-production-stabilization.js?v=064";
+ script.src="js/engine/11-production-stabilization.js?v=069";
  script.async=false;
  script.addEventListener("load",()=>{script.dataset.loaded="1";},{once:true});
  document.body.appendChild(script);
@@ -336,6 +336,33 @@ function installMedicalHotspotPalette(){
  document.head.appendChild(style);
 }
 
+function installCharacterCardAffordance(){
+ if($("#lwCharacterCardAffordance069"))return;
+ const style=document.createElement("style");
+ style.id="lwCharacterCardAffordance069";
+ style.textContent=`
+  .character-card{position:relative;padding-bottom:31px!important;}
+  .character-card::after{
+   content:"TAP FOR DETAILS";
+   position:absolute;left:10px;right:10px;bottom:9px;
+   padding-top:6px;border-top:1px solid rgba(221,181,109,.18);
+   color:#bfa778;font-size:8px;font-weight:750;letter-spacing:.10em;
+   text-align:center;text-transform:uppercase;line-height:1.2;
+  }
+  html[lang="th"] .character-card::after{content:"แตะเพื่อดูรายละเอียด";letter-spacing:.025em;text-transform:none;font-size:9px;}
+ `;
+ document.head.appendChild(style);
+}
+function enhanceCharacterCardLabels(root=document){
+ const cards=[];
+ if(root.matches?.(".character-card"))cards.push(root);
+ root.querySelectorAll?.(".character-card").forEach(card=>cards.push(card));
+ const hint=document.documentElement.lang==="th"?"แตะเพื่อดูรายละเอียด":"Tap for details";
+ cards.forEach(card=>{
+  const name=card.querySelector(".character-name")?.textContent?.trim()||"Character";
+  card.title=hint;card.setAttribute("aria-label",`${name}. ${hint}`);
+ });
+}
 function repairCharacterJournal(){
  const back=$("#charactersBack");
  /* Chapter I installed a legacy onclick renderer. The canonical registry has
@@ -412,7 +439,7 @@ function installStoryCharacterGates(){
 
  window.LastWitnessStoryCharacterGates={
   reconcile:reconcileStoryCharacters,
-  version:"0.6.4"
+  version:"0.6.9"
  };
 }
 function bind(){
@@ -423,13 +450,15 @@ function bind(){
  installHeadphonesRecommendation();
  installClick();
  installMedicalHotspotPalette();
+ installCharacterCardAffordance();
+ enhanceCharacterCardLabels();
  repairCharacterJournal();
  installStoryCharacterGates();
  loadProductionRuntime();
 
  const bodyObserver=new MutationObserver(mutations=>{
   for(const mutation of mutations){
-   mutation.addedNodes.forEach(node=>{if(node.nodeType===1)repairAllPortraits(node);});
+   mutation.addedNodes.forEach(node=>{if(node.nodeType===1){repairAllPortraits(node);enhanceCharacterCardLabels(node);}});
   }
   refreshReviewButtons();
   preventPoliceCompletionCard();
