@@ -1,4 +1,4 @@
-/* LAST WITNESS — Chapter II / Medical Examiner 0.6.0
+/* LAST WITNESS — Chapter II / Medical Examiner 0.6.1
  * Deterministic inspect/collect state, immediate hotspot feedback and reliable review.
  */
 (function(){
@@ -184,6 +184,35 @@ function returnTitle(){
  stopMedicalAudio();try{if(typeof autoSave==="function")autoSave();}catch(_){}
  if(typeof showScreen==="function")showScreen("title");
 }
+
+function resetFreshState(){
+ local.started=false;
+ local.inspected=new Set();
+ local.collected=new Set();
+ local.active=null;
+ local.dialogue=null;
+ local.choice=null;
+
+ const panel=$("#medicalEvidencePanel");
+ if(panel){
+  panel.classList.remove("open");
+  panel.setAttribute("aria-hidden","true");
+ }
+ $("#medicalEvidenceObject")?.classList.remove("inspecting");
+ $("#medicalEvidenceMeta")?.classList.remove("show");
+ const observation=$("#medicalEvidenceObservation");
+ if(observation)observation.style.display="none";
+ const inspectButton=$("#inspectMedicalEvidence");
+ const collectButton=$("#collectMedicalEvidence");
+ const closeButton=$("#closeMedicalEvidence");
+ if(inspectButton)inspectButton.style.display="";
+ if(collectButton)collectButton.style.display="none";
+ if(closeButton)closeButton.style.display="none";
+
+ $$("[data-medical-clue]").forEach(node=>node.classList.remove("found"));
+ $("#reviewMedical")?.classList.remove("show");
+}
+
 function restore(){
  $$("[data-medical-clue]").forEach(node=>node.classList.remove("found"));
  if(window.state&&state.medical){
@@ -243,14 +272,29 @@ function bind(){
  $$("[data-medical-choice]").forEach(b=>b.addEventListener("click",()=>choose(b.dataset.medicalChoice)));
  $("#chapter2ReturnTitle")?.addEventListener("click",returnTitle);
  $("#caseButton")?.addEventListener("click",()=>setTimeout(appendCase,0),true);
- $("#continueMedicalExaminer")?.addEventListener("click",e=>{e.preventDefault();e.stopImmediatePropagation();$("#forensicPhaseComplete").style.display="none";const f=$("#forensicHumAudio");if(f)f.pause();show();},true);
+ $("#continueMedicalExaminer")?.addEventListener("click",e=>{
+ e.preventDefault();e.stopImmediatePropagation();
+ $("#forensicPhaseComplete").style.display="none";
+ const f=$("#forensicHumAudio");if(f)f.pause();
+ if(window.state){
+  state.medical={started:true,inspected:[],found:[],collected:[],active:null,choice:null,complete:false,ratchataMet:false,ratchataJournalUnlocked:false};
+ }
+ resetFreshState();
+ show();
+},true);
  document.addEventListener("click",e=>{if(e.target.closest?.("[data-lang]"))setTimeout(updateUI,0);},true);
  const devGrid=$("#developerModal .dev-grid");
  if(devGrid&&!$('[data-dev-jump="medical2"]')){
   const b=document.createElement("button");b.className="dev-button";b.dataset.devJump="medical2";b.textContent="Medical Examiner";
   b.onclick=()=>{$("#developerModal")?.classList.remove("open");show();};devGrid.appendChild(b);
  }
- window.LastWitnessMedicalExaminer={start:show,updateLanguage:updateUI,version:"0.6.0"};
+ window.LastWitnessMedicalExaminer={
+ start:show,
+ startFresh:()=>{resetFreshState();show();},
+ resetFreshState,
+ updateLanguage:updateUI,
+ version:"0.6.1"
+};
  updateUI();
 }
 if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",bind,{once:true});else bind();
