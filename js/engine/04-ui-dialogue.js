@@ -1,4 +1,4 @@
-/* LAST WITNESS — Screen, UI and Dialogue Runtime 0.5.0
+/* LAST WITNESS — Screen, UI and Dialogue Runtime 0.5.1
  * Shared Chapter I–III routing with story-gated Character Journal visibility.
  */
 function showChapterIntro(chapter,onComplete){
@@ -7,7 +7,7 @@ const intro=$("#chapterIntro");
 const number=$("#chapterIntroNumber");
 const title=$("#chapterIntroTitle");
 const data={
-1:{number:L("chapter_i"),title:L("chapter_1_name")},
+1:{number:L("chapter_i"),title:state.language==="th"?"ห้อง 1807":"ROOM 1807"},
 2:{number:L("chapter_ii"),title:L("chapter_2_name")},
 3:{number:state.language==="th"?"บทที่ III":"CHAPTER III",title:state.language==="th"?"สิบเอ็ดนาทีที่ถูกยืม":"THE BORROWED MINUTES"}
 }[chapter]||{number:"CHAPTER "+chapter,title:""};

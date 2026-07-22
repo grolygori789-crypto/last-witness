@@ -1,4 +1,4 @@
-/* LAST WITNESS — Canon Character Journal + Registry/Dev Integration 0.5.0
+/* LAST WITNESS — Canon Character Journal + Registry/Dev Integration 0.5.1
  * Story-gated journal visibility, canonical relationship metrics and no polling.
  */
 (function(){
@@ -32,12 +32,17 @@ function clamp(v){return Math.max(0,Math.min(100,Math.round(Number(v)||0)));}
 function readStore(){try{return JSON.parse(localStorage.getItem(STORE)||"{}");}catch(_){return{};}}
 function writeStore(){try{localStorage.setItem(STORE,JSON.stringify({charactersUnlocked:state.lwCharactersUnlocked||[],charactersUnread:state.lwCharactersUnread||[],evidenceUnlocked:state.lwEvidenceUnlocked||[]}));}catch(_){}}
 
+function storyJournalReached(){
+ const chapter=Number(window.state?.chapter)||1;
+ return chapter>2||LATE_CH2.has(currentScreen())||Boolean(
+  window.state?.flags?.chapter2_character_feature_unlocked===true&&
+  window.state?.journal?.unlocked===true
+ );
+}
 function canonicalJournalEnabled(){
  const chapter=Number(window.state?.chapter)||1;
- if(chapter>2)return true;
  if(chapter<2)return false;
- if(window.state?.flags?.chapter2_character_feature_unlocked===true&&window.state?.journal?.unlocked===true)return true;
- return LATE_CH2.has(currentScreen());
+ return storyJournalReached();
 }
 
 function ensureState(){
@@ -46,6 +51,15 @@ function ensureState(){
  state.characters=state.characters||{Benedict:true};
  state.journal=state.journal||{unlocked:false,seen:true,introShown:false};
  state.flags=state.flags||{};
+
+ const reached=storyJournalReached();
+ if(reached){
+  state.flags.chapter2_character_feature_unlocked=true;
+  state.journal.unlocked=true;
+  state.characters.Benedict=true;
+  state.characters.North=true;
+ }
+
  state.lwJournalEnabled=canonicalJournalEnabled();
  const unlocked=new Set(Array.isArray(state.lwCharactersUnlocked)?state.lwCharactersUnlocked:[]);
  if(state.lwJournalEnabled){
@@ -54,7 +68,12 @@ function ensureState(){
   Object.entries(STORY_NAMES).forEach(([id,name])=>{if(state.characters?.[name]===true)unlocked.add(id);});
  }
  state.lwCharactersUnlocked=[...unlocked].filter(id=>CHARACTERS[id]);
- state.lwCharactersUnread=[...new Set(Array.isArray(state.lwCharactersUnread)?state.lwCharactersUnread:(saved.charactersUnread||[]))].filter(id=>CHARACTERS[id]);
+
+ const unread=new Set(Array.isArray(state.lwCharactersUnread)?state.lwCharactersUnread:(saved.charactersUnread||[]));
+ if(state.lwJournalEnabled&&state.journal.seen===false&&state.flags.chapter2_character_journal_opened!==true){
+  unread.add('north');
+ }
+ state.lwCharactersUnread=[...unread].filter(id=>CHARACTERS[id]);
  state.lwEvidenceUnlocked=[...new Set(Array.isArray(state.lwEvidenceUnlocked)?state.lwEvidenceUnlocked:(saved.evidenceUnlocked||[]))].filter(id=>EVIDENCE[id]);
 }
 
@@ -67,7 +86,17 @@ function updateJournalVisibility(){
  button.disabled=!visible;
  button.toggleAttribute("aria-hidden",!visible);
  if(visible){
-  button.style.removeProperty("display");button.style.removeProperty("visibility");button.style.removeProperty("opacity");button.style.removeProperty("pointer-events");button.style.removeProperty("margin-top");button.style.removeProperty("min-height");button.style.removeProperty("padding");button.style.removeProperty("border");
+  button.removeAttribute("hidden");
+  button.style.setProperty("display","block","important");
+  button.style.setProperty("visibility","visible","important");
+  button.style.setProperty("opacity","1","important");
+  button.style.setProperty("pointer-events","auto","important");
+  button.style.removeProperty("height");
+  button.style.removeProperty("overflow");
+  button.style.removeProperty("margin-top");
+  button.style.removeProperty("min-height");
+  button.style.removeProperty("padding");
+  button.style.removeProperty("border");
  }else{
   button.style.setProperty("display","none","important");button.style.setProperty("visibility","hidden","important");button.style.setProperty("opacity","0","important");button.style.setProperty("pointer-events","none","important");button.style.setProperty("margin-top","0","important");button.style.setProperty("min-height","0","important");button.style.setProperty("padding","0","important");button.style.setProperty("border","0","important");
  }
@@ -75,7 +104,7 @@ function updateJournalVisibility(){
 
 function updateDots(){ensureState();const show=canonicalJournalEnabled()&&state.lwCharactersUnread.length>0;$$('.journal-alert').forEach(n=>n.classList.toggle('show',show));}
 function persist(){ensureState();writeStore();try{if(typeof autoSave==='function')autoSave();}catch(_){}}
-function enableJournal(){ensureState();if(canonicalJournalEnabled())return false;state.flags.chapter2_character_feature_unlocked=true;state.journal.unlocked=true;state.journal.seen=false;state.lwJournalEnabled=true;BASE_CHARACTERS.forEach(id=>{if(!state.lwCharactersUnlocked.includes(id))state.lwCharactersUnlocked.push(id);});persist();updateJournalVisibility();updateDots();return true;}
+function enableJournal(){ensureState();const fresh=!canonicalJournalEnabled()||state.journal.unlocked!==true;state.flags.chapter2_character_feature_unlocked=true;state.journal.unlocked=true;state.journal.seen=false;state.flags.chapter2_character_journal_opened=false;state.characters.Benedict=true;state.characters.North=true;state.lwJournalEnabled=true;BASE_CHARACTERS.forEach(id=>{if(!state.lwCharactersUnlocked.includes(id))state.lwCharactersUnlocked.push(id);});if(!state.lwCharactersUnread.includes('north'))state.lwCharactersUnread.push('north');persist();updateJournalVisibility();renderCharacters();updateDots();return fresh;}
 function characterSource(c){if(c.src)return c.src;try{return typeof portrait==='function'?portrait(c.portrait,'neutral'):'';}catch(_){return'';}}
 
 function unlockCharacter(id,opt={}){
@@ -120,7 +149,7 @@ function renderCharacters(){
  $$('[data-character]',grid).forEach(button=>button.addEventListener('click',()=>showDetail(button.dataset.character)));
 }
 function showDetail(id){const c=CHARACTERS[id],grid=$("#characterGrid"),detail=$("#characterDetail"),back=$("#charactersBack");if(!c||!detail)return;const src=characterSource(c);detail.innerHTML=`<div class="character-detail-head">${src?`<img src="${src}" alt="">`:''}<div><div class="character-name">${c.name[language()]}</div><div class="character-status">${c.role[language()]}${c.age?` · ${c.age}`:''}</div></div></div>${relationMetrics(id,c)}<div class="character-notes">${c.bio[language()]}</div>`;if(grid)grid.style.display='none';detail.style.display='block';if(back)back.style.display='block';}
-function markCharactersRead(){ensureState();state.lwCharactersUnread=[];state.journal.seen=true;persist();updateDots();}
+function markCharactersRead(){ensureState();state.lwCharactersUnread=[];state.journal.seen=true;state.flags.chapter2_character_journal_opened=true;persist();updateDots();}
 function openCharacters(event){const button=event.target.closest?.('#charactersButton');if(!button)return;event.preventDefault();event.stopPropagation();event.stopImmediatePropagation();if(!canonicalJournalEnabled()){updateJournalVisibility();return;}$("#drawer")?.classList.remove('open');renderCharacters();const grid=$("#characterGrid"),detail=$("#characterDetail"),back=$("#charactersBack");if(grid)grid.style.display='grid';if(detail)detail.style.display='none';if(back)back.style.display='none';$("#charactersModal")?.classList.add('open');markCharactersRead();}
 function backToGrid(event){if(!event.target.closest?.('#charactersBack'))return;event.preventDefault();const grid=$("#characterGrid"),detail=$("#characterDetail"),back=$("#charactersBack");if(grid)grid.style.display='grid';if(detail)detail.style.display='none';if(back)back.style.display='none';}
 
@@ -131,7 +160,7 @@ function devUnlockCharacters(event){event?.preventDefault();event?.stopImmediate
 function devUnlockEvidence(event){event?.preventDefault();event?.stopImmediatePropagation();Object.keys(EVIDENCE).forEach(unlockEvidence);persist();renderRegistryEvidence();try{showBadge(language()==='th'?'ปลดล็อกหลักฐานครบแล้ว':'All evidence unlocked');}catch(_){} }
 
 function observeDialogueUnlocks(){const sessions=new WeakMap();const map={elena:'elena',somchai:'somchai',kittisak:'kittisak',ratchata:'ratchata'};const observer=new MutationObserver(records=>records.forEach(record=>{const box=record.target.closest?.('.dialogue')||record.target;if(!box?.classList?.contains('dialogue'))return;const set=sessions.get(box)||new Set();const speaker=box.querySelector('.speaker')?.textContent?.trim()?.toLowerCase();if(map[speaker])set.add(map[speaker]);sessions.set(box,set);if(box.classList.contains('hidden')||getComputedStyle(box).display==='none'){set.forEach(id=>unlockCharacter(id,{unread:true,source:'story'}));set.clear();}}));$$('.dialogue').forEach(box=>observer.observe(box,{subtree:true,childList:true,attributes:true,attributeFilter:['class']}));}
-function observeScreens(){const observer=new MutationObserver(()=>{ensureState();updateJournalVisibility();updateDots();});$$('.screen').forEach(screen=>observer.observe(screen,{attributes:true,attributeFilter:['class']}));}
+function observeScreens(){const observer=new MutationObserver(()=>{ensureState();updateJournalVisibility();if(canonicalJournalEnabled())renderCharacters();updateDots();});$$('.screen').forEach(screen=>observer.observe(screen,{attributes:true,attributeFilter:['class']}));}
 
 function bind(){
  ensureState();
@@ -142,7 +171,7 @@ function bind(){
  $("#caseButton")?.addEventListener('click',()=>setTimeout(renderRegistryEvidence,0),true);
  $("#devUnlockCharacters")?.addEventListener('click',devUnlockCharacters,true);
  $("#devUnlockEvidence")?.addEventListener('click',devUnlockEvidence,true);
- window.LastWitnessContentRegistry={characters:CHARACTERS,evidence:EVIDENCE,unlockCharacter,unlockEvidence,renderCharacters,renderEvidence:renderRegistryEvidence,devUnlockCharacters,devUnlockEvidence,enableJournal,updateVisibility:updateJournalVisibility,canonicalJournalEnabled,version:'0.5.0'};
+ window.LastWitnessContentRegistry={characters:CHARACTERS,evidence:EVIDENCE,unlockCharacter,unlockEvidence,renderCharacters,renderEvidence:renderRegistryEvidence,devUnlockCharacters,devUnlockEvidence,enableJournal,updateVisibility:updateJournalVisibility,canonicalJournalEnabled,version:'0.5.1'};
 }
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',bind,{once:true});else bind();
 })();

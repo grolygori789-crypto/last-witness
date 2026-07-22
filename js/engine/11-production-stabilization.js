@@ -1,11 +1,11 @@
-/* LAST WITNESS — Production Stabilization 0.5.0
+/* LAST WITNESS — Production Stabilization 0.5.1
  * One authoritative audio lifecycle, restrained mouse clicks, consistent
  * evidence feedback, Medical Examiner evidence details and Chapter III hooks.
  */
 (function(){
 "use strict";
-if(window.__lwProductionStabilization050)return;
-window.__lwProductionStabilization050=true;
+if(window.__lwProductionStabilization051)return;
+window.__lwProductionStabilization051=true;
 
 const $=(s,r=document)=>r.querySelector(s);
 const $$=(s,r=document)=>Array.from(r.querySelectorAll(s));
@@ -48,7 +48,7 @@ function volumeProfile(screen){
  const p={};
  if(screen==="title"){p.themeAudio=m;p.rainAudio=m*0.48;}
  else if(screen==="office"){p.officeAudio=m*0.50*duck;p.rainAudio=m*0.14*duck;}
- else if(["crime","phone","deduction"].includes(screen)){p.crimeAudio=m*0.34*duck;}
+ else if(["crime","phone","deduction"].includes(screen)){p.crimeAudio=m*0.20*duck;}
  else if(screen==="office2"||screen==="chapter3Office"){p.morningOfficeAudio=m*0.50*duck;}
  else if(screen==="apartment2"){p.crimeAudio=m*0.30*duck;}
  else if(screen==="cafe2"){p.cafeAudio=m*0.36*duck;}
@@ -155,14 +155,14 @@ function playBuffer(buffer,offset,duration,gainValue,kind){
 function playMouseClick(force=false){
  if(!soundOn()||sfxLevel()<=0)return;
  const now=performance.now();if(!force&&now-lastClickAt<115)return;lastClickAt=now;
- const level=clamp(sfxLevel()*0.52,0.10,0.32);
+ const level=clamp(sfxLevel()*0.28,0.055,0.18);
  if(clickBuffer){
   const region=audibleRegion(clickBuffer,0.24);
   if(playBuffer(clickBuffer,region.offset,region.duration,level,"click"))return;
  }
  const audio=$("#clickAudio");if(!audio)return;
  clearTimeout(clickStopTimer);
- try{audio.pause();audio.currentTime=0;audio.loop=false;audio.muted=false;audio.volume=level;audio.play().catch(()=>{});clickStopTimer=setTimeout(()=>stopElement(audio,true),280);}catch(_){}
+ try{audio.pause();audio.currentTime=0;audio.loop=false;audio.muted=false;audio.volume=level;audio.play().catch(()=>{});clickStopTimer=setTimeout(()=>stopElement(audio,true),150);}catch(_){}
  prepareBuffers();
 }
 function playEvidenceCue(finalCue=false){
@@ -222,6 +222,7 @@ function actionableTarget(event){
  return event.target.closest?.("#enter,#newGame,#continueGame,#loadTitle,button:not(:disabled),.dialogue:not(.hidden),[role=button]");
 }
 function installClickSystem(){
+ if(window.__lwCoreClickInstalled)return;
  document.addEventListener("pointerdown",event=>{
   if(!actionableTarget(event))return;
   playMouseClick();
@@ -277,8 +278,8 @@ function bind(){
  document.addEventListener("click",interceptCollection,true);
  document.addEventListener("click",repairMedicalEvidence,true);
  prepareBuffers();
- window.LastWitnessAudioCue={playCollection:()=>playEvidenceCue(false),playCompletion:()=>playEvidenceCue(true),stopEvidenceCue,version:"0.5.0"};
- window.LastWitnessProductionAudio={refresh:()=>queueAudioSync(),apply:applySceneAudio,stopEvidenceCue,profile:volumeProfile,version:"0.5.0"};
+ window.LastWitnessAudioCue={playCollection:()=>playEvidenceCue(false),playCompletion:()=>playEvidenceCue(true),stopEvidenceCue,version:"0.5.1"};
+ window.LastWitnessProductionAudio={refresh:()=>queueAudioSync(),apply:applySceneAudio,stopEvidenceCue,profile:volumeProfile,version:"0.5.1"};
  window.LastWitnessContentRegistry?.updateVisibility?.();
  queueAudioSync();
 }
