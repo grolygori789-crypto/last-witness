@@ -1,17 +1,22 @@
 /* Last Witness Full Refactor
  * Audio, save/load and portrait registration
- * Stable production core + Chapter III save compatibility 0.5.0
+ * Stable production core + shared-state/audio compatibility 0.5.3
  */
 
+/* Classic-script compatibility bridge. The core state is declared with `let`
+ * in 01-runtime-data.js, so it is not automatically exposed on window.
+ * Later production modules must share the exact same object. */
+try { if (!window.state && typeof state !== "undefined") window.state = state; } catch (_) {}
+
 function setVolumes(){
-AUDIO.theme.volume=state.music;AUDIO.rain.volume=state.music*.48;AUDIO.office.volume=state.music*.82;AUDIO.morningOffice.volume=state.music*.72;AUDIO.cafe.volume=state.music*.78;AUDIO.evidence.volume=state.sfx*.8;AUDIO.police.volume=state.music*.76;AUDIO.crime.volume=state.music;AUDIO.click.volume=state.sfx;AUDIO.page.volume=state.sfx;AUDIO.steps.volume=state.sfx*.8;AUDIO.vibrate.volume=state.sfx;AUDIO.chapter.volume=state.music;
+AUDIO.theme.volume=state.music;AUDIO.rain.volume=state.music*.48;AUDIO.office.volume=state.music*.82;AUDIO.morningOffice.volume=state.music*.72;AUDIO.cafe.volume=state.music*.78;AUDIO.evidence.volume=state.sfx*.8;AUDIO.police.volume=state.music*.76;AUDIO.crime.volume=state.music*.48;AUDIO.click.volume=Math.min(.22,state.sfx*.34);AUDIO.page.volume=state.sfx;AUDIO.steps.volume=state.sfx*.8;AUDIO.vibrate.volume=state.sfx;AUDIO.chapter.volume=state.music;
 }
 function stopAudio(audio){
 if(!audio)return;
 audio.pause();
 audio.currentTime=0
 }
-function stopLoops(){[AUDIO.theme,AUDIO.rain,AUDIO.office,AUDIO.crime,AUDIO.morningOffice,AUDIO.cafe,AUDIO.police].forEach(stopAudio)}
+function stopLoops(){[AUDIO.theme,AUDIO.rain,AUDIO.office,AUDIO.crime,AUDIO.morningOffice,AUDIO.cafe,AUDIO.police,document.getElementById("forensicHumAudio"),document.getElementById("medicalRefrigeratorAudio"),document.getElementById("medicalMachineAudio")].forEach(stopAudio)}
 function stopPhoneVibration(){
 clearTimeout(stopPhoneVibration.timer);
 stopAudio(AUDIO.vibrate)
@@ -38,10 +43,10 @@ if(!state.sound)return;
 if(screen==="title"){AUDIO.theme.play().catch(()=>{});AUDIO.rain.play().catch(()=>{})}
 else if(screen==="office"){AUDIO.office.play().catch(()=>{});AUDIO.rain.play().catch(()=>{})}
 else if(screen==="office2"){AUDIO.morningOffice.play().catch(()=>{})}
-else if(screen==="apartment2"){AUDIO.crime.volume=state.music*.45;AUDIO.crime.play().catch(()=>{})}
+else if(screen==="apartment2"){AUDIO.crime.volume=state.music*.42;AUDIO.crime.play().catch(()=>{})}
 else if(screen==="cafe2"){AUDIO.cafe.play().catch(()=>{})}
 else if(screen==="police2"){AUDIO.police.currentTime=4.6;AUDIO.police.play().catch(()=>{})}
-else if(["crime","phone","deduction"].includes(screen)){AUDIO.crime.play().catch(()=>{})}
+else if(["crime","phone","deduction"].includes(screen)){AUDIO.crime.volume=state.music*.48;AUDIO.crime.play().catch(()=>{})}
 }
 function snapshot(){return{screen:state.screen,found:Array.from(state.found),history:state.history,time:Date.now(),chapter:state.chapter,checkpoint:state.checkpoint,characters:state.characters,relationships:state.relationships,flags:state.flags,personality:state.personality,journal:state.journal,forensic:state.forensic||{},medical:state.medical||{},chapter3:state.chapter3||{}}}
 function autoSave(){if(["splash","title"].includes(state.screen))return;localStorage.setItem(SAVE.auto,JSON.stringify(snapshot()));flashSave(L("auto_saved"))}

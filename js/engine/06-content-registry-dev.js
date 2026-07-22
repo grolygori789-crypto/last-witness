@@ -1,4 +1,4 @@
-/* LAST WITNESS — Canon Character Journal + Registry/Dev Integration 0.5.2
+/* LAST WITNESS — Canon Character Journal + Registry/Dev Integration 0.5.3
  * Story-gated journal visibility, canonical relationship metrics and no polling.
  */
 (function(){
@@ -9,6 +9,10 @@ const STORE="lastWitness.contentRegistry.v2";
 const BASE_CHARACTERS=["benedict","north"];
 const STORY_NAMES={benedict:"Benedict",north:"North",elena:"Elena",somchai:"Somchai",kittisak:"Kittisak",ratchata:"Ratchata"};
 const LATE_CH2=new Set(["apartment2","cafe2","police2","forensic2","medical2","chapter2Complete","chapter3Office","chapter3Phase2Wip","chapter3Wip"]);
+
+function gameState(){
+ try{return state;}catch(_){return window.state||null;}
+}
 
 const CHARACTERS={
  benedict:{name:{en:"Benedict",th:"เบเนดิกต์"},age:42,role:{en:"Detective",th:"นักสืบ"},status:{en:"Lead Investigator",th:"หัวหน้าผู้สืบสวน"},bio:{en:"A calm, observant detective who uses humour to keep pressure from controlling the room.",th:"นักสืบสุขุม ช่างสังเกต ใช้อารมณ์ขันช่วยควบคุมแรงกดดันในสถานการณ์"},portrait:"Benedict",relation:{label:{en:"Professional Focus",th:"สมาธิในการทำงาน"},value:86},metrics:[{key:"resolve",label:{en:"Resolve",th:"ความมุ่งมั่น"},value:86},{key:"insight",label:{en:"Insight",th:"การหยั่งรู้"},value:82},{key:"composure",label:{en:"Composure",th:"ความสุขุม"},value:88},{key:"empathy",label:{en:"Empathy",th:"ความเข้าใจผู้อื่น"},value:76}]},
@@ -26,32 +30,41 @@ const EVIDENCE={
  postmortem:{phase:"Medical Examiner",title:{en:"Postmortem Indicators",th:"ตัวบ่งชี้หลังการเสียชีวิต"}},identity_tag:{phase:"Medical Examiner",title:{en:"Identification and Intake Tag",th:"ป้ายระบุตัวและรับศพ"}},autopsy_report:{phase:"Medical Examiner",title:{en:"Preliminary Autopsy Report",th:"รายงานชันสูตรเบื้องต้น"}},toxicology_sample:{phase:"Medical Examiner",title:{en:"Toxicology Reference Sample",th:"ตัวอย่างอ้างอิงทางพิษวิทยา"}}
 };
 
-function language(){try{return window.state?.language==="th"?"th":(document.documentElement.lang==="th"?"th":"en");}catch(_){return"en";}}
-function currentScreen(){return $(".screen.active")?.id||window.state?.screen||"";}
+function language(){const s=gameState();return s?.language==="th"?"th":(document.documentElement.lang==="th"?"th":"en");}
+function currentScreen(){const s=gameState();return $(".screen.active")?.id||s?.screen||"";}
 function clamp(v){return Math.max(0,Math.min(100,Math.round(Number(v)||0)));}
 function readStore(){try{return JSON.parse(localStorage.getItem(STORE)||"{}");}catch(_){return{};}}
-function writeStore(){try{localStorage.setItem(STORE,JSON.stringify({charactersUnlocked:state.lwCharactersUnlocked||[],charactersUnread:state.lwCharactersUnread||[],evidenceUnlocked:state.lwEvidenceUnlocked||[]}));}catch(_){}}
+function writeStore(){const s=gameState();if(!s)return;try{localStorage.setItem(STORE,JSON.stringify({charactersUnlocked:s.lwCharactersUnlocked||[],charactersUnread:s.lwCharactersUnread||[],evidenceUnlocked:s.lwEvidenceUnlocked||[]}));}catch(_){}}
 
 function storyJournalReached(){
- const chapter=Number(window.state?.chapter)||1;
+ const s=gameState();
+ const chapter=Number(s?.chapter)||1;
  if(chapter>2)return true;
  if(chapter<2)return false;
- return Boolean(
-  window.state?.flags?.chapter2_character_feature_unlocked===true&&
-  window.state?.journal?.unlocked===true
- );
+ if(s?.flags?.chapter2_character_feature_unlocked===true&&s?.journal?.unlocked===true)return true;
+ /* Reaching the apartment proves the North office conversation has completed.
+  * This is a route-derived fallback for old or partially written saves. */
+ return LATE_CH2.has(currentScreen());
 }
 function canonicalJournalEnabled(){return storyJournalReached();}
 
 function ensureState(){
- if(!window.state)window.state={};
+ const s=gameState();
+ if(!s)return;
+ if(!window.state)window.state=s;
  const saved=readStore();
- state.characters=state.characters||{Benedict:true};
- state.journal=state.journal||{unlocked:false,seen:true,introShown:false};
- state.flags=state.flags||{};
+ s.characters=s.characters||{Benedict:true};
+ s.journal=s.journal||{unlocked:false,seen:true,introShown:false};
+ s.flags=s.flags||{};
 
  const reached=storyJournalReached();
- state.lwJournalEnabled=reached;
+ if(reached&&s.journal.unlocked!==true){
+  s.flags.chapter2_character_feature_unlocked=true;
+  s.journal.unlocked=true;
+  if(s.flags.chapter2_character_journal_opened!==true)s.journal.seen=false;
+  s.characters.Benedict=true;s.characters.North=true;
+ }
+ s.lwJournalEnabled=reached;
  const unlocked=new Set(Array.isArray(state.lwCharactersUnlocked)?state.lwCharactersUnlocked:[]);
  if(reached){
   (saved.charactersUnlocked||[]).forEach(id=>unlocked.add(id));
@@ -142,7 +155,7 @@ function unlockCharacter(id,opt={}){
  return fresh;
 }
 
-function relationshipRecord(id){const name=STORY_NAMES[id];return name?window.state?.relationships?.[name]:null;}
+function relationshipRecord(id){const s=gameState();const name=STORY_NAMES[id];return name?s?.relationships?.[name]:null;}
 function dynamicMetrics(id,c){
  const r=relationshipRecord(id);
  if(r){return[
@@ -187,12 +200,13 @@ function observeScreens(){const observer=new MutationObserver(()=>{ensureState()
 function bind(){
  ensureState();
  updateJournalVisibility();renderCharacters();updateDots();observeDialogueUnlocks();observeScreens();
+ window.addEventListener("lastwitness:journal-unlocked",()=>{unlockChapter2North({showToast:false});updateJournalVisibility();renderCharacters();updateDots();});
  document.addEventListener('click',openCharacters,true);document.addEventListener('click',backToGrid,true);
  document.addEventListener('click',event=>{if(event.target.closest?.('[data-lang]'))setTimeout(()=>{renderCharacters();renderRegistryEvidence();},0);},true);
  $("#caseButton")?.addEventListener('click',()=>setTimeout(renderRegistryEvidence,0),true);
  $("#devUnlockCharacters")?.addEventListener('click',devUnlockCharacters,true);
  $("#devUnlockEvidence")?.addEventListener('click',devUnlockEvidence,true);
- window.LastWitnessContentRegistry={characters:CHARACTERS,evidence:EVIDENCE,unlockCharacter,unlockEvidence,renderCharacters,renderEvidence:renderRegistryEvidence,devUnlockCharacters,devUnlockEvidence,enableJournal,unlockChapter2North,updateVisibility:updateJournalVisibility,updateDots,canonicalJournalEnabled,version:'0.5.2'};
+ window.LastWitnessContentRegistry={characters:CHARACTERS,evidence:EVIDENCE,unlockCharacter,unlockEvidence,renderCharacters,renderEvidence:renderRegistryEvidence,devUnlockCharacters,devUnlockEvidence,enableJournal,unlockChapter2North,updateVisibility:updateJournalVisibility,updateDots,canonicalJournalEnabled,version:'0.5.3'};
 }
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',bind,{once:true});else bind();
 })();

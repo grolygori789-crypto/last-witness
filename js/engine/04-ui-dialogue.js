@@ -1,5 +1,5 @@
-/* LAST WITNESS — Screen, UI and Dialogue Runtime 0.5.2
- * Shared Chapter I–III routing with story-gated Character Journal visibility.
+/* LAST WITNESS — Screen, UI and Dialogue Runtime 0.5.3
+ * Shared Chapter I–III routing with a direct Chapter II journal guard.
  */
 function showChapterIntro(chapter,onComplete){
 clearTimeout(chapterIntroTimer);
@@ -25,13 +25,36 @@ intro.setAttribute("aria-hidden","true")
 })
 },2850)
 }
+function ensureChapter2JournalForScreen(screen){
+const lateChapter2=["apartment2","cafe2","police2","forensic2","medical2","chapter2Complete","chapter3Office","chapter3Phase2Wip","chapter3Wip"];
+if(Number(state.chapter)<2||!lateChapter2.includes(screen))return;
+state.flags=state.flags||{};
+state.characters=state.characters||{};
+state.journal=state.journal||{unlocked:false,seen:true,introShown:false};
+state.flags.chapter2_character_feature_unlocked=true;
+state.characters.Benedict=true;
+state.characters.North=true;
+state.journal.unlocked=true;
+if(state.flags.chapter2_character_journal_opened!==true)state.journal.seen=false;
+state.lwJournalEnabled=true;
+state.lwCharactersUnlocked=Array.from(new Set([...(state.lwCharactersUnlocked||[]),"benedict","north"]));
+if(state.journal.seen===false)state.lwCharactersUnread=Array.from(new Set([...(state.lwCharactersUnread||[]),"north"]));
+const button=$("#charactersButton");
+if(button){
+ button.hidden=false;button.disabled=false;button.removeAttribute("hidden");button.setAttribute("aria-hidden","false");
+ button.style.setProperty("display","block","important");button.style.setProperty("visibility","visible","important");button.style.setProperty("opacity","1","important");button.style.setProperty("pointer-events","auto","important");
+ ["height","overflow","margin-top","min-height","padding","border"].forEach(name=>button.style.removeProperty(name));
+}
+}
 function show(screen){
 $$('.screen').forEach(element=>element.classList.remove('active'));
 const target=$("#"+screen);
 if(!target)return;
 target.classList.add('active');
 state.screen=screen;
+ensureChapter2JournalForScreen(screen);
 try{window.LastWitnessContentRegistry?.updateVisibility?.()}catch(_){}
+try{window.LastWitnessContentRegistry?.updateDots?.()}catch(_){}
 try{syncJournalAlert()}catch(_){}
 try{syncDeveloperAccess()}catch(_){}
 try{ambience(screen)}catch(_){}
