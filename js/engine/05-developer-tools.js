@@ -1,11 +1,14 @@
 /* Last Witness Full Refactor
  * Developer access and testing tools
- * Master Source lines 502-611
+ * Dev fresh-scene isolation 0.6.7
  */
 
 let developerSessionUnlocked=false;
 let devVersionTapCount=0;
 let devVersionTapTimer=null;
+const DEV_FORENSIC_FRESH_KEY="lw_dev_fresh_forensic_067";
+const DEV_SESSION_UNLOCK_KEY="lw_dev_session_unlocked_067";
+const DEV_FORENSIC_IDS=["sealed_sample","accession_record","audit_trace","batch_record"];
 function developerUnlocked(){return developerSessionUnlocked}
 function syncDeveloperAccess(){
 const unlocked=developerUnlocked();
@@ -51,6 +54,55 @@ Elena:{trust:35,respect:52,attachment:18,suspicion:10}
 state.flags=state.flags||{};
 state.personality=state.personality||{warm:0,observant:0,direct:0}
 }
+function clearForensicDevState(){
+devBaseChapter2();
+state.checkpoint="ch2_forensic_arrival";
+state.screen="forensic2";
+state.characters.Elena=true;
+state.characters.Somchai=true;
+state.characters.Kittisak=true;
+state.flags.elena_unlocked=true;
+state.flags.cafe_intro_complete=true;
+state.flags.cafe_complete=true;
+state.flags.police_intro_complete=true;
+state.flags.police_phase_complete=true;
+state.progress=64;
+state.forensic={found:[],collected:[],choice:null,compared:false,complete:false};
+["identity","custody","route"].forEach(path=>delete state.flags[`forensic_${path}`]);
+DEV_FORENSIC_IDS.forEach(id=>{try{state.found?.delete?.(`forensic_${id}`)}catch(_){}});
+$$('[data-forensic-clue]').forEach(node=>node.classList.remove('found'));
+$("#forensicChoice")?.classList.add("hidden");
+const complete=$("#forensicPhaseComplete");
+if(complete){complete.style.display="none";complete.setAttribute("aria-hidden","true")}
+$("#forensicEvidencePanel")?.classList.remove("open");
+$("#forensicDialogue")?.classList.add("hidden");
+$("#reviewForensic")?.classList.remove("show")
+}
+function requestFreshForensicDevJump(event){
+const button=event.target.closest?.('[data-dev-jump="forensic2"]');
+if(!button)return;
+event.preventDefault();
+event.stopImmediatePropagation();
+try{closeOverlays()}catch(_){}
+clearForensicDevState();
+try{if(typeof autoSave==="function")autoSave()}catch(_){}
+sessionStorage.setItem(DEV_FORENSIC_FRESH_KEY,"1");
+sessionStorage.setItem(DEV_SESSION_UNLOCK_KEY,"1");
+location.reload()
+}
+function resumeFreshForensicDevJump(){
+if(sessionStorage.getItem(DEV_FORENSIC_FRESH_KEY)!=="1")return;
+sessionStorage.removeItem(DEV_FORENSIC_FRESH_KEY);
+if(sessionStorage.getItem(DEV_SESSION_UNLOCK_KEY)==="1")developerSessionUnlocked=true;
+syncDeveloperAccess();
+clearForensicDevState();
+try{closeOverlays()}catch(_){}
+$("#developerModal")?.classList.remove("open");
+if(window.LastWitnessForensic?.start)window.LastWitnessForensic.start();
+try{if(typeof autoSave==="function")autoSave()}catch(_){}
+}
+document.addEventListener("click",requestFreshForensicDevJump,true);
+window.addEventListener("load",resumeFreshForensicDevJump,{once:true});
 function developerJump(screen){
 closeOverlays();devBaseChapter2();
 if(screen==="office2"){
@@ -111,5 +163,5 @@ localStorage.removeItem(AUTO_KEY);localStorage.removeItem(MANUAL_KEY);
 state.found.clear();state.history=[];showBadge(L("dev_action_complete"))
 }
 function lockDeveloperAccess(){
-developerSessionUnlocked=false;syncDeveloperAccess();$("#developerModal").classList.remove("open")
+developerSessionUnlocked=false;sessionStorage.removeItem(DEV_SESSION_UNLOCK_KEY);syncDeveloperAccess();$("#developerModal").classList.remove("open")
 }
