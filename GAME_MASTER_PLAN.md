@@ -1,30 +1,31 @@
 # LAST WITNESS — GAME MASTER PLAN
 
-> MASTER REFERENCE / SOURCE OF TRUTH
+> **MASTER REFERENCE / SOURCE OF TRUTH**
 >
-> ไฟล์นี้คือเอกสารหลักสำหรับใช้ต่อโปรเจกต์ใน ChatGPT ห้องใหม่
-> ต้องอ่านไฟล์นี้และตรวจ GitHub ก่อนแก้โค้ดทุกครั้ง
-> เมื่อข้อมูลในแชทขัดกับ GitHub ให้ยึด GitHub branch ที่ใช้งานจริงเป็นหลัก
+> เอกสารฉบับนี้รวมข้อมูล Production, Canon, Gameplay, Character, Audio, UI, Save/Load, Chapter III Blueprint และกฎการพัฒนาที่ได้รับการยืนยันล่าสุดจากเจ้าของโปรเจกต์
 >
-> Last verified production branch: `restore-game-recovered`
+> ก่อนแก้โค้ดทุกครั้ง ต้องตรวจ GitHub branch ปัจจุบันและไฟล์จริงใน Repository เสมอ  
+> GitHub เป็น Source of Truth สำหรับโค้ดและ Asset ที่ใช้งานจริง  
+> ข้อมูลที่ระบุว่า `CONFIRMED BY OWNER` ในเอกสารนี้คือ Canon ด้านเนื้อเรื่องและการออกแบบล่าสุด
 
 ---
 
-## 1. PROJECT IDENTITY
+# 1. PROJECT IDENTITY
 
-### Game Title
+## Game Title
 **LAST WITNESS**
 
-### Studio / Brand
+## Studio / Brand
 **BENEDICT INTERACTIVE**
 
-### Tagline
+## Tagline
 **The dead don't talk. Evidence does.**
 
 ภาษาไทย:
+
 **คนตายพูดไม่ได้ แต่หลักฐานพูดแทนได้**
 
-### Genre
+## Genre
 - Narrative Detective Adventure
 - Interactive Crime Investigation
 - Evidence-based mystery
@@ -32,17 +33,25 @@
 - Light relationship and personality choices
 - Mobile-first browser game
 
-### Core Tone
+## Target Platform
+- Browser game
+- Google Chrome
+- Mobile-first
+- Portrait orientation
+- Primary layout target: 9:16
+- Important UI must remain accessible when the mobile browser address bar is visible
+
+## Core Tone
 - Crime mystery
 - Noir-inspired atmosphere
-- Serious investigation mixed with dry humour
+- Serious investigation mixed with restrained dry humour
+- Intelligent, professional characters
 - Evidence must support every conclusion
-- No supernatural explanation unless later proven by evidence
-- Characters should sound intelligent, restrained and professional
-- Humour comes mainly from Benedict, North, Somchai and Ratchata
-- The story must avoid careless accusations before evidence supports them
+- No careless accusation before evidence supports it
+- Singapore scenes must remain part of the investigation, not become tourism sequences
 
-### Core Narrative Principle
+## Core Narrative Principle
+
 The game repeatedly separates:
 
 1. What physically happened
@@ -50,101 +59,136 @@ The game repeatedly separates:
 3. Who had permission to alter those records
 4. Who actually used that permission
 
-A valid credential proves access, not identity.
+> **A valid credential proves access, not identity.**
+
+A valid credential proves that the system permitted access. It does not prove who actually used that permission.
 
 ---
 
-## 2. REPOSITORY AND PRODUCTION STATE
+# 2. REPOSITORY AND PRODUCTION RULES
 
-### Repository
+## Repository
 `grolygori789-crypto/last-witness`
 
-### Production Branch
+## Production Branch
 `restore-game-recovered`
 
-This is:
-- The default branch
-- The GitHub Pages source
-- The only branch that should be used for current development
-- The last verified playable branch
-
-### Deleted Branches
-- `main`
-- `restore-forensic-good`
-
-Do not recreate these names unless there is a proven technical requirement.
-
-### Live Game URL
+## Live Game
 `https://grolygori789-crypto.github.io/last-witness/`
 
-Query strings such as `?recovered=1` do not create a different site.
-They only force browsers to request a fresh version.
+## Primary Planning File
+`GAME_MASTER_PLAN.md`
 
-### GitHub Pages
-- Source: Deploy from a branch
-- Branch: `restore-game-recovered`
-- Folder: `/(root)`
+## Source-of-Truth Rules
+- GitHub is the Source of Truth for code and files used by the game.
+- Never patch from memory, an old ZIP, or a previous chat attachment.
+- Always fetch the latest files from `restore-game-recovered`.
+- Story Canon confirmed by the owner must be preserved in this Master Plan.
+- When runtime code conflicts with the plan, inspect both before deciding whether the code or plan is outdated.
 
-### Current Displayed Build
-`LAST WITNESS · BUILD 0.4.0`
+## Mandatory Procedure Before Any Code Change
+1. Inspect the latest `restore-game-recovered` branch.
+2. Read `GAME_MASTER_PLAN.md`.
+3. Inspect `index.html`.
+4. Confirm CSS, JavaScript, Audio and module load order.
+5. Inspect every file related to the reported defect.
+6. Check for overlapping listeners, observers, timers, audio overrides, state repairs and legacy systems.
+7. Explain the verified root cause before changing code.
+8. Patch the fewest files necessary while fixing the real cause.
+9. Test the exact reported runtime flow, not syntax alone.
+10. Report honestly what was tested and what was not.
+11. Deliver modified files as a ZIP only.
 
-### Current Structural Format
-- `index.html`
-- `css/style.css`
-- `css/forensic-phase.css`
-- `css/medical-examiner.css`
-- `js/engine/`
-- `js/chapters/chapter-01/`
-- `js/chapters/chapter-02/`
-- `assets/images/`
-- `assets/audio/`
-
-The game was refactored away from a single Base64 HTML file into external CSS, JavaScript, image and audio files.
-
-Never upload only `index.html` without verifying all referenced folders remain present.
-
----
-
-## 3. CURRENT DEVELOPMENT STATUS
-
-### Playable
-- Title screen
-- Thai / English language switching
-- Chapter I
-- Chapter II
-- Chapter II ending
-- Chapter III WIP screen
-- Save / Load
-- Auto Save
-- Manual Save
-- Dialogue history
-- Case File
-- Character Journal
-- Relationship / personality state
-- Developer Console
-- Evidence inspection
-- Evidence collection
-- Evidence comparison
-- Phase progression
-- Chapter progression
-- Audio and ambience system
-
-### Story Completion
-- Chapter I: Complete
-- Chapter II: Complete in story structure
-- Chapter III: Not yet developed
-- Chapter III currently shows a WIP screen after Chapter II
-
-### Immediate Development Priority
-1. Stabilize all Chapter I and Chapter II regressions
-2. Confirm full mobile playthrough
-3. Fix remaining portrait, audio, hotspot and dialogue issues
-4. Preserve save/load compatibility
-5. Design and build Chapter III based on the Chapter II final choice
+## Prohibited Actions
+- Do not create a branch.
+- Do not push or modify GitHub directly.
+- Do not modify GitHub Pages directly.
+- Do not delete files or restructure the repository without owner approval.
+- Do not add a new hotfix, observer, polling loop or audio controller merely to override an unresolved legacy conflict.
+- Do not claim a defect is fixed 100% before the owner tests it on the real device.
+- Do not claim mobile or audio testing unless it was actually performed.
+- The owner uploads files to GitHub personally.
 
 ---
 
-# 4. MAIN CHARACTERS
+# 3. CURRENT PRODUCTION STATUS
+
+## Current Patch Under Test
+**Last Witness Core Audio & State Fix 0.5.5**
+
+Status:
+
+`WAITING FOR OWNER DEVICE TEST AFTER SITE DATA CLEAR`
+
+Do not assume patch 0.5.5 is successful until the owner confirms the result from the real device.
+
+## Defects Reported Before 0.5.5
+1. UI click sound missing
+2. Add to Case File sound missing
+3. Victim Apartment ambience unsuitable
+4. Café ambience leaking before Victim Apartment ends
+5. Medical Examiner hotspots starting green due to stale state
+6. Toxicology scanner beep too loud
+7. Ratchata Character Journal image loading inconsistently
+
+## Current Priority
+1. Receive the owner's 0.5.5 test result
+2. Reinspect the latest GitHub branch before any further patch
+3. Stabilize Chapters I and II
+4. Preserve Save/Load compatibility
+5. Replace the Chapter III WIP transition with the approved Chapter III implementation
+6. Build Chapter III only after its Blueprint and required Assets are confirmed
+
+---
+
+# 4. CHAPTER TITLE GOVERNANCE
+
+## Current Chapter Titles
+
+### Chapter I
+**ROOM 1807**  
+Status: `CANON`
+
+### Chapter II
+**THE PERFECT STRANGER**  
+Status: `WORKING TITLE CURRENTLY USED`
+
+### Chapter III
+**THE BORROWED MINUTES**  
+Thai: **สิบเอ็ดนาทีที่ถูกยืม**  
+Status: `CONFIRMED CHAPTER III CANON PLAN / ACTIVE IMPLEMENTATION TITLE`
+
+### Longer-Term Working Title Pool
+The owner has also proposed the following working titles for later chapters:
+
+- **BROKEN ALIBI**
+- **THE MISSING PIECE**
+- **SHADOW OF THE TRUTH**
+- **THE FINAL MOVE**
+- **LAST WITNESS**
+
+These titles remain working titles until their final chapter numbers are explicitly locked by the owner.
+
+## Title Conflict Rule
+An earlier proposed list assigned `BROKEN ALIBI` to Chapter III. However, Chapter III planning and active development already use `THE BORROWED MINUTES`.
+
+Until the owner explicitly orders a rename across code, UI, documentation and assets:
+
+- Chapter III remains **THE BORROWED MINUTES**
+- `BROKEN ALIBI` remains available for a later chapter
+- Do not silently rename Chapter III
+- Do not silently renumber the remaining working titles
+
+## Chapter II Case Name
+Chapter II may end with the investigative case label:
+
+**THE ELEVEN-MINUTE LIE**
+
+This is a case/ending label, not the current Chapter II title.
+
+---
+
+# 5. MAIN CHARACTERS
 
 ## Benedict
 
@@ -157,24 +201,29 @@ Never upload only `index.html` without verifying all referenced folders remain p
 ### Personality
 - Calm
 - Observant
-- Uses humour under pressure
-- Often notices human contradictions
-- Should not make unsupported accusations
-- His choices shape relationships and investigation tone
+- Uses natural humour under pressure
+- Playful without becoming a clown
+- Notices human contradictions
+- Does not accuse without evidence
 
-### Story Function
-Benedict interprets evidence, questions people and makes the final player-facing deductions.
+### Narrative Function
+- Main protagonist
+- Questions witnesses and suspects
+- Makes the major player-facing decisions
+- Connects technical evidence to motive, opportunity and the real operator
+- Must remain essential even when North leads technical analysis
 
-### Player Personality Paths
+### Player Approaches
 - Warm
 - Observant
 - Direct
 
-Choices may change:
-- Dialogue responses
-- Relationship values
+Choices may affect:
+- Dialogue
+- Relationships
 - Character reactions
-- Chapter III opening route
+- Investigation tone
+- Chapter III opening route acknowledgement
 
 ---
 
@@ -183,748 +232,812 @@ Choices may change:
 ### Identity
 - Age: 32
 - Role: IT Specialist / Technical Investigator
-- Status: Trusted Partner
+- Status: Benedict's trusted partner
 
 ### Personality
+- Serious
+- Intelligent
+- Highly observant
 - Precise
-- Analytical
+- Concise
 - Dry humour
-- Low tolerance for unsupported conclusions
-- Often notices technical details Benedict overlooks
+- Low tolerance for unsupported claims
 
-### Relationship
-North is Benedict's established partner.
+### Relationship with Benedict
+- Established close partners
+- Strong trust
+- Natural teasing
+- Shared history
+- Neither character should solve everything alone
 
-Tracked values include:
-- Trust
-- Respect
-- Attachment / affection
-- Suspicion
+### Chapter III Role
+- Discovers the Singapore endpoint
+- Leads system analysis
+- Explains Authentication versus Attribution
+- Works closely with Farid
+- Tests Adrian's statements against the logs
+- Leads technical work during the lab climax
 
-### Journal Rule
-North should be added correctly when Chapter II begins.
-
-The red notification dot must:
-- Appear only when a genuinely new character entry exists
-- Disappear after the new entry has been viewed
-- Not remain permanently active
-- Not unlock unrelated characters early
+### Balance Rule
+North leads technical interpretation. Benedict remains the protagonist and final decision-maker.
 
 ---
 
 ## Elena
 
-### Identity
+### Public Identity
 - Role: Forensic Analyst
-- Status: Professional Contact
+- Status: Intelligent and trusted professional collaborator
+- Calm, precise and technically capable
+- Provides real information
+- Appears professional and credible
+
+### Owner-Level Secret
+`CONFIRMED BY OWNER — DO NOT REVEAL IN CHAPTER III`
+
+Elena is the mastermind and the real killer.
+
+### Long-Term Writing Rules
+- Do not reveal this in Chapter III.
+- Do not use obvious villain dialogue.
+- Do not use villain lighting, facial expressions or suspicious staging.
+- Do not make her suddenly evasive in a theatrical way.
+- Elena gives true information but controls which truth arrives, when it arrives and in what order.
+- Clues must feel fair in retrospect.
+- Clues must remain subtle enough that Chapter III does not expose her easily.
+- Elena is likely to remain in Thailand and assist remotely.
+- She does not need to travel to Singapore with Benedict and North.
+- Her late-Chapter-III contact may be factually correct while strategically timed.
+
+---
+
+## Adrian Tan Wei Ming
+
+### Identity
+- Singaporean Chinese man
+- Age: approximately 43–47
+- Former System Architect
+- Key Witness
+- Fugitive
+- Complicit Insider
+- Not the mastermind
 
 ### Personality
-- Calm
-- Precise
-- Technically capable
-- Prepared
-- Dry and restrained sense of humour
-- Corrects measurable facts without pretending to know more than the evidence supports
-
-### Introduction
-First properly introduced at Orchid Café.
-
-### Story Importance
-Daniel Voss contacted Elena to verify an original toxicology report.
-
-She discovers that:
-- The corrected toxicology copy shifted the sample collection time
-- The shift is exactly eleven minutes
-- The scientific result may be authentic
-- The administrative timeline around it was altered
-
-### Relationship Paths
-- Friendly
-- Analytical
+- Highly intelligent
 - Guarded
+- Exhausted from hiding
+- Dry humour
+- Speaks only when necessary
+- Distrusts both police and the system he helped build
+- Appears to know more than he says
+- Must not be written as cowardly or cartoonishly evil
 
-Tracked values include:
-- Trust
-- Respect
-- Attachment
-- Suspicion
-
-### Critical Dialogue Rule
-Every Elena dialogue line must:
-- Show Elena's correct portrait
-- Use the correct emotion
-- Never display Benedict, North or another character's portrait
-- Match speaker name, dialogue and portrait on every line
-
----
-
-## Somchai
-
-### Identity
-- Police officer
-- Rank used in dialogue: Sergeant / ดาบ
-- Cooperative but playful
-
-### Personality
-- Flirtatious
-- Joking
-- Socially confident
-- Capable when redirected toward professional work
+### Approved Visual Direction
+- Middle-aged Asian man
+- Grey shirt
+- Dark blazer or coat
+- Senior technical expert appearance
+- Visible stress and lack of sleep
+- Approved Character Sheet: 12 expressions
 
 ### Story Function
-- Works in the Evidence Division
-- Witnesses authorized access to records
-- Explains police intake procedure
-- Helps verify the impossible timeline
+- Met at a Hawker Centre
+- Understands the Reconciliation Window
+- Explains Signed Local Events
+- May possess an Encrypted Drive or Architecture Document
+- Can appear to be a major suspect
+- Later evidence shows he is fleeing the person controlling the system
 
-### Player Approaches
-- Charm
-- Precision
-- Pressure
+### Guilt Boundary
+Adrian may be guilty of:
+- Concealment
+- Failure to report
+- Enabling the system
+- Fleeing
+- Other complicity supported by evidence
+
+He did not design the complete murder plan and is not the mastermind.
 
 ---
 
-## Captain Kittisak Siriwat
+## Inspector Cheryl Goh
 
 ### Identity
-- Police captain
-- Thai dialogue title: ร้อยตำรวจเอก / ผู้กอง as appropriate to established dialogue
-- English title: Captain Kittisak Siriwat
+- Singaporean Chinese woman
+- Age: approximately 38–42
+- Singapore Police Force Liaison
+- Cross-border case coordinator
 
 ### Personality
-- Disciplined
-- Cautious
-- Professional
-- Demands evidence before accusation
+- Sharp
+- Emotionally controlled
+- Authoritative
+- Skeptical
+- Rejects unsupported conclusions
+- Not impressed by Benedict's reputation or charm alone
+- Develops respect for North after seeing her technical ability
+- Must not become a flat obstructive officer or villain
+
+### Approved Visual Direction
+- Asian woman around 40
+- Pixie cut
+- Navy or dark-blue clothing
+- SPF badge
+- Professional authority
+- Approved Character Sheet: 12 expressions
 
 ### Story Function
-- Controls access to police evidence
-- Preserves the sealed original report
-- Warns Benedict that contradiction is evidence, but accusation requires more
-- Authorizes access to the laboratory record
-
-### Critical Canon Rule
-His Character Journal title/status must not incorrectly display:
-- `Reserved`
-
-It must reflect his actual role:
-- Captain
-- Police Captain
-- Commanding Officer
-- Equivalent confirmed localized title
+- Meets the team at Singapore Investigation Office
+- Questions why a Thai case reaches Singapore infrastructure
+- Restricts access initially
+- Opens access to the Digital Forensics Lab or Secure Server Facility after sufficient evidence
+- May become an important ally in later chapters
 
 ---
 
-## Dr. Ratchata Singh
+## Farid Rahman
+
+### Identity
+- Singaporean Malay man
+- Age: approximately 29–34
+- Digital Forensics Specialist
+- Not Indian
+
+### Personality
+- Friendly
+- Fast-working
+- Speaks quickly when excited by data
+- Highly capable in digital forensics
+- Uses restrained jokes about systems, technology and logging
+- Respects North as a specialist
+- Must not become the team's comic relief
+
+### Relationship Boundary
+- No romance with North
+
+### Approved Visual Direction
+- Singaporean Malay man
+- Olive jacket
+- Dark T-shirt
+- SPF badge
+- Tablet
+- Coffee may appear in some expressions
+- Approved Character Sheet: 16 expressions
+
+### Story Function
+- Works with North on logs
+- Demonstrates two different logs that are both valid under system rules
+- Explains Offline Signature Token
+- Investigates the Singapore node and Temporary Credential 18-07
+- Plays an important role in the Digital Forensics Lab climax
+
+---
+
+## Ratchata (Dr. Singh)
 
 ### Identity
 - Age: 43
-- Role: Senior Medical Examiner
+- Senior Medical Examiner
 - Thai Sikh forensic pathologist
 - Independent expert
 
 ### Personality
-- Dry-witted
-- Eccentric in presentation
 - Scientifically strict
+- Dry humour
+- Restrained deadpan delivery
 - Refuses to make the body prove more than it can
-- Uses restrained deadpan humour
 
 ### Story Function
-- Establishes death timing independently from altered database records
-- Confirms the toxicology result is authentic
-- Confirms the manipulation targeted chronology, not scientific measurement
-- Reveals Daniel was following a pattern across older cases
+- Confirms toxicology is genuine
+- Establishes time of death independently
+- Supports the conclusion that chronology was engineered
 
-### Critical Portrait Rule
-Use portrait files from:
+### Character Journal Rule
+Display name must be:
+
+**Ratchata (Dr. Singh)**
+
+Use a verified existing file from:
 `assets/images/ratchata/`
 
-Portrait emotion must match every line.
+Preferred stable candidates:
+- `profile.png`
+- `neutral.png`
+
+The actual path must be confirmed in the latest GitHub branch before use.
 
 ---
 
-## Daniel Voss
+# 6. CHARACTER JOURNAL RULES
 
-### Identity
-- Age: 38
-- Victim in Chapter II
-
-### Known Facts
-- Found dead in his apartment at 06:20
-- Was investigating links involving Hotel 1807
-- Was following old cases and shell companies
-- Had arranged contact concerning an original toxicology report
-- Was afraid of someone
-- Was killed while following a larger recurring pattern
-- The official timeline around his body and sample was manipulated
-
-### Narrative Function
-Daniel connects:
-- Chapter I's Hotel 1807
-- The duplicated building credential
-- The altered toxicology timeline
-- Police evidence intake
-- Laboratory access
-- Older cases
-- The future conspiracy plot
+- Chapter I has no Characters menu.
+- At the start of Chapter II, while the first North conversation is still running, the Characters menu remains hidden.
+- After the Detective Office conversation with North ends, unlock Characters.
+- Menu order: Case File → Characters → Settings.
+- A red dot appears only when a genuinely new character entry exists.
+- The red dot clears when the new entry is opened.
+- Character Cards show an average percentage.
+- Character detail screens include multiple metrics, such as:
+  - Trust
+  - Respect
+  - Affection
+  - Suspicion
+- Characters unlock only after proper introduction.
+- Save/Load must preserve unlock and unread status.
+- Ratchata's image must load consistently.
 
 ---
 
-# 5. CHAPTER STRUCTURE
+# 7. CHAPTER I — ROOM 1807
 
-# CHAPTER I — HOTEL 1807
-
-## Status
-Complete and playable.
+Status: `COMPLETE AND PLAYABLE`
 
 ## Main Location
 Grandview Hotel — Room 1807
 
-## Opening
-North contacts Benedict at the detective office about a possible homicide in Room 1807.
+## Core Story
+North contacts Benedict about a possible homicide in Room 1807.
 
-The tone establishes:
-- Benedict's humour
-- North's dry responses
-- Their established partnership
-- The investigative style of the game
+The room is staged. Physical evidence, digital traces and victim behaviour do not form one natural sequence.
 
-## Investigation Phase: Hotel Room
-
-### Main Evidence
+## Main Evidence
 1. Victim's Phone
 2. Blood Pattern / Blood-stained Evidence
 3. Cleared Laptop
 4. Half-packed Suitcase
 
-### Phone Evidence
-- Warning message:
-  - “You shouldn't have come here.”
+## Phone Evidence
+- Warning: “You shouldn't have come here.”
 - Three missed calls from `R.`
-- Recovered note:
-  - “Meet at the pier. 11pm.”
+- Recovered note: “Meet at the pier. 11pm.”
 
-### Key Findings
-- The blood pattern is wrong
-- The body was moved
-- The room was staged
-- Laptop recent-file history was deliberately cleared
-- The victim intended to leave quickly
-- The phone was deliberately left where investigators would find it
-
-## Deduction
-The blood pattern, laptop and suitcase do not belong to one natural sequence.
-
-Conclusion:
-- Someone reconstructed the scene after death
-- Whoever staged the room knew investigators would find the phone
-- The warning message may have been intended for Benedict and North, not only the victim
+## Main Deduction
+- Body moved
+- Scene reconstructed
+- Laptop history deliberately cleared
+- Victim intended to leave
+- Phone placed where investigators would find it
+- Warning may be intended for Benedict and North
 
 ## Ending
-An unknown caller tells Benedict:
+Unknown caller:
 
 **“You looked in the wrong room.”**
 
-## Chapter I Story Purpose
-- Introduces Benedict and North
-- Establishes staged crime scenes as the central motif
-- Introduces Hotel 1807
-- Establishes that someone is watching the investigation
-- Sets up a larger case beyond one murder
+## Long-Term Mystery
+- `R.` is not confirmed as Ratchata
+- `R.` may be routed through Singapore
+- `R.` may connect to an intermediary identity such as `Registrar`
+- Do not reveal the identity of `R.` too early
 
 ---
 
-# CHAPTER II — THE PERFECT STRANGER
+# 8. CHAPTER II — THE PERFECT STRANGER
 
-## Ending / Case Title
+Status: `COMPLETE IN CURRENT STORY STRUCTURE`
+
+## Case Ending Label
 **THE ELEVEN-MINUTE LIE**
 
 Thai:
+
 **คำลวงสิบเอ็ดนาที**
 
-## Status
-Complete in current game.
-
 ## Central Mystery
-Daniel Voss is found dead at 06:20.
+Daniel Voss is officially discovered at 06:20.
 
-However:
-- A toxicology report entered official custody at 06:17
-- The original sample collection time was 05:58
-- A revised record changed it to 06:09
-- The difference is exactly eleven minutes
-- The revision used a valid internal credential
-- The workstation signature points to a machine that was offline
-- The raw scientific result remained unchanged
+Verified sequence:
+- 05:47 — Temporary Credential 18-07 enters Daniel's building
+- 05:51 — Daniel's Orchid Café draft is edited
+- 05:58 — Original toxicology sample is collected
+- 06:09 — `COLLECTION_TIME` is revised by eleven minutes
+- 06:17 — Laboratory accession record is created
+- 06:20 — Daniel is officially reported discovered
 
-The chapter proves:
-- The science is real
-- The timeline around the science was engineered
-- Someone prepared the official story before the body was officially discovered
+## Proven Chapter II Conclusions
+- Toxicology result is genuine
+- Physical sample remains genuine
+- Raw scientific data remains valid
+- Chronology and administrative metadata were manipulated
+- A valid credential was used
+- Trusted machine attribution was exploited
+- The operator's identity remains unproven
+- Daniel was investigating similar anomalies in older cases
+- Hotel 1807 remains connected to the larger system
 
----
+## Phase Structure
+1. Detective Office
+2. Victim's Apartment
+3. Orchid Café
+4. Police Station — Evidence Division
+5. Forensic Science Unit
+6. Medical Examiner
+7. Chapter II Ending
 
-## CHAPTER II — PHASE 1: DETECTIVE OFFICE — MORNING
+## Chapter II Ending Requirements
+Display two buttons:
+- `CONTINUE TO CHAPTER III`
+- `RETURN TO TITLE`
 
-### Location
-Detective Office — Morning
-
-### Story
-North brings Benedict a new case:
-- Daniel Voss, 38
-- Found dead at 06:20
-- Apartment unusually clean
-- A report arrived before police requested it
-- Someone entered the building at 05:47 using a resident credential that should not exist
-
-### Player Choice
-- Warm
-- Observant
-- Direct
-
-### Purpose
-- Establishes player personality path
-- Modifies North relationship values
-- Unlocks Character Journal
-- Adds North correctly
-- Sends team to Daniel's apartment
-
----
-
-## CHAPTER II — PHASE 2: VICTIM'S APARTMENT
-
-### Location
-Daniel Voss's apartment
-
-### Main Evidence
-1. Two Coffee Mugs
-2. Duplicated Access Record
-3. Private Investigation Board
-4. Unsent Café Draft
-
-### Two Coffee Mugs
-- Daniel was not alone
-- Visitor stayed long enough for coffee
-- Visitor left before the body was reported
-
-### Duplicated Access Record
-Credential `18-07` appears:
-- Under Daniel Voss
-- Under an unnamed temporary resident
-
-Conclusion:
-The impossible credential was created within the building's own system.
-
-### Investigation Board
-Links:
-- Hotel 1807
-- Three shell companies
-- Note: `Ask E. about the corrected time`
-
-Conclusion:
-Daniel was investigating the larger pattern before becoming part of it.
-
-### Unsent Café Draft
-- Orchid Café
-- 09:30 meeting
-- Recipient erased
-- Message:
-  - “Bring the original report. Come alone.”
-- Edited at 05:51
-- Four minutes after the unknown credential entered the building
-
-### Phase Deduction
-- Coffee for two
-- Duplicated credential
-- Hotel 1807 connection
-- Meeting scheduled after Daniel's apparent death
-
-Next location:
-**Orchid Café**
+When Continue is selected:
+1. Stop Chapter II audio
+2. Open Chapter III Intro
+3. Show `THE BORROWED MINUTES`
+4. Show Day / Location / Time card
+5. Start Chapter III Phase I at the Detective Office in Bangkok
 
 ---
 
-## CHAPTER II — PHASE 3: ORCHID CAFÉ
-
-### Scene Label
-**FIRST CONTACT**
-
-### Character Introduced
-Elena
-
-### Main Story
-Elena says:
-- Daniel ordered the second coffee
-- The estimated time of death is wrong
-- She recalculated thermal loss from apartment photos
-- Daniel asked her to verify an original toxicology report
-- A corrected report changed the collection time by exactly eleven minutes
-- The original report is at the police station
-- Police evidence intake logged it at 06:17
-- This was three minutes before Daniel was officially found
-
-### Player Choice
-- Friendly
-- Analytical
-- Guarded
-
-### Narrative Outcome
-Elena joins Benedict and North in the investigation.
-
-Next location:
-**Police Station — Evidence Division**
-
----
-
-## CHAPTER II — PHASE 4: POLICE STATION — EVIDENCE DIVISION
-
-### Main Characters
-- Benedict
-- North
-- Elena
-- Somchai
-- Captain Kittisak Siriwat
-
-### Character Unlock Rule
-Somchai and Kittisak:
-- Must remain hidden before their introductory dialogue finishes
-- Unlock only after proper introduction
-- Must trigger new-character notification correctly
-- Must not appear merely because the Police Station screen opened
-
-### Main Evidence
-**Original Toxicology Intake Record**
-
-### Verified Timeline
-- Original collection: 05:58
-- Revised collection: 06:09
-- Difference: 11 minutes
-- Police intake: 06:17
-- Official discovery: 06:20
-
-### Technical Contradiction
-- Revision credential is valid
-- Workstation signature points to Lab Terminal Three
-- Terminal Three was offline
-- Its network module had already been removed for maintenance
-
-### Main Deduction
-Someone copied or reproduced a trusted workstation signature.
-
-The attacker may have:
-- Used a copied credential token
-- Used a remote session
-- Used delayed synchronization
-- Used an authorized system route falsely attributed to an offline machine
-
-The evidence does not yet prove the operator's identity.
-
-### Phase Conclusion
-The original report was delivered before the body was found.
-
-This suggests:
-- The killer or manipulator knew when Daniel was supposed to be found
-- Or believed they controlled when he would be found
-- The report was part of a rehearsed official narrative
-
-Next evidence source:
-**Laboratory records and maintenance history**
-
----
-
-## CHAPTER II — PHASE 5: FORENSIC SCIENCE UNIT
-
-### Location
-Bangkok City Police Department — Forensic Science Unit
-
-### Scene Label
-**CHAIN OF CUSTODY**
-
-### Objective
-Trace the original laboratory record.
-
-### Evidence
-1. Sealed Toxicology Sample
-2. Laboratory Accession Record
-3. Workstation Audit Trace
-4. Instrument Batch Record
-
-### Sealed Toxicology Sample
-- ID: `DV-1807-TX-04`
-- Physically sealed
-- Label and accession number match original intake
-- No visible break in physical chain of custody
-
-### Laboratory Accession Record
-- Accepted at 06:17
-- Three minutes before official discovery at 06:20
-- Impossible timestamp exists in source laboratory data
-- It is not merely an error in a police export
-
-### Workstation Audit Trace
-- Collection time changed from 05:58 to 06:09
-- Valid internal credential accepted
-- Attributed to workstation `FS-12`
-- Local session recorded as offline
-- Source route unresolved
-- User identity unverified
-
-### Instrument Batch Record
-- Analyzer: `TX-3`
-- Batch: `0614-B`
-- Raw result hash unchanged
-- Instrument data validated
-- Scientific measurement authentic
-
-### Central Deduction
-The physical sample and raw scientific result remained genuine.
-
-The manipulated layer was:
-- Administrative chronology
-- Custody timeline
-- System metadata
-- Official sequence of events
-
-### Player Deduction Choices
-1. A valid credential proves access, not identity
-2. Physical evidence and digital timeline were handled separately
-3. The alteration used a route the system trusted
-
-All three paths must avoid falsely identifying the culprit.
-
-### Phase Conclusion
-**THE RECORD SPLITS IN TWO**
-
-The database shows what changed.
-
-The body must explain why the eleven minutes mattered.
-
-Next location:
-**Medical Examiner**
-
----
-
-## CHAPTER II — PHASE 6: MEDICAL EXAMINER
-
-### Location
-Bangkok City Medical Examiner
-
-### Scene Label
-**THE BODY KEEPS ITS OWN TIME**
+# 9. CHAPTER III — THE BORROWED MINUTES
 
 Thai:
-**ร่างกายมีเวลาของมันเอง**
 
-### Character Introduced
-Dr. Ratchata Singh
+**สิบเอ็ดนาทีที่ถูกยืม**
 
-### Objective
-Examine what the body proves independently of the altered system.
+Status: `COMPLETE CANON PLAN — NOT YET FULLY IMPLEMENTED`
+
+## Entry Routes
+- `chapter3_timeline`
+- `chapter3_old_cases`
+- `chapter3_access`
+
+Each route:
+- Uses a slightly different opening
+- Provides a different starting lead or evidence emphasis
+- Acknowledges the player's Chapter II choice
+- Converges into one shared Chapter III story
+- Must not become a completely separate full campaign
+
+## Central Mechanism: Reconciliation Window
+
+Singapore is the Infrastructure Nexus of a system capable of attaching real evidence to a false official chronology.
+
+System behaviour:
+- Offline or delayed devices can submit Signed Local Events later.
+- Events received within an 11-minute Reconciliation Window are accepted.
+- Accepted events are ordered by Device Timestamp.
+- Events arriving outside the window are flagged for review.
+- The attacker exploits this rule to place genuine evidence inside an engineered timeline.
+
+## Identity Principle
+A valid credential proves access, not identity.
+
+Authentication proves the credential was accepted. Attribution asks who actually used it.
+
+## Meaning of 1807
+`1807` may be more than a hotel room number.
+
+Possible roles:
+- Operational Identity
+- Credential Route
+- Temporary Access Profile
+- System namespace or routing label
+
+Temporary Credential `18-07` is connected to the Singapore node.
+
+---
+
+# 10. CHAPTER III PHASE BLUEPRINT
+
+## PHASE 1 — BANGKOK / DETECTIVE OFFICE
+
+### Route-Based Opening
+Each saved route changes:
+- Opening dialogue
+- Initial focus
+- First evidence emphasis
+
+All routes then converge.
+
+### Core Events
+- North identifies the Singapore endpoint.
+- Daniel has a booking to Singapore.
+- No passenger check-in record exists.
+- Temporary Credential 18-07 was used through a Singapore node.
+- Timeline Reconstruction Minigame begins.
+- Team concludes Daniel never boarded the plane.
+- His Access Trail travelled to Singapore.
+- Benedict and North decide to travel.
+
+### Character Balance
+- North leads technical discovery.
+- Benedict evaluates implications and makes the decision to proceed.
+
+---
+
+## PHASE 2 — PLANE TRANSITION
+
+- Use plane or travel background.
+- Use Day / Time / Location card.
+- Keep Benedict and North dialogue brief.
+- Use this phase only to shift rhythm and location.
+- Do not turn it into a long exposition scene.
+
+---
+
+## PHASE 3 — CHANGI AIRPORT
+
+### Environment
+Arrival / Operations Corridor
+
+### Investigation
+- Booking Record
+- Missing Passenger Record
+- Airport CCTV
+- Travel permissions or documents exist
+- Daniel himself does not appear
+- Temporary Credential or Access Route may appear under `18-07`
+
+### Tone
+Operational, controlled and investigative. Not tourism.
+
+---
+
+## PHASE 4 — SINGAPORE INVESTIGATION OFFICE
+
+### Introductions
+- Inspector Cheryl Goh
+- Farid Rahman
+
+### Story
+- Cheryl questions the Thai case's connection to Singapore infrastructure.
+- Cheryl limits access at first.
+- Farid works with North.
+- Team discovers the Reconciliation Window.
+- A Dual Log Comparison may begin here.
+- A Safe Code puzzle should appear here only if it serves the evidence flow better than the Safehouse phase.
+
+---
+
+## PHASE 5 — MARINA BAY
+
+### Function
+- Investigation transition
+- Surveillance sequence
+- Contact setup
+- Possible indication the team is being followed
+- Possible signal from Adrian
+
+### Tone Rule
+- Noir crime atmosphere
+- No travel montage
+- No sightseeing dialogue without investigative purpose
+
+---
+
+## PHASE 6 — SERVICED APARTMENT / SAFEHOUSE
 
 ### Evidence
-1. Postmortem Indicators
-2. Identification and Intake Tag
-3. Preliminary Autopsy Report
-4. Toxicology Reference Sample
+- Burner Phone
+- Architecture Document
+- Encrypted Drive
+- Fragmented Data
 
-### Postmortem Indicators
-- Body temperature
-- Lividity
-- Early rigor
+### Possible Minigame
+Safe Code / Credential Unlock
 
-Conclusion:
-Daniel died before the corrected digital collection time.
-
-### Identification and Intake Tag
-- Official discovery: 06:20
-- Laboratory accession: 06:17
-
-Conclusion:
-The sample entered the system before the case officially existed.
-
-### Preliminary Autopsy Report
-- Narrows time of death independently of altered database fields
-- Eleven-minute correction did not change the body
-- It changed how the evidence appeared to enter custody
-
-### Toxicology Reference Sample
-- Still sealed
-- Raw analytical hash matches forensic laboratory result
-- Toxicology result is authentic
-- Manipulation targeted chronology, not measurement
-
-### Final Medical Deduction
-- The body died before the corrected time
-- The sample was accepted before official discovery
-- The raw test result remained genuine
-- A valid result was attached to a false sequence
-
-Benedict's conclusion:
-
-**The lie was not inside the test. It was built around it.**
-
-### Larger Plot Reveal
-Daniel was following a similar pattern through older cases.
-
-Someone needed those older records to continue appearing correct on paper.
-
-Daniel was killed before he could finish tracing the pattern.
+The answer must come from evidence already discovered. It must not be a random number puzzle.
 
 ---
 
-# 6. CHAPTER II ENDING
+## PHASE 7 — HAWKER CENTRE
 
-## Final Screen
-**CHAPTER II COMPLETE**
+### Adrian Meeting
+- Public, real and populated environment
+- Tense despite the crowd
+- Adrian chose the location because of cameras and witnesses
+- Adrian reveals only part of the system
+- Benedict chooses how to approach him
+- North checks his claims against the logs
 
-## Case Name
-**THE ELEVEN-MINUTE LIE**
-
-## Ending Statement
-The science is genuine.
-
-The timeline around it was engineered.
-
-The investigation continues.
-
-## Confirmed Plot Result
-- The toxicology test is not fake
-- Physical evidence is not necessarily fake
-- The manipulation is in chronology and official records
-- The conspiracy may span older cases
-- Someone has access to trusted institutional systems
-- Daniel discovered the recurring pattern
-- Hotel 1807 remains connected to the larger case
+### Writing Rule
+Adrian must not dump the entire plot in one conversation.
 
 ---
 
-# 7. CHAPTER III — CURRENT PLAN
+## PHASE 8 — DIGITAL FORENSICS LAB / SECURE SERVER FACILITY
 
-## Status
-Not yet developed.
+### Chapter Climax
+- Team accesses the Raw Reconciliation Record.
+- An 11-minute countdown or operational time pressure begins.
+- Delayed Signed Events become central.
+- Player proves that two conflicting logs can both pass validation.
+- The method is revealed.
+- The mastermind is not revealed.
 
-Current game displays:
-- `CHAPTER III`
-- Work in progress message
-- Chapter II progress saved
-- Return to Title button
-
-## Canonical Subtitle
-**Not yet confirmed.**
-
-Do not invent or permanently assign a Chapter III subtitle without owner approval.
-
-## Chapter III Entry Routes
-
-The final Medical Examiner choice stores one of three Chapter III flags.
-
-### Route A: Altered Timeline
-Flag:
-`chapter3_timeline`
-
-Opening lead:
-- Digital audit trail
-- Timestamp revision history
-- Remote or delayed system activity
-- Relationship between 05:47, 05:51, 05:58, 06:09, 06:17 and 06:20
-
-### Route B: Older Cases
-Flag:
-`chapter3_old_cases`
-
-Opening lead:
-- Daniel's archived investigations
-- Forgotten or deliberately buried case file
-- Recurring eleven-minute or chronology anomaly
-- Hotel 1807 and shell-company connections
-
-### Route C: Personnel Access
-Flag:
-`chapter3_access`
-
-Opening lead:
-- Who could access the body, sample, evidence system and laboratory
-- Conflicting witness statement
-- Authorized people whose accounts do not match system history
-- Distinguish legitimate access from identity theft or copied credentials
-
-## Chapter III Design Rule
-All three routes must converge into the same core chapter without requiring three completely separate games.
-
-Recommended structure:
-1. Different opening lead based on stored choice
-2. Unique first investigation scene
-3. One route-specific piece of evidence
-4. Routes converge at a shared contradiction
-5. Previous choice remains acknowledged in dialogue
-6. No route should be treated as the single “correct” choice
-
-## Chapter III Narrative Objectives
-- Identify the recurring pattern in older cases
-- Establish why eleven minutes were required
-- Connect Hotel 1807 to Daniel's investigation
-- Identify the institutional system being exploited
-- Narrow suspect access without making premature accusations
-- Reveal whether `R.` from Chapter I connects to Ratchata, another person, or a deliberate false lead
-- Preserve uncertainty until evidence confirms identity
-
-## Important Unresolved Questions
-- Who sent the Chapter I warning?
-- Who is `R.` in the missed calls?
-- Who arranged the pier meeting?
-- Why was Room 1807 staged?
-- Why did Daniel connect Hotel 1807 to shell companies?
-- Who created the duplicate resident credential?
-- Who edited Daniel's café draft at 05:51?
-- Who delivered the report at 06:17?
-- Who copied the offline terminal signature?
-- Why exactly was the timeline shifted by eleven minutes?
-- Which older cases contain the same pattern?
-- Was Elena targeted, manipulated or merely contacted as an independent analyst?
-- Is the conspiracy inside police, forensic, property-management or a network crossing all three?
-
-Do not answer these permanently until the owner confirms the intended master plot.
+### Character Roles
+- North leads system analysis.
+- Farid supports forensic reconstruction.
+- Cheryl provides authority and access.
+- Adrian may help remotely or participate in a limited capacity.
+- Benedict connects the method to motive, operator behaviour and the larger investigation.
 
 ---
 
-# 8. CORE GAMEPLAY LOOP
+## PHASE 9 — CHAPTER END / RETURN TRANSITION
 
-Standard phase loop:
+### Proven Conclusions
+- Singapore is an Infrastructure Route.
+- The system can validate conflicting chronologies.
+- The evidence can be real while its sequence is false.
+- Credential validity does not establish operator identity.
+- Adrian knows the system but is not proven to be the mastermind.
 
-1. Enter location
-2. Play opening dialogue
-3. Show investigation objective
-4. Display yellow evidence hotspots
-5. Tap hotspot
-6. Open evidence panel
-7. Inspect evidence
-8. Reveal description and observation
-9. Collect / add to Case File
-10. Change inspected hotspot to green
-11. Update progress
-12. Unlock review or comparison after all required evidence
-13. Play deduction dialogue
-14. Present player choice when appropriate
-15. Update state, relationships and checkpoint
-16. Auto-save
-17. Move to next phase
+### Elena
+Elena may contact the team from Thailand.
+
+Her information:
+- Is true
+- Is useful
+- Arrives at a strategically selected moment
+- Must not expose her as the mastermind
+
+### Ending Question
+Who chose which event would be recorded, and which event would be forgotten?
+
+### Chapter IV Setup
+Open the next chapter without permanently assigning its final title unless the owner has locked it.
 
 ---
 
-# 9. UI AND INTERACTION RULES
+# 11. CHAPTER III MINIGAMES
+
+## 1. Timeline Reconstruction
+
+### Phase
+Chapter III Phase I
+
+### Format
+- Six events
+- Tap-first
+- Drag may be optional but not required
+- Reset button
+- No permanent fail
+- No softlock
+- Target duration: 30–60 seconds
+
+### Correct Order
+1. 05:47 — Temporary Credential 18-07 enters Daniel's building
+2. 05:51 — Daniel's Orchid Café draft is edited
+3. 05:58 — Original toxicology sample is collected
+4. 06:09 — `COLLECTION_TIME` is revised by eleven minutes
+5. 06:17 — Laboratory accession record is created
+6. 06:20 — Daniel is officially reported discovered
+
+---
+
+## 2. Safe Code / Credential Unlock
+
+### Phase
+Serviced Apartment / Safehouse
+
+### Rules
+- Connected to Temporary Credential 18-07
+- Evidence-derived answer
+- No arbitrary combination
+- Mobile-friendly
+- No permanent fail
+
+---
+
+## 3. Dual Log Comparison
+
+### Goal
+Compare two log versions that both validate.
+
+### Fields
+- Timestamp
+- Signature
+- Device
+- Sync Route
+
+### Learning Outcome
+The player understands how two conflicting records can both be valid under the system's rules.
+
+---
+
+## 4. Fragment Reconstruction
+
+Status: `OPTIONAL`
+
+Possible sources:
+- Architecture Document
+- Deleted Message
+- Encrypted Drive
+
+Only include this minigame if it advances the story or deduction. Do not include it merely to extend playtime.
+
+---
+
+## Global Minigame Standards
+- Mobile-friendly
+- 30–60 seconds
+- Tap option
+- No permanent fail
+- No softlock
+- Reset or recovery path
+- Puzzle-success cue must be separate from Add to Case File
+- Noir-tech audio tone
+- Puzzle completion and Evidence collection are separate events
+
+---
+
+# 12. CHAPTER III EVIDENCE PLAN
+
+Possible evidence:
+- Daniel's Singapore travel or boarding record
+- Airport CCTV still
+- Temporary Credential 18-07
+- Burner phone
+- Two valid versions of the same log
+- Old system architecture document
+- Offline signature token
+- Network module
+- Archived old case file
+- Raw reconciliation record
+- Adrian's encrypted drive
+
+## Evidence Rules
+- Do not overproduce assets before the Blueprint is complete.
+- Every evidence item must advance the investigation.
+- Every evidence item must support a player conclusion.
+- No decorative evidence without investigative value.
+- Evidence names in UI, Case File and dialogue must remain consistent.
+- Evidence SFX plays only at collection, not puzzle completion.
+
+---
+
+# 13. VISUAL AND BACKGROUND PLAN
+
+## Background Size
+`864 × 1536`
+
+## Orientation
+Portrait 9:16
+
+## Style
+- Noir graphic novel
+- Cel-shaded
+- Heavy ink lines
+- Angular shadows
+- Cinematic crime-adventure
+- Bright enough for mobile viewing
+
+## Approved Chapter III Backgrounds
+1. Singapore Detective / Investigation Office
+2. Changi Airport — Arrival / Operations Corridor
+3. Marina Bay
+4. Plane Flying
+5. Serviced Apartment / Safehouse
+6. Hawker Centre
+7. Digital Forensics Lab / Secure Server Facility Hybrid
+
+## Image Rules
+- No embedded UI unless explicitly required.
+- No chapter title embedded into a background.
+- Use the clean Changi version without Chapter UI.
+- Inspect signs and labels for pseudo-text.
+- Exact Match or No Text.
+- Remove text when exact rendering cannot be guaranteed.
+- Do not accept malformed English or unreadable signage.
+
+---
+
+# 14. CHARACTER SHEET PROCESSING
+
+Approved sheets:
+- Adrian: 12 expressions
+- Cheryl: 12 expressions
+- Farid: 16 expressions
+
+## Required Processing
+1. Crop every expression separately.
+2. Remove the background into true transparent alpha.
+3. Inspect hair, clothing, ears and face edges.
+4. Use one consistent canvas size.
+5. Use one consistent anchor position.
+6. Preserve consistent head size and camera distance.
+7. Use clear emotion-based filenames.
+8. Test portraits against the dark Dialogue UI.
+9. Confirm no white, black or checkerboard background remains.
+10. Preserve identity across every expression.
+
+## Prohibition
+Never use the entire Character Sheet as a dialogue portrait.
+
+---
+
+# 15. AUDIO SYSTEM
+
+## Global Channels
+- Music
+- Ambience
+- SFX
+
+## Mixing Principles
+- Dialogue must remain easy to read and follow.
+- Ambience establishes location without tiring the player.
+- Music supports mood without remaining at full intensity.
+- Duck music and ambience gently during dialogue where appropriate.
+- Avoid abrupt loop cuts unless the story or scene transition requires one.
+- Evidence SFX must stop immediately when leaving a scene.
+- Puzzle Success and Add to Case File must use different cues.
+
+## UI Click
+- Real mouse click sound
+- Trigger on `pointerdown`
+- One press equals one playback
+- Must work on:
+  - Splash / first screen
+  - Title menu
+  - Main buttons
+  - Tap to Continue
+- Low, controlled volume
+- Must not sound like a synthetic tick
+
+## Add to Case File
+- Play once
+- One shared standard across all evidence scenes
+- Required in:
+  - Room 1807
+  - Victim Apartment
+  - Police Station
+  - Forensic
+  - Medical Examiner
+  - Chapter III evidence scenes
+- No overlap
+- No second tail sound
+- Stop immediately on scene transition
+
+## Existing Location Rules
+
+### Room 1807
+- Room ambience without prominent sirens
+
+### Victim Apartment
+- Soft noir score
+- Must not reuse unsuitable Room 1807 ambience
+- Café ambience must not leak in early
+
+### Forensic
+- No sharp whine or fatiguing frequency
+
+### Medical Examiner
+- Low refrigeration / room ambience
+- Toxicology scanner beep soft but audible
+
+## Chapter III Music File
+`assets/audio/chapter-03/modern-noir.mp3`
+
+Preserve this path when used by the main runtime.
+
+## Chapter III Required Audio
+- Detective Office ambience / score
+- Plane transition ambience
+- Changi airport ambience
+- Singapore Investigation Office room tone
+- Marina Bay city ambience
+- Serviced Apartment interior ambience
+- Hawker Centre ambience
+- Digital Forensics Lab ambience
+- Puzzle success cue
+- Evidence Add to Case File cue
+- UI click
+
+---
+
+# 16. UI AND INTERACTION RULES
 
 ## Dialogue
-- Tap once advances exactly one line
-- Response must be immediate
-- No long input delay
-- No accidental double advance
-- “Tap to continue” should be short and readable
-- Speaker name, portrait, emotion and dialogue must always match
-- Portrait side/alignment should remain consistent
-- Dialogue must be usable on 360 × 800 mobile layout
+- One tap advances one line.
+- Response must feel immediate.
+- No accidental double advance.
+- Speaker name, portrait, emotion and dialogue must match.
+- Portrait side and alignment remain consistent.
+- Tap-to-continue text stays short.
+- Must work on narrow mobile layouts.
 
-## Evidence Hotspots
+## Hotspots
 Before inspection:
 - Yellow
 
@@ -932,311 +1045,183 @@ After inspection or collection:
 - Green
 
 Hotspots must not:
-- Start green
-- Require unrelated actions to update
-- Remain yellow after confirmed inspection
+- Start green due to stale state
+- Remain yellow after confirmed completion
 - Trigger duplicated sounds
+- Depend on unrelated actions to update
 
 ## Evidence Panels
-Required order:
-1. Open evidence
+Required flow:
+1. Open
 2. Inspect
-3. Reveal details
-4. Collect
+3. Reveal detail
+4. Add to Case File
 5. Close
 
-Review button appears only after every required item is complete.
+## Day / Time / Location Cards
+Use only for meaningful transitions:
+- Chapter III opening
+- Bangkok to Singapore travel
+- Major time or location shift
 
-## Character Journal
-- Locked during early Chapter I
-- Properly unlocked in Chapter II
-- Benedict and North are base entries
-- Elena unlocks after café introduction
-- Somchai and Kittisak unlock after police introduction
-- Ratchata unlocks after medical introduction
-- Red dot only means genuinely unread character content
-- Opening the new entry clears its unread status
+Do not overuse them between minor beats.
 
-## Case File
-Evidence must remain grouped by:
-- Chapter
-- Phase
-- Location
+---
 
-Evidence names and descriptions must match the item inspected during gameplay.
+# 17. SAVE / LOAD CONTINUITY
 
-## Save / Load
-Must preserve:
+Save/Load must preserve:
 - Current chapter
-- Current screen
 - Current phase
+- Current screen
+- Dialogue position where supported
 - Evidence collected
+- Evidence inspection state
+- Hotspot state
 - Dialogue choices
 - Personality values
 - Character unlocks
-- Unread character status
+- Character unread state
 - Relationship values
-- Forensic progress
-- Medical progress
 - Chapter II completion
-- Chapter III route choice
+- Chapter III route
+- Chapter III phase
+- Minigame completion
+- Puzzle state where safe
+- Current location
+- Audio lifecycle should be reconstructed correctly, not blindly resumed from stale state
+
+## Chapter III Entry
+The route selected at the Medical Examiner must survive:
+- Chapter II ending
+- Continue to Chapter III
+- Reload
+- Manual save
+- Auto-save
+- Return to title and Continue
 
 ---
 
-# 10. AUDIO RULES
+# 18. CHAPTER III DEVELOPMENT RULES
 
-## Global
-- Only ambience for the active location may continue looping
-- Leaving a phase must stop its ambience
-- Returning to title must stop investigation audio
-- Title theme and rain may resume on title screen
-- Evidence SFX should play once per intended action
-- Dialogue advancement should not replay long evidence sounds
-
-## Police Station
-Use only the clean beginning of the intended police ambience.
-
-Required edit:
-- Keep beginning section
-- Cut at first silence
-- Remove silence
-- Remove click
-- Remove ding at tail
-- Loop only the clean beginning
-- Do not allow the tail sound to replay each loop
-
-## Forensic Science
-- Laboratory hum only during forensic phase
-- Evidence SFX after inspection as intended
-- Stop forensic hum before entering Medical Examiner
-
-## Medical Examiner
-- Must not carry Police Station ambience
-- Use refrigerator / laboratory background at low volume
-- Door beep only on entry
-- Barcode sound only for toxicology sample
-- Avoid playing multiple overlapping evidence sounds
+- Always inspect the latest GitHub branch.
+- Do not develop from memory alone.
+- Preserve all three routes.
+- Preserve Elena's secret twist.
+- Adrian is not the mastermind.
+- Benedict remains protagonist.
+- North receives a stronger but balanced role.
+- Cheryl and Farid must sound distinctly different.
+- Farid has no romantic storyline with North.
+- Singapore is part of the case, not tourism.
+- Every location change needs a story reason.
+- Use Day / Time cards only for major transitions.
+- Calculate every timestamp carefully.
+- Do not contradict the 11-minute mechanism.
+- Preserve Save/Load compatibility.
+- Test mobile portrait 9:16.
+- Keep critical UI clear of the browser address bar.
+- Build the Blueprint before overproducing assets.
+- Do not reveal `R.` prematurely.
+- Do not expose Elena through villain coding.
 
 ---
 
-# 11. CONFIRMED DEFECT / POLISH BACKLOG
+# 19. TESTING AND DELIVERY RULES
 
-## Highest Priority
+## Runtime Testing
+For every patch, test the exact affected flow:
+- Entry into scene
+- Dialogue progression
+- Evidence interaction
+- Audio source
+- Playback count
+- Scene transition
+- Save state
+- Reload state
+- Exit to title where relevant
 
-### 1. Dialogue Tap Behaviour
-- Immediate advance
-- One tap = one line
-- No delay
-- No double advance
-- Short “Tap to continue” label
+## Syntax Testing
+- HTML validity checks where practical
+- JavaScript syntax
+- Module imports
+- CSS parse issues
+- Relative file paths
+- Missing assets
 
-### 2. Character Journal Notification
-- Red dot only for new character
-- North correctly unlocks in Chapter II
-- No unrelated characters unlock early
-- Police characters unlock only after introduction
-- Ratchata unlocks after introduction
-- Opening entry clears unread state
-
-### 3. Elena Café Dialogue
-- Correct dialogue text
-- Correct speaker
-- Correct Elena portrait for every Elena line
-- Verify every speaker/portrait pair throughout the game
-
-### 4. Kittisak Identity
-- Must be Captain
-- Must not show `Reserved` as his role/title
-- Localized title must be consistent
-
-### 5. Police Station Ambience
-- Use clean opening only
-- Cut at first silence
-- Remove silence, click and ding tail
-- Seamless loop
-
-### 6. Medical Examiner Audio
-- Police audio must stop before entering
-- Only Medical Examiner ambience should remain
-
-### 7. Medical Hotspots
-- Start yellow
-- Turn green immediately after inspect/collect
-- Review unlocks after all evidence
-
----
-
-## Existing Regression Checklist
-
-- Character Journal progressive unlock
-- Police characters hidden until introduction
-- Police evidence SFX stops correctly
-- Forensic evidence SFX plays correctly
-- Forensic hotspot turns green immediately
-- Compare Records unlocks after all four records
-- Medical review works after all four findings
-- Somchai portrait vertical alignment
-- Kittisak portrait vertical alignment
-- Save/load phase state
-- Audio lifecycle across every screen
-- Chapter II ending screen hides previous HUD
-- Chapter III WIP Return to Title works
-- Title audio resumes correctly
-- Thai and English UI remain synchronized
-- No missing assets
-- No broken relative file paths
-
----
-
-# 12. DEVELOPMENT SAFETY RULES
-
-## Mandatory Before Any Change
-1. Read `GAME_MASTER_PLAN.md`
-2. Check current default branch
-3. Confirm GitHub Pages source
-4. Fetch the actual target file from GitHub
-5. Identify the smallest necessary change
-6. Confirm which files will be modified
-7. Do not guess current contents
-8. Do not rely on filenames from previous chat downloads
-
-## Branch Rules
-- Work directly on `restore-game-recovered` unless owner explicitly approves another branch
-- Do not create backup branches automatically
-- Do not recreate `main`
-- Do not recreate `restore-forensic-good`
-- Do not change default branch casually
-- Do not change Pages source casually
-
-## File Rules
-- Do not send standalone HTML files for review
-- Do not ask owner to download and re-upload HTML unless no safer method exists
-- Never upload a saved ChatGPT webpage as `index.html`
-- Before replacing `index.html`, verify that it contains:
-  - `<!doctype html>`
-  - Last Witness title
-  - Game CSS links
-  - Game JavaScript links
-  - No ChatGPT interface text
-- Preserve folder structure and relative paths
-
-## Deployment Rules
-Before deploying:
-- Verify production branch
-- Verify `index.html`
-- Verify CSS references
-- Verify JS references
-- Verify image and audio paths
-- Verify Chapter I opens
-- Verify Chapter II can start
-- Verify console has no fatal startup error
-
-After deploying:
-- Open the original Pages URL
-- Test with a cache-busting query only when needed
-- Confirm the original URL still works without the query
-- Never claim deployment succeeded without checking the live page
-
-## Testing Honesty
+## Honesty Rule
 Never claim:
-- Test counts
-- Pass percentages
-- Regression results
+- Mobile testing
+- Audio listening
+- Device testing
 - Browser compatibility
-- Mobile compatibility
-- Audio correctness
+- Full regression coverage
+- 100% success
 
-unless those tests were actually performed and documented.
+unless actually performed.
 
-Do not invent results such as:
-- `44/44 passed`
-- `39/39 passed`
-
-Testing reports in the repository must be treated as historical evidence until rerun against the current branch.
-
----
-
-# 13. WORKING METHOD FOR FUTURE CHATGPT SESSIONS
-
-At the beginning of every new chat, use:
-
-> Continue the Last Witness project.
-> Read `GAME_MASTER_PLAN.md` first.
-> Use repository `grolygori789-crypto/last-witness`.
-> Production branch is `restore-game-recovered`.
-> Do not create branches, change Pages settings or replace index.html without explicit approval.
-> Check GitHub source before answering.
-> Work one defect at a time.
-> Do not claim tests that were not actually run.
-
-## Required Assistant Behaviour
-- Use the shortest safe path
-- Do not create unnecessary steps
-- Do not make the owner repeat screenshots or information already provided
-- Give one action at a time during live troubleshooting
-- Stop when evidence conflicts
-- State uncertainty honestly
-- Never present guesses as verified facts
-- Protect the working live game before experimenting
-- Prefer reversible changes
-- Do not create files merely to appear productive
-- Do not overwrite working files without checking their current GitHub SHA/content
-- Do not send HTML unless it is a verified runnable game build explicitly requested by the owner
+## Delivery
+- Modify files locally only.
+- Create one ZIP.
+- List every file the owner must upload.
+- State exactly what was tested.
+- State exactly what was not tested.
+- The owner performs the GitHub upload.
 
 ---
 
-# 14. NEXT DEVELOPMENT SESSION
+# 20. CURRENT CANON SUMMARY
 
-## First Task
-Run a verified full playthrough of the production branch without changing code.
+## Confirmed
+- Game title: LAST WITNESS
+- Studio: BENEDICT INTERACTIVE
+- Chapter I: ROOM 1807
+- Chapter II current working title: THE PERFECT STRANGER
+- Chapter II case ending label: THE ELEVEN-MINUTE LIE
+- Chapter III: THE BORROWED MINUTES
+- Chapter III Thai title: สิบเอ็ดนาทีที่ถูกยืม
+- Room 1807 was staged
+- Daniel Voss investigated Hotel 1807 and linked entities
+- Toxicology result is genuine
+- Administrative chronology was altered
+- Collection time changed from 05:58 to 06:09
+- Laboratory accession occurred at 06:17
+- Official discovery occurred at 06:20
+- Singapore is an Infrastructure Nexus / Route
+- Reconciliation Window is 11 minutes
+- Temporary Credential 18-07 links to the Singapore node
+- A valid credential proves access, not identity
+- Chapter III has three converging routes
+- North discovers the Singapore endpoint
+- Elena is the mastermind and real killer
+- Elena remains unrevealed in Chapter III
+- Adrian Tan is a complicit insider and fugitive, not the mastermind
+- Cheryl Goh is an SPF liaison
+- Farid Rahman is a Singaporean Malay digital forensics specialist
+- Farid has no romance with North
+- Ratchata Journal name is Ratchata (Dr. Singh)
 
-### Test Order
-1. Splash screen
-2. Title screen
-3. New Game
-4. Chapter I office
-5. Hotel Room evidence
-6. Phone evidence
-7. Chapter I deduction
-8. Chapter I ending
-9. Start Chapter II
-10. Character Journal unlock
-11. Chapter II office choice
-12. Victim's Apartment
-13. Orchid Café
-14. Elena dialogue and portraits
-15. Police Station introduction
-16. Somchai and Kittisak journal unlock
-17. Police evidence
-18. Forensic Science evidence
-19. Compare Records
-20. Medical Examiner evidence
-21. Medical Review
-22. Chapter II final choice
-23. Chapter II ending
-24. Chapter III WIP screen
-25. Return to Title
-26. Continue / Load saved game
-27. Thai / English switching
-28. Audio transition between every phase
+## Intentionally Unresolved for the Player
+- Identity of `R.`
+- Identity behind the Chapter I warning
+- Purpose of the pier meeting
+- Full operational meaning of `1807`
+- Exact identity of the credential operator in each event
+- How Elena selected and timed each truth
+- Final ending of the complete game
 
-## Then Fix in This Order
-1. Any blocker preventing full playthrough
-2. Save/load corruption
-3. Wrong dialogue or portrait
-4. Evidence progression
-5. Character unlock progression
-6. Audio leakage
-7. Mobile layout
-8. Visual polish
-9. Chapter III implementation
+## Working Titles Not Yet Number-Locked
+- BROKEN ALIBI
+- THE MISSING PIECE
+- SHADOW OF THE TRUTH
+- THE FINAL MOVE
+- LAST WITNESS
 
 ---
 
-# 15. CANON STATUS LABELS
+# 21. CANON STATUS LABELS
 
-Use these labels when adding future information:
-
+Use:
 - `CONFIRMED IN GAME`
 - `CONFIRMED BY OWNER`
 - `PLANNED`
@@ -1245,45 +1230,26 @@ Use these labels when adding future information:
 - `DEPRECATED`
 - `DO NOT USE`
 
-Never silently convert a proposed idea into canon.
+Never silently convert a proposal into Canon.
 
 ---
 
-# 16. CURRENT CANON SUMMARY
+# 22. NEW CHAT CONTINUATION INSTRUCTION
 
-## Confirmed
-- Chapter I is `HOTEL 1807`
-- Room 1807 was staged
-- The warning may target the investigators
-- Chapter II is `THE PERFECT STRANGER`
-- Daniel Voss was investigating Hotel 1807 and linked entities
-- Daniel's timeline was manipulated
-- Toxicology result is genuine
-- Administrative chronology was altered
-- Collection time shifted from 05:58 to 06:09
-- Police/lab intake recorded at 06:17
-- Official discovery recorded at 06:20
-- Valid credentials and trusted machine signatures were exploited
-- Identity of operator remains unproven
-- Daniel was tracing a pattern through older cases
-- Chapter II ending case title is `THE ELEVEN-MINUTE LIE`
-- Chapter III route depends on the final Medical Examiner choice
-- Chapter III subtitle and full plot are not yet confirmed
+Use this at the beginning of a future project chat:
 
-## Unresolved
-- Main antagonist
-- Identity behind the warning
-- Identity of `R.`
-- Purpose of the pier meeting
-- Exact connection between Hotel 1807 and Daniel
-- Exact reason eleven minutes were needed
-- Identity of the credential operator
-- Full Chapter III title
-- Full long-term chapter count
-- Final ending of the complete game
+> Continue the LAST WITNESS project.  
+> Repository: `grolygori789-crypto/last-witness`  
+> Production branch: `restore-game-recovered`  
+> Read `GAME_MASTER_PLAN.md` and inspect the latest GitHub files before proposing or applying changes.  
+> GitHub is the Source of Truth for runtime files.  
+> Preserve the Chapter III Canon Plan, the three routes, the 11-minute Reconciliation Window, Elena's unrevealed mastermind role and Adrian's non-mastermind role.  
+> Do not create branches or push changes.  
+> Work locally and deliver approved changes as a ZIP for the owner to upload.  
+> Do not claim tests that were not actually performed.
 
 ---
 
 # END OF MASTER PLAN
 
-Do not delete or rewrite this file without preserving all confirmed canon, production information, unresolved questions and safety rules.
+Do not delete or rewrite this file without preserving confirmed Production information, owner-confirmed Canon, unresolved mysteries, safety rules, Save/Load continuity and the complete Chapter III plan.
