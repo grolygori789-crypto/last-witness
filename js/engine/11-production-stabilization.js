@@ -1,11 +1,14 @@
-/* LAST WITNESS — Production Audio, Evidence & Scene Runtime 0.6.1
+/* LAST WITNESS — Single-owner Audio, Evidence & Scene Runtime 0.6.3
  * Single scene-audio owner, immediate Case File cue, clean Room 1807 score,
  * fresh Medical state and controlled Chapter III puzzle cue.
  */
 (function(){
 "use strict";
-if(window.__lwProductionStabilization061)return;
+if(window.__lwProductionStabilization063)return;
+window.__lwProductionStabilization063=true;
 window.__lwProductionStabilization061=true;
+window.__lwProductionStabilization060=true;
+window.__lwProductionStabilization058=true;
 
 const $=(s,r=document)=>r.querySelector(s);
 const $$=(s,r=document)=>Array.from(r.querySelectorAll(s));
@@ -340,7 +343,7 @@ function bind(){
  ensureLoopAudio("forensicHumAudio",FORENSIC_ROOM_SOURCE);
  ensureLoopAudio("medicalRefrigeratorAudio",MEDICAL_ROOM_SOURCE);
  prepareOneShots();applyChapterNaming();installGapGuard();suppressLegacyEvidenceAudio();installSoftScanner();
- installPlayBridge();installRouting();installObservers();installForensicTransition();bindSettings();
+ installPlayBridge();installRouting();installObservers();bindSettings();
  document.addEventListener("pointerdown",event=>{
   if(event.target.closest?.("#continueMedicalExaminer"))prepareFreshMedicalPhase();
   handleEvidencePointer(event);
@@ -354,9 +357,9 @@ function bind(){
   stopPuzzleSuccess:stopPuzzleCue,
   playSoftScanner,
   stopEvidenceCue:stopOneShots,
-  version:"0.6.1"
+  version:"0.6.3"
  };
- window.LastWitnessProductionAudio={refresh:queueAudioSync,apply:applySceneAudio,stopEvidenceCue:stopOneShots,profile:volumeProfile,version:"0.6.1"};
+ window.LastWitnessProductionAudio={refresh:queueAudioSync,apply:applySceneAudio,stopEvidenceCue:stopOneShots,profile:volumeProfile,version:"0.6.3"};
  window.LastWitnessContentRegistry?.updateVisibility?.();queueAudioSync();
 }
 if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",bind,{once:true});else bind();
