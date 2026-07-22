@@ -1,6 +1,6 @@
 /* Last Witness Full Refactor
  * Chapter 2 apartment and office progression
- * Master Source lines 796-924
+ * Character Journal unlock truth fix 0.5.2
  */
 
 function revealApartmentEvidenceDetails(){
@@ -94,23 +94,45 @@ state.flags=state.flags||{};
 state.characters=state.characters||{};
 state.journal=state.journal||{unlocked:false,seen:true,introShown:false};
 
-if(state.flags.chapter2_character_feature_unlocked)return;
-
+const firstUnlock=state.flags.chapter2_character_feature_unlocked!==true||state.journal.unlocked!==true;
 state.flags.chapter2_character_feature_unlocked=true;
+state.flags.chapter2_character_journal_opened=false;
 state.characters.Benedict=true;
 state.characters.North=true;
 state.journal.unlocked=true;
 state.journal.seen=false;
 state.journal.introShown=false;
+state.lwJournalEnabled=true;
+state.lwCharactersUnlocked=Array.from(new Set([...(state.lwCharactersUnlocked||[]),"benedict","north"]));
+state.lwCharactersUnread=Array.from(new Set([...(state.lwCharactersUnread||[]),"north"]));
+
+try{window.LastWitnessContentRegistry?.unlockChapter2North?.({showToast:firstUnlock});}catch(_){ }
 
 const button=$("#charactersButton");
-if(button){button.hidden=false;button.style.display=""}
-
-if(!state.flags.chapter2_character_toast_shown){
-state.flags.chapter2_character_toast_shown=true;
-showFeatureToast()
+if(button){
+ button.hidden=false;
+ button.disabled=false;
+ button.removeAttribute("hidden");
+ button.setAttribute("aria-hidden","false");
+ button.style.setProperty("display","block","important");
+ button.style.setProperty("visibility","visible","important");
+ button.style.setProperty("opacity","1","important");
+ button.style.setProperty("pointer-events","auto","important");
+ button.style.removeProperty("height");
+ button.style.removeProperty("min-height");
+ button.style.removeProperty("margin-top");
+ button.style.removeProperty("padding");
+ button.style.removeProperty("border");
 }
 
+if(firstUnlock&&!state.flags.chapter2_character_toast_shown){
+ state.flags.chapter2_character_toast_shown=true;
+ showFeatureToast()
+}
+
+try{window.LastWitnessContentRegistry?.updateVisibility?.();}catch(_){ }
+try{window.LastWitnessContentRegistry?.renderCharacters?.();}catch(_){ }
+try{window.LastWitnessContentRegistry?.updateDots?.();}catch(_){ }
 syncJournalAlert();
 autoSave()
 }
@@ -133,7 +155,12 @@ runDialogue($("#office2Dialogue"),[
 state.checkpoint="ch2_apartment_arrival";
 unlockChapter2CharacterJournal();
 play("steps");
-setTimeout(()=>{show("apartment2");runApartmentOpening()},550)
+setTimeout(()=>{
+ show("apartment2");
+ try{window.LastWitnessContentRegistry?.updateVisibility?.();}catch(_){ }
+ try{window.LastWitnessContentRegistry?.updateDots?.();}catch(_){ }
+ runApartmentOpening()
+},550)
 })
 }
 function applyChapter2Choice(choice){
@@ -168,11 +195,25 @@ state.characters.North=true;
 state.flags=state.flags||{};
 state.flags.chapter2_character_feature_unlocked=false;
 state.flags.chapter2_character_toast_shown=false;
+state.flags.chapter2_character_journal_opened=false;
 state.journal={unlocked:false,seen:true,introShown:false};
+state.lwJournalEnabled=false;
+state.lwCharactersUnread=[];
 
 const button=$("#charactersButton");
-if(button){button.hidden=true;button.style.display="none"}
+if(button){
+ button.hidden=true;
+ button.disabled=true;
+ button.setAttribute("aria-hidden","true");
+ button.style.setProperty("display","none","important");
+ button.style.setProperty("margin-top","0","important");
+ button.style.setProperty("min-height","0","important");
+ button.style.setProperty("height","0","important");
+ button.style.setProperty("padding","0","important");
+ button.style.setProperty("border","0","important");
+}
 syncJournalAlert();
+try{window.LastWitnessContentRegistry?.updateVisibility?.();}catch(_){ }
 
 showChapterIntro(2,()=>{
 show("office2");

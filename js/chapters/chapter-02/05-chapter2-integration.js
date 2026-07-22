@@ -1,4 +1,4 @@
-/* LAST WITNESS — Chapter II / Chapter III Production Integration 0.5.1
+/* LAST WITNESS — Chapter II / Chapter III Production Integration 0.5.2
  * Keeps the shared runtime authoritative and prevents legacy hotfix modules
  * from installing competing observers, click handlers and audio loops.
  */
@@ -135,12 +135,12 @@
   let runtimePromise = null;
   function ensureProductionRuntime() {
     if (runtimePromise) return runtimePromise;
-    addStylesheetOnce("css/chapter-03.css?v=051", "lwChapter03Style");
+    addStylesheetOnce("css/chapter-03.css?v=052", "lwChapter03Style");
     runtimePromise = loadScriptOnce(
-      "js/engine/11-production-stabilization.js?v=051",
+      "js/engine/11-production-stabilization.js?v=052",
       "lwProductionStabilizationScript"
     ).then(() => loadScriptOnce(
-      "js/chapters/chapter-03/01-title-phase1.js?v=051",
+      "js/chapters/chapter-03/01-title-phase1.js?v=052",
       "lwChapter03Script"
     )).catch((error) => {
       console.error("LAST WITNESS production runtime failed to load", error);
@@ -220,7 +220,7 @@
       startChapter3,
       ensureProductionRuntime,
       titleAudioState,
-      version: "0.5.1"
+      version: "0.5.2"
     };
   }
 
