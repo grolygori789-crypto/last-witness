@@ -1,11 +1,11 @@
-/* LAST WITNESS — Production Stabilization 0.5.1
+/* LAST WITNESS — Production Stabilization 0.5.2
  * One authoritative audio lifecycle, restrained mouse clicks, consistent
  * evidence feedback, Medical Examiner evidence details and Chapter III hooks.
  */
 (function(){
 "use strict";
-if(window.__lwProductionStabilization051)return;
-window.__lwProductionStabilization051=true;
+if(window.__lwProductionStabilization052)return;
+window.__lwProductionStabilization052=true;
 
 const $=(s,r=document)=>r.querySelector(s);
 const $$=(s,r=document)=>Array.from(r.querySelectorAll(s));
@@ -48,7 +48,7 @@ function volumeProfile(screen){
  const p={};
  if(screen==="title"){p.themeAudio=m;p.rainAudio=m*0.48;}
  else if(screen==="office"){p.officeAudio=m*0.50*duck;p.rainAudio=m*0.14*duck;}
- else if(["crime","phone","deduction"].includes(screen)){p.crimeAudio=m*0.20*duck;}
+ else if(["crime","phone","deduction"].includes(screen)){p.crimeAudio=m*0.14*duck;}
  else if(screen==="office2"||screen==="chapter3Office"){p.morningOfficeAudio=m*0.50*duck;}
  else if(screen==="apartment2"){p.crimeAudio=m*0.30*duck;}
  else if(screen==="cafe2"){p.cafeAudio=m*0.36*duck;}
@@ -278,8 +278,8 @@ function bind(){
  document.addEventListener("click",interceptCollection,true);
  document.addEventListener("click",repairMedicalEvidence,true);
  prepareBuffers();
- window.LastWitnessAudioCue={playCollection:()=>playEvidenceCue(false),playCompletion:()=>playEvidenceCue(true),stopEvidenceCue,version:"0.5.1"};
- window.LastWitnessProductionAudio={refresh:()=>queueAudioSync(),apply:applySceneAudio,stopEvidenceCue,profile:volumeProfile,version:"0.5.1"};
+ window.LastWitnessAudioCue={playCollection:()=>playEvidenceCue(false),playCompletion:()=>playEvidenceCue(true),stopEvidenceCue,version:"0.5.2"};
+ window.LastWitnessProductionAudio={refresh:()=>queueAudioSync(),apply:applySceneAudio,stopEvidenceCue,profile:volumeProfile,version:"0.5.2"};
  window.LastWitnessContentRegistry?.updateVisibility?.();
  queueAudioSync();
 }

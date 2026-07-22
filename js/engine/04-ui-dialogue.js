@@ -1,4 +1,4 @@
-/* LAST WITNESS — Screen, UI and Dialogue Runtime 0.5.1
+/* LAST WITNESS — Screen, UI and Dialogue Runtime 0.5.2
  * Shared Chapter I–III routing with story-gated Character Journal visibility.
  */
 function showChapterIntro(chapter,onComplete){

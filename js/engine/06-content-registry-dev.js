@@ -1,4 +1,4 @@
-/* LAST WITNESS — Canon Character Journal + Registry/Dev Integration 0.5.1
+/* LAST WITNESS — Canon Character Journal + Registry/Dev Integration 0.5.2
  * Story-gated journal visibility, canonical relationship metrics and no polling.
  */
 (function(){
@@ -34,16 +34,14 @@ function writeStore(){try{localStorage.setItem(STORE,JSON.stringify({charactersU
 
 function storyJournalReached(){
  const chapter=Number(window.state?.chapter)||1;
- return chapter>2||LATE_CH2.has(currentScreen())||Boolean(
+ if(chapter>2)return true;
+ if(chapter<2)return false;
+ return Boolean(
   window.state?.flags?.chapter2_character_feature_unlocked===true&&
   window.state?.journal?.unlocked===true
  );
 }
-function canonicalJournalEnabled(){
- const chapter=Number(window.state?.chapter)||1;
- if(chapter<2)return false;
- return storyJournalReached();
-}
+function canonicalJournalEnabled(){return storyJournalReached();}
 
 function ensureState(){
  if(!window.state)window.state={};
@@ -53,16 +51,9 @@ function ensureState(){
  state.flags=state.flags||{};
 
  const reached=storyJournalReached();
- if(reached){
-  state.flags.chapter2_character_feature_unlocked=true;
-  state.journal.unlocked=true;
-  state.characters.Benedict=true;
-  state.characters.North=true;
- }
-
- state.lwJournalEnabled=canonicalJournalEnabled();
+ state.lwJournalEnabled=reached;
  const unlocked=new Set(Array.isArray(state.lwCharactersUnlocked)?state.lwCharactersUnlocked:[]);
- if(state.lwJournalEnabled){
+ if(reached){
   (saved.charactersUnlocked||[]).forEach(id=>unlocked.add(id));
   BASE_CHARACTERS.forEach(id=>unlocked.add(id));
   Object.entries(STORY_NAMES).forEach(([id,name])=>{if(state.characters?.[name]===true)unlocked.add(id);});
@@ -70,9 +61,7 @@ function ensureState(){
  state.lwCharactersUnlocked=[...unlocked].filter(id=>CHARACTERS[id]);
 
  const unread=new Set(Array.isArray(state.lwCharactersUnread)?state.lwCharactersUnread:(saved.charactersUnread||[]));
- if(state.lwJournalEnabled&&state.journal.seen===false&&state.flags.chapter2_character_journal_opened!==true){
-  unread.add('north');
- }
+ if(reached&&state.journal.seen===false&&state.flags.chapter2_character_journal_opened!==true)unread.add('north');
  state.lwCharactersUnread=[...unread].filter(id=>CHARACTERS[id]);
  state.lwEvidenceUnlocked=[...new Set(Array.isArray(state.lwEvidenceUnlocked)?state.lwEvidenceUnlocked:(saved.evidenceUnlocked||[]))].filter(id=>EVIDENCE[id]);
 }
@@ -91,20 +80,53 @@ function updateJournalVisibility(){
   button.style.setProperty("visibility","visible","important");
   button.style.setProperty("opacity","1","important");
   button.style.setProperty("pointer-events","auto","important");
-  button.style.removeProperty("height");
-  button.style.removeProperty("overflow");
-  button.style.removeProperty("margin-top");
-  button.style.removeProperty("min-height");
-  button.style.removeProperty("padding");
-  button.style.removeProperty("border");
+  ["height","overflow","margin-top","min-height","padding","border"].forEach(name=>button.style.removeProperty(name));
  }else{
-  button.style.setProperty("display","none","important");button.style.setProperty("visibility","hidden","important");button.style.setProperty("opacity","0","important");button.style.setProperty("pointer-events","none","important");button.style.setProperty("margin-top","0","important");button.style.setProperty("min-height","0","important");button.style.setProperty("padding","0","important");button.style.setProperty("border","0","important");
+  button.style.setProperty("display","none","important");
+  button.style.setProperty("visibility","hidden","important");
+  button.style.setProperty("opacity","0","important");
+  button.style.setProperty("pointer-events","none","important");
+  button.style.setProperty("margin-top","0","important");
+  button.style.setProperty("min-height","0","important");
+  button.style.setProperty("height","0","important");
+  button.style.setProperty("padding","0","important");
+  button.style.setProperty("border","0","important");
+  button.style.setProperty("overflow","hidden","important");
  }
 }
 
-function updateDots(){ensureState();const show=canonicalJournalEnabled()&&state.lwCharactersUnread.length>0;$$('.journal-alert').forEach(n=>n.classList.toggle('show',show));}
-function persist(){ensureState();writeStore();try{if(typeof autoSave==='function')autoSave();}catch(_){}}
-function enableJournal(){ensureState();const fresh=!canonicalJournalEnabled()||state.journal.unlocked!==true;state.flags.chapter2_character_feature_unlocked=true;state.journal.unlocked=true;state.journal.seen=false;state.flags.chapter2_character_journal_opened=false;state.characters.Benedict=true;state.characters.North=true;state.lwJournalEnabled=true;BASE_CHARACTERS.forEach(id=>{if(!state.lwCharactersUnlocked.includes(id))state.lwCharactersUnlocked.push(id);});if(!state.lwCharactersUnread.includes('north'))state.lwCharactersUnread.push('north');persist();updateJournalVisibility();renderCharacters();updateDots();return fresh;}
+function updateDots(){
+ ensureState();
+ const show=canonicalJournalEnabled()&&state.lwCharactersUnread.length>0&&state.journal.seen===false;
+ $$('.journal-alert').forEach(n=>n.classList.toggle('show',show));
+}
+function persist(){
+ ensureState();writeStore();
+ try{if(typeof autoSave==='function')autoSave();}catch(_){}
+}
+function unlockChapter2North(options={}){
+ if(!window.state)window.state={};
+ state.flags=state.flags||{};
+ state.characters=state.characters||{};
+ state.journal=state.journal||{unlocked:false,seen:true,introShown:false};
+ const first=state.flags.chapter2_character_feature_unlocked!==true||state.journal.unlocked!==true;
+ state.flags.chapter2_character_feature_unlocked=true;
+ state.flags.chapter2_character_journal_opened=false;
+ state.characters.Benedict=true;
+ state.characters.North=true;
+ state.journal.unlocked=true;
+ state.journal.seen=false;
+ state.journal.introShown=false;
+ state.lwJournalEnabled=true;
+ state.lwCharactersUnlocked=Array.from(new Set([...(state.lwCharactersUnlocked||[]),'benedict','north']));
+ state.lwCharactersUnread=Array.from(new Set([...(state.lwCharactersUnread||[]),'north']));
+ writeStore();
+ updateJournalVisibility();renderCharacters();updateDots();
+ try{if(typeof autoSave==='function')autoSave();}catch(_){}
+ if(first&&options.showToast===true){try{showFeatureToast();}catch(_){}}
+ return first;
+}
+function enableJournal(){return unlockChapter2North({showToast:false});}
 function characterSource(c){if(c.src)return c.src;try{return typeof portrait==='function'?portrait(c.portrait,'neutral'):'';}catch(_){return'';}}
 
 function unlockCharacter(id,opt={}){
@@ -164,14 +186,13 @@ function observeScreens(){const observer=new MutationObserver(()=>{ensureState()
 
 function bind(){
  ensureState();
- if(LATE_CH2.has(currentScreen())&&!state.journal.unlocked){state.flags.chapter2_character_feature_unlocked=true;state.journal.unlocked=true;BASE_CHARACTERS.forEach(id=>{if(!state.lwCharactersUnlocked.includes(id))state.lwCharactersUnlocked.push(id);});}
  updateJournalVisibility();renderCharacters();updateDots();observeDialogueUnlocks();observeScreens();
  document.addEventListener('click',openCharacters,true);document.addEventListener('click',backToGrid,true);
  document.addEventListener('click',event=>{if(event.target.closest?.('[data-lang]'))setTimeout(()=>{renderCharacters();renderRegistryEvidence();},0);},true);
  $("#caseButton")?.addEventListener('click',()=>setTimeout(renderRegistryEvidence,0),true);
  $("#devUnlockCharacters")?.addEventListener('click',devUnlockCharacters,true);
  $("#devUnlockEvidence")?.addEventListener('click',devUnlockEvidence,true);
- window.LastWitnessContentRegistry={characters:CHARACTERS,evidence:EVIDENCE,unlockCharacter,unlockEvidence,renderCharacters,renderEvidence:renderRegistryEvidence,devUnlockCharacters,devUnlockEvidence,enableJournal,updateVisibility:updateJournalVisibility,canonicalJournalEnabled,version:'0.5.1'};
+ window.LastWitnessContentRegistry={characters:CHARACTERS,evidence:EVIDENCE,unlockCharacter,unlockEvidence,renderCharacters,renderEvidence:renderRegistryEvidence,devUnlockCharacters,devUnlockEvidence,enableJournal,unlockChapter2North,updateVisibility:updateJournalVisibility,updateDots,canonicalJournalEnabled,version:'0.5.2'};
 }
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',bind,{once:true});else bind();
 })();
