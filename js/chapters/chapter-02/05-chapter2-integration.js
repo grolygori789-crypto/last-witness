@@ -1,4 +1,4 @@
-/* LAST WITNESS — Chapter II / Chapter III Production Integration 0.6.6
+/* LAST WITNESS — Chapter II / Chapter III Production Integration 0.6.9
  * Owns the Medical transition and loads Chapter III on demand.
  * Production Runtime 11 is loaded once by 08-stability-repair.js.
  */
@@ -14,7 +14,7 @@ function closeOverlays(){
  $("#drawer")?.classList.remove("open");
  $$(".modal.open").forEach(modal=>modal.classList.remove("open"));
  $("#forensicPhaseComplete")?.style.setProperty("display","none");
- ["apartmentEvidence","policeEvidencePanel","forensicEvidencePanel","medicalEvidencePanel"].forEach(id=>{const panel=$("#"+id);if(panel){panel.classList.remove("open");panel.setAttribute("aria-hidden","true");}});
+ ["room1807EvidencePanel","apartmentEvidence","policeEvidencePanel","forensicEvidencePanel","medicalEvidencePanel"].forEach(id=>{const panel=$("#"+id);if(panel){panel.classList.remove("open");panel.setAttribute("aria-hidden","true");}});
  $("#medicalChoice")?.classList.add("hidden");
  $("#medicalDialogue")?.classList.add("hidden");
 }
@@ -59,7 +59,7 @@ function enterMedicalExaminer(event){
  }
 }
 function forensicIsComplete(){
- try{return Boolean(window.state&&state.screen==="forensic2"&&(state.forensic?.complete===true||state.forensic?.choice));}
+ try{return Boolean(window.state&&state.screen==="forensic2"&&state.forensic?.complete===true);}
  catch(_){return false;}
 }
 function transitionCompletedForensic(){
@@ -120,11 +120,11 @@ function bind(){
  $("#continueMedicalExaminer")?.addEventListener("click",enterMedicalExaminer,true);
  document.addEventListener("click",event=>{
   if(event.target.closest?.("[data-lang]"))setTimeout(localizeEnding,0);
-  if(event.target.closest?.("#forensicDialogue"))setTimeout(transitionCompletedForensic,0);
+  if(event.target.closest?.("#forensicDialogue"))setTimeout(transitionCompletedForensic,450);
   if(event.target.closest?.("#continueGame,#loadTitle,#loadManual"))setTimeout(transitionCompletedForensic,80);
  },true);
  queueMicrotask(transitionCompletedForensic);
- window.LastWitnessChapter2Integration={showChapter2Complete,returnToTitle,enterMedicalExaminer,transitionCompletedForensic,startChapter3,ensureProductionRuntime,titleAudioState,version:"0.6.6"};
+ window.LastWitnessChapter2Integration={showChapter2Complete,returnToTitle,enterMedicalExaminer,transitionCompletedForensic,startChapter3,ensureProductionRuntime,titleAudioState,version:"0.6.9"};
 }
 if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",bind,{once:true});else bind();
 })();
