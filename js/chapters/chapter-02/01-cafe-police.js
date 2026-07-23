@@ -1,6 +1,6 @@
 /* Last Witness Full Refactor
  * Chapter 2 café and police station
- * Final narrative continuity 0.7.7
+ * Final narrative continuity + Police choice repair 0.7.10
  */
 
 function unlockElena(){
@@ -114,6 +114,11 @@ function runPoliceOpening(){
     {speaker:"Elena",emotion:"amused",text:policeText("Still mine. The captain agreed to open the room. He did not agree to lend Benedict institutional authority.","ยังอยู่กับฉันค่ะ ผู้กองยอมให้เปิดห้อง แต่ไม่ได้ยอมให้ Benedict ยืมอำนาจราชการ")},
     {speaker:"Benedict",emotion:"smirk",text:policeText("Sensibly cautious. Authority clashes with my wardrobe.","รอบคอบดีครับ อำนาจราชการไม่ค่อยเข้ากับชุดผมเท่าไร")}
   ],()=>{state.flags.police_intro_complete=true;state.checkpoint="ch2_police_choice";autoSave();$("#policeChoice").classList.remove("hidden")}),500);
+}
+function ensurePoliceRelationships(){
+  state.relationships=state.relationships||{};
+  state.relationships.Somchai=state.relationships.Somchai||{trust:48,respect:50,attachment:20,suspicion:5};
+  state.relationships.Kittisak=state.relationships.Kittisak||{trust:42,respect:62,attachment:8,suspicion:12};
 }
 function applyPoliceChoice(choice){
   ensurePoliceRelationships();

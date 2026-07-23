@@ -1,8 +1,9 @@
-/* LAST WITNESS — Audio + Professional Save Manager 0.7.9
+/* LAST WITNESS — Audio + Professional Save Manager 0.7.10
  * Preserves production audio behaviour while adding named manual saves,
  * IndexedDB persistence, legacy migration, export/import and versioned restore.
  * Save Manager exit controls remain visible on mobile and successful saves
  * return the player to the game automatically.
+ * Police ambience loops only its clean 04.6–45.0 second section.
  */
 
 /* Classic-script compatibility bridge. The core state is declared with `let`
@@ -18,6 +19,16 @@ function stopPhoneVibration(){clearTimeout(stopPhoneVibration.timer);stopAudio(A
 function playPhoneVibration(duration=3600){if(!state.sound)return;stopPhoneVibration();AUDIO.vibrate.currentTime=0;AUDIO.vibrate.volume=state.sfx;AUDIO.vibrate.play().catch(()=>{});stopPhoneVibration.timer=setTimeout(stopPhoneVibration,duration)}
 function stopChapterAudio(){clearTimeout(stopChapterAudio.timer);stopAudio(AUDIO.chapter);AUDIO.chapter.volume=state.music}
 function play(name){if(!state.sound)return;const audio=AUDIO[name];audio.currentTime=0;audio.play().catch(()=>{})}
+const POLICE_AMBIENCE_START=4.6;
+const POLICE_AMBIENCE_END=45;
+function installPoliceAmbienceBoundary(){
+ const audio=AUDIO.police;if(!audio||audio.dataset.lwCleanLoop==='1')return;
+ audio.dataset.lwCleanLoop='1';
+ audio.addEventListener('timeupdate',()=>{
+  if(audio.currentTime>=POLICE_AMBIENCE_END){audio.currentTime=POLICE_AMBIENCE_START;if(!audio.paused&&state.sound)audio.play().catch(()=>{})}
+ });
+}
+installPoliceAmbienceBoundary();
 function ambience(screen){
  stopLoops();stopPhoneVibration();if(screen!=="chapter")stopChapterAudio();if(!state.sound)return;
  if(screen==="title"){AUDIO.theme.play().catch(()=>{});AUDIO.rain.play().catch(()=>{})}
@@ -25,13 +36,13 @@ function ambience(screen){
  else if(screen==="office2"){AUDIO.morningOffice.play().catch(()=>{})}
  else if(screen==="apartment2"){AUDIO.crime.volume=state.music*.42;AUDIO.crime.play().catch(()=>{})}
  else if(screen==="cafe2"){AUDIO.cafe.play().catch(()=>{})}
- else if(screen==="police2"){AUDIO.police.currentTime=4.6;AUDIO.police.play().catch(()=>{})}
+ else if(screen==="police2"){AUDIO.police.currentTime=POLICE_AMBIENCE_START;AUDIO.police.play().catch(()=>{})}
  else if(["crime","phone","deduction"].includes(screen)){AUDIO.crime.volume=state.music*.48;AUDIO.crime.play().catch(()=>{})}
 }
 
 const LW_SAVE_FORMAT="LAST_WITNESS_SAVE";
 const LW_SAVE_VERSION=1;
-const LW_SAVE_BUILD="0.7.9";
+const LW_SAVE_BUILD="0.7.10";
 const LW_SAVE_DB="last_witness_saves";
 const LW_SAVE_STORE="slots";
 const LW_SAVE_FALLBACK="last_witness_named_saves_v1";
@@ -250,7 +261,7 @@ function loadSave(kind){
 function flashSave(text){const element=document.getElementById("saveIndicator");if(!element)return;element.textContent=text;element.classList.add("show");clearTimeout(flashSave.timer);flashSave.timer=setTimeout(()=>element.classList.remove("show"),1100)}
 function showBadge(text){const element=document.getElementById("badge");if(!element)return;element.textContent=text;element.classList.add("show");clearTimeout(showBadge.timer);showBadge.timer=setTimeout(()=>element.classList.remove("show"),1500)}
 
-function initSaveManager(){injectSaveManager();const buildLabel=document.getElementById("settingsVersion");if(buildLabel)buildLabel.textContent="LAST WITNESS · BUILD 0.7.9";const resetButton=document.getElementById("devResetSave"),legacyReset=window.devResetSaves;if(resetButton)resetButton.onclick=async()=>{try{legacyReset?.()}catch(_){}await clearNamedSaves();try{localStorage.removeItem(SAVE.auto);localStorage.removeItem(SAVE.manual)}catch(_){}flashSave(saveText("All saves cleared","ลบข้อมูลบันทึกทั้งหมดแล้ว"))};migrateLegacyManual();document.addEventListener("click",event=>{if(event.target.closest?.("[data-lang]"))setTimeout(()=>{updateSaveManagerLanguage();if(document.getElementById("lwSaveManager")?.classList.contains("open"))renderSaveManager()},0)},true);window.LastWitnessSaveManager={open:openSaveManager,list:listNamedSaves,export:exportRecord,importFile:importSaveFile,clearAll:clearNamedSaves,snapshot,restore,version:LW_SAVE_BUILD}}
+function initSaveManager(){injectSaveManager();const buildLabel=document.getElementById("settingsVersion");if(buildLabel)buildLabel.textContent="LAST WITNESS · BUILD 0.7.10";const resetButton=document.getElementById("devResetSave"),legacyReset=window.devResetSaves;if(resetButton)resetButton.onclick=async()=>{try{legacyReset?.()}catch(_){}await clearNamedSaves();try{localStorage.removeItem(SAVE.auto);localStorage.removeItem(SAVE.manual)}catch(_){}flashSave(saveText("All saves cleared","ลบข้อมูลบันทึกทั้งหมดแล้ว"))};migrateLegacyManual();document.addEventListener("click",event=>{if(event.target.closest?.("[data-lang]"))setTimeout(()=>{updateSaveManagerLanguage();if(document.getElementById("lwSaveManager")?.classList.contains("open"))renderSaveManager()},0)},true);window.LastWitnessSaveManager={open:openSaveManager,list:listNamedSaves,export:exportRecord,importFile:importSaveFile,clearAll:clearNamedSaves,snapshot,restore,version:LW_SAVE_BUILD}}
 if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",initSaveManager,{once:true});else initSaveManager();
 
 PORTRAITS.Elena={"neutral":"assets/images/f6ecc87ac62112b6.jpg","soft":"assets/images/0b58d037372b3893.jpg","warm":"assets/images/3717ee1601191df6.jpg","thinking":"assets/images/17dc23af74dd7be5.jpg","curious":"assets/images/45cdccdac98f15a4.jpg","attentive":"assets/images/ca489d84591703e2.jpg","skeptical":"assets/images/14251628ba5d808c.jpg","smirk":"assets/images/bedce8e0dbb90d49.jpg","confident":"assets/images/798d0dbcf7dc7040.jpg","serious":"assets/images/94c43ae882e43c69.jpg","concerned":"assets/images/258f1557b5b1d98e.jpg","surprised":"assets/images/7e5f812b3c7eec9e.jpg","shocked":"assets/images/54fa2709eff69d56.jpg","worried":"assets/images/39bae3b954927ff5.jpg","sad":"assets/images/c91ad48a8b115dce.jpg","disappointed":"assets/images/cd01390acb6b500a.jpg","embarrassed":"assets/images/2ad821b6a881a4c0.jpg","amused":"assets/images/5b2f58b400414246.jpg","laughing":"assets/images/a192e652ca70c9db.jpg","determined":"assets/images/e77228fe9ffb3470.jpg","calm":"assets/images/8d5572a029fa0d78.jpg","playful":"assets/images/11558d3825786804.jpg","charming":"assets/images/87fb1e543d974f07.jpg","mysterious":"assets/images/33e95d83dec5c517.jpg"};
