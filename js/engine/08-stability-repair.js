@@ -1,4 +1,4 @@
-/* LAST WITNESS — Embedded WAV UI, Character Affordance & Runtime Loader 0.7.0
+/* LAST WITNESS — Embedded WAV UI, Character Affordance & Runtime Loader 0.7.2
  * One physical pointerdown = one immediate embedded-WAV click.
  * No network decode, delayed promise queue or legacy MP3 click owner.
  */
@@ -293,7 +293,7 @@ function installClick(){
   play:kind=>playSemanticUI(kind,"manual"),
   stopPhone:stopLegacyPhoneTransients,
   stats:uiClickStats,
-  version:"0.7.0"
+  version:"0.7.2"
  };
 }
 
@@ -303,7 +303,7 @@ function loadProductionRuntime(){
  if(script)return;
  script=document.createElement("script");
  script.id="lwProductionStabilizationScript";
- script.src="js/engine/11-production-stabilization.js?v=070";
+ script.src="js/engine/11-production-stabilization.js?v=072";
  script.async=false;
  script.addEventListener("load",()=>{script.dataset.loaded="1";},{once:true});
  document.body.appendChild(script);
@@ -439,7 +439,7 @@ function installStoryCharacterGates(){
 
  window.LastWitnessStoryCharacterGates={
   reconcile:reconcileStoryCharacters,
-  version:"0.7.0"
+  version:"0.7.2"
  };
 }
 function bind(){

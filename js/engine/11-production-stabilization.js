@@ -1,10 +1,12 @@
-/* LAST WITNESS — Chapter I–III Audio, Evidence & Phase Runtime 0.7.0
+/* LAST WITNESS — Chapter I–III Audio, Evidence & Phase Runtime 0.7.2
  * Single scene-audio owner, immediate Case File cue, clean Room 1807 score,
  * fresh Medical state and controlled Chapter III puzzle cue.
  */
 (function(){
 "use strict";
-if(window.__lwProductionStabilization070)return;
+if(window.__lwProductionStabilization072)return;
+window.__lwProductionStabilization072=true;
+window.__lwProductionStabilization071=true;
 window.__lwProductionStabilization070=true;
 window.__lwProductionStabilization069=true;
 window.__lwProductionStabilization068=true;
@@ -36,7 +38,7 @@ const POLICE_START_SECONDS=12;
 const ROOM_1807_SCREENS=new Set(["crime","phone","summary","deduction"]);
 const FORENSIC_SCREENS=new Set(["forensic2"]);
 const MEDICAL_SCREENS=new Set(["medical2"]);
-const CHAPTER_DAY_CARD_MS=2200;
+const CHAPTER_DAY_CARD_MS=2600;
 let lastScreen="";
 let syncQueued=false;
 let forensicTransitioning=false;
@@ -773,6 +775,14 @@ function installChapterDayCard(){
  };
  wrapped.__lwDayCard070=true;window.showChapterIntro=wrapped;
 }
+function applySettingsCopy(){
+ try{
+  if(typeof LANG!=="undefined"&&LANG.en)LANG.en.master_sound="Sound";
+  const label=$('[data-i18n="master_sound"]');
+  const th=gameState()?.language==="th"||document.documentElement.lang==="th";
+  if(label&&!th)label.textContent="Sound";
+ }catch(_){}
+}
 function applyChapterNaming(){
  try{if(window.LANG?.en)LANG.en.chapter_1_name="ROOM 1807";}catch(_){}
  const initial=$("#chapterIntroTitle");
@@ -802,7 +812,7 @@ function bind(){
  ensureLoopAudio("forensicHumAudio",forensicSource);
  ensureLoopAudio("medicalRefrigeratorAudio",medicalSource);
  stopElement($("#policeAudio"),true);
- prepareOneShots();applyChapterNaming();installChapterDayCard();applyRoom1807EvidenceCopy();installGapGuard();installRoom1807Evidence();suppressLegacyEvidenceAudio();installSoftScanner();
+ prepareOneShots();applySettingsCopy();applyChapterNaming();installChapterDayCard();applyRoom1807EvidenceCopy();installGapGuard();installRoom1807Evidence();suppressLegacyEvidenceAudio();installSoftScanner();
  installPlayBridge();installRouting();installObservers();bindSettings();
  document.addEventListener("click",handleRoom1807EvidenceClick,true);
  document.addEventListener("pointerdown",event=>{
@@ -822,13 +832,13 @@ function bind(){
   stopPuzzleSuccess:stopPuzzleCue,
   playSoftScanner,
   stopEvidenceCue:stopOneShots,
-  version:"0.7.0"
+  version:"0.7.2"
  };
  window.LastWitnessRoom1807Evidence={
   open:openRoom1807Evidence,inspect:inspectRoom1807Evidence,collect:collectRoom1807Evidence,
-  close:closeRoom1807Evidence,updateLanguage:updateRoom1807EvidenceLanguage,version:"0.7.0"
+  close:closeRoom1807Evidence,updateLanguage:updateRoom1807EvidenceLanguage,version:"0.7.2"
  };
- window.LastWitnessProductionAudio={refresh:queueAudioSync,apply:applySceneAudio,stopEvidenceCue:stopOneShots,profile:volumeProfile,version:"0.7.0"};
+ window.LastWitnessProductionAudio={refresh:queueAudioSync,apply:applySceneAudio,stopEvidenceCue:stopOneShots,profile:volumeProfile,version:"0.7.2"};
  window.LastWitnessContentRegistry?.updateVisibility?.();queueAudioSync();
 }
 if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",bind,{once:true});else bind();
