@@ -1,9 +1,10 @@
-/* LAST WITNESS — Chapter III / Phase I 0.5.4
- * THE BORROWED MINUTES — shared production runtime integration.
+/* LAST WITNESS — Chapter III / Phase I 0.7.0
+ * THE BORROWED MINUTES — deterministic briefing, day card and timeline flow.
  */
 (function(){
 "use strict";
-if(window.LastWitnessChapter3?.version==="0.5.4")return;
+if(window.LastWitnessChapter3?.version==="0.7.0")return;
+
 const $=(s,r=document)=>r.querySelector(s);
 const $$=(s,r=document)=>Array.from(r.querySelectorAll(s));
 const ORDER=["credential","draft","sample","revision","accession","discovery"];
@@ -16,8 +17,11 @@ const EVENTS={
  discovery:{time:"06:20",en:"Daniel is officially reported discovered.",th:"มีการรายงานว่าพบแดเนียลอย่างเป็นทางการ"}
 };
 const SOURCE_ORDER=["accession","credential","discovery","sample","draft","revision"];
+const DAY_CARD_MS=2600;
 let selected=[];
 let localDialogue=false;
+let enteringOffice=false;
+let dayTimer=0;
 
 function lang(){return window.state?.language==="th"?"th":"en";}
 function t(en,th){return lang()==="th"?th:en;}
@@ -35,8 +39,18 @@ function route(){
  if(state.flags.chapter3_access)return"access";
  return"timeline";
 }
+function routeFromChapter2Decision(){
+ ensureState();
+ if(state.flags.chapter3_old_cases===true)return"old_cases";
+ if(state.flags.chapter3_access===true)return"access";
+ return"timeline";
+}
 function copy(){return{
- day:t("DAY 3","วันที่ 3"),place:t("BANGKOK · 08:40 AM","กรุงเทพฯ · 08:40 น."),phase:t("THE MISSING PASSENGER","ผู้โดยสารที่หายไป"),
+ day:t("DAY 3","วันที่ 3"),
+ time:t("08:40 AM","08:40 น."),
+ place:t("BANGKOK · DETECTIVE OFFICE","กรุงเทพฯ · สำนักงานนักสืบ"),
+ phase:t("THE MISSING PASSENGER","ผู้โดยสารที่หายไป"),
+ briefing:t("Review the Singapore endpoint with North","ตรวจสอบปลายทางสิงคโปร์ร่วมกับ North"),
  objective:t("Reconstruct the eleven-minute sequence","เรียงลำดับเหตุการณ์สิบเอ็ดนาที"),
  puzzle:t("Reconstruct Timeline","เรียงลำดับเวลา"),
  confirm:t("Confirm Sequence","ยืนยันลำดับ"),reset:t("Reset","เริ่มใหม่"),
@@ -48,11 +62,20 @@ function copy(){return{
  continuePhase:t("Continue to Phase II","ไปต่อเฟส II"),returnTitle:t("Return to Title","กลับหน้าแรก"),
  phase2Title:t("CHAPTER III · PHASE II","บทที่ III · เฟส II"),phase2Name:t("CHANGI ARRIVAL","เดินทางถึงชางงี"),phase2Text:t("Phase II is prepared for the Singapore investigation sequence.","เฟส II เตรียมไว้สำหรับการสืบสวนในสิงคโปร์")
 };}
+
 function inject(){
  if($("#chapter3Office"))return;
  const game=$("#game");if(!game)return;
  const html=`
- <section id="chapter3Day" class="screen chapter ch3-day-screen" aria-label="Chapter III Day Card"><div class="chapter-card ch3-day-card"><div class="eyebrow" id="ch3DayLabel"></div><h2 id="ch3DayPlace"></h2><div class="ch3-rule"></div><p id="ch3DayPhase"></p></div></section>
+ <section id="chapter3Day" class="screen chapter ch3-day-screen" aria-label="Chapter III Day Card">
+  <div class="chapter-card ch3-day-card">
+   <div class="eyebrow" id="ch3DayLabel"></div>
+   <div id="ch3DayTime" class="ch3-day-time"></div>
+   <h2 id="ch3DayPlace"></h2>
+   <div class="ch3-rule"></div>
+   <p id="ch3DayPhase"></p>
+  </div>
+ </section>
  <section id="chapter3Office" class="screen ch3-office" aria-label="Detective Office Chapter III">
   <img class="scene" src="assets/images/e49ae621ba4833ff.png" alt="Detective Office">
   <div class="overlay"></div>
@@ -60,7 +83,7 @@ function inject(){
   <div id="ch3SceneLabel" class="ch3-scene-label"></div>
   <div id="ch3Objective" class="apartment-objective"></div>
   <div id="chapter3Dialogue" class="dialogue hidden"></div>
-  <button id="openCh3Timeline" class="primary ch3-puzzle-launch" type="button"></button>
+  <button id="openCh3Timeline" class="primary ch3-puzzle-launch" type="button" hidden></button>
   <div id="ch3Choice" class="choice-panel hidden"><div id="ch3ChoiceTitle" class="choice-title"></div><button class="choice-option" data-ch3-choice="system"></button><button class="choice-option" data-ch3-choice="daniel"></button><button class="choice-option" data-ch3-choice="operator"></button></div>
   <div id="ch3PhaseComplete" class="phase-card" style="display:none"><div class="eyebrow" id="ch3CompleteEyebrow"></div><h2 id="ch3CompleteTitle"></h2><p id="ch3CompleteText"></p><button id="ch3ContinuePhase2" class="primary" type="button"></button><button id="ch3ReturnTitle" class="ghost" type="button"></button></div>
   <div class="progress"><span id="ch3ProgressText" class="progressText">0%</span><div class="progress-bar"><div id="ch3ProgressFill" class="progress-fill"></div></div></div>
@@ -70,7 +93,25 @@ function inject(){
  game.insertAdjacentHTML("beforeend",html);
  bind();updateLanguage();
 }
-function updateProgress(value){const pct=Math.max(0,Math.min(100,value));$("#ch3ProgressText").textContent=pct+"%";$("#ch3ProgressFill").style.width=pct+"%";}
+function updateProgress(value){
+ const pct=Math.max(0,Math.min(100,value));
+ if($("#ch3ProgressText"))$("#ch3ProgressText").textContent=pct+"%";
+ if($("#ch3ProgressFill"))$("#ch3ProgressFill").style.width=pct+"%";
+}
+function hidePuzzleLauncher(){
+ const button=$("#openCh3Timeline");if(!button)return;
+ button.hidden=true;button.style.display="none";button.setAttribute("aria-hidden","true");
+}
+function showPuzzleLauncher(){
+ const button=$("#openCh3Timeline");if(!button)return;
+ button.hidden=false;button.style.display="block";button.setAttribute("aria-hidden","false");
+}
+function hideTransientUI(){
+ hidePuzzleLauncher();
+ $("#ch3Choice")?.classList.add("hidden");
+ const complete=$("#ch3PhaseComplete");if(complete)complete.style.display="none";
+ closePuzzle();
+}
 function linesForOpening(){
  const r=route();
  const first={
@@ -93,24 +134,74 @@ function linesForOpening(){
 }
 function localizedLines(lines){return lines.map(line=>({speaker:line.speaker,emotion:line.emotion,text:lang()==="th"?line.th:line.en}));}
 function playDialogue(lines,done){
+ const box=$("#chapter3Dialogue");
+ if(!box||typeof runDialogue!=="function"){done?.();return;}
  localDialogue=true;
- runDialogue($("#chapter3Dialogue"),localizedLines(lines),()=>{localDialogue=false;done?.();});
+ runDialogue(box,localizedLines(lines),()=>{localDialogue=false;done?.();});
+}
+function startOpeningDialogue(){
+ ensureState();
+ if(localDialogue)return;
+ state.chapter3.openingPlaying=true;
+ hidePuzzleLauncher();
+ $("#ch3Objective").textContent=copy().briefing;
+ playDialogue(linesForOpening(),()=>{
+  state.chapter3.openingPlaying=false;
+  state.chapter3.openingComplete=true;
+  state.checkpoint="ch3_timeline_ready";
+  $("#ch3Objective").textContent=copy().objective;
+  showPuzzleLauncher();
+  autoSave();
+ });
 }
 function enterOffice(){
- show("chapter3Office");ensureState();state.checkpoint="ch3_phase1_office";state.chapter3.started=true;updateProgress(state.chapter3.timelineComplete?62:18);
+ inject();ensureState();
+ enteringOffice=true;
+ show("chapter3Office");
+ enteringOffice=false;
+ closePuzzle();
+ $("#ch3Choice")?.classList.add("hidden");
+ const complete=$("#ch3PhaseComplete");if(complete)complete.style.display="none";
+ state.checkpoint="ch3_phase1_office";state.chapter3.started=true;
+ updateProgress(state.chapter3.timelineComplete?62:18);
+ updateLanguage();
  if(state.chapter3.phase1Complete){showPhaseComplete();return;}
- if(state.chapter3.timelineComplete){$("#openCh3Timeline").style.display="none";if(!state.chapter3.choice)showChoices();return;}
- $("#openCh3Timeline").style.display="none";
- playDialogue(linesForOpening(),()=>{$("#openCh3Timeline").style.display="block";state.checkpoint="ch3_timeline_ready";autoSave();});
+ if(state.chapter3.timelineComplete){
+  hidePuzzleLauncher();
+  if(!state.chapter3.choice)showChoices();
+  return;
+ }
+ if(state.chapter3.openingComplete){showPuzzleLauncher();return;}
+ state.chapter3.openingPlaying=false;
+ startOpeningDialogue();
+}
+function resetPhase1State(selectedRoute){
+ state.chapter3={
+  route:selectedRoute,
+  started:true,
+  openingComplete:false,
+  openingPlaying:false,
+  timelineComplete:false,
+  choice:null,
+  phase1Complete:false
+ };
+ selected=[];
+ localDialogue=false;
+ ["system","daniel","operator"].forEach(id=>delete state.flags["ch3_follow_"+id]);
 }
 function startFromChapter2(){
  inject();ensureState();
- $$('audio').forEach(audio=>{try{audio.pause();audio.currentTime=0;}catch(_){}});
- state.chapter=3;state.progress=0;state.checkpoint="ch3_intro";state.chapter3.route=route();state.journal=state.journal||{};state.journal.unlocked=true;state.flags.chapter2_character_feature_unlocked=true;
+ const selectedRoute=routeFromChapter2Decision();
+ clearTimeout(dayTimer);
+ $$("audio").forEach(audio=>{try{audio.pause();audio.currentTime=0;}catch(_){}});
+ state.chapter=3;state.progress=0;state.checkpoint="ch3_intro";
+ resetPhase1State(selectedRoute);
+ state.journal=state.journal||{};state.journal.unlocked=true;state.flags.chapter2_character_feature_unlocked=true;
  window.LastWitnessContentRegistry?.updateVisibility?.();
+ hideTransientUI();
  showChapterIntro(3,()=>{
   show("chapter3Day");updateLanguage();
-  setTimeout(()=>enterOffice(),1450);
+  dayTimer=setTimeout(enterOffice,DAY_CARD_MS);
  });
  autoSave();
 }
@@ -121,17 +212,22 @@ function renderPuzzle(){
  $("#ch3SequenceCount").textContent=selected.length+"/6";
  $("#ch3ConfirmTimeline").disabled=selected.length!==6;
  $("#ch3ResetTimeline").disabled=selected.length===0;
- $$('[data-event]').forEach(button=>button.onclick=()=>{selected.push(button.dataset.event);clearPuzzleStatus();renderPuzzle();});
- $$('[data-selected-index]').forEach(button=>button.onclick=()=>{selected.splice(Number(button.dataset.selectedIndex),1);clearPuzzleStatus();renderPuzzle();});
+ $$("[data-event]").forEach(button=>button.onclick=()=>{selected.push(button.dataset.event);clearPuzzleStatus();renderPuzzle();});
+ $$("[data-selected-index]").forEach(button=>button.onclick=()=>{selected.splice(Number(button.dataset.selectedIndex),1);clearPuzzleStatus();renderPuzzle();});
 }
-function clearPuzzleStatus(){const status=$("#ch3TimelineStatus");status.textContent="";status.className="ch3-timeline-status";}
+function clearPuzzleStatus(){const status=$("#ch3TimelineStatus");if(!status)return;status.textContent="";status.className="ch3-timeline-status";}
 function openPuzzle(){
- ensureState();if(state.chapter3.timelineComplete)return;
+ ensureState();
+ if(!state.chapter3.openingComplete||localDialogue||state.chapter3.timelineComplete)return;
  selected=[];clearPuzzleStatus();renderPuzzle();
  $("#ch3TimelineModal").classList.add("open");$("#ch3TimelineModal").setAttribute("aria-hidden","false");
  window.LastWitnessProductionAudio?.refresh?.();
 }
-function closePuzzle(){$("#ch3TimelineModal").classList.remove("open");$("#ch3TimelineModal").setAttribute("aria-hidden","true");selected=[];clearPuzzleStatus();window.LastWitnessProductionAudio?.refresh?.();}
+function closePuzzle(){
+ const modal=$("#ch3TimelineModal");if(!modal)return;
+ modal.classList.remove("open");modal.setAttribute("aria-hidden","true");selected=[];clearPuzzleStatus();
+ window.LastWitnessProductionAudio?.refresh?.();
+}
 function confirmPuzzle(){
  if(selected.length!==6)return;
  const correct=selected.every((id,index)=>id===ORDER[index]);
@@ -140,7 +236,7 @@ function confirmPuzzle(){
  status.textContent=copy().success;status.className="ch3-timeline-status success";
  ensureState();state.chapter3.timelineComplete=true;state.checkpoint="ch3_timeline_complete";updateProgress(62);autoSave();window.LastWitnessAudioCue?.playPuzzleSuccess?.();
  setTimeout(()=>{
-  closePuzzle();$("#openCh3Timeline").style.display="none";
+  closePuzzle();hidePuzzleLauncher();
   playDialogue([
    {speaker:"North",emotion:"serious",en:"Daniel never checked in for the flight. But credential 18-07 authenticated through the Singapore node eleven minutes after the original sample time.",th:"แดเนียลไม่เคยเช็กอินเที่ยวบิน แต่สิทธิ์ 18-07 ยืนยันตัวผ่านโหนดสิงคโปร์สิบเอ็ดนาทีหลังเวลาเก็บตัวอย่างต้นฉบับ"},
    {speaker:"Benedict",emotion:"thinking",en:"A valid journey without a passenger.",th:"การเดินทางที่ถูกต้อง แต่ไม่มีผู้โดยสาร"},
@@ -148,9 +244,12 @@ function confirmPuzzle(){
   ],showChoices);
  },520);
 }
-function showChoices(){$("#ch3Choice").classList.remove("hidden");$("#ch3Objective").textContent=copy().choose;state.checkpoint="ch3_route_choice";autoSave();}
+function showChoices(){
+ hidePuzzleLauncher();$("#ch3Choice")?.classList.remove("hidden");
+ $("#ch3Objective").textContent=copy().choose;state.checkpoint="ch3_route_choice";autoSave();
+}
 function chooseLead(choice){
- ensureState();state.chapter3.choice=choice;state.flags["ch3_follow_"+choice]=true;$("#ch3Choice").classList.add("hidden");
+ ensureState();state.chapter3.choice=choice;state.flags["ch3_follow_"+choice]=true;$("#ch3Choice")?.classList.add("hidden");
  if(choice==="system")state.relationships.North.respect+=2;
  if(choice==="daniel")state.relationships.North.trust+=2;
  if(choice==="operator")state.relationships.North.respect+=1;
@@ -162,38 +261,61 @@ function chooseLead(choice){
  playDialogue(response.concat([{speaker:"Benedict",emotion:"serious",en:"Book two seats. This time we verify the passengers.",th:"จองสองที่นั่ง คราวนี้เราตรวจผู้โดยสารให้ครบ"}]),finishPhase);
 }
 function finishPhase(){ensureState();state.chapter3.phase1Complete=true;state.checkpoint="ch3_phase1_complete";updateProgress(100);autoSave();showPhaseComplete();}
-function showPhaseComplete(){$("#chapter3Dialogue").classList.add("hidden");$("#ch3Choice").classList.add("hidden");$("#openCh3Timeline").style.display="none";$("#ch3PhaseComplete").style.display="block";updateLanguage();}
+function showPhaseComplete(){
+ $("#chapter3Dialogue")?.classList.add("hidden");$("#ch3Choice")?.classList.add("hidden");hidePuzzleLauncher();closePuzzle();
+ const complete=$("#ch3PhaseComplete");if(complete)complete.style.display="block";updateLanguage();
+}
 function goPhase2(){ensureState();state.checkpoint="ch3_phase2_wip";show("chapter3Phase2Wip");autoSave();}
 function returnTitle(){window.LastWitnessChapter2Integration?.returnToTitle?.();}
 function resumeFromState(screen){
- if(!screen?.startsWith?.("chapter3"))return;
+ if(!screen?.startsWith?.("chapter3")||enteringOffice)return;
  inject();ensureState();
  if(screen==="chapter3Office"){
-  updateLanguage();
-  if(state.chapter3.phase1Complete)showPhaseComplete();
-  else if(state.chapter3.timelineComplete){$("#openCh3Timeline").style.display="none";if(!state.chapter3.choice)showChoices();}
-  else $("#openCh3Timeline").style.display="block";
+  closePuzzle();updateLanguage();
+  if(state.chapter3.phase1Complete){showPhaseComplete();return;}
+  if(state.chapter3.timelineComplete){hidePuzzleLauncher();if(!state.chapter3.choice)showChoices();return;}
+  if(state.chapter3.openingComplete){showPuzzleLauncher();return;}
+  state.chapter3.openingPlaying=false;
+  startOpeningDialogue();
  }
 }
 function updateLanguage(){
  if(!$("#chapter3Office"))return;const c=copy();
- $("#ch3DayLabel").textContent=c.day;$("#ch3DayPlace").textContent=c.place;$("#ch3DayPhase").textContent=c.phase;
- $("#ch3Location").textContent=t("Detective Office • Morning","สำนักงานนักสืบ • ตอนเช้า");$("#ch3SceneLabel").textContent=c.phase;$("#ch3Objective").textContent=state.chapter3?.timelineComplete?c.choose:c.objective;$("#openCh3Timeline").textContent=c.puzzle;
+ $("#ch3DayLabel").textContent=c.day;$("#ch3DayTime").textContent=c.time;$("#ch3DayPlace").textContent=c.place;$("#ch3DayPhase").textContent=c.phase;
+ $("#ch3Location").textContent=t("Detective Office • Morning","สำนักงานนักสืบ • ตอนเช้า");
+ $("#ch3SceneLabel").textContent=c.phase;
+ $("#ch3Objective").textContent=state.chapter3?.timelineComplete?c.choose:(state.chapter3?.openingComplete?c.objective:c.briefing);
+ $("#openCh3Timeline").textContent=c.puzzle;
  $("#ch3ChoiceTitle").textContent=c.choose;$("[data-ch3-choice=system]").textContent=c.system;$("[data-ch3-choice=daniel]").textContent=c.daniel;$("[data-ch3-choice=operator]").textContent=c.operator;
  $("#ch3CompleteEyebrow").textContent=c.complete;$("#ch3CompleteTitle").textContent=c.completeTitle;$("#ch3CompleteText").textContent=c.completeText;$("#ch3ContinuePhase2").textContent=c.continuePhase;$("#ch3ReturnTitle").textContent=c.returnTitle;
  $("#ch3TimelineTitle").textContent=t("TIMELINE RECONSTRUCTION","การเรียงลำดับเวลา");$("#ch3TimelineHelp").textContent=t("Select all six records in the order they physically occurred.","เลือกบันทึกทั้งหกรายการตามลำดับที่เกิดขึ้นจริง");$("#ch3SequenceTitle").textContent=t("YOUR SEQUENCE","ลำดับของคุณ");$("#ch3ConfirmTimeline").textContent=c.confirm;$("#ch3ResetTimeline").textContent=c.reset;$("#ch3CloseTimeline").textContent=t("Close","ปิด");
  $("#ch3Phase2Eyebrow").textContent=c.phase2Title;$("#ch3Phase2Title").textContent=c.phase2Name;$("#ch3Phase2Text").textContent=c.phase2Text;$("#ch3Phase2Return").textContent=c.returnTitle;
- if($("#ch3TimelineModal").classList.contains("open"))renderPuzzle();
+ if($("#ch3TimelineModal")?.classList.contains("open"))renderPuzzle();
 }
 function bind(){
- $("#openCh3Timeline").addEventListener("click",openPuzzle);$("#ch3CloseTimeline").addEventListener("click",closePuzzle);$("#ch3ResetTimeline").addEventListener("click",()=>{selected=[];clearPuzzleStatus();renderPuzzle();});$("#ch3ConfirmTimeline").addEventListener("click",confirmPuzzle);
- $$('[data-ch3-choice]').forEach(button=>button.addEventListener("click",()=>chooseLead(button.dataset.ch3Choice)));
- $("#ch3ContinuePhase2").addEventListener("click",goPhase2);$("#ch3ReturnTitle").addEventListener("click",returnTitle);$("#ch3Phase2Return").addEventListener("click",returnTitle);
- $("#chapter3Office .ch3-save").addEventListener("click",()=>manualSave());$("#chapter3Office .ch3-menu").addEventListener("click",()=>$("#drawer").classList.add("open"));
+ $("#openCh3Timeline")?.addEventListener("click",openPuzzle);
+ $("#ch3CloseTimeline")?.addEventListener("click",closePuzzle);
+ $("#ch3ResetTimeline")?.addEventListener("click",()=>{selected=[];clearPuzzleStatus();renderPuzzle();});
+ $("#ch3ConfirmTimeline")?.addEventListener("click",confirmPuzzle);
+ $$("[data-ch3-choice]").forEach(button=>button.addEventListener("click",()=>chooseLead(button.dataset.ch3Choice)));
+ $("#ch3ContinuePhase2")?.addEventListener("click",goPhase2);$("#ch3ReturnTitle")?.addEventListener("click",returnTitle);$("#ch3Phase2Return")?.addEventListener("click",returnTitle);
+ $("#chapter3Office .ch3-save")?.addEventListener("click",()=>manualSave());$("#chapter3Office .ch3-menu")?.addEventListener("click",()=>$("#drawer")?.classList.add("open"));
  document.addEventListener("click",event=>{if(event.target.closest?.("[data-lang]"))setTimeout(updateLanguage,0);},true);
- const grid=$("#developerModal .dev-grid");if(grid&&!grid.querySelector('[data-dev-jump="chapter3Office"]')){const button=document.createElement("button");button.className="dev-button";button.dataset.devJump="chapter3Office";button.textContent="Chapter III · Office";button.onclick=()=>{$("#developerModal").classList.remove("open");ensureState();state.chapter=3;state.chapter3.started=true;show("chapter3Office");enterOffice();};grid.appendChild(button);}
+ const grid=$("#developerModal .dev-grid");
+ if(grid&&!grid.querySelector('[data-dev-jump="chapter3Office"]')){
+  const button=document.createElement("button");button.className="dev-button";button.dataset.devJump="chapter3Office";button.textContent="Chapter III · Office";
+  button.onclick=()=>{
+   $("#developerModal")?.classList.remove("open");ensureState();
+   const selectedRoute=route();state.chapter=3;state.progress=0;resetPhase1State(selectedRoute);
+   enterOffice();autoSave();
+  };
+  grid.appendChild(button);
+ }
 }
 
 inject();
-window.LastWitnessChapter3={startFromChapter2,resumeFromState,updateLanguage,openPuzzle,version:"0.5.4"};
+window.LastWitnessChapter3={
+ startFromChapter2,resumeFromState,updateLanguage,openPuzzle,enterOffice,
+ version:"0.7.0"
+};
 })();

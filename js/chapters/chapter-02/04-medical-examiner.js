@@ -1,4 +1,4 @@
-/* LAST WITNESS — Chapter II / Medical Examiner 0.6.3
+/* LAST WITNESS — Chapter II / Medical Examiner 0.7.0
  * Deterministic inspect/collect state, immediate hotspot feedback and reliable review.
  */
 (function(){
@@ -30,9 +30,26 @@ function portraitSrc(speaker,emotion){
  }
  try{return typeof portrait==="function"?portrait(speaker,emotion||"neutral"):"";}catch(_){return"";}
 }
+function ensureRatchataUnlockedAtIntroduction(){
+ if(!window.state)return false;
+ state.medical=state.medical||{};
+ state.flags=state.flags||{};
+ state.characters=state.characters||{};
+ const first=state.medical.ratchataJournalUnlocked!==true;
+ state.medical.ratchataMet=true;
+ state.medical.ratchataJournalUnlocked=true;
+ state.flags.journal_story_ratchata_unlocked=true;
+ state.characters.Ratchata=true;
+ const registry=window.LastWitnessContentRegistry;
+ if(registry?.unlockCharacter)registry.unlockCharacter("ratchata",{unread:first,source:"story"});
+ try{window.LastWitnessStoryCharacterGates?.reconcile?.();}catch(_){}
+ if(first)try{if(typeof autoSave==="function")autoSave();}catch(_){}
+ return first;
+}
 function renderDialogue(){
  const d=local.dialogue,box=$("#medicalDialogue");if(!d||!box)return;
  const line=d.lines[d.index],right=line.speaker==="North"||line.speaker==="Elena";
+ if(line.speaker==="Ratchata")ensureRatchataUnlockedAtIntroduction();
  const src=portraitSrc(line.speaker,line.emotion);
  box.className=`dialogue${right?" right":""}`;
  box.innerHTML=`<div class="portrait-wrap">${src?`<img class="portrait portrait-${line.speaker}" src="${src}" alt="" onerror="this.onerror=null;this.src='assets/images/ratchata/neutral.png'">`:""}</div><div class="dialogue-copy"><div class="speaker">${line.speaker}</div><div class="line">${l(line.text)}</div></div><div class="next">${lang()==="th"?"แตะเพื่อดำเนินต่อ":"TAP TO CONTINUE"}</div>`;
@@ -56,14 +73,7 @@ function intro(){
   {speaker:"North",emotion:"focused",text:{en:"Dr. Singh?",th:"ดร. ซิงห์?"}},
   {speaker:"Ratchata",emotion:"warm_smile",text:{en:"Ratchata. Forty-three. Senior medical examiner. The skeleton cats are not part of the accreditation.",th:"รัชตะครับ อายุสี่สิบสาม แพทย์นิติเวชอาวุโส ส่วนแมวโครงกระดูกไม่ได้อยู่ในใบรับรองวิชาชีพ"}}
  ],()=>{
-  /* Unlock at the exact story beat where the player learns his name and role.
-   * Chapter III must only reuse the existing entry, never introduce it late. */
-  if(window.state){
-   state.medical=state.medical||{};
-   state.medical.ratchataMet=true;
-   state.medical.ratchataJournalUnlocked=true;
-  }
-  addRatchataJournal();
+  ensureRatchataUnlockedAtIntroduction();
   dialogue([
    {speaker:"Elena",emotion:"neutral",text:{en:"We need an independent death window and confirmation that the reference sample is intact.",th:"เราต้องการช่วงเวลาตายที่เป็นอิสระจากระบบ และยืนยันว่าตัวอย่างอ้างอิงยังสมบูรณ์"}},
    {speaker:"Ratchata",emotion:"serious",text:{en:"Then we begin with what the body can prove. Not what anyone wants it to prove.",th:"งั้นเริ่มจากสิ่งที่ร่างกายพิสูจน์ได้ ไม่ใช่สิ่งที่ใครอยากให้มันพิสูจน์"}}
@@ -159,7 +169,11 @@ function review(){
 }
 function choose(path){
  local.choice=path;syncState();
- if(window.state){state.flags=state.flags||{};state.flags[`chapter3_${path}`]=true;}
+ if(window.state){
+  state.flags=state.flags||{};
+  ["timeline","old_cases","access"].forEach(routeId=>delete state.flags[`chapter3_${routeId}`]);
+  state.flags[`chapter3_${path}`]=true;
+ }
  $("#medicalChoice").classList.add("hidden");updateProgress();
  const branch={
   timeline:{en:"North starts with the altered timeline. The first Chapter III lead will be digital.",th:"North จะเริ่มจากลำดับเวลาที่ถูกแก้ เบาะแสแรกของบทที่ III จะมาจากข้อมูลดิจิทัล"},
@@ -234,10 +248,7 @@ function show(){
  if(!local.started&&!local.choice){local.started=true;setTimeout(intro,260);}
  try{if(typeof autoSave==="function")autoSave();}catch(_){}
 }
-function addRatchataJournal(){
- if(window.LastWitnessContentRegistry?.unlockCharacter){window.LastWitnessContentRegistry.unlockCharacter("ratchata",{unread:true,source:"story"});return;}
- if(window.state){state.medical=state.medical||{};state.medical.ratchataMet=true;}
-}
+function addRatchataJournal(){ensureRatchataUnlockedAtIntroduction();}
 function appendCase(){
  const list=$("#caseList");if(!list||!window.state||!state.medical?.collected?.length)return;
  $('[data-medical-case-section]',list)?.remove();$$('[data-medical-case-entry]',list).forEach(n=>n.remove());
@@ -289,7 +300,7 @@ function bind(){
  },
  resetFreshState,
  updateLanguage:updateUI,
- version:"0.6.3"
+ version:"0.7.0"
 };
  updateUI();
 }

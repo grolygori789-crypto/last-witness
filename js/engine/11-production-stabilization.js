@@ -1,10 +1,11 @@
-/* LAST WITNESS — Room 1807 Evidence, Seamless Noir Audio & Production Polish 0.6.9
+/* LAST WITNESS — Chapter I–III Audio, Evidence & Phase Runtime 0.7.0
  * Single scene-audio owner, immediate Case File cue, clean Room 1807 score,
  * fresh Medical state and controlled Chapter III puzzle cue.
  */
 (function(){
 "use strict";
-if(window.__lwProductionStabilization069)return;
+if(window.__lwProductionStabilization070)return;
+window.__lwProductionStabilization070=true;
 window.__lwProductionStabilization069=true;
 window.__lwProductionStabilization068=true;
 window.__lwProductionStabilization063=true;
@@ -25,15 +26,18 @@ const PUZZLE_SOURCE="assets/audio/puzzle-success.wav?v=057";
 const SCANNER_SOURCE="assets/audio/medical-scanner-soft.wav?v=057";
 const ROOM_1807_WEBM_SOURCE="assets/audio/room-1807/room-1807-after-hours-loop.webm?v=069";
 const ROOM_1807_MP3_SOURCE="assets/audio/room-1807/room-1807-after-hours-loop.mp3?v=069";
-const FORENSIC_ROOM_SOURCE="assets/audio/ambience/forensic-soft-room.wav?v=060";
-const MEDICAL_ROOM_SOURCE="assets/audio/ambience/medical-soft-room.wav?v=060";
+const FORENSIC_WEBM_SOURCE="assets/audio/forensic/forensic-chain-of-custody-loop.webm?v=070";
+const FORENSIC_MP3_SOURCE="assets/audio/forensic/forensic-chain-of-custody-loop.mp3?v=070";
+const MEDICAL_WEBM_SOURCE="assets/audio/medical/medical-cold-evidence-loop.webm?v=070";
+const MEDICAL_MP3_SOURCE="assets/audio/medical/medical-cold-evidence-loop.mp3?v=070";
 const APARTMENT_LOOP_TRIM=2.45;
-const ROOM_1807_MP3_LOOP_TRIM=0.12;
+const MP3_LOOP_TRIM=0.12;
+const POLICE_START_SECONDS=12;
 const ROOM_1807_SCREENS=new Set(["crime","phone","summary","deduction"]);
-const CHAPTER3_DAY_MIN_MS=2400;
+const FORENSIC_SCREENS=new Set(["forensic2"]);
+const MEDICAL_SCREENS=new Set(["medical2"]);
+const CHAPTER_DAY_CARD_MS=2200;
 let lastScreen="";
-let chapter3DayShownAt=0;
-let pendingChapter3OfficeTimer=0;
 let syncQueued=false;
 let forensicTransitioning=false;
 let inspectionAudio=null,puzzleAudio=null,scannerPool=[],scannerIndex=0;
@@ -46,14 +50,15 @@ function activeScreen(){const s=gameState();return $(".screen.active")?.id||s?.s
 function soundOn(){return gameState()?.sound!==false;}
 function musicLevel(){return clamp(gameState()?.music??0.33);}
 function sfxLevel(){return clamp(gameState()?.sfx??0.55);}
-function preferredRoom1807Source(){
+function preferredLoopSource(webm,mp3){
  const probe=document.createElement("audio");
  try{
   const support=probe.canPlayType?.('audio/webm; codecs="opus"')||"";
-  if(support==="probably"||support==="maybe")return ROOM_1807_WEBM_SOURCE;
+  if(support==="probably"||support==="maybe")return webm;
  }catch(_){}
- return ROOM_1807_MP3_SOURCE;
+ return mp3;
 }
+function preferredRoom1807Source(){return preferredLoopSource(ROOM_1807_WEBM_SOURCE,ROOM_1807_MP3_SOURCE);}
 function dialogueOpen(screen=activeScreen()){
  const root=$("#"+screen);if(!root)return false;
  return $$(".dialogue",root).some(box=>!box.classList.contains("hidden")&&getComputedStyle(box).display!=="none");
@@ -140,8 +145,8 @@ function installSoftScanner(){
  legacy.play=()=>{playSoftScanner();return Promise.resolve();};
 }
 function volumeProfile(screen){
- const dialogueDuck=dialogueOpen(screen)?0.82:1;
- const evidenceDuck=evidencePanelOpen(screen)?0.80:1;
+ const dialogueDuck=dialogueOpen(screen)?0.74:1;
+ const evidenceDuck=evidencePanelOpen(screen)?0.78:1;
  const m=musicLevel(),p={};
  if(screen==="title"){p.themeAudio=m;p.rainAudio=m*0.48;}
  else if(screen==="office"){p.officeAudio=m*0.50*dialogueDuck;p.rainAudio=m*0.14*dialogueDuck;}
@@ -149,39 +154,31 @@ function volumeProfile(screen){
  else if(screen==="office2"||screen==="chapter3Office"){p.morningOfficeAudio=m*0.50*dialogueDuck;}
  else if(screen==="apartment2"){p.apartmentAudio=m*0.48*dialogueDuck*evidenceDuck;}
  else if(screen==="cafe2"){p.cafeAudio=m*0.30*dialogueDuck;}
- else if(screen==="police2"){p.policeAudio=m*0.05*dialogueDuck;}
- else if(screen==="forensic2"){p.forensicHumAudio=m*0.36*dialogueDuck*evidenceDuck;}
- else if(screen==="medical2"){p.medicalRefrigeratorAudio=m*0.32*dialogueDuck*evidenceDuck;}
+ else if(screen==="police2"){p.policeAudio=m*0.30*dialogueDuck;}
+ else if(screen==="forensic2"){p.forensicHumAudio=m*0.60*dialogueDuck*evidenceDuck;}
+ else if(screen==="medical2"){p.medicalRefrigeratorAudio=m*0.56*dialogueDuck*evidenceDuck;}
  return p;
 }
-function installRoom1807LoopGuard(audio){
- if(!audio||audio.dataset.lwRoomGapless069==="1")return;
- audio.dataset.lwRoomGapless069="1";
+function installNativeOrTrimmedLoop(audio,key,screens,trim=MP3_LOOP_TRIM){
+ if(!audio||audio.dataset[key]==="1")return;
+ audio.dataset[key]="1";
  const source=(audio.currentSrc||audio.src||"").split("?")[0].toLowerCase();
-
- /* The WebM/Opus master was rendered as a mathematically continuous loop and Chrome
-  * can loop Opus without MP3 encoder padding. The MP3 remains a compatibility
-  * fallback and uses a small pre-end seek guard. */
  if(source.endsWith(".webm")){
   audio.loop=true;
-  audio.dataset.lwRoomLoopMode="native-opus";
+  audio.dataset.lwLoopMode="native-opus";
   return;
  }
-
  audio.loop=false;
- audio.dataset.lwRoomLoopMode="trimmed-mp3-fallback";
+ audio.dataset.lwLoopMode="trimmed-mp3-fallback";
+ const restart=()=>{
+  if(!screens.has(activeScreen())||!soundOn())return;
+  try{audio.currentTime=.02;if(audio.paused)audio.play().catch(()=>{});}catch(_){}
+ };
  audio.addEventListener("timeupdate",()=>{
-  if(!ROOM_1807_SCREENS.has(activeScreen()))return;
   const d=Number(audio.duration);
-  if(Number.isFinite(d)&&d>ROOM_1807_MP3_LOOP_TRIM+1&&audio.currentTime>=d-ROOM_1807_MP3_LOOP_TRIM){
-   try{audio.currentTime=.02;if(audio.paused&&soundOn())audio.play().catch(()=>{});}catch(_){}
-  }
+  if(screens.has(activeScreen())&&Number.isFinite(d)&&d>trim+1&&audio.currentTime>=d-trim)restart();
  });
- audio.addEventListener("ended",()=>{
-  if(ROOM_1807_SCREENS.has(activeScreen())&&soundOn()){
-   try{audio.currentTime=.02;audio.play().catch(()=>{});}catch(_){}
-  }
- });
+ audio.addEventListener("ended",restart);
 }
 function installApartmentLoopGuard(audio){
  if(!audio||audio.dataset.lwGapless060==="1")return;
@@ -195,25 +192,55 @@ function installApartmentLoopGuard(audio){
  });
  audio.addEventListener("ended",()=>{if(activeScreen()==="apartment2"&&soundOn()){try{audio.currentTime=.04;audio.play().catch(()=>{});}catch(_){}}});
 }
-function startLoop(id,volume){
+function startPoliceLoop(audio,volume,sceneChanged){
+ if(!audio||!soundOn())return;
+ const begin=()=>{
+  if(activeScreen()!=="police2"||!soundOn())return;
+  try{
+   audio.pause();audio.loop=true;audio.currentTime=POLICE_START_SECONDS;
+   audio.volume=clamp(volume);audio.muted=false;
+   audio.dataset.lwPoliceVisitStarted="1";
+   audio.play().catch(()=>{});
+  }catch(_){}
+ };
+ if(sceneChanged||audio.dataset.lwPoliceVisitStarted!=="1"||audio.paused){
+  audio.pause();audio.muted=true;
+  const d=Number(audio.duration);
+  if(audio.readyState>=1&&Number.isFinite(d)&&d>POLICE_START_SECONDS+.5)begin();
+  else{
+   audio.addEventListener("loadedmetadata",begin,{once:true});
+   try{audio.load();}catch(_){}
+  }
+ }else{
+  audio.volume=clamp(volume);audio.muted=false;
+ }
+}
+function startLoop(id,volume,sceneChanged=false){
  const audio=$("#"+id);if(!audio||!soundOn())return;
  try{
-  if(id==="room1807Audio"){installRoom1807LoopGuard(audio);if(audio.dataset.lwRoomLoopMode!=="native-opus")audio.loop=false;}
-  else if(id==="apartmentAudio"){installApartmentLoopGuard(audio);audio.loop=false;}else audio.loop=true;
+  if(id==="policeAudio"){startPoliceLoop(audio,volume,sceneChanged);return;}
+  if(id==="room1807Audio")installNativeOrTrimmedLoop(audio,"lwRoomGapless070",ROOM_1807_SCREENS);
+  else if(id==="forensicHumAudio")installNativeOrTrimmedLoop(audio,"lwForensicGapless070",FORENSIC_SCREENS);
+  else if(id==="medicalRefrigeratorAudio")installNativeOrTrimmedLoop(audio,"lwMedicalGapless070",MEDICAL_SCREENS);
+  else if(id==="apartmentAudio"){installApartmentLoopGuard(audio);audio.loop=false;}
+  else audio.loop=true;
   audio.muted=false;audio.volume=clamp(volume);
-  if(id==="policeAudio"&&audio.paused){
-   const d=Number(audio.duration);if(Number.isFinite(d)&&d>12)audio.currentTime=12;
-  }
   if(audio.paused)audio.play().catch(()=>{});
  }catch(_){}
 }
 function applySceneAudio(){
  const current=activeScreen();
- if(current!==lastScreen){stopOneShots();lastScreen=current;}
+ const sceneChanged=current!==lastScreen;
+ const previous=lastScreen;
+ if(sceneChanged){
+  stopOneShots();
+  if(previous==="police2"&&current!=="police2")$("#policeAudio")?.removeAttribute("data-lw-police-visit-started");
+  lastScreen=current;
+ }
  if(!soundOn()){stopInvestigationLoops();return;}
  const profile=volumeProfile(current),allowed=new Set(Object.keys(profile));
  stopInvestigationLoops(allowed);
- Object.entries(profile).forEach(([id,volume])=>startLoop(id,volume));
+ Object.entries(profile).forEach(([id,volume])=>startLoop(id,volume,sceneChanged));
  const oldMachine=$("#medicalMachineAudio");
  if(oldMachine){oldMachine.pause();oldMachine.muted=true;oldMachine.volume=0;}
  if(!["chapter2Complete","chapter3Wip","chapter"].includes(current))stopElement($("#chapterAudio"),true);
@@ -646,36 +673,25 @@ function installPlayBridge(){
 }
 function installRouting(){
  const original=window.show;
- if(typeof original==="function"&&!original.__lwProductionRoute061){
+ if(typeof original==="function"&&!original.__lwProductionRoute070){
   const wrapped=function(){
    const target=arguments[0],from=activeScreen();
    const sameRoom1807Zone=ROOM_1807_SCREENS.has(from)&&ROOM_1807_SCREENS.has(target);
    stopOneShots();if(!sameRoom1807Zone)stopInvestigationLoops();closeAllEvidencePanels();
    try{const c=$("#clickAudio");if(c){c.pause();c.currentTime=0;}}catch(_){}
-
-   if(target==="chapter3Office"&&from==="chapter3Day"&&chapter3DayShownAt){
-    const remaining=CHAPTER3_DAY_MIN_MS-(performance.now()-chapter3DayShownAt);
-    if(remaining>20){
-     const args=Array.from(arguments),self=this;
-     clearTimeout(pendingChapter3OfficeTimer);
-     pendingChapter3OfficeTimer=setTimeout(()=>{
-      original.apply(self,args);queueAudioSync();window.LastWitnessContentRegistry?.updateVisibility?.();
-     },remaining);
-     return;
-    }
-   }
-
    const result=original.apply(this,arguments);
-   if(target==="chapter3Day")chapter3DayShownAt=performance.now();
    queueAudioSync();window.LastWitnessContentRegistry?.updateVisibility?.();return result;
   };
-  wrapped.__lwProductionRoute061=true;window.show=wrapped;
+  wrapped.__lwProductionRoute070=true;window.show=wrapped;
  }
  const originalSet=window.setVolumes;
  window.setVolumes=function(){
   if(typeof originalSet==="function")try{originalSet.apply(this,arguments);}catch(_){}
   queueAudioSync();
  };
+ /* Runtime 11 is the only scene-audio owner after it loads. This prevents
+  * legacy ambience() from starting Police at 4.6 seconds before the
+  * production owner can seek to the stable 12-second loop body. */
  window.ambience=function(){queueAudioSync();};
 }
 function installObservers(){
@@ -708,6 +724,55 @@ function applyRoom1807EvidenceCopy(){
   }
  }catch(_){}
 }
+function dayCardCopy(chapter){
+ const th=gameState()?.language==="th"||document.documentElement.lang==="th";
+ if(chapter===1)return th
+  ?{day:"วันที่ 1",time:"ช่วงค่ำ",place:"กรุงเทพฯ · สำนักงานนักสืบ"}
+  :{day:"DAY 1",time:"LATE EVENING",place:"BANGKOK · DETECTIVE OFFICE"};
+ if(chapter===2)return th
+  ?{day:"วันที่ 2",time:"ตอนเช้า",place:"กรุงเทพฯ · สำนักงานนักสืบ"}
+  :{day:"DAY 2",time:"MORNING",place:"BANGKOK · DETECTIVE OFFICE"};
+ return null;
+}
+function installChapterDayCard(){
+ if(!$("#lwChapterDayStyle")){
+  const style=document.createElement("style");style.id="lwChapterDayStyle";
+  style.textContent=`
+   #chapterDayCard{z-index:81;background:#050608}
+   #chapterDayCard .chapter-intro-card{max-width:460px}
+   #chapterDayTime{margin:12px 0 6px;color:#f2ede3;font:500 clamp(31px,9vw,46px) Georgia,serif;letter-spacing:.06em}
+   #chapterDayPlace{margin-top:18px;color:#d4c5ae;font-size:12px;line-height:1.5;letter-spacing:.13em;text-transform:uppercase}
+   html[lang="th"] #chapterDayTime{letter-spacing:.02em}
+   html[lang="th"] #chapterDayPlace{letter-spacing:.035em;text-transform:none}
+  `;
+  document.head.appendChild(style);
+ }
+ if(!$("#chapterDayCard")){
+  const card=document.createElement("section");
+  card.id="chapterDayCard";card.className="chapter-intro";card.setAttribute("aria-hidden","true");
+  card.innerHTML=`<div class="chapter-intro-card"><div class="chapter-intro-brand">LAST WITNESS</div><div id="chapterDayLabel" class="chapter-intro-number"></div><div id="chapterDayTime"></div><div class="chapter-intro-rule"></div><div id="chapterDayPlace"></div></div>`;
+  $("#game")?.appendChild(card);
+ }
+ const original=window.showChapterIntro;
+ if(typeof original!=="function"||original.__lwDayCard070)return;
+ const wrapped=function(chapter,onComplete){
+  if(chapter!==1&&chapter!==2)return original.call(this,chapter,onComplete);
+  return original.call(this,chapter,()=>{
+   const copy=dayCardCopy(chapter),card=$("#chapterDayCard");
+   if(!copy||!card){onComplete?.();return;}
+   $("#chapterDayLabel").textContent=copy.day;
+   $("#chapterDayTime").textContent=copy.time;
+   $("#chapterDayPlace").textContent=copy.place;
+   card.setAttribute("aria-hidden","false");card.classList.add("instant","show");
+   void card.offsetWidth;card.classList.remove("instant");
+   setTimeout(()=>{
+    onComplete?.();
+    requestAnimationFrame(()=>{card.classList.remove("show");card.setAttribute("aria-hidden","true");});
+   },CHAPTER_DAY_CARD_MS);
+  });
+ };
+ wrapped.__lwDayCard070=true;window.showChapterIntro=wrapped;
+}
 function applyChapterNaming(){
  try{if(window.LANG?.en)LANG.en.chapter_1_name="ROOM 1807";}catch(_){}
  const initial=$("#chapterIntroTitle");
@@ -729,12 +794,15 @@ function bindSettings(){
 }
 function bind(){
  const roomSource=preferredRoom1807Source();
+ const forensicSource=preferredLoopSource(FORENSIC_WEBM_SOURCE,FORENSIC_MP3_SOURCE);
+ const medicalSource=preferredLoopSource(MEDICAL_WEBM_SOURCE,MEDICAL_MP3_SOURCE);
  const roomAudio=ensureLoopAudio("room1807Audio",roomSource);
  if(roomAudio)roomAudio.dataset.lwRoomFormat=roomSource.includes(".webm")?"opus":"mp3";
  ensureLoopAudio("apartmentAudio","assets/audio/victim-apartment-score.mp3?v=060");
- ensureLoopAudio("forensicHumAudio",FORENSIC_ROOM_SOURCE);
- ensureLoopAudio("medicalRefrigeratorAudio",MEDICAL_ROOM_SOURCE);
- prepareOneShots();applyChapterNaming();applyRoom1807EvidenceCopy();installGapGuard();installRoom1807Evidence();suppressLegacyEvidenceAudio();installSoftScanner();
+ ensureLoopAudio("forensicHumAudio",forensicSource);
+ ensureLoopAudio("medicalRefrigeratorAudio",medicalSource);
+ stopElement($("#policeAudio"),true);
+ prepareOneShots();applyChapterNaming();installChapterDayCard();applyRoom1807EvidenceCopy();installGapGuard();installRoom1807Evidence();suppressLegacyEvidenceAudio();installSoftScanner();
  installPlayBridge();installRouting();installObservers();bindSettings();
  document.addEventListener("click",handleRoom1807EvidenceClick,true);
  document.addEventListener("pointerdown",event=>{
@@ -754,13 +822,13 @@ function bind(){
   stopPuzzleSuccess:stopPuzzleCue,
   playSoftScanner,
   stopEvidenceCue:stopOneShots,
-  version:"0.6.9"
+  version:"0.7.0"
  };
  window.LastWitnessRoom1807Evidence={
   open:openRoom1807Evidence,inspect:inspectRoom1807Evidence,collect:collectRoom1807Evidence,
-  close:closeRoom1807Evidence,updateLanguage:updateRoom1807EvidenceLanguage,version:"0.6.9"
+  close:closeRoom1807Evidence,updateLanguage:updateRoom1807EvidenceLanguage,version:"0.7.0"
  };
- window.LastWitnessProductionAudio={refresh:queueAudioSync,apply:applySceneAudio,stopEvidenceCue:stopOneShots,profile:volumeProfile,version:"0.6.9"};
+ window.LastWitnessProductionAudio={refresh:queueAudioSync,apply:applySceneAudio,stopEvidenceCue:stopOneShots,profile:volumeProfile,version:"0.7.0"};
  window.LastWitnessContentRegistry?.updateVisibility?.();queueAudioSync();
 }
 if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",bind,{once:true});else bind();
