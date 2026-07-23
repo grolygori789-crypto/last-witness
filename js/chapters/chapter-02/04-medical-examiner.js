@@ -1,5 +1,6 @@
-/* LAST WITNESS — Chapter II / Medical Examiner 0.7.0
- * Deterministic inspect/collect state, immediate hotspot feedback and reliable review.
+/* LAST WITNESS — Chapter II / Medical Examiner 0.7.7
+ * Deterministic inspect/collect state, immediate hotspot feedback, reliable
+ * review and final narrative continuity into Chapter III.
  */
 (function(){
 "use strict";
@@ -7,8 +8,8 @@ const $=(s,r=document)=>r.querySelector(s);
 const $$=(s,r=document)=>Array.from(r.querySelectorAll(s));
 const IDS=["postmortem","identity_tag","autopsy_report","toxicology_sample"];
 const C={
- en:{location:"Bangkok City Medical Examiner",objective:"Examine what the body proves",remaining:n=>`${n} finding${n===1?"":"s"} remaining`,reviewObjective:"Reconcile the body with the altered timeline",scene:"THE BODY KEEPS ITS OWN TIME",review:"Review the Findings",evidenceInspection:"Evidence Inspection",caseEvidence:"Case Evidence",hint:"Tap evidence to inspect",inspect:"Inspect",collect:"Add to Case File",close:"Close",choiceTitle:"Where should the investigation go next?",choices:{timeline:"Follow the altered timeline.",old_cases:"Trace Daniel’s previous cases.",access:"Investigate who had access to the body and sample."},completeTitle:"CHAPTER II COMPLETE",completeText:"The science is genuine. The timeline around it was engineered. Daniel was following the same pattern through older cases—and someone made sure he could not finish.",returnTitle:"Return to Title",unlocked:"Review unlocked",caseSection:"CHAPTER II · MEDICAL EXAMINER"},
- th:{location:"สถาบันนิติเวช กรุงเทพมหานคร",objective:"ตรวจสอบสิ่งที่ร่างกายพิสูจน์ได้",remaining:n=>`เหลือสิ่งที่ต้องตรวจอีก ${n} จุด`,reviewObjective:"เปรียบเทียบผลชันสูตรกับลำดับเวลาที่ถูกแก้ไข",scene:"ร่างกายมีเวลาของมันเอง",review:"ทบทวนผลการตรวจ",evidenceInspection:"ตรวจสอบหลักฐาน",caseEvidence:"หลักฐานในคดี",hint:"แตะหลักฐานเพื่อตรวจสอบ",inspect:"ตรวจสอบ",collect:"เพิ่มในแฟ้มคดี",close:"ปิด",choiceTitle:"การสืบสวนควรเดินต่อไปทางใด?",choices:{timeline:"ตามรอยลำดับเวลาที่ถูกแก้ไข",old_cases:"ตรวจสอบคดีเก่าที่แดเนียลกำลังติดตาม",access:"ตรวจสอบผู้ที่เข้าถึงศพและตัวอย่างได้"},completeTitle:"จบบทที่ II",completeText:"ผลทางวิทยาศาสตร์เป็นของจริง แต่ลำดับเวลารอบมันถูกจัดวาง แดเนียลกำลังตามรอยรูปแบบเดียวกันในคดีเก่า และมีใครบางคนทำให้เขาไปต่อไม่ได้",returnTitle:"กลับหน้าหลัก",unlocked:"ปลดล็อกการทบทวนผลแล้ว",caseSection:"บทที่ II · สถาบันนิติเวช"}
+ en:{location:"Bangkok City Medical Examiner",objective:"Examine what the body proves",remaining:n=>`${n} finding${n===1?"":"s"} remaining`,reviewObjective:"Reconcile the body with the altered timeline",scene:"THE BODY KEEPS ITS OWN TIME",review:"Review the Findings",evidenceInspection:"Evidence Inspection",caseEvidence:"Case Evidence",hint:"Tap evidence to inspect",inspect:"Inspect",collect:"Add to Case File",close:"Close",choiceTitle:"Where should the investigation go next?",choices:{timeline:"Follow the altered timeline.",old_cases:"Trace Daniel’s previous cases.",access:"Trace temporary profile 18-07."},completeTitle:"CHAPTER II COMPLETE",completeText:"The science is genuine. The timeline around it was engineered. Daniel was following the same pattern through older cases—and someone made sure he could not finish.",returnTitle:"Return to Title",unlocked:"Review unlocked",caseSection:"CHAPTER II · MEDICAL EXAMINER"},
+ th:{location:"สถาบันนิติเวช กรุงเทพมหานคร",objective:"ตรวจสอบสิ่งที่ร่างกายพิสูจน์ได้",remaining:n=>`เหลือสิ่งที่ต้องตรวจอีก ${n} จุด`,reviewObjective:"เปรียบเทียบผลชันสูตรกับลำดับเวลาที่ถูกแก้ไข",scene:"ร่างกายมีเวลาของมันเอง",review:"ทบทวนผลการตรวจ",evidenceInspection:"ตรวจสอบหลักฐาน",caseEvidence:"หลักฐานในคดี",hint:"แตะหลักฐานเพื่อตรวจสอบ",inspect:"ตรวจสอบ",collect:"เพิ่มในแฟ้มคดี",close:"ปิด",choiceTitle:"การสืบสวนควรเดินต่อไปทางใด?",choices:{timeline:"ตามรอยลำดับเวลาที่ถูกแก้ไข",old_cases:"ตรวจสอบคดีเก่าที่แดเนียลกำลังติดตาม",access:"ตามรอยโปรไฟล์ชั่วคราว 18-07"},completeTitle:"จบบทที่ II",completeText:"ผลทางวิทยาศาสตร์เป็นของจริง แต่ลำดับเวลารอบมันถูกจัดวาง แดเนียลกำลังตามรอยรูปแบบเดียวกันในคดีเก่า และมีใครบางคนทำให้เขาไปต่อไม่ได้",returnTitle:"กลับหน้าหลัก",unlocked:"ปลดล็อกการทบทวนผลแล้ว",caseSection:"บทที่ II · สถาบันนิติเวช"}
 };
 const E={
  postmortem:{title:{en:"Postmortem Indicators",th:"ตัวบ่งชี้หลังการเสียชีวิต"},description:{en:"Body temperature, lividity and early rigor place Daniel’s death before the corrected digital collection time.",th:"อุณหภูมิร่างกาย การตกของเลือด และการแข็งตัวระยะแรกชี้ว่าแดเนียลเสียชีวิตก่อนเวลารวบรวมตัวอย่างที่ถูกแก้ในระบบ"},observation:{en:"The body cannot support 06:09 as the beginning of the evidence timeline. The biological window begins earlier.",th:"ร่างกายไม่สนับสนุนว่าเวลา 06:09 เป็นจุดเริ่มต้นของลำดับหลักฐาน ช่วงเวลาทางชีวภาพเริ่มก่อนหน้านั้น"},kind:"body"},
@@ -71,7 +72,7 @@ function intro(){
   {speaker:"Benedict",emotion:"neutral",text:{en:"Please tell me the body kept better records than the database.",th:"ช่วยบอกทีว่าร่างกายเก็บบันทึกได้ดีกว่าฐานข้อมูล"}},
   {speaker:"Ratchata",emotion:"dry_amused",text:{en:"It did. The body did not have administrator access.",th:"ดีกว่าครับ ร่างกายไม่มีสิทธิ์ผู้ดูแลระบบ"}},
   {speaker:"North",emotion:"focused",text:{en:"Dr. Singh?",th:"ดร. ซิงห์?"}},
-  {speaker:"Ratchata",emotion:"warm_smile",text:{en:"Ratchata. Forty-three. Senior medical examiner. The skeleton cats are not part of the accreditation.",th:"รัชตะครับ อายุสี่สิบสาม แพทย์นิติเวชอาวุโส ส่วนแมวโครงกระดูกไม่ได้อยู่ในใบรับรองวิชาชีพ"}}
+  {speaker:"Ratchata",emotion:"warm_smile",text:{en:"Ratchata Singh. Senior medical examiner. The skeleton cats are not part of the accreditation.",th:"รัชตะ ซิงห์ครับ แพทย์นิติเวชอาวุโส ส่วนแมวโครงกระดูกไม่ได้อยู่ในใบรับรองวิชาชีพ"}}
  ],()=>{
   ensureRatchataUnlockedAtIntroduction();
   dialogue([
@@ -96,7 +97,7 @@ function syncState(){
  state.medical.choice=local.choice;
 }
 function paintHotspots(){
- $$("[data-medical-clue]").forEach(node=>node.classList.toggle("found",local.inspected.has(node.dataset.medicalClue)));
+ $$('[data-medical-clue]').forEach(node=>node.classList.toggle('found',local.inspected.has(node.dataset.medicalClue)));
 }
 function openEvidence(id){
  const e=E[id],panel=$("#medicalEvidencePanel");if(!e||!panel)return;
@@ -164,7 +165,8 @@ function review(){
   {speaker:"North",emotion:"focused",text:{en:"And the laboratory accepted the sample at 06:17. Three minutes before the case officially existed.",th:"แต่ห้องปฏิบัติการรับตัวอย่างเวลา 06:17 ก่อนที่คดีจะเริ่มอย่างเป็นทางการสามนาที"}},
   {speaker:"Elena",emotion:"thoughtful",text:{en:"The raw result is still genuine. Whoever altered the chronology wanted valid science attached to a false sequence.",th:"ผลดิบยังเป็นของจริง คนที่แก้ลำดับเวลาต้องการให้วิทยาศาสตร์ที่ถูกต้องไปรับรองเหตุการณ์ที่ไม่จริง"}},
   {speaker:"Benedict",emotion:"serious",text:{en:"So the lie was not inside the test. It was built around it.",th:"งั้นเรื่องโกหกไม่ได้อยู่ในผลตรวจ แต่มันถูกสร้างครอบผลตรวจไว้"}},
-  {speaker:"Ratchata",emotion:"solemn",text:{en:"Daniel was not killed because a machine was wrong. He was killed while following a pattern someone needed to remain correct on paper.",th:"แดเนียลไม่ได้ถูกฆ่าเพราะเครื่องมือผิด เขาถูกฆ่าระหว่างตามรอยรูปแบบที่ใครบางคนต้องการให้ดูถูกต้องบนเอกสาร"}}
+  {speaker:"Ratchata",emotion:"solemn",text:{en:"The body proves the corrected chronology cannot be natural. It cannot tell you who arranged it, or why Daniel was targeted.",th:"ร่างกายพิสูจน์ได้ว่าลำดับเวลาที่ถูกแก้ไม่อาจเกิดขึ้นตามธรรมชาติ แต่มันบอกไม่ได้ว่าใครเป็นคนจัดวาง หรือเหตุใดแดเนียลจึงตกเป็นเป้าหมาย"}},
+  {speaker:"Benedict",emotion:"serious",text:{en:"That part belongs to the living.",th:"ส่วนนั้นเป็นหน้าที่ของคนเป็น"}}
  ],()=>$("#medicalChoice").classList.remove("hidden"));
 }
 function choose(path){
@@ -176,9 +178,9 @@ function choose(path){
  }
  $("#medicalChoice").classList.add("hidden");updateProgress();
  const branch={
-  timeline:{en:"North starts with the altered timeline. The first Chapter III lead will be digital.",th:"North จะเริ่มจากลำดับเวลาที่ถูกแก้ เบาะแสแรกของบทที่ III จะมาจากข้อมูลดิจิทัล"},
-  old_cases:{en:"The team starts with Daniel’s archived cases. The first Chapter III lead will be a forgotten file.",th:"ทีมจะเริ่มจากคดีเก่าของแดเนียล เบาะแสแรกของบทที่ III จะมาจากแฟ้มที่ถูกลืม"},
-  access:{en:"The team starts with personnel access. The first Chapter III lead will come from a conflicting statement.",th:"ทีมจะเริ่มจากรายชื่อผู้เข้าถึงหลักฐาน เบาะแสแรกของบทที่ III จะมาจากคำให้การที่ขัดแย้งกัน"}
+  timeline:{en:"I’ll start with the altered timestamps. Whoever moved them left a route.",th:"ฉันจะเริ่มจากเวลาที่ถูกแก้ คนที่ขยับมันต้องทิ้งเส้นทางไว้"},
+  old_cases:{en:"I’ll pull every archived case Daniel marked. Patterns survive longer than witnesses.",th:"ฉันจะดึงคดีเก่าทุกคดีที่แดเนียลทำเครื่องหมายไว้ รูปแบบอยู่ได้นานกว่าพยาน"},
+  access:{en:"I’ll trace who could issue profile 18-07, what permission it carried and where it was used.",th:"ฉันจะตามว่าใครออกโปรไฟล์ 18-07 ได้ มันพกสิทธิ์อะไร และถูกใช้ที่ไหนบ้าง"}
  }[path];
  dialogue([
   {speaker:"North",emotion:"neutral",text:branch},
@@ -198,7 +200,6 @@ function returnTitle(){
  stopMedicalAudio();try{if(typeof autoSave==="function")autoSave();}catch(_){}
  if(typeof showScreen==="function")showScreen("title");
 }
-
 function resetFreshState(){
  local.started=false;
  local.inspected=new Set();
@@ -206,12 +207,8 @@ function resetFreshState(){
  local.active=null;
  local.dialogue=null;
  local.choice=null;
-
  const panel=$("#medicalEvidencePanel");
- if(panel){
-  panel.classList.remove("open");
-  panel.setAttribute("aria-hidden","true");
- }
+ if(panel){panel.classList.remove("open");panel.setAttribute("aria-hidden","true");}
  $("#medicalEvidenceObject")?.classList.remove("inspecting");
  $("#medicalEvidenceMeta")?.classList.remove("show");
  const observation=$("#medicalEvidenceObservation");
@@ -222,13 +219,11 @@ function resetFreshState(){
  if(inspectButton)inspectButton.style.display="";
  if(collectButton)collectButton.style.display="none";
  if(closeButton)closeButton.style.display="none";
-
- $$("[data-medical-clue]").forEach(node=>node.classList.remove("found"));
+ $$('[data-medical-clue]').forEach(node=>node.classList.remove('found'));
  $("#reviewMedical")?.classList.remove("show");
 }
-
 function restore(){
- $$("[data-medical-clue]").forEach(node=>node.classList.remove("found"));
+ $$('[data-medical-clue]').forEach(node=>node.classList.remove('found'));
  if(window.state&&state.medical){
   local.inspected=new Set(state.medical.inspected||state.medical.found||[]);
   local.collected=new Set(state.medical.collected||[]);
@@ -236,9 +231,7 @@ function restore(){
  }
  paintHotspots();
  if(state?.medical?.ratchataMet)addRatchataJournal();
- if(state?.medical?.complete){
-  setTimeout(()=>window.LastWitnessChapter2Integration?.showChapter2Complete?.(),0);
- }
+ if(state?.medical?.complete){setTimeout(()=>window.LastWitnessChapter2Integration?.showChapter2Complete?.(),0);}
  updateProgress();
 }
 function show(){
@@ -260,7 +253,7 @@ function updateUI(){
  if($("#medicalSceneLabel"))$("#medicalSceneLabel").textContent=t().scene;
  if($("#reviewMedical"))$("#reviewMedical").textContent=t().review;
  if($("#medicalChoiceTitle"))$("#medicalChoiceTitle").textContent=t().choiceTitle;
- $$("[data-medical-choice]").forEach(b=>b.textContent=t().choices[b.dataset.medicalChoice]);
+ $$('[data-medical-choice]').forEach(b=>b.textContent=t().choices[b.dataset.medicalChoice]);
  if($("#medicalEvidenceKicker"))$("#medicalEvidenceKicker").textContent=t().evidenceInspection;
  if($("#medicalEvidenceStamp"))$("#medicalEvidenceStamp").textContent=t().caseEvidence;
  if($("#medicalEvidenceHint"))$("#medicalEvidenceHint").textContent=t().hint;
@@ -274,13 +267,13 @@ function updateUI(){
  if(local.dialogue)renderDialogue();updateObjective();if($("#caseModal")?.classList.contains("open"))appendCase();
 }
 function bind(){
- $$("[data-medical-clue]").forEach(b=>b.addEventListener("click",()=>openEvidence(b.dataset.medicalClue)));
+ $$('[data-medical-clue]').forEach(b=>b.addEventListener("click",()=>openEvidence(b.dataset.medicalClue)));
  $("#inspectMedicalEvidence")?.addEventListener("click",inspect);
  $("#medicalEvidenceObject")?.addEventListener("click",inspect);
  $("#collectMedicalEvidence")?.addEventListener("click",collect);
  $("#closeMedicalEvidence")?.addEventListener("click",closeEvidence);
  $("#reviewMedical")?.addEventListener("click",review);
- $$("[data-medical-choice]").forEach(b=>b.addEventListener("click",()=>choose(b.dataset.medicalChoice)));
+ $$('[data-medical-choice]').forEach(b=>b.addEventListener("click",()=>choose(b.dataset.medicalChoice)));
  $("#chapter2ReturnTitle")?.addEventListener("click",returnTitle);
  $("#caseButton")?.addEventListener("click",()=>setTimeout(appendCase,0),true);
  document.addEventListener("click",e=>{if(e.target.closest?.("[data-lang]"))setTimeout(updateUI,0);},true);
@@ -290,18 +283,18 @@ function bind(){
   b.onclick=()=>{$("#developerModal")?.classList.remove("open");show();};devGrid.appendChild(b);
  }
  window.LastWitnessMedicalExaminer={
- start:show,
- startFresh:()=>{
-  if(window.state){
-   state.medical={started:true,inspected:[],found:[],collected:[],active:null,choice:null,complete:false,ratchataMet:false,ratchataJournalUnlocked:false};
-   ["postmortem","identity_tag","autopsy_report","toxicology_sample"].forEach(id=>{try{state.found?.delete?.("medical_"+id);}catch(_){}});
-  }
-  resetFreshState();show();
- },
- resetFreshState,
- updateLanguage:updateUI,
- version:"0.7.0"
-};
+  start:show,
+  startFresh:()=>{
+   if(window.state){
+    state.medical={started:true,inspected:[],found:[],collected:[],active:null,choice:null,complete:false,ratchataMet:false,ratchataJournalUnlocked:false};
+    ["postmortem","identity_tag","autopsy_report","toxicology_sample"].forEach(id=>{try{state.found?.delete?.("medical_"+id);}catch(_){}});
+   }
+   resetFreshState();show();
+  },
+  resetFreshState,
+  updateLanguage:updateUI,
+  version:"0.7.7"
+ };
  updateUI();
 }
 if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",bind,{once:true});else bind();

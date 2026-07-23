@@ -1,0 +1,65 @@
+LAST WITNESS - FINAL NARRATIVE CONTINUITY PATCH 0.7.7
+
+PURPOSE
+Create one consistent narrative and terminology chain from Chapter I through Chapter III Phase II without revealing Elena's long-term role.
+
+MODIFIED RUNTIME FILES
+- index.html
+- js/chapters/chapter-02/01-cafe-police.js
+- js/chapters/chapter-02/02-apartment-office.js
+- js/chapters/chapter-02/03-forensic-science.js
+- js/chapters/chapter-02/04-medical-examiner.js
+- js/chapters/chapter-02/05-chapter2-integration.js
+- js/chapters/chapter-03/01-title-phase1.js
+
+NEW CANON DOCUMENT
+- GAME_MASTER_PLAN_NARRATIVE_ADDENDUM_0.7.7.md
+
+NARRATIVE FIXES
+- States clearly that the Room 1807 victim and Daniel Voss are different victims.
+- Connects Chapter I physical staging to Chapter II record and chronology staging.
+- Explains how North identifies E. as Elena before the Cafe scene.
+- Establishes that Daniel asked Elena to verify an archived-case toxicology record.
+- Standardizes 06:17 as creation of the laboratory accession record.
+- Defines 18-07 as a temporary operational role profile rather than a person.
+- Connects 18-07, accepted Evidence Division permission, FS-12 and the Singapore route without identifying the operator.
+- Clarifies that FS-12 and Terminal Three are the same workstation.
+- Makes Police Station inspect a certified export and Forensic Science inspect source records.
+- Revises Ratchata's dialogue so the body does not prove motive or operator identity.
+- Rewrites Chapter II route lines as natural in-world dialogue.
+- Renames and rewrites the Chapter III timeline puzzle to reconstruct the recorded sequence.
+- Keeps the flight scene concise and withholds Cheryl's name until her formal introduction.
+- Replaces premature Case Closed wording with Chapter Complete.
+
+SYSTEMS INTENTIONALLY UNCHANGED
+- Named Save, Load, Export and Import
+- IndexedDB and localStorage fallback
+- Character Journal ownership and unread state
+- Audio engine, ambience and SFX ownership
+- Evidence collection mechanics
+- UI styling and assets
+- Chapter III video, cabin image and cabin audio
+
+TESTED IN BROWSER RUNTIME HARNESS
+- Chapter II Office choices: warm, observant, direct
+- Apartment evidence terminology and Cafe handoff
+- Cafe choices: friendly, analytical, guarded
+- Police choices: charm, precision, pressure
+- Police to Forensic narrative handoff
+- Four Forensic evidence items and final deduction
+- Medical Examiner intro, four findings, review and three route choices
+- Chapter III openings: timeline, old_cases, access
+- Timeline card order and corrected 05:47 / 06:09 copy
+- Correct and incorrect timeline controls
+- Chapter III lead choices and departure dialogue
+- Flight branches: system, Daniel, operator
+- English and Thai narrative labels
+- JavaScript syntax for every modified JavaScript file
+
+NOT TESTED
+- Android hardware keyboard behavior
+- Audio balance on the owner's device
+- Live GitHub Pages cache after deployment
+- Full end-to-end playthrough on the production URL
+
+The owner's real-device test remains the final authority.

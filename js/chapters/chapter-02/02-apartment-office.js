@@ -1,7 +1,35 @@
 /* Last Witness Full Refactor
  * Chapter 2 apartment and office progression
- * Canonical Character Journal continuity 0.7.6
+ * Canonical Character Journal and narrative continuity 0.7.7
  */
+
+(function installChapter2ContinuityCopy(){
+ if(typeof LANG!=="object")return;
+ Object.assign(LANG.en,{
+  case_closed:"CHAPTER COMPLETE",
+  apt_documents_title:"Temporary Profile 18-07",
+  apt_documents_desc:"A printed access log shows temporary profile 18-07 accepted twice: once under Daniel’s resident-access role and once under an unnamed temporary role. Neither entry identifies the person at the terminal.",
+  apt_documents_obs:"North: 18-07 is a role profile carrying accepted access. The log identifies permissions, not the person using them.",
+  apt_board_desc:"Daniel linked Hotel 1807, three shell companies and a handwritten note: ‘Ask E. about the corrected time.’",
+  apt_board_obs:"Benedict: Room 1807 is no longer only a room number. Daniel was following it through other records.",
+  apt_laptop_desc:"A recovered draft names Orchid Café and 09:30. The recipient field was erased, but the message reads: ‘Bring the archived original. Come alone.’",
+  apt_laptop_obs:"North: The draft was edited at 05:51, four minutes after profile 18-07 was accepted by the building system.",
+  cafe_07:"The café system says Daniel did.",
+  cafe_08:"At 09:30. After his estimated time of death."
+ });
+ Object.assign(LANG.th,{
+  case_closed:"จบบท",
+  apt_documents_title:"โปรไฟล์ชั่วคราว 18-07",
+  apt_documents_desc:"บันทึกการเข้าอาคารระบุว่าโปรไฟล์ชั่วคราว 18-07 ถูกระบบยอมรับสองครั้ง ครั้งหนึ่งภายใต้บทบาทผู้พักอาศัยของแดเนียล และอีกครั้งภายใต้บทบาทชั่วคราวที่ไม่ระบุชื่อ ทั้งสองรายการไม่ได้ยืนยันว่าใครเป็นผู้ใช้งานที่เครื่อง",
+  apt_documents_obs:"North: 18-07 เป็นโปรไฟล์ตามบทบาทที่พกสิทธิ์ซึ่งระบบยอมรับ บันทึกระบุสิทธิ์ ไม่ได้ระบุตัวคนใช้",
+  apt_board_desc:"แดเนียลเชื่อมโยงโรงแรมห้อง 1807 บริษัทบังหน้าสามแห่ง และข้อความเขียนมือว่า ‘ถาม E. เรื่องเวลาที่ถูกแก้’",
+  apt_board_obs:"Benedict: ห้อง 1807 ไม่ได้เป็นเพียงเลขห้องอีกแล้ว แดเนียลกำลังตามหมายเลขนี้ผ่านบันทึกอื่น",
+  apt_laptop_desc:"ร่างข้อความที่กู้คืนได้ระบุ Orchid Café เวลา 09:30 ช่องผู้รับถูกลบ แต่ข้อความเขียนว่า ‘นำต้นฉบับจากคดีเก่ามา มาคนเดียว’",
+  apt_laptop_obs:"North: ร่างข้อความถูกแก้เวลา 05:51 สี่นาทีหลังระบบอาคารยอมรับโปรไฟล์ 18-07",
+  cafe_07:"ระบบของคาเฟ่ระบุว่าแดเนียลเป็นคนสั่ง",
+  cafe_08:"เวลา 09:30 หลังช่วงเวลาที่คาดว่าเขาเสียชีวิตแล้ว"
+ });
+})();
 
 function revealApartmentEvidenceDetails(){
 apartmentEvidenceInspected=true;
@@ -81,11 +109,13 @@ $("#reviewApartment").classList.remove("show");
 state.checkpoint="ch2_cafe_arrival";
 autoSave();
 runDialogue($("#apartmentDialogue"),[
-{speaker:"Benedict",emotion:"serious",key:"apt_review_01"},
-{speaker:"North",emotion:"serious",key:"apt_review_02"},
-{speaker:"Benedict",emotion:"neutral",key:"apt_review_03"},
-{speaker:"North",emotion:"dry",key:"apt_review_04"},
-{speaker:"Benedict",emotion:"neutral",key:"apt_review_05"}
+{speaker:"Benedict",emotion:"serious",text:state.language==="th"?"กาแฟสองแก้ว โปรไฟล์ 18-07 แล้วก็ห้อง 1807 บนกระดานของเขา":"Coffee for two. Profile 18-07. And Room 1807 on his board."},
+{speaker:"North",emotion:"serious",text:state.language==="th"?"รวมถึงนัดที่คาเฟ่ซึ่งถูกกำหนดไว้หลังเขาเสียชีวิตแล้ว":"And a café meeting scheduled after he was already dead."},
+{speaker:"Benedict",emotion:"thinking",text:state.language==="th"?"มีคนคาดหวังให้แดเนียลไปตามนัด หรือคาดหวังให้เราเจอมัน":"Someone expected Daniel to keep it. Or expected us to find it."},
+{speaker:"North",emotion:"analyzing",text:state.language==="th"?"ฉันจับคู่ ‘E.’ กับ Elena นักวิเคราะห์นิติวิทยาศาสตร์ในรายชื่อติดต่อของแดเนียล เธอยืนยันนัดที่คาเฟ่แล้ว":"I matched ‘E.’ to Elena, a forensic analyst in Daniel’s contacts. She confirmed the café meeting."},
+{speaker:"Benedict",emotion:"neutral",text:state.language==="th"?"งั้นผู้รับที่ถูกลบก็มีชื่อแล้ว":"Then the erased recipient has a name."},
+{speaker:"North",emotion:"serious",text:state.language==="th"?"และเข้าถึงบันทึกห้องปฏิบัติการที่แดเนียลต้องการให้ตรวจ":"And access to the laboratory record Daniel wanted checked."},
+{speaker:"Benedict",emotion:"serious",text:state.language==="th"?"ไป Orchid Café ก่อน ส่วนบันทึกปล่อยให้อยู่ในที่ที่ยังถูกปิดผนึก":"Orchid Café first. The record can wait where it is still sealed."}
 ],()=>{play("steps");setTimeout(()=>{show("cafe2");runCafeOpening()},600)})
 }
 
@@ -113,16 +143,16 @@ function runChapter2PostChoice(choice){
 const responseKey={warm:"c2_07_warm",observant:"c2_07_observant",direct:"c2_07_direct"}[choice]||"c2_07_direct";
 runDialogue($("#office2Dialogue"),[
 {speaker:"North",emotion:choice==="warm"?"dry":"serious",key:responseKey},
-{speaker:"Benedict",emotion:"neutral",key:"c2_08"},
-{speaker:"North",emotion:"serious",key:"c2_09"},
-{speaker:"Benedict",emotion:"serious",key:"c2_10"},
-{speaker:"North",emotion:"serious",key:"c2_11"},
-{speaker:"Benedict",emotion:"smirk",key:"c2_12"},
-{speaker:"North",emotion:"dry",key:"c2_13"},
-{speaker:"Benedict",emotion:"neutral",key:"c2_14"},
-{speaker:"North",emotion:"neutral",key:"c2_15"},
-{speaker:"Benedict",emotion:"smile",key:"c2_16"},
-{speaker:"North",emotion:"dry",key:"c2_17"}
+{speaker:"Benedict",emotion:"neutral",text:state.language==="th"?"คดีใหม่ หรือห้องที่ถูกจัดฉากอีกห้อง?":"A new case, or another staged room?"},
+{speaker:"North",emotion:"serious",text:state.language==="th"?"เหยื่อคนละคน แดเนียล วอสส์ อายุสามสิบแปด พบเสียชีวิตในอพาร์ตเมนต์เวลา 06:20":"Different victim. Daniel Voss, thirty-eight. Found dead in his apartment at 06:20."},
+{speaker:"Benedict",emotion:"serious",text:state.language==="th"?"สาเหตุการตาย?":"Cause of death?"},
+{speaker:"North",emotion:"serious",text:state.language==="th"?"ยังรอผล แต่เวลา 05:47 ระบบเข้าอาคารยอมรับโปรไฟล์ชั่วคราว 18-07 ภายใต้สิทธิ์ผู้พักอาศัย บันทึกระบุบทบาท ไม่ได้ระบุตัวบุคคล":"Pending. But at 05:47 the building accepted temporary profile 18-07 under resident access. The record names a role, not a person."},
+{speaker:"Benedict",emotion:"smirk",text:state.language==="th"?"งั้นอาคารนี้ก็มีผี...":"So either the building has a ghost..."},
+{speaker:"North",emotion:"dry",text:state.language==="th"?"...หรือมีคนเรียนรู้วิธีจัดฉากบันทึกให้เรียบร้อยพอๆ กับห้อง 1807":"...or someone learned to stage records as neatly as Room 1807."},
+{speaker:"Benedict",emotion:"neutral",text:state.language==="th"?"ไปอพาร์ตเมนต์ก่อน":"Apartment first."},
+{speaker:"North",emotion:"neutral",text:state.language==="th"?"ส่งที่อยู่เข้าโทรศัพท์คุณแล้ว":"Already sent the address to your phone."},
+{speaker:"Benedict",emotion:"smile",text:state.language==="th"?"คุณทำให้ความโรแมนติกของงานนักสืบหายไปหมด":"You do take the romance out of detective work."},
+{speaker:"North",emotion:"dry",text:state.language==="th"?"กาแฟมีไว้ชดเชยเรื่องนั้น":"That is what the coffee is for."}
 ],()=>{
 state.checkpoint="ch2_apartment_arrival";
 unlockChapter2CharacterJournal();
