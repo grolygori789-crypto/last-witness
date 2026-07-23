@@ -1,6 +1,6 @@
-/* LAST WITNESS — Chapter II / Forensic Science 0.7.7
- * Preserves the established evidence UI while locking terminology and the
- * narrative handoff from Police Station to Medical Examiner.
+/* LAST WITNESS — Chapter II / Forensic Science 0.7.11
+ * Preserves the established evidence UI while adding persistent,
+ * narrative-first investigation lifecycle state.
  */
 (function(){
 "use strict";
@@ -18,7 +18,8 @@ const EVIDENCE={
  audit_trace:{title:{en:"Workstation Audit Trace",th:"บันทึกตรวจสอบเครื่องเวิร์กสเตชัน"},description:{en:"Accepted Evidence Division permission changed COLLECTION_TIME from 05:58 to 06:09—an eleven-minute shift. The event resolves to temporary profile 18-07 and claims workstation FS-12 while its local session was offline.",th:"สิทธิ์ฝ่ายพยานหลักฐานที่ระบบยอมรับเปลี่ยน COLLECTION_TIME จาก 05:58 เป็น 06:09 ซึ่งต่างกันสิบเอ็ดนาที เหตุการณ์เชื่อมกับโปรไฟล์ชั่วคราว 18-07 และอ้างว่ามาจากเครื่อง FS-12 ทั้งที่เซสชันภายในเครื่องออฟไลน์อยู่"},observation:{en:"The system proves that accepted permission was used. It does not establish the operator or where the command originated.",th:"ระบบยืนยันได้ว่ามีการใช้สิทธิ์ที่ระบบยอมรับ แต่ยังยืนยันไม่ได้ว่าใครเป็นผู้ใช้ หรือคำสั่งถูกส่งมาจากที่ใด"},kind:"terminal"},
  batch_record:{title:{en:"Instrument Batch Record",th:"บันทึกรอบการทำงานของเครื่องวิเคราะห์"},description:{en:"Analyzer TX-3 processed the sealed sample in Batch 0614-B. The raw-result hash and instrument time remain unchanged.",th:"เครื่องวิเคราะห์ TX-3 ประมวลผลตัวอย่างที่ปิดผนึกในรอบ 0614-B ค่าแฮชของผลดิบและเวลาจากเครื่องไม่เคยถูกแก้ไข"},observation:{en:"The scientific result and the administrative timeline are separate layers. One can remain authentic while the other is manipulated.",th:"ผลทางวิทยาศาสตร์กับลำดับเวลาทางธุรการเป็นข้อมูลคนละชั้น ชั้นหนึ่งอาจยังเป็นของจริง ขณะที่อีกชั้นถูกบิดเบือน"},kind:"batch"}
 };
-const local={started:false,found:new Set(),collected:new Set(),active:null,inspected:false,choice:null,compared:false,dialogue:null};
+const local={started:false,introComplete:false,found:new Set(),collected:new Set(),active:null,inspected:false,choice:null,compared:false,dialogue:null};
+function lifecycle(){return window.LastWitnessInvestigationLifecycle;}
 function language(){if(window.state&&state.language==="th")return"th";return document.documentElement.lang==="th"?"th":"en";}
 function text(){return COPY[language()];}
 function localized(value){return value[language()]||value.en;}
@@ -84,12 +85,18 @@ function dialogue(lines,onDone){
  local.dialogue={lines,index:0,onDone};box.classList.remove("hidden");syncForensicControls();renderDialogueLine();
  box.onclick=()=>{if(!local.dialogue)return;local.dialogue.index+=1;if(local.dialogue.index>=local.dialogue.lines.length){const done=local.dialogue.onDone;local.dialogue=null;box.classList.add("hidden");box.onclick=null;done?.();syncForensicControls();try{if(typeof autoSave==="function")autoSave();}catch(_){}}else renderDialogueLine();};
 }
+function completeForensicIntro(){
+ local.introComplete=true;local.started=true;
+ if(window.state){state.forensic=state.forensic||{};state.forensic.introComplete=true;state.forensic.started=true;state.forensic.lifecycleVersion=1;state.checkpoint="ch2_forensic_investigation";}
+ lifecycle()?.completeIntro?.(PHASE_ID);updateObjective();
+ try{if(typeof autoSave==="function")autoSave();}catch(_){}
+}
 function runIntro(){dialogue([
  {speaker:"Benedict",emotion:"neutral",text:{en:"So this is where timestamps come to acquire a respectable education.",th:"ที่นี่สินะ สถานที่ที่เวลาถูกส่งมาเรียนให้ดูน่าเชื่อถือ"}},
  {speaker:"Elena",emotion:"professional",text:{en:"Only the respectable ones. The others become paperwork.",th:"เฉพาะเวลาที่ประพฤติตัวดีค่ะ ที่เหลือกลายเป็นงานเอกสาร"}},
  {speaker:"North",emotion:"focused",text:{en:"The police record is an export. I want the source transaction, the workstation audit and the instrument batch.",th:"บันทึกของตำรวจเป็นข้อมูลส่งออก ฉันต้องดูรายการต้นทาง บันทึกตรวจสอบเครื่อง และรอบการทำงานของเครื่องวิเคราะห์"}},
  {speaker:"Elena",emotion:"neutral",text:{en:"Then we separate what the laboratory measured from what the system later claimed happened.",th:"งั้นเราแยกสิ่งที่ห้องปฏิบัติการวัดได้ ออกจากสิ่งที่ระบบอ้างว่าเกิดขึ้นภายหลัง"}}
-],updateObjective);}
+],completeForensicIntro);}
 function openEvidence(id){
  const evidence=EVIDENCE[id],panel=$("#forensicEvidencePanel");if(!evidence||!panel)return;
  local.active=id;local.inspected=false;
@@ -101,11 +108,11 @@ function inspectEvidence(){if(!local.active||local.inspected)return;local.inspec
 function closeEvidence(){const panel=$("#forensicEvidencePanel");if(!panel)return;panel.classList.remove("open");panel.setAttribute("aria-hidden","true");local.active=null;local.inspected=false;$("#forensicEvidenceObject")?.classList.remove("inspecting");$("#forensicEvidenceMeta")?.classList.remove("show");syncForensicControls();}
 function collectEvidence(){
  const id=local.active;if(!id)return;const wasNew=!local.collected.has(id);local.found.add(id);local.collected.add(id);
- if(window.state){state.forensic=state.forensic||{};state.forensic.found=Array.from(local.found);state.forensic.collected=Array.from(local.collected);if(state.found&&typeof state.found.add==="function")state.found.add(`forensic_${id}`);}
+ if(window.state){state.forensic=state.forensic||{};state.forensic.found=Array.from(local.found);state.forensic.collected=Array.from(local.collected);state.forensic.introComplete=true;state.forensic.started=true;state.forensic.lifecycleVersion=1;if(state.found&&typeof state.found.add==="function")state.found.add(`forensic_${id}`);}
  $(`[data-forensic-clue="${id}"]`)?.classList.add("found");closeEvidence();updateProgress();
  if(wasNew)try{if(typeof showBadge==="function")showBadge(text().added);}catch(_){}
  if(local.found.size===4)try{if(typeof showBadge==="function")showBadge(text().compareUnlocked);}catch(_){}
- syncForensicControls();try{if(typeof autoSave==="function")autoSave();}catch(_){}
+ lifecycle()?.evidenceChanged?.(PHASE_ID);syncForensicControls();try{if(typeof autoSave==="function")autoSave();}catch(_){}
 }
 function startCompare(){
  if(local.found.size<4){try{if(typeof showBadge==="function")showBadge(text().needAll);}catch(_){}return;}
@@ -148,11 +155,22 @@ function appendCaseEntries(){
  ids.forEach(id=>{const evidence=EVIDENCE[id];if(!evidence)return;const row=document.createElement("div");row.className="case-row";row.dataset.forensicCaseEntry=id;row.innerHTML=`<b>${localized(evidence.title)}</b><div>${localized(evidence.description)}</div>`;list.appendChild(row);});
 }
 function refreshCaseEntries(){if($("#caseModal")?.classList.contains("open"))appendCaseEntries();}
-function restoreState(){if(window.state&&state.forensic){local.found=new Set(state.forensic.found||[]);local.collected=new Set(state.forensic.collected||[]);local.choice=state.forensic.choice||null;local.compared=Boolean(state.forensic.compared);}local.found.forEach(id=>$(`[data-forensic-clue="${id}"]`)?.classList.add("found"));if(local.choice)finishPhase();updateProgress();syncForensicControls();}
+function restoreState(){
+ if(window.state&&state.forensic){
+  local.collected=new Set(state.forensic.collected||[]);local.found=new Set([...(state.forensic.found||[]),...local.collected]);local.choice=state.forensic.choice||null;local.compared=Boolean(state.forensic.compared);state.forensic.found=[...local.found];state.forensic.collected=[...local.collected];state.forensic.lifecycleVersion=1;
+  local.introComplete=Boolean(state.forensic.introComplete||local.found.size||local.collected.size||local.choice||state.forensic.complete);
+  local.started=local.introComplete||Boolean(local.choice);
+  if(local.introComplete){state.forensic.introComplete=true;state.forensic.started=true;}
+ }else{local.found=new Set();local.collected=new Set();local.choice=null;local.compared=false;local.introComplete=false;local.started=false;}
+ $$('[data-forensic-clue]').forEach(node=>node.classList.toggle("found",local.collected.has(node.dataset.forensicClue)));
+ if(local.choice)finishPhase();updateProgress();syncForensicControls();lifecycle()?.prepare?.(PHASE_ID);
+}
 function showPhase(){
  $$(".screen").forEach(screen=>screen.classList.remove("active"));$("#forensic2")?.classList.add("active");
  if(window.state){state.screen=PHASE_ID;state.chapter=Math.max(Number(state.chapter)||2,2);state.forensic=state.forensic||{};}
- safePlay("#forensicDoorAudio",.55);const hum=$("#forensicHumAudio");if(hum){hum.volume=.10;hum.play().catch(()=>{});}updateUI();restoreState();syncForensicControls();if(!local.started&&!local.choice){local.started=true;setTimeout(runIntro,420);}try{if(typeof autoSave==="function")autoSave();}catch(_){}
+ safePlay("#forensicDoorAudio",.55);const hum=$("#forensicHumAudio");if(hum){hum.volume=.10;hum.play().catch(()=>{});}updateUI();restoreState();syncForensicControls();
+ if(!local.started&&!local.choice&&!local.introComplete){local.started=true;if(window.state){state.forensic=state.forensic||{};state.forensic.started=true;}setTimeout(runIntro,420);}
+ try{if(typeof autoSave==="function")autoSave();}catch(_){}
 }
 function bindPoliceToForensicDirectly(){
  const complete=$("#policePhaseComplete");if(!complete)return;let transitioning=false;
@@ -170,7 +188,7 @@ function bind(){
  document.addEventListener("click",event=>{if(event.target.closest?.("[data-lang]")){setTimeout(updateUI,0);setTimeout(updateUI,80);}},true);
  new MutationObserver(()=>updateUI()).observe(document.documentElement,{attributes:true,attributeFilter:["lang"]});
  const devGrid=$("#developerModal .dev-grid");if(devGrid&&!$('[data-dev-jump="forensic2"]')){const button=document.createElement("button");button.className="dev-button";button.dataset.devJump=PHASE_ID;button.textContent="Forensic Science Lab";button.addEventListener("click",()=>{$("#developerModal")?.classList.remove("open");showPhase();});devGrid.appendChild(button);}
- window.LastWitnessForensic={start:showPhase,updateLanguage:updateUI,openEvidence,regressionVersion:"0.7.7"};
+ window.LastWitnessForensic={start:showPhase,updateLanguage:updateUI,openEvidence,regressionVersion:"0.7.11"};
 }
 if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",bind,{once:true});else bind();
 })();

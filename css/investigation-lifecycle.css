@@ -1,0 +1,55 @@
+/* LAST WITNESS — Professional Investigation Lifecycle 0.7.11
+ * Shared attention gating and evidence-state feedback for investigation scenes.
+ */
+.lw-investigation-hotspot{
+  transition:opacity .28s ease,transform .28s ease,filter .28s ease;
+  will-change:opacity,transform;
+}
+.lw-investigation-locked .lw-investigation-hotspot{
+  opacity:0!important;
+  visibility:hidden!important;
+  pointer-events:none!important;
+  transform:scale(.92)!important;
+}
+.lw-investigation-revealing .lw-investigation-hotspot{
+  animation:lw-investigation-reveal .48s cubic-bezier(.2,.72,.25,1) both;
+  animation-delay:calc(var(--lw-investigation-order,0) * 70ms);
+}
+@keyframes lw-investigation-reveal{
+  0%{opacity:0;transform:scale(.88);filter:brightness(.72)}
+  68%{opacity:1;transform:scale(1.07);filter:brightness(1.18)}
+  100%{opacity:1;transform:scale(1);filter:brightness(1)}
+}
+
+/* Keep the opening exchange visually dominant until the investigation begins. */
+#crime.lw-investigation-locked #objective,
+#crime.lw-investigation-locked #reviewEvidence,
+#apartment2.lw-investigation-locked #apartmentObjective,
+#apartment2.lw-investigation-locked #reviewApartment,
+#forensic2.lw-investigation-locked #forensicObjective,
+#forensic2.lw-investigation-locked #reviewForensic,
+#medical2.lw-investigation-locked #medicalObjective,
+#medical2.lw-investigation-locked #reviewMedical{
+  opacity:0!important;
+  visibility:hidden!important;
+  pointer-events:none!important;
+}
+#crime #objective,#crime #reviewEvidence,
+#apartment2 #apartmentObjective,#apartment2 #reviewApartment,
+#forensic2 #forensicObjective,#forensic2 #reviewForensic,
+#medical2 #medicalObjective,#medical2 #reviewMedical{
+  transition:opacity .28s ease,visibility .28s ease;
+}
+
+/* A completed hotspot has one meaning throughout the game: fully inspected
+ * and committed to the investigation record. Existing scene-specific .found
+ * rules remain the visual owner; this selector is a defensive fallback. */
+.lw-investigation-hotspot.lw-investigation-complete i{
+  background:#86b79a!important;
+  box-shadow:0 0 0 8px rgba(134,183,154,.17),0 0 24px rgba(134,183,154,.64)!important;
+}
+
+@media (prefers-reduced-motion:reduce){
+  .lw-investigation-hotspot{transition:none}
+  .lw-investigation-revealing .lw-investigation-hotspot{animation:none}
+}

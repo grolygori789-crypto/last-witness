@@ -1,0 +1,48 @@
+LAST WITNESS BUILD 0.7.11 CANDIDATE
+PROFESSIONAL INVESTIGATION LIFECYCLE
+
+PURPOSE
+Standardize evidence-scene pacing and state semantics using Room 1807 as the experience reference while preserving the existing visual design, dialogue UI, options, menus, modes, and scene-specific gameplay.
+
+SCENES COVERED
+- Chapter I: Room 1807
+- Chapter II: Victim's Apartment
+- Chapter II: Forensic Science
+- Chapter II: Medical Examiner
+
+STANDARDIZED FLOW
+1. INTRO_LOCKED
+   - Evidence hotspots are hidden.
+   - Pointer, keyboard, and accessibility focus are disabled.
+   - Opening dialogue receives full player attention.
+2. INVESTIGATION_READY
+   - Hotspots reveal with a short staggered animation.
+   - Yellow means ready to investigate.
+3. EVIDENCE_COMPLETE
+   - Green has one consistent meaning: fully inspected and committed to the investigation record / Case File.
+4. SCENE_COMPLETE
+   - Existing scene feedback opens Review, Compare, or Review Findings.
+   - Completion state is saved and cannot reward or announce repeatedly.
+
+IMPORTANT BEHAVIOUR
+- Room 1807 phone stays yellow until Messages, Calls, and Notes are all checked.
+- Medical Examiner no longer turns green after Inspect alone. It turns green after Add to Case File.
+- Old Medical Examiner saves migrate former completed/green evidence into the new collected state so player progress is not lost.
+- Forensic and Medical opening completion is persisted inside their owning scene state, preventing intro replay after loading a progressed save.
+- Partial Room 1807 and Apartment saves infer that the opening dialogue has already completed.
+
+ARCHITECTURE
+- index.html remains a small loader/markup file.
+- New shared logic: js/engine/12-investigation-lifecycle.js
+- New shared presentation: css/investigation-lifecycle.css
+- No image, sound, CSS, or JavaScript Base64 payloads were added.
+- No polling loop was added.
+- No MutationObserver was added by the lifecycle module.
+- No new audio controller or audio ownership layer was added.
+- Puzzle Success audio is not reused for scene completion.
+- Scene-specific save ownership remains in the Forensic and Medical files.
+
+BUILD STATUS
+- 0.7.11 is a locally tested candidate.
+- The owner-confirmed production baseline remains 0.7.10 until real-device testing passes.
+- GAME_MASTER_PLAN.md is intentionally not changed in this candidate package. Update the production status only after owner confirmation.

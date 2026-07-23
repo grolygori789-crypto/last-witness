@@ -1,0 +1,25 @@
+LAST WITNESS 0.7.11 CANDIDATE — PATCH MANIFEST
+
+PRODUCTION FILES
+MODIFIED
+- index.html
+  Purpose: add versioned lifecycle CSS/JS references, bump scene cache keys, display BUILD 0.7.11.
+- js/chapters/chapter-02/03-forensic-science.js
+  Purpose: persistent intro completion, collection-based green state, safe restore normalization, lifecycle hooks.
+- js/chapters/chapter-02/04-medical-examiner.js
+  Purpose: collection-based green/review semantics, persistent two-part intro completion, legacy-save migration, lifecycle hooks.
+
+NEW
+- css/investigation-lifecycle.css
+  Purpose: shared lock, reveal, accessibility, and complete-state presentation.
+- js/engine/12-investigation-lifecycle.js
+  Purpose: shared investigation-scene state controller without polling, observers, or a new audio owner.
+
+DOCUMENTATION ONLY — DO NOT UPLOAD TO THE REPOSITORY
+- docs/UPLOAD_INSTRUCTIONS.txt
+- docs/PATCH_NOTES.txt
+- docs/TEST_REPORT.txt
+- docs/CHROMIUM_TEST_LOG.txt
+- docs/STATIC_TEST_LOG.txt
+- docs/PATCH_MANIFEST.txt
+- SHA256SUMS.txt

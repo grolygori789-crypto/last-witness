@@ -1,0 +1,59 @@
+LAST WITNESS 0.7.11 CANDIDATE — TEST REPORT
+
+SOURCE VERIFICATION
+- Production branch fetched: restore-game-recovered
+- GAME_MASTER_PLAN.md verified SHA: 4de02047254da2bbc431b04bbe8fc22be22457f1
+- index.html verified source SHA: 258da71584c2ce8571de1e0e6a5c52107ef01410
+- Forensic source SHA: 3f003d6f7bf95090ab7036b523613944278cb291
+- Medical Examiner source SHA: 4cc196c0a8761e03877759d8ce2cc6b362bf4fc3
+
+STATIC TESTS PASSED
+- node --check: js/engine/12-investigation-lifecycle.js
+- node --check: js/chapters/chapter-02/03-forensic-science.js
+- node --check: js/chapters/chapter-02/04-medical-examiner.js
+- HTML parsed successfully.
+- index.html contains one copy of each required scene and evidence panel.
+- Four hotspots remain present in each investigation scene.
+- Script order preserved, with the lifecycle module added last.
+- CSS order preserved, with the lifecycle stylesheet added after existing scene styles.
+- No Base64 or data URI added to index.html or the new lifecycle files.
+- No setInterval, polling loop, MutationObserver, or new audio owner in the lifecycle module.
+- Reversing the five intended index.html edits reproduces the exact original Git blob SHA 258da71584c2ce8571de1e0e6a5c52107ef01410.
+
+HEADLESS CHROMIUM RUNTIME TESTS PASSED
+- BUILD label reports 0.7.11.
+- Save snapshot reports build 0.7.11.
+- Room 1807 locks hotspots before the intro.
+- Room lock blocks pointer, keyboard, and accessibility focus.
+- Room reveals and restores interaction after the intro.
+- Phone remains yellow until all phone sub-evidence is complete.
+- Phone becomes green after Messages, Calls, and Notes are complete.
+- Room completion feedback persists and does not misuse Puzzle Success audio.
+- Apartment locks before the intro and unlocks after it.
+- All Apartment hotspots become green only after collection.
+- Apartment completion feedback persists once.
+- Forensic locks during the intro and persists intro completion.
+- Forensic unlocks after the intro.
+- Forensic collected state and green hotspots restore correctly.
+- Medical locks through its two-part introduction.
+- Medical Inspect alone remains yellow.
+- Medical Add to Case File turns the hotspot green.
+- Medical Review is gated by all four collected findings.
+- Partial Apartment save resumes without replaying the intro.
+- Partial Room 1807 save resumes without replaying the intro.
+- Forensic intro does not replay after load.
+- Medical intro does not replay after load.
+- Collected-only Forensic save is normalized safely.
+- Legacy Medical state migrates to the new collected semantics.
+- Legacy Medical completed hotspots remain green.
+- No browser page errors occurred in the simulated flows.
+
+NOT TESTED / OWNER TEST REQUIRED
+- Real Android Chrome device.
+- Live GitHub Pages deployment and network cache behaviour.
+- Full game playthrough using every production asset.
+- Audible sound balance, ducking, speaker output, or headphone output.
+- Physical touch timing on the owner's device.
+
+RESULT
+All locally testable syntax, structure, state, and simulated browser-flow checks passed. This is not a claim of 100% production success. Final status requires the owner's Android Chrome regression test.

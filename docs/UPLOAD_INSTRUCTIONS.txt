@@ -1,0 +1,54 @@
+LAST WITNESS 0.7.11 — INVESTIGATION LIFECYCLE CANDIDATE
+UPLOAD INSTRUCTIONS
+
+TARGET REPOSITORY
+- Repository: grolygori789-crypto/last-witness
+- Branch: restore-game-recovered
+- Current verified source baseline: BUILD 0.7.10
+- Candidate delivered by this ZIP: BUILD 0.7.11
+
+UPLOAD THESE 5 FILES TO THE EXACT PATHS
+1. index.html
+2. css/investigation-lifecycle.css
+3. js/engine/12-investigation-lifecycle.js
+4. js/chapters/chapter-02/03-forensic-science.js
+5. js/chapters/chapter-02/04-medical-examiner.js
+
+DO NOT UPLOAD
+- docs/UPLOAD_INSTRUCTIONS.txt
+- docs/PATCH_NOTES.txt
+- docs/TEST_REPORT.txt
+- docs/CHROMIUM_TEST_LOG.txt
+- docs/STATIC_TEST_LOG.txt
+- docs/PATCH_MANIFEST.txt
+- SHA256SUMS.txt
+
+IMPORTANT
+- Replace only the listed existing files and add the two new files at their exact paths.
+- Do not delete, rename, or move other repository files.
+- Do not clear Site Data as a default step. The patch includes versioned CSS/JS URLs and save-state compatibility.
+- After GitHub Pages finishes deploying, close and reopen the game or perform a normal reload before testing.
+- BUILD 0.7.11 remains a candidate until it passes the owner's real Android Chrome regression test.
+
+RECOMMENDED OWNER TEST ORDER
+1. New Game → Room 1807
+   - Hotspots must remain hidden and untappable during the opening exchange.
+   - Hotspots reveal only after the exchange ends.
+   - Phone stays yellow until Messages, Calls, and Notes are all checked.
+   - Completed evidence is green.
+2. Victim's Apartment
+   - Hotspots remain hidden during the opening exchange.
+   - They reveal after the exchange.
+   - Green appears only after Add to Case File.
+3. Forensic Science
+   - Hotspots remain hidden during the opening exchange.
+   - Save during the investigation, return to title, then load.
+   - The opening exchange must not replay after progress exists.
+4. Medical Examiner
+   - Hotspots remain hidden through both opening dialogue sequences.
+   - Inspect alone must leave the hotspot yellow.
+   - Add to Case File must turn it green.
+   - Review Findings appears only after all four findings are added.
+5. Existing Save Compatibility
+   - Load an older Medical Examiner save if available.
+   - Previously completed green evidence must remain complete and available in the Case File.
