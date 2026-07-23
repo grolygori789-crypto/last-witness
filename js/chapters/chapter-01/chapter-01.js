@@ -1,7 +1,81 @@
 /* Last Witness Full Refactor
  * Chapter 1 flow and shared event bindings
+ * Room 1807 opening continuity 0.7.3
  * Master Source lines 925-1080
  */
+
+let room1807OpeningActive=false;
+const ROOM_1807_STORY_EVIDENCE=["phone","blood","laptop","suitcase","message","calls","note"];
+
+function room1807OpeningLanguage(){
+return state.language==="th"?"th":"en"
+}
+function room1807OpeningLines(){
+const th=room1807OpeningLanguage()==="th";
+return[
+{speaker:"North",emotion:"serious",text:th?"ไม่พบร่องรอยงัดแงะ ไม่มีอะไรดูเหมือนถูกรื้อค้น":"No forced entry. Nothing looks ransacked."},
+{speaker:"Benedict",emotion:"smirk",text:th?"ที่เกิดเหตุมีมารยาทน่าดู":"A remarkably polite crime scene."},
+{speaker:"North",emotion:"analyzing",text:th?"ไม่ใช่มารยาท ห้องนี้เหมือนถูกจัดวาง โทรศัพท์ คราบเลือด แล็ปท็อป แล้วก็กระเป๋าเดินทาง สี่จุดนี้ควรดูให้ละเอียด":"Polite is not the word. The room feels arranged. The phone, the blood, the laptop and the suitcase deserve a closer look."},
+{speaker:"Benedict",emotion:"serious",text:th?"งั้นหาจุดที่ไม่ยอมเล่นตามบทกัน":"Then let's find the detail that refused to follow the script."}
+]
+}
+function installRoom1807OpeningStyle(){
+if($("#lwRoom1807OpeningStyle"))return;
+const style=document.createElement("style");
+style.id="lwRoom1807OpeningStyle";
+style.textContent="#crime .hotspot{transition:opacity .24s ease}#crime.room1807-opening .hotspot{opacity:0!important;pointer-events:none!important}";
+document.head.appendChild(style)
+}
+function setRoom1807HotspotsLocked(locked){
+const crime=$("#crime");if(!crime)return;
+crime.classList.toggle("room1807-opening",locked);
+$$('#crime .hotspot').forEach(button=>{
+button.disabled=locked;
+button.setAttribute("aria-disabled",locked?"true":"false")
+})
+}
+function room1807HasInvestigationProgress(){
+try{return ROOM_1807_STORY_EVIDENCE.some(id=>state.found?.has?.(id))}catch(_){return false}
+}
+function resumeRoom1807Opening(screen){
+if(screen!=="crime")return;
+installRoom1807OpeningStyle();
+state.flags=state.flags||{};
+if(state.flags.room1807_intro_complete===true||room1807HasInvestigationProgress()){
+state.flags.room1807_intro_complete=true;
+setRoom1807HotspotsLocked(false);
+return
+}
+setRoom1807HotspotsLocked(true);
+if(room1807OpeningActive)return;
+room1807OpeningActive=true;
+state.checkpoint="ch1_room1807_intro";
+setTimeout(()=>{
+if(state.screen!=="crime"){room1807OpeningActive=false;return}
+const dialogue=$("#crimeDialogue");
+if(!dialogue){room1807OpeningActive=false;setRoom1807HotspotsLocked(false);return}
+runDialogue(dialogue,room1807OpeningLines(),()=>{
+room1807OpeningActive=false;
+state.flags.room1807_intro_complete=true;
+state.checkpoint="ch1_room1807_investigation";
+setRoom1807HotspotsLocked(false);
+refreshCrime();
+autoSave()
+})
+},420)
+}
+installRoom1807OpeningStyle();
+if(typeof window.show==="function"&&!window.show.__lwRoom1807Opening073){
+const originalShow=window.show;
+const wrappedShow=function(screen){
+const result=originalShow.apply(this,arguments);
+resumeRoom1807Opening(screen);
+return result
+};
+wrappedShow.__lwRoom1807Opening073=true;
+window.show=wrappedShow
+}
+window.LastWitnessChapter1RoomOpening={resumeFromState:resumeRoom1807Opening,version:"0.7.3"};
 
 function startNewGame(){
 state.found.clear();state.history=[];state.chapter=1;state.checkpoint="ch1_start";state.characters={Benedict:true,North:false,Elena:false};state.relationships={North:{trust:70,respect:78,attachment:58,suspicion:3},Elena:{trust:35,respect:52,attachment:18,suspicion:10}};state.flags={};state.personality={warm:0,observant:0,direct:0};state.journal={unlocked:false,seen:false,introShown:false};

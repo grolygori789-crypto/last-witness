@@ -1,10 +1,11 @@
-/* LAST WITNESS — Chapter I–III Audio, Evidence & Phase Runtime 0.7.2
+/* LAST WITNESS — Chapter I–III Audio, Evidence & Phase Runtime 0.7.3
  * Single scene-audio owner, immediate Case File cue, clean Room 1807 score,
  * fresh Medical state and controlled Chapter III puzzle cue.
  */
 (function(){
 "use strict";
-if(window.__lwProductionStabilization072)return;
+if(window.__lwProductionStabilization073)return;
+window.__lwProductionStabilization073=true;
 window.__lwProductionStabilization072=true;
 window.__lwProductionStabilization071=true;
 window.__lwProductionStabilization070=true;
@@ -26,8 +27,8 @@ const LOOP_IDS=["themeAudio","rainAudio","officeAudio","crimeAudio","room1807Aud
 const PAGE_SOURCE="assets/audio/ae0db994456b758a.mp3";
 const PUZZLE_SOURCE="assets/audio/puzzle-success.wav?v=057";
 const SCANNER_SOURCE="assets/audio/medical-scanner-soft.wav?v=057";
-const ROOM_1807_WEBM_SOURCE="assets/audio/room-1807/room-1807-after-hours-loop.webm?v=069";
-const ROOM_1807_MP3_SOURCE="assets/audio/room-1807/room-1807-after-hours-loop.mp3?v=069";
+const ROOM_1807_WEBM_SOURCE="assets/audio/room-1807/room-1807-dark-noir-piano-loop.webm?v=073";
+const ROOM_1807_MP3_SOURCE="assets/audio/room-1807/room-1807-dark-noir-piano-loop.mp3?v=073";
 const FORENSIC_WEBM_SOURCE="assets/audio/forensic/forensic-chain-of-custody-loop.webm?v=070";
 const FORENSIC_MP3_SOURCE="assets/audio/forensic/forensic-chain-of-custody-loop.mp3?v=070";
 const MEDICAL_WEBM_SOURCE="assets/audio/medical/medical-cold-evidence-loop.webm?v=070";
@@ -832,13 +833,13 @@ function bind(){
   stopPuzzleSuccess:stopPuzzleCue,
   playSoftScanner,
   stopEvidenceCue:stopOneShots,
-  version:"0.7.2"
+  version:"0.7.3"
  };
  window.LastWitnessRoom1807Evidence={
   open:openRoom1807Evidence,inspect:inspectRoom1807Evidence,collect:collectRoom1807Evidence,
-  close:closeRoom1807Evidence,updateLanguage:updateRoom1807EvidenceLanguage,version:"0.7.2"
+  close:closeRoom1807Evidence,updateLanguage:updateRoom1807EvidenceLanguage,version:"0.7.3"
  };
- window.LastWitnessProductionAudio={refresh:queueAudioSync,apply:applySceneAudio,stopEvidenceCue:stopOneShots,profile:volumeProfile,version:"0.7.2"};
+ window.LastWitnessProductionAudio={refresh:queueAudioSync,apply:applySceneAudio,stopEvidenceCue:stopOneShots,profile:volumeProfile,version:"0.7.3"};
  window.LastWitnessContentRegistry?.updateVisibility?.();queueAudioSync();
 }
 if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",bind,{once:true});else bind();
