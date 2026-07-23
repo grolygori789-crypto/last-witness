@@ -1,0 +1,49 @@
+LAST WITNESS — SAVE MANAGER EXIT FIX 0.7.8
+Production branch inspected: restore-game-recovered
+Source files were taken from the latest GitHub branch.
+
+VERIFIED ROOT CAUSE
+The Save Manager already contained a footer CLOSE button, but the mobile layout used:
+- a fixed max-height for the save list,
+- a fixed max-height for the modal card, and
+- overflow:hidden on the modal card.
+
+In SAVE mode, the header + name form + save list + footer could exceed the card height. The footer was clipped outside the visible mobile area, leaving the player with no visible exit control.
+
+FIX
+1. Converted the Save Manager card to a flex-column layout.
+2. Made only the save list scrollable with flex:1 and min-height:0.
+3. Kept the footer fixed inside the visible card and added safe-area bottom padding.
+4. Added an always-visible top-right × close button.
+5. Kept CANCEL only for leaving before a save is created.
+6. After a successful save:
+   - display GAME SAVED / บันทึกเกมแล้ว,
+   - display SAVED / บันทึกแล้ว on the save button,
+   - automatically close the Save Manager after 700 ms and return to the game.
+7. Added Escape-key close support for keyboard users.
+8. Prevented rapid double taps from creating duplicate named saves.
+9. Updated cache version and build label to 0.7.8.
+
+FILES TO UPLOAD
+- index.html
+- js/engine/02-audio-save.js
+
+TESTED
+- GitHub latest-source hash verification for both baseline files.
+- JavaScript syntax: node --check passed.
+- Runtime mock flow passed:
+  - Save Manager opens.
+  - Top × closes the manager.
+  - CANCEL closes before saving.
+  - Footer CLOSE closes in Load mode.
+  - Named save persists.
+  - GAME SAVED status appears.
+  - Manager closes automatically after saving.
+  - Rapid double tap creates one save only.
+  - Save Manager API reports version 0.7.8.
+- index.html diff contains only build/cache updates.
+
+NOT TESTED
+- Android physical-device viewport and virtual keyboard.
+- Live GitHub Pages cache/deployment.
+The owner device test remains the final confirmation.

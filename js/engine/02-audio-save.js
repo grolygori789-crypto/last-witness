@@ -1,6 +1,8 @@
-/* LAST WITNESS — Audio + Professional Save Manager 0.7.6
+/* LAST WITNESS — Audio + Professional Save Manager 0.7.8
  * Preserves production audio behaviour while adding named manual saves,
  * IndexedDB persistence, legacy migration, export/import and versioned restore.
+ * Save Manager exit controls remain visible on mobile and successful saves
+ * return the player to the game automatically.
  */
 
 /* Classic-script compatibility bridge. The core state is declared with `let`
@@ -29,13 +31,15 @@ function ambience(screen){
 
 const LW_SAVE_FORMAT="LAST_WITNESS_SAVE";
 const LW_SAVE_VERSION=1;
-const LW_SAVE_BUILD="0.7.6";
+const LW_SAVE_BUILD="0.7.8";
 const LW_SAVE_DB="last_witness_saves";
 const LW_SAVE_STORE="slots";
 const LW_SAVE_FALLBACK="last_witness_named_saves_v1";
 let lwSaveDbPromise=null;
 let lwSaveManagerMode="load";
 let lwSaveManagerReady=false;
+let lwSaveOperationActive=false;
+let lwSaveCloseTimer=0;
 
 function deepClone(value){return JSON.parse(JSON.stringify(value))}
 function snapshot(){
@@ -118,23 +122,26 @@ function injectSaveManager(){
  if(document.getElementById("lwSaveManager")){lwSaveManagerReady=true;return}
  const style=document.createElement("style");style.id="lwSaveManagerStyle";style.textContent=`
  #lwSaveManager{z-index:360;background:rgba(3,4,7,.88);backdrop-filter:blur(8px)}
- #lwSaveManager .modal-card{width:min(92vw,620px);max-height:min(86dvh,820px);overflow:hidden;padding:0;background:linear-gradient(155deg,#17191f,#090b0f 72%);border:1px solid rgba(199,161,94,.42);box-shadow:0 24px 70px rgba(0,0,0,.72)}
- .lw-save-head{padding:22px 22px 15px;border-bottom:1px solid rgba(255,255,255,.09)}.lw-save-head .eyebrow{color:#c7a15e;letter-spacing:.16em;font-size:11px}.lw-save-head h3{margin:5px 0 0;font-size:24px;color:#f4ede3}
- .lw-save-create{padding:16px 22px;border-bottom:1px solid rgba(255,255,255,.08)}.lw-save-create label{display:block;font-size:12px;color:#bbb2a5;margin-bottom:7px}.lw-save-create input{width:100%;box-sizing:border-box;background:#07090d;color:#f5efe6;border:1px solid rgba(199,161,94,.45);border-radius:7px;padding:13px 12px;font:inherit;outline:none}.lw-save-create input:focus{border-color:#d8b56e;box-shadow:0 0 0 2px rgba(216,181,110,.16)}
- .lw-save-create-actions,.lw-save-footer,.lw-save-card-actions{display:flex;gap:9px;flex-wrap:wrap}.lw-save-create-actions{margin-top:11px}.lw-save-scroll{padding:14px 16px 18px;overflow:auto;max-height:54dvh}.lw-save-empty{padding:28px 14px;text-align:center;color:#9f978c}
+ #lwSaveManager .modal-card{position:relative;display:flex;flex-direction:column;width:min(92vw,620px);height:auto;max-height:min(86dvh,820px);overflow:hidden;padding:0;background:linear-gradient(155deg,#17191f,#090b0f 72%);border:1px solid rgba(199,161,94,.42);box-shadow:0 24px 70px rgba(0,0,0,.72)}
+ .lw-save-head{flex:0 0 auto;padding:22px 66px 15px 22px;border-bottom:1px solid rgba(255,255,255,.09)}.lw-save-head .eyebrow{color:#c7a15e;letter-spacing:.16em;font-size:11px}.lw-save-head h3{margin:5px 0 0;font-size:24px;color:#f4ede3}
+ .lw-save-close-x{position:absolute;top:11px;right:11px;z-index:4;width:42px;height:42px;display:grid;place-items:center;padding:0;border:1px solid rgba(255,255,255,.18);border-radius:999px;background:rgba(5,6,9,.72);color:#f4ede3;font:300 28px/1 system-ui;cursor:pointer}.lw-save-close-x:focus-visible{outline:2px solid #d8b56e;outline-offset:2px}
+ .lw-save-create{flex:0 0 auto;padding:16px 22px;border-bottom:1px solid rgba(255,255,255,.08)}.lw-save-create label{display:block;font-size:12px;color:#bbb2a5;margin-bottom:7px}.lw-save-create input{width:100%;box-sizing:border-box;background:#07090d;color:#f5efe6;border:1px solid rgba(199,161,94,.45);border-radius:7px;padding:13px 12px;font:inherit;outline:none}.lw-save-create input:focus{border-color:#d8b56e;box-shadow:0 0 0 2px rgba(216,181,110,.16)}
+ .lw-save-create-actions,.lw-save-footer,.lw-save-card-actions{display:flex;gap:9px;flex-wrap:wrap}.lw-save-create-actions{margin-top:11px}.lw-save-status{min-height:20px;margin-top:9px;color:#d8b56e;font-size:12px;font-weight:700;letter-spacing:.08em}.lw-save-scroll{flex:1 1 auto;min-height:0;padding:14px 16px 18px;overflow:auto;overscroll-behavior:contain}.lw-save-empty{padding:28px 14px;text-align:center;color:#9f978c}
  .lw-save-card{padding:14px;margin:0 0 10px;background:rgba(255,255,255,.035);border:1px solid rgba(255,255,255,.10);border-radius:8px}.lw-save-card.auto{border-color:rgba(199,161,94,.45);background:rgba(199,161,94,.07)}.lw-save-card h4{margin:0 0 5px;font-size:16px;color:#f4ede3;overflow-wrap:anywhere}.lw-save-meta{font-size:12px;color:#aaa196;line-height:1.5;margin-bottom:11px}.lw-save-card-actions button{font-size:12px;padding:9px 11px}.lw-save-card-actions .danger{border-color:rgba(181,63,56,.55);color:#e29a94}
- .lw-save-footer{padding:14px 18px;border-top:1px solid rgba(255,255,255,.08);justify-content:space-between}.lw-save-footer input{display:none}
- @media(max-width:520px){#lwSaveManager .modal-card{width:94vw;max-height:90dvh}.lw-save-head{padding:18px 17px 13px}.lw-save-create{padding:14px 17px}.lw-save-scroll{padding:12px;max-height:52dvh}.lw-save-card-actions button{flex:1 1 auto}}
+ .lw-save-footer{flex:0 0 auto;padding:14px 18px max(14px,env(safe-area-inset-bottom));border-top:1px solid rgba(255,255,255,.08);justify-content:space-between;background:#0a0c11}.lw-save-footer input{display:none}
+ @media(max-width:520px){#lwSaveManager .modal-card{width:94vw;max-height:calc(100dvh - 20px)}.lw-save-head{padding:18px 62px 13px 17px}.lw-save-create{padding:14px 17px}.lw-save-scroll{padding:12px}.lw-save-card-actions button{flex:1 1 auto}.lw-save-footer>div,.lw-save-footer>button{flex:1 1 auto}.lw-save-footer button{width:100%}}
  `;document.head.appendChild(style);
- const modal=document.createElement("div");modal.id="lwSaveManager";modal.className="modal";modal.setAttribute("aria-hidden","true");modal.innerHTML=`<div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="lwSaveTitle"><div class="lw-save-head"><div class="eyebrow">LAST WITNESS</div><h3 id="lwSaveTitle"></h3></div><div id="lwSaveCreate" class="lw-save-create"><label id="lwSaveNameLabel" for="lwSaveName"></label><input id="lwSaveName" type="text" maxlength="60" autocomplete="off" enterkeyhint="done"><div class="lw-save-create-actions"><button id="lwSaveCreateButton" class="primary" type="button"></button><button id="lwSaveCancelCreate" class="ghost" type="button"></button></div></div><div id="lwSaveList" class="lw-save-scroll"></div><div class="lw-save-footer"><div><button id="lwImportSave" class="ghost" type="button"></button><input id="lwImportSaveInput" type="file" accept=".lwsave,.json,application/json"></div><button id="lwCloseSaveManager" class="ghost" type="button"></button></div></div>`;
+ const modal=document.createElement("div");modal.id="lwSaveManager";modal.className="modal";modal.setAttribute("aria-hidden","true");modal.innerHTML=`<div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="lwSaveTitle"><button id="lwSaveCloseTop" class="lw-save-close-x" type="button">×</button><div class="lw-save-head"><div class="eyebrow">LAST WITNESS</div><h3 id="lwSaveTitle"></h3></div><div id="lwSaveCreate" class="lw-save-create"><label id="lwSaveNameLabel" for="lwSaveName"></label><input id="lwSaveName" type="text" maxlength="60" autocomplete="off" enterkeyhint="done"><div class="lw-save-create-actions"><button id="lwSaveCreateButton" class="primary" type="button"></button><button id="lwSaveCancelCreate" class="ghost" type="button"></button></div><div id="lwSaveStatus" class="lw-save-status" role="status" aria-live="polite"></div></div><div id="lwSaveList" class="lw-save-scroll"></div><div class="lw-save-footer"><div><button id="lwImportSave" class="ghost" type="button"></button><input id="lwImportSaveInput" type="file" accept=".lwsave,.json,application/json"></div><button id="lwCloseSaveManager" class="ghost" type="button"></button></div></div>`;
  document.body.appendChild(modal);
  modal.addEventListener("click",event=>{if(event.target===modal)closeSaveManager();const action=event.target.closest?.("[data-save-action]");if(action)handleSaveAction(action.dataset.saveAction,action.dataset.saveId)});
  document.getElementById("lwSaveCreateButton").addEventListener("click",createNamedSaveFromInput);
  document.getElementById("lwSaveCancelCreate").addEventListener("click",()=>{document.getElementById("lwSaveName").value="";if(lwSaveManagerMode==="save")closeSaveManager()});
  document.getElementById("lwCloseSaveManager").addEventListener("click",closeSaveManager);
+ document.getElementById("lwSaveCloseTop").addEventListener("click",closeSaveManager);
  document.getElementById("lwImportSave").addEventListener("click",()=>document.getElementById("lwImportSaveInput").click());
  document.getElementById("lwImportSaveInput").addEventListener("change",importSaveFile);
  document.getElementById("lwSaveName").addEventListener("keydown",event=>{if(event.key==="Enter")createNamedSaveFromInput()});
+ document.addEventListener("keydown",event=>{if(event.key==="Escape"&&document.getElementById("lwSaveManager")?.classList.contains("open"))closeSaveManager()});
  lwSaveManagerReady=true;updateSaveManagerLanguage()
 }
 function updateSaveManagerLanguage(){
@@ -145,7 +152,8 @@ function updateSaveManagerLanguage(){
  document.getElementById("lwSaveCreateButton").textContent=saveText("SAVE AS NEW","บันทึกเป็นช่องใหม่");
  document.getElementById("lwSaveCancelCreate").textContent=saveText("CANCEL","ยกเลิก");
  document.getElementById("lwImportSave").textContent=saveText("IMPORT SAVE FILE","นำเข้าไฟล์บันทึก");
- document.getElementById("lwCloseSaveManager").textContent=saveText("CLOSE","ปิด")
+ document.getElementById("lwCloseSaveManager").textContent=saveText("CLOSE","ปิด");
+ const topClose=document.getElementById("lwSaveCloseTop");if(topClose){const label=saveText("Close save manager","ปิดหน้าต่างบันทึกเกม");topClose.setAttribute("aria-label",label);topClose.title=label}
 }
 async function renderSaveManager(){
  const list=document.getElementById("lwSaveList");if(!list)return;list.innerHTML=`<div class="lw-save-empty">${escapeHtml(saveText("Reading saves…","กำลังอ่านข้อมูลบันทึก…"))}</div>`;
@@ -153,18 +161,42 @@ async function renderSaveManager(){
  if(!records.length){list.innerHTML=`<div class="lw-save-empty">${escapeHtml(saveText("No saves found.","ยังไม่มีข้อมูลบันทึก"))}</div>`;return}
  list.innerHTML=records.map(record=>{const data=record.data||{};const auto=record.automatic===true;return `<article class="lw-save-card${auto?" auto":""}"><h4>${escapeHtml(record.name)}</h4><div class="lw-save-meta">${escapeHtml(screenLabel(data))}<br>${escapeHtml(formatSaveDate(record.updatedAt||data.time||Date.now()))}</div><div class="lw-save-card-actions"><button class="primary" type="button" data-save-action="load" data-save-id="${escapeHtml(record.id)}">${escapeHtml(saveText("LOAD","โหลด"))}</button><button class="ghost" type="button" data-save-action="export" data-save-id="${escapeHtml(record.id)}">${escapeHtml(saveText("EXPORT","ส่งออก"))}</button>${auto?"":`<button class="ghost danger" type="button" data-save-action="delete" data-save-id="${escapeHtml(record.id)}">${escapeHtml(saveText("DELETE","ลบ"))}</button>`}</div></article>`}).join("")
 }
+function setSaveCreateState(status="",busy=false){
+ const input=document.getElementById("lwSaveName"),saveButton=document.getElementById("lwSaveCreateButton"),cancelButton=document.getElementById("lwSaveCancelCreate"),statusNode=document.getElementById("lwSaveStatus");
+ if(input)input.disabled=busy;if(saveButton)saveButton.disabled=busy;if(cancelButton)cancelButton.disabled=busy;
+ if(statusNode)statusNode.textContent=status;
+ if(saveButton)saveButton.textContent=busy?saveText("SAVING…","กำลังบันทึก…"):saveText("SAVE AS NEW","บันทึกเป็นช่องใหม่")
+}
 async function openSaveManager(mode="load"){
- injectSaveManager();await migrateLegacyManual();lwSaveManagerMode=mode==="save"?"save":"load";updateSaveManagerLanguage();
+ injectSaveManager();await migrateLegacyManual();clearTimeout(lwSaveCloseTimer);lwSaveOperationActive=false;lwSaveManagerMode=mode==="save"?"save":"load";updateSaveManagerLanguage();setSaveCreateState("",false);
  const create=document.getElementById("lwSaveCreate");create.style.display=lwSaveManagerMode==="save"?"block":"none";
  document.getElementById("drawer")?.classList.remove("open");document.getElementById("lwSaveManager").classList.add("open");document.getElementById("lwSaveManager").setAttribute("aria-hidden","false");await renderSaveManager();
  if(lwSaveManagerMode==="save"){const input=document.getElementById("lwSaveName");input.value="";setTimeout(()=>{input.focus();input.select()},80)}
 }
-function closeSaveManager(){const modal=document.getElementById("lwSaveManager");if(!modal)return;modal.classList.remove("open");modal.setAttribute("aria-hidden","true");document.getElementById("lwImportSaveInput").value=""}
+function closeSaveManager(){
+ clearTimeout(lwSaveCloseTimer);lwSaveOperationActive=false;
+ const modal=document.getElementById("lwSaveManager");if(!modal)return;modal.classList.remove("open");modal.setAttribute("aria-hidden","true");
+ const input=document.getElementById("lwSaveName");if(input){input.disabled=false;input.blur()}
+ const button=document.getElementById("lwSaveCreateButton");if(button)button.disabled=false;
+ const cancel=document.getElementById("lwSaveCancelCreate");if(cancel)cancel.disabled=false;
+ const status=document.getElementById("lwSaveStatus");if(status)status.textContent="";
+ document.getElementById("lwImportSaveInput").value=""
+}
 async function createNamedSaveFromInput(){
+ if(lwSaveOperationActive)return;
  const input=document.getElementById("lwSaveName");const name=cleanSaveName(input.value);if(!name){input.focus();return}
- const slots=await listNamedSaves();const existing=slots.find(slot=>slot.name.toLocaleLowerCase()===name.toLocaleLowerCase());
- if(existing&&!window.confirm(saveText("A save with this name already exists. Overwrite it?","มีบันทึกชื่อนี้อยู่แล้ว ต้องการเขียนทับหรือไม่?")))return;
- const now=Date.now();const record={id:existing?.id||newSaveId(),name,createdAt:existing?.createdAt||now,updatedAt:now,data:snapshot()};await putNamedSave(record);await requestPersistentStorage();input.value="";flashSave(saveText("Game saved","บันทึกเกมแล้ว"));await renderSaveManager()
+ lwSaveOperationActive=true;setSaveCreateState("",true);
+ try{
+  const slots=await listNamedSaves();const existing=slots.find(slot=>slot.name.toLocaleLowerCase()===name.toLocaleLowerCase());
+  if(existing&&!window.confirm(saveText("A save with this name already exists. Overwrite it?","มีบันทึกชื่อนี้อยู่แล้ว ต้องการเขียนทับหรือไม่?"))){lwSaveOperationActive=false;setSaveCreateState("",false);input.focus();return}
+  const now=Date.now();const record={id:existing?.id||newSaveId(),name,createdAt:existing?.createdAt||now,updatedAt:now,data:snapshot()};
+  await putNamedSave(record);await requestPersistentStorage();input.value="";
+  setSaveCreateState(saveText("GAME SAVED","บันทึกเกมแล้ว"),true);
+  const saveButton=document.getElementById("lwSaveCreateButton");if(saveButton)saveButton.textContent=saveText("SAVED","บันทึกแล้ว");
+  flashSave(saveText("Game saved","บันทึกเกมแล้ว"));lwSaveCloseTimer=setTimeout(closeSaveManager,700)
+ }catch(error){
+  console.error("LAST WITNESS manual save failed",error);lwSaveOperationActive=false;setSaveCreateState(saveText("SAVE FAILED","บันทึกไม่สำเร็จ"),false);input.focus()
+ }
 }
 async function recordById(id){if(id==="__auto__")return autoRecord();return(await listNamedSaves()).find(item=>item.id===id)||null}
 function safeFilename(name){return(cleanSaveName(name)||"Last Witness Save").replace(/\s+/g,"_")+".lwsave"}
@@ -218,7 +250,7 @@ function loadSave(kind){
 function flashSave(text){const element=document.getElementById("saveIndicator");if(!element)return;element.textContent=text;element.classList.add("show");clearTimeout(flashSave.timer);flashSave.timer=setTimeout(()=>element.classList.remove("show"),1100)}
 function showBadge(text){const element=document.getElementById("badge");if(!element)return;element.textContent=text;element.classList.add("show");clearTimeout(showBadge.timer);showBadge.timer=setTimeout(()=>element.classList.remove("show"),1500)}
 
-function initSaveManager(){injectSaveManager();const buildLabel=document.getElementById("settingsVersion");if(buildLabel)buildLabel.textContent="LAST WITNESS · BUILD 0.7.6";const resetButton=document.getElementById("devResetSave"),legacyReset=window.devResetSaves;if(resetButton)resetButton.onclick=async()=>{try{legacyReset?.()}catch(_){}await clearNamedSaves();try{localStorage.removeItem(SAVE.auto);localStorage.removeItem(SAVE.manual)}catch(_){}flashSave(saveText("All saves cleared","ลบข้อมูลบันทึกทั้งหมดแล้ว"))};migrateLegacyManual();document.addEventListener("click",event=>{if(event.target.closest?.("[data-lang]"))setTimeout(()=>{updateSaveManagerLanguage();if(document.getElementById("lwSaveManager")?.classList.contains("open"))renderSaveManager()},0)},true);window.LastWitnessSaveManager={open:openSaveManager,list:listNamedSaves,export:exportRecord,importFile:importSaveFile,clearAll:clearNamedSaves,snapshot,restore,version:LW_SAVE_BUILD}}
+function initSaveManager(){injectSaveManager();const buildLabel=document.getElementById("settingsVersion");if(buildLabel)buildLabel.textContent="LAST WITNESS · BUILD 0.7.8";const resetButton=document.getElementById("devResetSave"),legacyReset=window.devResetSaves;if(resetButton)resetButton.onclick=async()=>{try{legacyReset?.()}catch(_){}await clearNamedSaves();try{localStorage.removeItem(SAVE.auto);localStorage.removeItem(SAVE.manual)}catch(_){}flashSave(saveText("All saves cleared","ลบข้อมูลบันทึกทั้งหมดแล้ว"))};migrateLegacyManual();document.addEventListener("click",event=>{if(event.target.closest?.("[data-lang]"))setTimeout(()=>{updateSaveManagerLanguage();if(document.getElementById("lwSaveManager")?.classList.contains("open"))renderSaveManager()},0)},true);window.LastWitnessSaveManager={open:openSaveManager,list:listNamedSaves,export:exportRecord,importFile:importSaveFile,clearAll:clearNamedSaves,snapshot,restore,version:LW_SAVE_BUILD}}
 if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",initSaveManager,{once:true});else initSaveManager();
 
 PORTRAITS.Elena={"neutral":"assets/images/f6ecc87ac62112b6.jpg","soft":"assets/images/0b58d037372b3893.jpg","warm":"assets/images/3717ee1601191df6.jpg","thinking":"assets/images/17dc23af74dd7be5.jpg","curious":"assets/images/45cdccdac98f15a4.jpg","attentive":"assets/images/ca489d84591703e2.jpg","skeptical":"assets/images/14251628ba5d808c.jpg","smirk":"assets/images/bedce8e0dbb90d49.jpg","confident":"assets/images/798d0dbcf7dc7040.jpg","serious":"assets/images/94c43ae882e43c69.jpg","concerned":"assets/images/258f1557b5b1d98e.jpg","surprised":"assets/images/7e5f812b3c7eec9e.jpg","shocked":"assets/images/54fa2709eff69d56.jpg","worried":"assets/images/39bae3b954927ff5.jpg","sad":"assets/images/c91ad48a8b115dce.jpg","disappointed":"assets/images/cd01390acb6b500a.jpg","embarrassed":"assets/images/2ad821b6a881a4c0.jpg","amused":"assets/images/5b2f58b400414246.jpg","laughing":"assets/images/a192e652ca70c9db.jpg","determined":"assets/images/e77228fe9ffb3470.jpg","calm":"assets/images/8d5572a029fa0d78.jpg","playful":"assets/images/11558d3825786804.jpg","charming":"assets/images/87fb1e543d974f07.jpg","mysterious":"assets/images/33e95d83dec5c517.jpg"};
