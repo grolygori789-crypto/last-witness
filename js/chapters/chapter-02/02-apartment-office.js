@@ -192,14 +192,14 @@ function startChapter2(){
 stopChapterAudio();
 state.chapter=2;
 state.checkpoint="ch2_office_opening";
-state.characters=state.characters||{};
-state.characters.North=true;
+state.characters=Object.assign(state.characters||{},{Benedict:true,North:false,Elena:false,Somchai:false,Kittisak:false,Ratchata:false});
 state.flags=state.flags||{};
 state.flags.chapter2_character_feature_unlocked=false;
 state.flags.chapter2_character_toast_shown=false;
 state.flags.chapter2_character_journal_opened=false;
 state.journal={unlocked:false,seen:true,introShown:false};
 state.lwJournalEnabled=false;
+state.lwCharactersUnlocked=[];
 state.lwCharactersUnread=[];
 
 /* A new Chapter II run must never inherit completed Forensic/Medical evidence
