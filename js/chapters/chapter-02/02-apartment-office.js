@@ -1,6 +1,6 @@
 /* Last Witness Full Refactor
  * Chapter 2 apartment and office progression
- * Character Journal and fresh phase-state fix 0.5.5
+ * Canonical Character Journal continuity 0.7.6
  */
 
 function revealApartmentEvidenceDetails(){
@@ -89,53 +89,24 @@ runDialogue($("#apartmentDialogue"),[
 ],()=>{play("steps");setTimeout(()=>{show("cafe2");runCafeOpening()},600)})
 }
 
+/* The registry is the single owner of the Character Journal unlock. The old
+ * implementation set the same flags, showed the toast, called the registry,
+ * dispatched another unlock event and then recalculated again on Apartment
+ * entry. That produced the duplicate red notification. */
 function unlockChapter2CharacterJournal(){
-state.flags=state.flags||{};
-state.characters=state.characters||{};
-state.journal=state.journal||{unlocked:false,seen:true,introShown:false};
-
-const firstUnlock=state.flags.chapter2_character_feature_unlocked!==true||state.journal.unlocked!==true;
-state.flags.chapter2_character_feature_unlocked=true;
-state.flags.chapter2_character_journal_opened=false;
-state.characters.Benedict=true;
-state.characters.North=true;
-state.journal.unlocked=true;
-state.journal.seen=false;
-state.journal.introShown=false;
-state.lwJournalEnabled=true;
-state.lwCharactersUnlocked=Array.from(new Set([...(state.lwCharactersUnlocked||[]),"benedict","north"]));
-state.lwCharactersUnread=Array.from(new Set([...(state.lwCharactersUnread||[]),"north"]));
-
-try{window.LastWitnessContentRegistry?.unlockChapter2North?.({showToast:firstUnlock});}catch(_){ }
-
-const button=$("#charactersButton");
-if(button){
- button.hidden=false;
- button.disabled=false;
- button.removeAttribute("hidden");
- button.setAttribute("aria-hidden","false");
- button.style.setProperty("display","block","important");
- button.style.setProperty("visibility","visible","important");
- button.style.setProperty("opacity","1","important");
- button.style.setProperty("pointer-events","auto","important");
- button.style.removeProperty("height");
- button.style.removeProperty("min-height");
- button.style.removeProperty("margin-top");
- button.style.removeProperty("padding");
- button.style.removeProperty("border");
-}
-
-if(firstUnlock&&!state.flags.chapter2_character_toast_shown){
- state.flags.chapter2_character_toast_shown=true;
- showFeatureToast()
-}
-
-try{window.LastWitnessContentRegistry?.updateVisibility?.();}catch(_){ }
-try{window.LastWitnessContentRegistry?.renderCharacters?.();}catch(_){ }
-try{window.LastWitnessContentRegistry?.updateDots?.();}catch(_){ }
-try{window.dispatchEvent(new CustomEvent("lastwitness:journal-unlocked",{detail:{character:"north"}}));}catch(_){ }
-syncJournalAlert();
-autoSave()
+ state.flags=state.flags||{};
+ const registry=window.LastWitnessContentRegistry;
+ if(registry?.unlockChapter2North){
+  registry.unlockChapter2North({showToast:true});
+ }else{
+  const first=state.flags.chapter2_character_feature_unlocked!==true;
+  state.characters=state.characters||{};state.journal=state.journal||{unlocked:false,seen:true,introShown:false};
+  state.flags.chapter2_character_feature_unlocked=true;state.characters.Benedict=true;state.characters.North=true;state.journal.unlocked=true;
+  if(first){state.journal.seen=false;state.lwCharactersUnread=[...(state.lwCharactersUnread||[]),"north"]}
+  state.lwCharactersUnlocked=Array.from(new Set([...(state.lwCharactersUnlocked||[]),"benedict","north"]));
+  if(first&&!state.flags.chapter2_character_toast_shown){state.flags.chapter2_character_toast_shown=true;showFeatureToast()}
+  syncJournalAlert();autoSave()
+ }
 }
 
 function runChapter2PostChoice(choice){
@@ -228,6 +199,7 @@ if(button){
  button.style.setProperty("border","0","important");
 }
 syncJournalAlert();
+try{window.LastWitnessContentRegistry?.resetForChapter2?.();}catch(_){ }
 try{window.LastWitnessContentRegistry?.updateVisibility?.();}catch(_){ }
 
 showChapterIntro(2,()=>{
