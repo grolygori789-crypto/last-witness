@@ -1,5 +1,6 @@
-/* LAST WITNESS — Screen, UI and Dialogue Runtime 0.5.4
- * Shared Chapter I–III routing with a direct Chapter II journal guard.
+/* LAST WITNESS — Screen, UI and Dialogue Runtime 0.7.5
+ * Shared Chapter I–III routing, Chapter II journal guard and Room 1807
+ * review-button sequencing after evidence dialogue.
  */
 function showChapterIntro(chapter,onComplete){
 clearTimeout(chapterIntroTimer);
@@ -69,7 +70,24 @@ autoSave()
 }
 function addClue(id){
 if(state.found.has(id))return;
-state.found.add(id);const chapter1Evidence=['phone','blood','laptop','suitcase','message','calls','note'];const chapter1Complete=chapter1Evidence.every(clue=>state.found.has(clue));if(chapter1Complete&&window.LastWitnessAudioCue?.playCompletion)window.LastWitnessAudioCue.playCompletion();else if(window.LastWitnessAudioCue?.playCollection)window.LastWitnessAudioCue.playCollection();else play('page');showBadge(L('new_evidence')+L(clueData[id][0]));refreshCrime();updateProgress();autoSave()
+state.found.add(id);
+const chapter1Evidence=['phone','blood','laptop','suitcase','message','calls','note'];
+const chapter1Complete=chapter1Evidence.every(clue=>state.found.has(clue));
+if(chapter1Complete&&window.LastWitnessAudioCue?.playCompletion)window.LastWitnessAudioCue.playCompletion();
+else if(window.LastWitnessAudioCue?.playCollection)window.LastWitnessAudioCue.playCollection();
+else play('page');
+showBadge(L('new_evidence')+L(clueData[id][0]));
+refreshCrime();
+/* Regular Room 1807 evidence always runs a Benedict/North exchange after it
+ * enters the Case File. Keep Review hidden until that exchange completes;
+ * both the production evidence panel and the legacy fallback call
+ * refreshCrime() from their dialogue completion callback. */
+if(state.screen==='crime'&&['blood','laptop','suitcase'].includes(id)){
+ const review=$("#reviewEvidence");
+ review?.classList.remove('show','lw-ready');
+}
+updateProgress();
+autoSave()
 }
 function runDialogue(container,lines,onComplete){
 let index=0,lastRecorded=-1;

@@ -1,4 +1,4 @@
-/* LAST WITNESS — Chapter II / Chapter III Production Integration 0.7.4
+/* LAST WITNESS — Chapter II / Chapter III Production Integration 0.7.5
  * Owns the Medical transition and loads Chapter III on demand.
  * Production Runtime 11 is loaded once by 08-stability-repair.js.
  */
@@ -71,7 +71,7 @@ let runtimePromise=null;
 function ensureProductionRuntime(){
  if(runtimePromise)return runtimePromise;
  addStylesheetOnce("css/chapter-03.css?v=074","lwChapter03Style");
- runtimePromise=loadScriptOnce("js/chapters/chapter-03/01-title-phase1.js?v=074","lwChapter03Script").catch(error=>{console.error("LAST WITNESS Chapter III runtime failed to load",error);throw error;});
+ runtimePromise=loadScriptOnce("js/chapters/chapter-03/01-title-phase1.js?v=075","lwChapter03Script").catch(error=>{console.error("LAST WITNESS Chapter III runtime failed to load",error);throw error;});
  return runtimePromise;
 }
 async function startChapter3(event){
@@ -119,7 +119,7 @@ function bind(){
   if(event.target.closest?.("#forensicDialogue"))setTimeout(transitionCompletedForensic,450);
  },true);
  queueMicrotask(transitionCompletedForensic);
- window.LastWitnessChapter2Integration={showChapter2Complete,returnToTitle,enterMedicalExaminer,transitionCompletedForensic,startChapter3,ensureProductionRuntime,titleAudioState,version:"0.7.4"};
+ window.LastWitnessChapter2Integration={showChapter2Complete,returnToTitle,enterMedicalExaminer,transitionCompletedForensic,startChapter3,ensureProductionRuntime,titleAudioState,version:"0.7.5"};
 }
 if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",bind,{once:true});else bind();
 })();

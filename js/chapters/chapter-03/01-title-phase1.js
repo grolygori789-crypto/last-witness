@@ -1,10 +1,10 @@
-/* LAST WITNESS — Chapter III / Phases I–II 0.7.4
+/* LAST WITNESS — Chapter III / Phases I–II 0.7.5
  * THE BORROWED MINUTES — deterministic briefing, timeline reconstruction,
  * takeoff transition and in-flight investigation bridge.
  */
 (function(){
 "use strict";
-if(window.LastWitnessChapter3?.version==="0.7.4")return;
+if(window.LastWitnessChapter3?.version==="0.7.5")return;
 
 const $=(s,r=document)=>r.querySelector(s);
 const $$=(s,r=document)=>Array.from(r.querySelectorAll(s));
@@ -206,7 +206,7 @@ function startOpeningDialogue(){
 function enterOffice(){
  inject();ensureState();stopPhase2Media(true);enteringOffice=true;show("chapter3Office");enteringOffice=false;closePuzzle();$("#ch3Choice")?.classList.add("hidden");const complete=$("#ch3PhaseComplete");if(complete)complete.style.display="none";
  state.checkpoint="ch3_phase1_office";state.chapter3.started=true;updateProgress(state.chapter3.timelineComplete?62:18);updateLanguage();
- if(state.chapter3.phase1Complete){showPhaseComplete();return;}if(state.chapter3.timelineComplete){hidePuzzleLauncher();if(!state.chapter3.choice)showChoices();return;}if(state.chapter3.openingComplete){showPuzzleLauncher();return;}state.chapter3.openingPlaying=false;startOpeningDialogue();
+ if(state.chapter3.phase1Complete){goPhase2();return;}if(state.chapter3.timelineComplete){hidePuzzleLauncher();if(!state.chapter3.choice)showChoices();return;}if(state.chapter3.openingComplete){showPuzzleLauncher();return;}state.chapter3.openingPlaying=false;startOpeningDialogue();
 }
 function resetPhase1State(selectedRoute){
  state.chapter3={route:selectedRoute,started:true,openingComplete:false,openingPlaying:false,timelineComplete:false,choice:null,phase1Complete:false,phase2Started:false,phase2Stage:null,phase2TakeoffComplete:false,phase2TravelCardSeen:false,phase2DialogueComplete:false,phase2Complete:false};
@@ -241,8 +241,20 @@ function chooseLead(choice){
  const response={system:[{speaker:"North",emotion:"serious",en:"I’ll isolate the reconciliation service and the Singapore endpoint.",th:"ฉันจะแยกบริการปรับข้อมูลย้อนหลังกับปลายทางสิงคโปร์ออกมาตรวจ"}],daniel:[{speaker:"North",emotion:"neutral",en:"I’ll pull the booking, airport cameras and every document Daniel prepared for the trip.",th:"ฉันจะดึงข้อมูลจอง กล้องสนามบิน และเอกสารทุกชิ้นที่แดเนียลเตรียมไว้สำหรับการเดินทาง"}],operator:[{speaker:"North",emotion:"skeptical",en:"Then we start with who could issue 18-07 without becoming its recorded owner.",th:"งั้นเริ่มจากคนที่ออกสิทธิ์ 18-07 ได้ โดยไม่กลายเป็นเจ้าของสิทธิ์ในบันทึก"}]}[choice];
  playDialogue(response.concat([{speaker:"Benedict",emotion:"serious",en:"Book two seats. This time we verify the passengers.",th:"จองสองที่นั่ง คราวนี้เราตรวจผู้โดยสารให้ครบ"}]),finishPhase);
 }
-function finishPhase(){ensureState();state.chapter3.phase1Complete=true;state.checkpoint="ch3_phase1_complete";updateProgress(100);autoSave();showPhaseComplete();}
-function showPhaseComplete(){$("#chapter3Dialogue")?.classList.add("hidden");$("#ch3Choice")?.classList.add("hidden");hidePuzzleLauncher();closePuzzle();const complete=$("#ch3PhaseComplete");if(complete)complete.style.display="block";updateLanguage();}
+function finishPhase(){
+ ensureState();
+ state.chapter3.phase1Complete=true;
+ state.checkpoint="ch3_phase1_complete";
+ updateProgress(100);
+ autoSave();
+ /* Phase I ends on Benedict's travel decision. Move straight into the
+  * takeoff transition instead of interrupting the scene with a duplicate
+  * completion card. */
+ goPhase2();
+}
+/* Compatibility bridge for saves created while the old Phase I completion
+ * card was still part of the flow. */
+function showPhaseComplete(){goPhase2();}
 
 function preferredCabinSource(){
  const probe=document.createElement("audio");try{const support=probe.canPlayType?.('audio/webm; codecs="opus"')||"";if(support==="probably"||support==="maybe")return CABIN_WEBM;}catch(_){}return CABIN_MP3;
@@ -323,7 +335,7 @@ function returnTitle(){stopPhase2Media(true);window.LastWitnessChapter2Integrati
 function resumeFromState(screen){
  if(screen!==PHASE2_SCREEN)stopPhase2Media(false);
  if(!screen?.startsWith?.("chapter3")||enteringOffice)return;inject();ensureState();updateLanguage();
- if(screen==="chapter3Office"){closePuzzle();if(state.chapter3.phase1Complete){showPhaseComplete();return;}if(state.chapter3.timelineComplete){hidePuzzleLauncher();if(!state.chapter3.choice)showChoices();return;}if(state.chapter3.openingComplete){showPuzzleLauncher();return;}state.chapter3.openingPlaying=false;startOpeningDialogue();return;}
+ if(screen==="chapter3Office"){closePuzzle();if(state.chapter3.phase1Complete){goPhase2();return;}if(state.chapter3.timelineComplete){hidePuzzleLauncher();if(!state.chapter3.choice)showChoices();return;}if(state.chapter3.openingComplete){showPuzzleLauncher();return;}state.chapter3.openingPlaying=false;startOpeningDialogue();return;}
  if(screen===PHASE2_SCREEN){
   $("#ch3PhaseComplete")?.style.setProperty("display","none");
   if(state.chapter3.phase2Complete){showPhase2Complete();return;}
@@ -359,5 +371,5 @@ function bind(){
 }
 
 inject();
-window.LastWitnessChapter3={startFromChapter2,resumeFromState,updateLanguage,openPuzzle,enterOffice,goPhase2,stopPhase2Media,version:"0.7.4"};
+window.LastWitnessChapter3={startFromChapter2,resumeFromState,updateLanguage,openPuzzle,enterOffice,goPhase2,stopPhase2Media,version:"0.7.5"};
 })();
