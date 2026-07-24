@@ -1,36 +1,36 @@
-# Owner Test Checklist — 0.9.1
+# Owner Test Checklist — Build 0.9.2
 
-## Phase III gate
-1. Collect the first two Changi evidence items and confirm the review button stays hidden.
-2. Collect the final evidence item.
-3. Confirm its Benedict/North dialogue appears.
-4. While that dialogue is active, confirm no review/minigame button appears behind it.
-5. Finish the dialogue and confirm the review button appears only then.
+## Character Journal
+1. Open every current character card.
+2. Confirm Benedict: Detective, age 42.
+3. Confirm North: IT Specialist, age 32.
+4. Confirm Elena: Forensic Analyst.
+5. Confirm Somchai: Police Officer.
+6. Confirm Kittisak Siriwat: Police Captain / ร้อยตำรวจเอก.
+7. Confirm Ratchata name displays exactly `Ratchata (Dr. Singh)` and age 43.
+8. Confirm existing relationship percentages remain intact.
 
-## Phase III → IV transition
-6. Complete the Changi minigame and closing conversation.
-7. Confirm there is no Phase III completion card.
-8. Confirm the driving clip starts directly.
-9. Confirm only the video and Skip Transition button are visible while the car is moving.
-10. Let the video finish and confirm a separate full-screen card appears:
-    - DAY 3
-    - EARLY EVENING
-    - SINGAPORE · INVESTIGATION OFFICE
-11. Confirm the card then enters the office cleanly.
-12. Repeat using Skip Transition and confirm it goes to the same arrival card before the office.
+## Flight to Changi
+9. Play the in-flight scene normally from its first line.
+10. Tap through the final line.
+11. Confirm the scene automatically enters the Singapore arrival/Changi transition without requiring Return to Title or reload.
+12. Save during the flight, load, finish the remaining dialogue, and confirm the same handoff.
 
-## Portraits
-13. Check Cheryl in neutral, skeptical, arms-crossed and explaining expressions.
-14. Check Farid in smirk, explaining, focused and warm-smile expressions.
-15. Confirm faces are large, shoulders are anchored correctly and no white fringe is visible.
+## Cheryl and Farid portraits
+13. Check Cheryl: neutral, skeptical, arms-crossed, explaining.
+14. Check Farid: neutral, smirk, explaining, focused, warm-smile.
+15. Confirm no portrait is stretched vertically.
+16. Confirm both show face, neck, shoulders, and useful upper torso.
+17. Confirm no white fringe is visible against the dark dialogue frame.
+18. Confirm neither portrait drops below or floats outside the portrait cell.
 
-## Phase IV
-16. Test all three Cheryl response choices.
-17. Collect all three evidence items and confirm the comparison button waits for the last evidence dialogue.
-18. Complete Limited Header Comparison.
-19. Confirm the ending preserves these limits:
-    - eleven-minute rule exists
-    - raw event order remains restricted
-    - source device and operator remain unproven
-20. Save and load once during the arrival card, office introduction, evidence phase and minigame.
-21. Test TH and EN from a fresh Phase IV start.
+## Compare lifecycle
+19. Enter the office from a clean Phase IV start.
+20. During Cheryl's opening dialogue, confirm Compare is absent.
+21. During the response-choice panel, confirm Compare is absent.
+22. After Farid's introduction, confirm Compare remains absent.
+23. Collect one and then two evidence items; confirm Compare remains absent.
+24. Collect the third evidence item and finish its dialogue.
+25. Confirm Compare appears only after that dialogue finishes.
+26. Open and complete the matrix.
+27. Confirm Compare disappears after completion.

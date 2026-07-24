@@ -1,15 +1,15 @@
-/* LAST WITNESS — Chapter III / Phase IV: Singapore Investigation Office 0.9.1 */
+/* LAST WITNESS — Chapter III / Phase IV: Singapore Investigation Office 0.9.2 */
 (function(){
 "use strict";
-if(window.LastWitnessPhase4?.version==="0.9.1")return;
+if(window.LastWitnessPhase4?.version==="0.9.2")return;
 
-const BUILD="0.9.1";
+const BUILD="0.9.2";
 const TRANSITION_SCREEN="chapter3Phase4Transition";
 const OFFICE_SCREEN="chapter3SingaporeOffice";
-const VIDEO_PATH="assets/video/chapter-03/phase-04/drive-to-investigation-office.mp4?v=0910";
-const TRANSITION_AUDIO="assets/audio/chapter-03/phase-04/drive-to-investigation-office.mp3?v=0910";
-const OFFICE_IMAGE="assets/images/chapter-03/phase-04/singapore-investigation-office.png?v=0910";
-const OFFICE_AUDIO="assets/audio/chapter-03/phase-04/singapore-investigation-office-ambience.mp3?v=0910";
+const VIDEO_PATH="assets/video/chapter-03/phase-04/drive-to-investigation-office.mp4?v=0920";
+const TRANSITION_AUDIO="assets/audio/chapter-03/phase-04/drive-to-investigation-office.mp3?v=0920";
+const OFFICE_IMAGE="assets/images/chapter-03/phase-04/singapore-investigation-office.png?v=0920";
+const OFFICE_AUDIO="assets/audio/chapter-03/phase-04/singapore-investigation-office-ambience.mp3?v=0920";
 const CHERYL_BASE="assets/images/chapter-03/phase-04/cheryl/";
 const FARID_BASE="assets/images/chapter-03/phase-04/farid/";
 const EVIDENCE_IDS=["relay","logs","token"];
@@ -82,8 +82,8 @@ function syncAudio(){
 
 function installPortraits(){
  try{
-  const cheryl={neutral:CHERYL_BASE+"neutral.png?v=0910",serious:CHERYL_BASE+"neutral.png?v=0910",skeptical:CHERYL_BASE+"skeptical.png?v=0910",side:CHERYL_BASE+"side.png?v=0910",arms_crossed:CHERYL_BASE+"arms_crossed.png?v=0910",surprised:CHERYL_BASE+"surprised.png?v=0910",thinking:CHERYL_BASE+"thinking.png?v=0910",faint_smile:CHERYL_BASE+"faint_smile.png?v=0910",explaining:CHERYL_BASE+"explaining.png?v=0910",alert:CHERYL_BASE+"alert.png?v=0910",concerned:CHERYL_BASE+"concerned.png?v=0910",reading:CHERYL_BASE+"reading.png?v=0910",closed_off:CHERYL_BASE+"closed_off.png?v=0910"};
-  const farid={neutral:FARID_BASE+"neutral.png?v=0910",side:FARID_BASE+"side.png?v=0910",tablet:FARID_BASE+"tablet.png?v=0910",smirk:FARID_BASE+"smirk.png?v=0910",look_up:FARID_BASE+"look_up.png?v=0910",surprised:FARID_BASE+"surprised.png?v=0910",explaining:FARID_BASE+"explaining.png?v=0910",amused:FARID_BASE+"amused.png?v=0910",thinking:FARID_BASE+"thinking.png?v=0910",concerned:FARID_BASE+"concerned.png?v=0910",warm_smile:FARID_BASE+"warm_smile.png?v=0910",focused:FARID_BASE+"focused.png?v=0910",alert:FARID_BASE+"alert.png?v=0910",downcast:FARID_BASE+"downcast.png?v=0910",arms_crossed:FARID_BASE+"arms_crossed.png?v=0910",tablet_read:FARID_BASE+"tablet_read.png?v=0910",coffee:FARID_BASE+"coffee.png?v=0910"};
+  const cheryl={neutral:CHERYL_BASE+"neutral.png?v=0920",serious:CHERYL_BASE+"neutral.png?v=0920",skeptical:CHERYL_BASE+"skeptical.png?v=0920",side:CHERYL_BASE+"side.png?v=0920",arms_crossed:CHERYL_BASE+"arms_crossed.png?v=0920",surprised:CHERYL_BASE+"surprised.png?v=0920",thinking:CHERYL_BASE+"thinking.png?v=0920",faint_smile:CHERYL_BASE+"faint_smile.png?v=0920",explaining:CHERYL_BASE+"explaining.png?v=0920",alert:CHERYL_BASE+"alert.png?v=0920",concerned:CHERYL_BASE+"concerned.png?v=0920",reading:CHERYL_BASE+"reading.png?v=0920",closed_off:CHERYL_BASE+"closed_off.png?v=0920"};
+  const farid={neutral:FARID_BASE+"neutral.png?v=0920",side:FARID_BASE+"side.png?v=0920",tablet:FARID_BASE+"tablet.png?v=0920",smirk:FARID_BASE+"smirk.png?v=0920",look_up:FARID_BASE+"look_up.png?v=0920",surprised:FARID_BASE+"surprised.png?v=0920",explaining:FARID_BASE+"explaining.png?v=0920",amused:FARID_BASE+"amused.png?v=0920",thinking:FARID_BASE+"thinking.png?v=0920",concerned:FARID_BASE+"concerned.png?v=0920",warm_smile:FARID_BASE+"warm_smile.png?v=0920",focused:FARID_BASE+"focused.png?v=0920",alert:FARID_BASE+"alert.png?v=0920",downcast:FARID_BASE+"downcast.png?v=0920",arms_crossed:FARID_BASE+"arms_crossed.png?v=0920",tablet_read:FARID_BASE+"tablet_read.png?v=0920",coffee:FARID_BASE+"coffee.png?v=0920"};
   PORTRAITS["Inspector Cheryl Goh"]=cheryl; PORTRAITS["สารวัตร Cheryl Goh"]=cheryl;
   PORTRAITS["Farid Rahman"]=farid; PORTRAITS["Farid Rahman (SPF)"]=farid; PORTRAITS["ฟาริด ราห์มาน"]=farid;
  }catch(_){}
@@ -246,7 +246,7 @@ function inject(){
    <button class="ch3-office-hotspot hs-token" data-office-clue="token" type="button"><i></i><span class="ch3-hotspot-label"></span></button>
    <div id="chapter3OfficeDialogue" class="dialogue hidden"></div>
    <div id="ch3OfficeChoice" class="choice-panel hidden ch3-office-choice"><div id="ch3OfficeChoiceTitle" class="choice-title"></div><button class="choice-option" data-office-choice="evidence" type="button"></button><button class="choice-option" data-office-choice="urgency" type="button"></button><button class="choice-option" data-office-choice="cooperate" type="button"></button></div>
-   <button id="ch3OfficeReview" class="primary ch3-office-review" type="button"></button>
+   <button id="ch3OfficeReview" class="primary ch3-office-review" type="button" hidden aria-hidden="true"></button>
    <div id="ch3OfficeAccess" class="ch3-authorization" aria-live="polite"><strong>SPF LIAISON AUTHORISED</strong><span id="ch3OfficeAccessText"></span></div>
    <div id="ch3OfficeComplete" class="phase-card" style="display:none"><div id="ch3OfficeCompleteEye" class="eyebrow"></div><h2 id="ch3OfficeCompleteTitle"></h2><p id="ch3OfficeCompleteText"></p><button id="ch3OfficeContinuePhase5" class="primary" type="button"></button><button id="ch3OfficeReturnTitle" class="ghost" type="button"></button></div>
    <div class="progress ch3-office-progress"><span id="ch3OfficeProgressText" class="progressText">0%</span><div class="progress-bar"><div id="ch3OfficeProgressFill" class="progress-fill"></div></div></div>
@@ -302,8 +302,9 @@ function closingLines(){return [
 
 function updateProgress(){
  const p=ensureChapterState(); if(!p) return;
- const evidenceCount=collectedSet().size;
- let pct=p.introComplete?22:8; if(p.choiceMade)pct=32; pct+=evidenceCount*16; if(p.matrixComplete)pct=88; if(p.complete)pct=100;
+ let pct=8;
+ if(p.choiceMade)pct=18;
+ if(p.introComplete){pct=32; pct+=collectedSet().size*16; if(p.matrixComplete)pct=88; if(p.complete)pct=100}
  $("#ch3OfficeProgressText")?.replaceChildren(document.createTextNode(pct+"%")); const fill=$("#ch3OfficeProgressFill"); if(fill) fill.style.width=pct+"%";
 }
 function setHotspotsLocked(locked,animate=true){
@@ -315,16 +316,17 @@ function setHotspotsLocked(locked,animate=true){
 function paintHotspots(){const done=collectedSet(); $$('[data-office-clue]').forEach(node=>node.classList.toggle('found',done.has(node.dataset.officeClue)))}
 function updateReview(){
  const btn=$("#ch3OfficeReview"); if(!btn)return;
- const p=ensureChapterState(), ready=allEvidenceCollected()&&!p.matrixComplete&&!dialogueActive&&!$("#ch3OfficeEvidencePanel")?.classList.contains("open")&&!$("#ch3OfficeMatrix")?.classList.contains("open")&&!$("#ch3OfficeChoice")?.classList.contains("show");
- btn.classList.toggle("show",ready); btn.disabled=!ready;
+ const p=ensureChapterState();
+ const ready=p.introComplete===true&&p.choiceMade===true&&p.stage==="investigation"&&allEvidenceCollected()&&!p.matrixComplete&&!dialogueActive&&!$("#ch3OfficeEvidencePanel")?.classList.contains("open")&&!$("#ch3OfficeMatrix")?.classList.contains("open")&&!$("#ch3OfficeChoice")?.classList.contains("show");
+ btn.classList.toggle("show",ready); btn.disabled=!ready; btn.hidden=!ready; btn.setAttribute("aria-hidden",ready?"false":"true");
 }
 function syncScene(){paintHotspots(); updateProgress(); updateReview()}
 
 function openChoice(){
  const panel=$("#ch3OfficeChoice"); if(!panel) return;
- choiceLocked=false; panel.classList.remove("hidden"); panel.classList.add("show"); syncAudio();
+ choiceLocked=false; panel.classList.remove("hidden"); panel.classList.add("show"); updateReview(); syncAudio();
 }
-function closeChoice(){ const panel=$("#ch3OfficeChoice"); if(!panel) return; panel.classList.remove("show"); panel.classList.add("hidden"); syncAudio(); }
+function closeChoice(){ const panel=$("#ch3OfficeChoice"); if(!panel) return; panel.classList.remove("show"); panel.classList.add("hidden"); updateReview(); syncAudio(); }
 function showAccess(done){
  const card=$("#ch3OfficeAccess"); if(!card){done?.(); return}
  $("#ch3OfficeAccessText").textContent=tr(LANG.en.ch3p4_open_access,LANG.th.ch3p4_open_access);
@@ -340,7 +342,7 @@ function finishChoice(choice){
 }
 function startIntro(){
  const p=ensureChapterState(); if(dialogueActive||p.introComplete) return;
- p.stage="intro"; gameState().checkpoint="ch3_phase4_intro"; setHotspotsLocked(true,false); $("#ch3OfficeObjective").textContent=copy().openingObjective;
+ p.stage="intro"; gameState().checkpoint="ch3_phase4_intro"; setHotspotsLocked(true,false); updateReview(); $("#ch3OfficeObjective").textContent=copy().openingObjective;
  runSceneDialogue(introLines(), openChoice); save();
 }
 
@@ -374,7 +376,7 @@ function enterOffice(){
  const o=$("#ch3Phase4OfficeAmbience");if(o){o.loop=true;if(soundOn())o.play().catch(()=>{})}syncAudio();
  if(p.complete){showComplete();return}
  if(p.matrixComplete&&!p.closingDialogueComplete){runClosingDialogue();return}
- if(p.introComplete||p.evidenceCollected.length){p.introComplete=true;setHotspotsLocked(false,false);syncScene();return}
+ if(p.introComplete){setHotspotsLocked(false,false);syncScene();return}
  setHotspotsLocked(true,false);setTimeout(startIntro,320);
 }
 
@@ -416,8 +418,8 @@ function renderConclusions(){
  $$('[data-conclusion]',wrap).forEach(btn=>btn.addEventListener('click',()=>chooseConclusion(btn.dataset.conclusion)));
 }
 function clearMatrixStatus(){const node=$("#ch3OfficeMatrixStatus"); if(node){node.textContent=""; node.className="ch3-reconcile-status"}}
-function openMatrix(){ const modal=$("#ch3OfficeMatrix"); if(!modal)return; matrixStage="classify"; matrixAssignments={...ensureChapterState().matrixAssignments}; modal.classList.add('open'); modal.setAttribute('aria-hidden','false'); clearMatrixStatus(); renderFacts(); syncAudio(); }
-function closeMatrix(resetUI=true){ const modal=$("#ch3OfficeMatrix"); if(!modal)return; modal.classList.remove('open'); modal.setAttribute('aria-hidden','true'); if(resetUI){matrixStage='classify';} syncAudio(); }
+function openMatrix(){ const modal=$("#ch3OfficeMatrix"),p=ensureChapterState(); if(!modal||!p||p.introComplete!==true||p.choiceMade!==true||p.stage!=="investigation"||!allEvidenceCollected()||p.matrixComplete||dialogueActive)return; matrixStage="classify"; matrixAssignments={...p.matrixAssignments}; modal.classList.add('open'); modal.setAttribute('aria-hidden','false'); clearMatrixStatus(); renderFacts(); updateReview(); syncAudio(); }
+function closeMatrix(resetUI=true){ const modal=$("#ch3OfficeMatrix"); if(!modal)return; modal.classList.remove('open'); modal.setAttribute('aria-hidden','true'); if(resetUI){matrixStage='classify';} updateReview(); syncAudio(); }
 function resetMatrix(){ matrixAssignments={}; matrixStage='classify'; const p=ensureChapterState(); if(p) p.matrixAssignments={}; save(); clearMatrixStatus(); renderFacts(); }
 function confirmMatrix(){
  if(matrixStage!=="classify") return; const c=copy(), status=$("#ch3OfficeMatrixStatus");
@@ -435,7 +437,7 @@ function runClosingDialogue(){
  const p=ensureChapterState(); if(dialogueActive||p.complete)return; setHotspotsLocked(false,false); $("#ch3OfficeReview")?.classList.remove('show'); runSceneDialogue(closingLines(),()=>{p.closingDialogueComplete=true; p.complete=true; p.stage='complete'; gameState().checkpoint='ch3_phase4_complete'; showComplete(); save()});
 }
 function showComplete(){
- const p=ensureChapterState(); p.complete=true; p.closingDialogueComplete=true; p.stage='complete'; $("#chapter3OfficeDialogue")?.classList.add('hidden'); $("#ch3OfficeReview")?.classList.remove('show'); setHotspotsLocked(false,false); $("#ch3OfficeComplete")?.style.setProperty('display','block'); updateProgress(); syncAudio();
+ const p=ensureChapterState(); p.complete=true; p.closingDialogueComplete=true; p.stage='complete'; $("#chapter3OfficeDialogue")?.classList.add('hidden'); const review=$("#ch3OfficeReview"); if(review){review.classList.remove('show');review.hidden=true;review.disabled=true;review.setAttribute('aria-hidden','true')}; setHotspotsLocked(false,false); $("#ch3OfficeComplete")?.style.setProperty('display','block'); updateProgress(); syncAudio();
 }
 
 function appendCaseEntries(){
@@ -468,7 +470,7 @@ function goPhase5Wip(){
 }
 function resumePhase4(screen){inject();const p=ensureChapterState();updateLanguage();if(screen===TRANSITION_SCREEN){if(p?.travelCardSeen){safeShow(TRANSITION_SCREEN);showTravelCard()}else beginTransition(true);return}if(screen===OFFICE_SCREEN){enterOffice();return}}
 function installResumeBridge(){
- const api=window.LastWitnessChapter3; if(api&& !api.__lwPhase40910){ const original=api.resumeFromState; api.resumeFromState=function(screen){ const res=typeof original==='function'?original.apply(this,arguments):undefined; if(internalRouting) return res; if(screen===TRANSITION_SCREEN||screen===OFFICE_SCREEN){setTimeout(()=>resumePhase4(screen),0); return res} return res; }; api.__lwPhase40910=true; }
+ const api=window.LastWitnessChapter3; if(api&& !api.__lwPhase40920){ const original=api.resumeFromState; api.resumeFromState=function(screen){ const res=typeof original==='function'?original.apply(this,arguments):undefined; if(internalRouting) return res; if(screen===TRANSITION_SCREEN||screen===OFFICE_SCREEN){setTimeout(()=>resumePhase4(screen),0); return res} return res; }; api.__lwPhase40920=true; }
  window.LastWitnessPhase4={startTransition:beginTransition,resumeFromState:resumePhase4,goPhase5Wip,version:BUILD};
 }
 function bind(){

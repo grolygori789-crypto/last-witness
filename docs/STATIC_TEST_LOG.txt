@@ -1,11 +1,20 @@
-[PASS] JavaScript syntax: Phase III
-[PASS] JavaScript syntax: Phase IV
-[PASS] Build and cache references: 0.9.1 / 0910
-[PASS] Changi final-evidence dialogue gate
-[PASS] Phase III direct handoff to driving transition
-[PASS] Driving video and arrival card separated
-[PASS] Early-evening time copy consistent
-[PASS] Phase IV continuity guardrails present
-[PASS] Cheryl portrait count/mode/canvas: 12 RGBA files, 744x1000
-[PASS] Farid portrait count/mode/canvas: 17 RGBA files, 744x1000
-[PASS] Visual edge/framing QC performed on dark navy and dark red backgrounds
+[PASS] JavaScript syntax — Chapter II/III integration
+[PASS] JavaScript syntax — Changi Airport
+[PASS] JavaScript syntax — Singapore Investigation Office
+[PASS] JavaScript syntax — Character Canon module
+[PASS] Removed early static Changi script loading
+[PASS] Removed early static Phase IV script loading
+[PASS] Dynamic load sequence: Phase I–II -> Changi -> Singapore Office
+[PASS] Changi flight handoff bridge attaches after base runtime
+[PASS] Compare hidden during intro, dialogue, choices and incomplete evidence
+[PASS] Compare visible only in strict investigation-ready state
+[PASS] Compare open handler repeats strict state guard
+[PASS] Character canon verification module loads after registry
+[PASS] Kittisak corrected to Police Captain / ร้อยตำรวจเอก
+[PASS] Somchai retained as Police Officer / เจ้าหน้าที่ตำรวจ
+[PASS] Ratchata exact journal name locked
+[PASS] Portrait aspect ratio preserved; CSS transform disabled
+[PASS] Cheryl portrait count, RGBA mode, canvas and transparent corners
+[PASS] Farid portrait count, RGBA mode, canvas and transparent corners
+[PASS] Character canon mock test
+[PASS] Phase IV Compare gate unit test

@@ -1,0 +1,44 @@
+[
+  {
+    "name": "fresh intro",
+    "visible": false,
+    "enabled": false,
+    "show": false,
+    "aria": "true"
+  },
+  {
+    "name": "choice dialogue",
+    "visible": false,
+    "enabled": false,
+    "show": false,
+    "aria": "true"
+  },
+  {
+    "name": "investigation incomplete",
+    "visible": false,
+    "enabled": false,
+    "show": false,
+    "aria": "true"
+  },
+  {
+    "name": "ready",
+    "visible": true,
+    "enabled": true,
+    "show": true,
+    "aria": "false"
+  },
+  {
+    "name": "overlay open",
+    "visible": false,
+    "enabled": false,
+    "show": false,
+    "aria": "true"
+  },
+  {
+    "name": "matrix complete",
+    "visible": false,
+    "enabled": false,
+    "show": false,
+    "aria": "true"
+  }
+]

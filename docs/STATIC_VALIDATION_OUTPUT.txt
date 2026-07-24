@@ -1,0 +1,21 @@
+[PASS] index removes early static Changi module 
+[PASS] index removes early static Phase IV module 
+[PASS] dynamic Chapter III load order is 01 -> 02 -> 03 [5247, 5346, 5455]
+[PASS] Changi bridge installs after base runtime 
+[PASS] flight handoff waits for final state update 
+[PASS] Phase IV Compare button is initially hidden 
+[PASS] Compare CSS hard-hides hidden control 
+[PASS] Compare gate requires intro, choice and investigation stage 
+[PASS] Compare open handler repeats strict gate 
+[PASS] stale evidence cannot auto-complete intro 
+[PASS] character canon module loaded after registry 
+[PASS] Kittisak exact rank 
+[PASS] Somchai role retained 
+[PASS] Ratchata exact journal name 
+[PASS] Benedict age 42 
+[PASS] North age 32 
+[PASS] portrait CSS does not stretch 
+[PASS] cheryl portrait count 12
+[PASS] cheryl portrait alpha/canvas 
+[PASS] farid portrait count 17
+[PASS] farid portrait alpha/canvas 

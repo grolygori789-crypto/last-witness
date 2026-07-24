@@ -1,25 +1,37 @@
-# Test Report — 0.9.1 Candidate
+# Test Report — Build 0.9.2 Candidate
 
-## Completed
-- Latest production `GAME_MASTER_PLAN.md`, `index.html`, Phase III, Phase IV and shared dialogue/CSS ownership were reviewed before patching.
-- JavaScript syntax check passed:
-  - `js/chapters/chapter-03/02-changi-airport.js`
-  - `js/chapters/chapter-03/03-singapore-office.js`
-- Static sequencing checks passed:
-  - final evidence dialogue gates review-button visibility
-  - Phase III closes directly into Phase IV
-  - transition video and arrival card are separate layers
-  - arrival card cannot cover the moving video
-- Build/cache references verified as `0.9.1` / `0910`.
-- Portrait asset checks passed:
-  - Cheryl: 12 PNG files
-  - Farid: 17 PNG files
-  - every file is RGBA
-  - every file uses a `744 × 1000` canvas
-  - all portrait filenames referenced by Phase IV exist
-- Portraits were visually checked against dark navy and dark red backgrounds for pale fringe and framing.
-- Narrative continuity audit completed from Chapter I through Phase IV.
+## Source verification completed
+- Fetched the latest `GAME_MASTER_PLAN.md` from `restore-game-recovered`.
+- Fetched the latest `index.html` and related Chapter III/Character Registry runtime files.
+- Confirmed the effective production baseline was Build 0.9.1 before modification.
+
+## Automated/static checks passed
+- JavaScript syntax:
+  - `05-chapter2-integration.js`
+  - `02-changi-airport.js`
+  - `03-singapore-office.js`
+  - `14-character-canon.js`
+- Static Chapter III load-order validation:
+  - no early static Changi load
+  - no early static Phase IV load
+  - dynamic order is Phase I–II → Changi → Singapore Office
+- Phase IV Compare gate unit test:
+  - hidden during intro
+  - hidden during choice dialogue
+  - hidden before all evidence
+  - visible only in the correct investigation-ready state
+  - hidden while an overlay is open
+  - hidden after completion
+- Character canon module mock test passed.
+- Portrait validation:
+  - Cheryl: 12 RGBA PNG files
+  - Farid: 17 RGBA PNG files
+  - every file: `744 × 1000`
+  - transparent corners verified
+  - aspect ratio preserved
+- Visual portrait preview inspected on a dark dialogue-style background.
 
 ## Not claimed
-- No claim of an owner-device Android pass is made.
-- Audio balance, browser media behavior and full Save/Load flow still require the owner's real-device test after upload.
+- The full game was not run in a local Chromium browser because the available environment blocks localhost pages by organization policy.
+- No Android, live GitHub Pages, real audio, or real Save/Load pass is claimed.
+- Final approval still depends on the owner's device test.
