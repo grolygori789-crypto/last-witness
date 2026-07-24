@@ -1,4 +1,4 @@
-/* LAST WITNESS — Professional Investigation Lifecycle 0.8.0
+/* LAST WITNESS — Professional Investigation Lifecycle 0.8.1
  * Shared scene state for narrative-first investigation flow.
  * No polling, no MutationObserver and no additional audio owner.
  */
@@ -7,7 +7,7 @@
 if(window.__lwInvestigationLifecycle0711)return;
 window.__lwInvestigationLifecycle0711=true;
 
-const BUILD="0.8.0";
+const BUILD="0.8.1";
 const $=(selector,root=document)=>root.querySelector(selector);
 const $$=(selector,root=document)=>Array.from(root.querySelectorAll(selector));
 const runtime=new Map();

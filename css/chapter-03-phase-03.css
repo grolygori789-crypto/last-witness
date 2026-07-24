@@ -1,4 +1,4 @@
-/* LAST WITNESS — Chapter III Phase III / Changi Airport 0.8.0 */
+/* LAST WITNESS — Chapter III Phase III / Changi Airport 0.8.1 */
 
 body.lw-changi-runtime #ch3FlightComplete{display:none!important}
 
@@ -15,6 +15,10 @@ body.lw-changi-runtime #ch3FlightComplete{display:none!important}
 #ch3ChangiSceneLabel{top:calc(58px + var(--top))}
 #ch3ChangiObjective{top:calc(103px + var(--top));max-width:min(84vw,430px)}
 #chapter3ChangiDialogue{z-index:42}
+/* The one-scene immigration officer uses production-cropped transparent PNGs.
+ * Keep the face and shoulders prominent like Benedict and North without
+ * changing portrait framing for any other character. */
+#chapter3ChangiDialogue img.portrait[src*="/immigration-officer/"]{object-fit:cover;object-position:center 18%}
 .ch3-changi-progress{z-index:20}
 
 .ch3-changi-hotspot{position:absolute;z-index:15;border:0;background:transparent;opacity:1;transition:opacity .32s ease,transform .32s ease;touch-action:manipulation}

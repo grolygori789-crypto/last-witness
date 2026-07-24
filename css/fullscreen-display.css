@@ -1,0 +1,85 @@
+/* LAST WITNESS — Full Screen Display 0.8.1
+ * Fits the mobile-first game to the browser's true fullscreen viewport while
+ * preserving scene aspect ratio, safe-area spacing and existing UI ownership.
+ */
+
+html.lw-fullscreen,
+html.lw-fullscreen body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  overscroll-behavior: none;
+  background: #050609;
+}
+
+#game:fullscreen,
+#game:-webkit-full-screen {
+  width: 100vw;
+  height: 100dvh;
+  min-height: 100dvh;
+  max-width: none;
+  max-height: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background: #050609;
+}
+
+#game:fullscreen .screen,
+#game:-webkit-full-screen .screen {
+  inset: 0;
+}
+
+.lw-display-setting {
+  margin: 18px 0 12px;
+  padding-top: 16px;
+  border-top: 1px solid rgba(255,255,255,.10);
+}
+
+.lw-display-setting-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 6px;
+}
+
+.lw-display-setting-title {
+  color: #f2ede3;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.lw-fullscreen-status {
+  flex: 0 0 auto;
+  padding: 4px 8px;
+  border: 1px solid rgba(255,255,255,.14);
+  border-radius: 999px;
+  color: #aaa39a;
+  background: rgba(255,255,255,.04);
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: .11em;
+  text-transform: uppercase;
+}
+
+.lw-fullscreen-status.active {
+  color: #d9bf86;
+  border-color: rgba(221,181,109,.42);
+  background: rgba(221,181,109,.08);
+}
+
+.lw-display-setting-help {
+  margin: 0 0 10px;
+  color: #aaa39a;
+  font-size: 11px;
+  line-height: 1.45;
+}
+
+.lw-fullscreen-button { margin-top: 0; }
+.lw-fullscreen-button:disabled { opacity: .45; }
+
+html[lang="th"] .lw-fullscreen-status {
+  letter-spacing: .035em;
+  text-transform: none;
+}

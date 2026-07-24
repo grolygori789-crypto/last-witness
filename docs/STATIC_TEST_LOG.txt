@@ -1,24 +1,42 @@
-LAST WITNESS 0.8.0 STATIC TEST LOG
-UTC: 2026-07-24T04:18:25Z
+LAST WITNESS 0.8.1 FULL SCREEN + IMMIGRATION PORTRAIT PATCH
+Static and simulated test log
 
-[JavaScript syntax]
-PASS js/chapters/chapter-03/02-changi-airport.js
-PASS js/chapters/chapter-02/05-chapter2-integration.js
-PASS js/engine/12-investigation-lifecycle.js
+[1] JavaScript syntax
+PASS 12-investigation-lifecycle.js
+PASS 13-fullscreen-display.js
+PASS 05-chapter2-integration.js
+PASS 02-changi-airport.js
 
-[Images]
-PASS assets/images/chapter-03/phase-03/changi-arrival-operations.jpg mode=RGB size=(864, 1536)
-PASS assets/images/chapter-03/phase-03/immigration-officer/assessing.png mode=RGBA size=(768, 1024) real-alpha
-PASS assets/images/chapter-03/phase-03/immigration-officer/checking-document.png mode=RGBA size=(768, 1024) real-alpha
-PASS assets/images/chapter-03/phase-03/immigration-officer/neutral.png mode=RGBA size=(768, 1024) real-alpha
-PASS assets/images/chapter-03/phase-03/immigration-officer/speaking.png mode=RGBA size=(768, 1024) real-alpha
-PASS assets/images/chapter-03/phase-03/singapore-arrival.jpg mode=RGB size=(864, 1536)
+[2] Static integration
+PASS index load order, build bridge, cache versions, isolated fullscreen ownership, portrait targeting and file presence
 
-[Audio]
-PASS assets/audio/chapter-03/phase-03/changi-airport-ambience.mp3 duration=318.216000
-PASS assets/audio/chapter-03/phase-03/singapore-arrival-transition.mp3 duration=126.040813
+[3] Fullscreen runtime simulation
+PASS fullscreen supported, unsupported and rejected flows; gesture, state, menu, language and build label
 
-[Architecture]
-PASS no embedded image/audio Base64 in delivery text files
-PASS no polling or MutationObserver added by Phase III module
-PASS Phase III is loaded after stable Phase I-II runtime
+[4] Changi regression simulation
+## full flow
+PASS arrival screen
+PASS changi screen
+PASS intro complete
+PASS evidence complete
+PASS phase complete
+PASS checkpoint
+## partial restore
+PASS restored screen
+PASS no intro restart
+PASS booking green
+PASS movement yellow
+## complete restore
+PASS complete card restored
+PASS complete state
+## Thai
+PASS Thai location
+PASS Thai officer
+PASS Thai chicken rice
+PASS Thai Prada
+
+[5] Portrait alpha and scale verification
+PASS assessing.png: bbox (118, 36, 649, 1016) -> (65, 10, 702, 1024); alpha clean; matte ratio 0.683->0.311
+PASS checking-document.png: bbox (115, 36, 653, 1016) -> (66, 8, 701, 1024); alpha clean; matte ratio 0.677->0.279
+PASS neutral.png: bbox (124, 36, 643, 1016) -> (62, 8, 706, 1024); alpha clean; matte ratio 0.673->0.312
+PASS speaking.png: bbox (124, 36, 643, 1016) -> (62, 8, 706, 1024); alpha clean; matte ratio 0.675->0.315

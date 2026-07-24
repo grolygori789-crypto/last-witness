@@ -1,12 +1,12 @@
-/* LAST WITNESS — Chapter III / Phase III: Changi Airport 0.8.0
+/* LAST WITNESS — Chapter III / Phase III: Changi Airport 0.8.1
  * Continues directly from the in-flight scene.
  * Verifies passenger movement separately from booking and accepted system access.
  */
 (function(){
 "use strict";
-if(window.LastWitnessChangi?.version==="0.8.0")return;
+if(window.LastWitnessChangi?.version==="0.8.1")return;
 
-const BUILD="0.8.0";
+const BUILD="0.8.1";
 const FLIGHT_SCREEN="chapter3Phase2Wip";
 const ARRIVAL_SCREEN="chapter3ArrivalTransition";
 const CHANGI_SCREEN="chapter3Changi";
@@ -86,7 +86,7 @@ function safeShow(screen){internalRouting=true;try{show(screen)}finally{internal
 
 function installPortraits(){
  try{
-  const officer={neutral:OFFICER_BASE+"neutral.png?v=0800",speaking:OFFICER_BASE+"speaking.png?v=0800",assessing:OFFICER_BASE+"assessing.png?v=0800",checking_document:OFFICER_BASE+"checking-document.png?v=0800"};
+  const officer={neutral:OFFICER_BASE+"neutral.png?v=0801",speaking:OFFICER_BASE+"speaking.png?v=0801",assessing:OFFICER_BASE+"assessing.png?v=0801",checking_document:OFFICER_BASE+"checking-document.png?v=0801"};
   PORTRAITS["Immigration Officer"]=officer;PORTRAITS["เจ้าหน้าที่ตรวจคนเข้าเมือง"]=officer;
  }catch(_){}
 }
@@ -410,7 +410,7 @@ function resumePhase3(screen){
  if(screen===CHANGI_SCREEN){enterChangi();return}
 }
 function installResumeBridge(){
- const api=window.LastWitnessChapter3;if(!api||api.__lwChangi0800)return;originalResume=api.resumeFromState;
+ const api=window.LastWitnessChapter3;if(!api||api.__lwChangi0801)return;originalResume=api.resumeFromState;
  api.resumeFromState=function(screen){
   const result=typeof originalResume==="function"?originalResume.apply(this,arguments):undefined;
   if(internalRouting)return result;
@@ -418,7 +418,7 @@ function installResumeBridge(){
   if(screen===FLIGHT_SCREEN){scheduleFlightHandoff();return result}
   stopAudio(false);closeEvidence();closePuzzle(false);return result;
  };
- api.startChangi=beginArrivalTransition;api.__lwChangi0800=true;
+ api.startChangi=beginArrivalTransition;api.__lwChangi0801=true;
 }
 function startFreshForDev(){
  inject();const s=gameState();if(!s)return;s.chapter=3;s.chapter3=s.chapter3||{};s.chapter3.phase2Started=true;s.chapter3.phase2TakeoffComplete=true;s.chapter3.phase2TravelCardSeen=true;s.chapter3.phase2DialogueComplete=true;s.chapter3.phase2Complete=true;s.chapter3.phase3={started:false,arrivalSeen:false,introComplete:false,evidenceCollected:[],puzzleAssignments:{},puzzleComplete:false,closingDialogueComplete:false,complete:false,stage:"arrival"};
@@ -427,7 +427,7 @@ function startFreshForDev(){
 function returnTitle(){stopAudio(true);closeEvidence();closePuzzle(false);window.LastWitnessChapter2Integration?.returnToTitle?.()}
 function installBuild(){
  const label=$("#settingsVersion");if(label)label.textContent=`LAST WITNESS · BUILD ${BUILD}`;
- const original=window.snapshot;if(typeof original==="function"&&!original.__lwBuild0800){const wrapped=function(){const data=original.apply(this,arguments);if(data&&typeof data==="object")data.build=BUILD;return data};wrapped.__lwBuild0800=true;window.snapshot=wrapped;if(window.LastWitnessSaveManager)window.LastWitnessSaveManager.snapshot=wrapped}
+ const original=window.snapshot;if(typeof original==="function"&&!original.__lwBuild0801){const wrapped=function(){const data=original.apply(this,arguments);if(data&&typeof data==="object")data.build=BUILD;return data};wrapped.__lwBuild0801=true;window.snapshot=wrapped;if(window.LastWitnessSaveManager)window.LastWitnessSaveManager.snapshot=wrapped}
  if(window.LastWitnessSaveManager)window.LastWitnessSaveManager.version=BUILD;
 }
 function bind(){

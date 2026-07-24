@@ -1,4 +1,4 @@
-/* LAST WITNESS — Chapter II / Chapter III Production Integration 0.8.0
+/* LAST WITNESS — Chapter II / Chapter III Production Integration 0.8.1
  * Owns the Medical transition and loads Chapter III on demand.
  * Chapter III Phase III is loaded after the stable Phase I–II runtime.
  * Production Runtime 11 is loaded once by 08-stability-repair.js.
@@ -28,9 +28,9 @@ let runtimePromise=null;
 function ensureProductionRuntime(){
  if(runtimePromise)return runtimePromise;
  addStylesheetOnce("css/chapter-03.css?v=074","lwChapter03Style");
- addStylesheetOnce("css/chapter-03-phase-03.css?v=0800","lwChapter03Phase03Style");
+ addStylesheetOnce("css/chapter-03-phase-03.css?v=0801","lwChapter03Phase03Style");
  runtimePromise=loadScriptOnce("js/chapters/chapter-03/01-title-phase1.js?v=077","lwChapter03Script")
-  .then(()=>loadScriptOnce("js/chapters/chapter-03/02-changi-airport.js?v=0800","lwChapter03Phase03Script"))
+  .then(()=>loadScriptOnce("js/chapters/chapter-03/02-changi-airport.js?v=0801","lwChapter03Phase03Script"))
   .catch(error=>{console.error("LAST WITNESS Chapter III runtime failed to load",error);runtimePromise=null;throw error});
  return runtimePromise
 }
@@ -45,6 +45,6 @@ function installChapter3DevJump(){
  const button=document.createElement("button");button.className="dev-button";button.type="button";button.dataset.devJumpChangi="1";button.textContent=language()==="th"?"บทที่ III · สนามบินชางงี":"Chapter III · Changi Airport";
  button.addEventListener("click",async()=>{button.disabled=true;try{await ensureProductionRuntime();$("#developerModal")?.classList.remove("open");window.LastWitnessChangi?.startFreshForDev?.()}catch(error){console.error("LAST WITNESS Changi developer jump failed",error)}finally{button.disabled=false}});grid.appendChild(button)
 }
-function bind(){localizeEnding();installDirectForensicTransition();installChapter3DevJump();$("#continueChapter3")?.addEventListener("click",startChapter3,true);$("#chapter2ReturnTitle")?.addEventListener("click",returnToTitle,true);$("#chapter3WipReturnTitle")?.addEventListener("click",returnToTitle,true);$("#continueMedicalExaminer")?.addEventListener("click",enterMedicalExaminer,true);document.addEventListener("click",event=>{const saveButton=event.target.closest?.("#continueGame,#loadTitle,#loadManual");if(saveButton){const kind=saveButton.id==="continueGame"?"auto":"manual";if(kind==="auto"&&savedChapter3(kind)){event.preventDefault();event.stopImmediatePropagation();resumeChapter3Save(kind);return}setTimeout(transitionCompletedForensic,80)}if(event.target.closest?.("#restart")&&Number(window.state?.chapter)===3){event.preventDefault();event.stopImmediatePropagation();restartChapter3();return}if(event.target.closest?.("[data-lang]"))setTimeout(localizeEnding,0);if(event.target.closest?.("#forensicDialogue"))setTimeout(transitionCompletedForensic,450)},true);queueMicrotask(transitionCompletedForensic);window.LastWitnessChapter2Integration={showChapter2Complete,returnToTitle,enterMedicalExaminer,transitionCompletedForensic,startChapter3,ensureProductionRuntime,titleAudioState,version:"0.8.0"}}
+function bind(){localizeEnding();installDirectForensicTransition();installChapter3DevJump();$("#continueChapter3")?.addEventListener("click",startChapter3,true);$("#chapter2ReturnTitle")?.addEventListener("click",returnToTitle,true);$("#chapter3WipReturnTitle")?.addEventListener("click",returnToTitle,true);$("#continueMedicalExaminer")?.addEventListener("click",enterMedicalExaminer,true);document.addEventListener("click",event=>{const saveButton=event.target.closest?.("#continueGame,#loadTitle,#loadManual");if(saveButton){const kind=saveButton.id==="continueGame"?"auto":"manual";if(kind==="auto"&&savedChapter3(kind)){event.preventDefault();event.stopImmediatePropagation();resumeChapter3Save(kind);return}setTimeout(transitionCompletedForensic,80)}if(event.target.closest?.("#restart")&&Number(window.state?.chapter)===3){event.preventDefault();event.stopImmediatePropagation();restartChapter3();return}if(event.target.closest?.("[data-lang]"))setTimeout(localizeEnding,0);if(event.target.closest?.("#forensicDialogue"))setTimeout(transitionCompletedForensic,450)},true);queueMicrotask(transitionCompletedForensic);window.LastWitnessChapter2Integration={showChapter2Complete,returnToTitle,enterMedicalExaminer,transitionCompletedForensic,startChapter3,ensureProductionRuntime,titleAudioState,version:"0.8.1"}}
 if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",bind,{once:true});else bind();
 })();

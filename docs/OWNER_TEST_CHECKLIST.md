@@ -1,59 +1,34 @@
-# Owner Test Checklist — Chapter III Phase III
+# Owner Test Checklist — Build 0.8.1
 
-## Main continuity flow
+## Full Screen
 
-1. Load a save before the final in-flight dialogue.
-2. Finish the aircraft conversation.
-3. Confirm no Phase II WIP or Return-to-Title card appears.
-4. Confirm the game moves directly to the Singapore arrival transition.
-5. Confirm the game then enters Changi Airport.
+1. Open the live game in Android Chrome.
+2. Tap `Tap to begin`.
+3. Confirm the browser enters Full Screen when permission is available.
+4. Confirm the game still reaches the Title Screen if Full Screen is refused.
+5. Open Game Menu and test `Enter Full Screen` / `Exit Full Screen`.
+6. Open Settings and test the same command.
+7. Press Android Back while in Full Screen.
+8. Confirm both controls immediately change back to `Enter Full Screen`.
+9. Switch Thai and English and confirm Full Screen labels update.
+10. Confirm scenes remain correctly fitted with no stretched artwork.
+11. Confirm dialogue, top bar, bottom controls and safe-area spacing remain visible.
 
-## Immigration scene
+## Immigration officer portraits
 
-1. Confirm the officer portraits are large, aligned and free of checkerboard background.
-2. Confirm the four officer poses match the dialogue.
-3. Confirm the chicken-rice exchange appears correctly.
-4. Confirm Charles & Keith → Prada appears after immigration processing.
-5. Confirm evidence hotspots are absent and untappable until the opening sequence is complete.
+1. Developer-jump or play to Changi Airport.
+2. Check Neutral, Speaking and Assessing poses.
+3. Confirm the face and shoulders are large and visually comparable to Benedict and North.
+4. Check the passport pose.
+5. Confirm enough of the passport remains visible.
+6. Inspect hair, ears, shoulders, hands and passport edges against the dark portrait background.
+7. Confirm there is no white rectangle, checkerboard, white fringe or gray matte.
+8. Confirm portrait position does not jump unnaturally between poses.
 
-## Investigation
+## Regression
 
-1. Confirm three yellow hotspots reveal after access authorisation.
-2. Inspect and collect each evidence item.
-3. Confirm only collected evidence turns green.
-4. Confirm reopening collected evidence does not add it twice.
-5. Confirm the Case File contains the three Changi entries.
-
-## Minigame
-
-1. Confirm Review unlocks only after all three evidence items are collected.
-2. Submit an incomplete classification and confirm non-destructive feedback.
-3. Submit at least one wrong classification and confirm progress is retained.
-4. Complete the correct classification.
-5. Select a wrong conclusion and confirm it does not advance.
-6. Select the supported conclusion and finish the closing dialogue.
-
-## Save/Load
-
-1. Save after collecting one evidence item, reload, and verify green/yellow states.
-2. Save with the minigame partially classified, reload, reopen Review, and verify assignments.
-3. Save after the correct conclusion but before closing dialogue finishes, reload, and verify the closing sequence resumes.
-4. Save after Phase III completion, reload, and verify the completion card.
-
-## Audio
-
-1. Confirm arrival music stops when Changi begins.
-2. Confirm Changi ambience loops without an obvious cut or duplicated playback.
-3. Confirm ambience ducks under dialogue, evidence panels and the minigame.
-4. Confirm returning to Title stops Phase III audio.
-
-## Language
-
-1. Play the whole phase in English.
-2. Play the whole phase in Thai.
-3. Switch language while the Changi scene is idle and verify UI/evidence/minigame text.
-4. Note any speaker-name or older-dialogue line that does not redraw during a mid-line language switch as a known localization polish defect.
-
-## Developer mode
-
-From Chapter I, open Developer Console and confirm `Chapter III · Changi Airport` is available and enters a clean Phase III test state.
+- Complete the immigration dialogue.
+- Collect all three Changi evidence items.
+- Complete Passenger Trail Reconciliation.
+- Save and load once during Changi.
+- Confirm the approved chicken-rice and Charles & Keith / Prada dialogue remains unchanged.

@@ -1,63 +1,41 @@
-# Test Report — 0.8.0 Candidate
+# Test Report — Build 0.8.1 Candidate
 
-## Static checks passed
+## Passed
 
-- JavaScript syntax: `02-changi-airport.js`
-- JavaScript syntax: modified `05-chapter2-integration.js`
-- JavaScript syntax: modified `12-investigation-lifecycle.js`
-- `index.html` parsed without structural failure
-- all referenced Phase III production assets exist
-- Changi and arrival backgrounds are 864 × 1536
-- all four immigration-officer portraits are 768 × 1024 RGBA PNGs with real alpha transparency
-- both MP3 files are readable by FFprobe
+- JavaScript syntax for all modified and added JavaScript files
+- Index load order and cache-version checks
+- Build label and Save snapshot build bridge updated to 0.8.1
+- Full Screen controls injected once into Settings and Game Menu
+- Tap to Begin requests Full Screen within the original user gesture
+- Full Screen enter, exit and browser-owned state-change simulation
+- Unsupported-browser behavior
+- Permission-denied behavior with non-blocking feedback
+- Thai and English Full Screen labels
+- Game Menu closes after its Full Screen command
+- Changi fresh flow regression
+- Changi partial-save restore
+- Changi completed-save restore
+- Changi Thai dialogue and approved jokes
+- Immigration officer portrait alpha transparency
+- Transparent pixels contain zero RGB data
+- White-matte edge contamination substantially reduced
+- Portrait width increased while preserving 768 × 1024 production dimensions
 
-## Chromium simulated-runtime checks passed
+## Portrait scale changes
 
-### Full fresh flow
+- Neutral: approximately 24.1% wider visible subject
+- Speaking: approximately 24.1% wider visible subject
+- Assessing: approximately 20.0% wider visible subject
+- Checking document: approximately 18.0% wider visible subject
 
-- Phase II completion hands off to Singapore arrival
-- arrival transition opens
-- Changi scene opens
-- evidence hotspots remain locked during opening dialogue
-- opening dialogue completes
-- hotspots reveal
-- all three evidence items can be inspected and added
-- green state appears after collection
-- reconciliation minigame unlocks
-- correct classification advances
-- unsupported conclusions do not advance
-- supported conclusion advances
-- closing dialogue completes
-- Phase III completion card opens
-- checkpoint becomes `ch3_phase3_complete`
+The document pose remains slightly less enlarged so the passport remains readable in the dialogue frame.
 
-### Save/Load state checks
+## Not tested
 
-- partial Phase III state restores to Changi
-- opening dialogue does not restart after intro completion
-- collected evidence restores green
-- uncollected evidence restores yellow
-- completed Phase III restores the completion card
-- a save after the correct conclusion resumes the closing sequence
+- Real Android Chrome Fullscreen API behavior
+- GitHub Pages cache behavior after upload
+- Device-specific navigation-bar and gesture-bar behavior
+- Visual confirmation on the owner's exact screen
+- Real-device portrait framing after browser font and viewport differences
 
-### Localization checks
-
-- Thai Changi location text renders
-- immigration-officer speaker name renders in Thai on scene entry
-- approved Thai chicken-rice line is registered
-- approved Prada line is registered
-- Phase III dialogue uses localization keys, allowing the active line's body text to redraw when the global language renderer runs
-
-### Direct aircraft handoff check
-
-A simulated final click on the in-flight dialogue, followed by the Phase II completion state update, routed to `chapter3ArrivalTransition` with checkpoint `ch3_phase3_arrival`. No JavaScript page error was reported.
-
-## Not tested here
-
-- Android Chrome on the owner's device
-- deployed GitHub Pages cache behaviour
-- real speaker/headphone audio balance
-- uninterrupted listening across the full 318-second Changi ambience file
-- every legacy save created by every historical build
-
-The candidate must remain labeled 0.8.0 Candidate until owner-device regression passes.
+The patch remains a Candidate until owner testing passes.
