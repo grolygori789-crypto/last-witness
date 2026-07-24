@@ -1,42 +1,11 @@
-LAST WITNESS 0.8.1 FULL SCREEN + IMMIGRATION PORTRAIT PATCH
-Static and simulated test log
+LAST WITNESS 0.8.2 STATIC TEST LOG
 
-[1] JavaScript syntax
-PASS 12-investigation-lifecycle.js
-PASS 13-fullscreen-display.js
-PASS 05-chapter2-integration.js
-PASS 02-changi-airport.js
-
-[2] Static integration
-PASS index load order, build bridge, cache versions, isolated fullscreen ownership, portrait targeting and file presence
-
-[3] Fullscreen runtime simulation
-PASS fullscreen supported, unsupported and rejected flows; gesture, state, menu, language and build label
-
-[4] Changi regression simulation
-## full flow
-PASS arrival screen
-PASS changi screen
-PASS intro complete
-PASS evidence complete
-PASS phase complete
-PASS checkpoint
-## partial restore
-PASS restored screen
-PASS no intro restart
-PASS booking green
-PASS movement yellow
-## complete restore
-PASS complete card restored
-PASS complete state
-## Thai
-PASS Thai location
-PASS Thai officer
-PASS Thai chicken rice
-PASS Thai Prada
-
-[5] Portrait alpha and scale verification
-PASS assessing.png: bbox (118, 36, 649, 1016) -> (65, 10, 702, 1024); alpha clean; matte ratio 0.683->0.311
-PASS checking-document.png: bbox (115, 36, 653, 1016) -> (66, 8, 701, 1024); alpha clean; matte ratio 0.677->0.279
-PASS neutral.png: bbox (124, 36, 643, 1016) -> (62, 8, 706, 1024); alpha clean; matte ratio 0.673->0.312
-PASS speaking.png: bbox (124, 36, 643, 1016) -> (62, 8, 706, 1024); alpha clean; matte ratio 0.675->0.315
+PASS node --check js/engine/13-fullscreen-display.js
+PASS index references css/fullscreen-display.css?v=0802
+PASS index references js/engine/13-fullscreen-display.js?v=0802
+PASS Settings Build label is 0.8.2
+PASS Save Manager overlay-root repair
+PASS Full Screen document-root target
+PASS Title and Settings Exit Game controls
+PASS EN/TH localization
+PASS exit auto-save / close attempt / fullscreen exit / fallback

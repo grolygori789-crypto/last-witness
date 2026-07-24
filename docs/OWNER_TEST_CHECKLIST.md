@@ -1,34 +1,18 @@
-# Owner Test Checklist — Build 0.8.1
+# Android Owner Test Checklist
 
-## Full Screen
+1. Open the game and tap `Tap to Begin` to enter Full Screen.
+2. Start Chapter I and tap the top Save icon without leaving Full Screen.
+3. Confirm Save Manager appears immediately.
+4. Close Save Manager, open Menu, and choose Save Game. Confirm it appears immediately.
+5. Open Load Game from the Title Screen while Full Screen is active.
+6. Save a named slot, load it, and verify the correct Chapter and checkpoint return.
+7. Open Settings and test Exit Full Screen, then Enter Full Screen.
+8. Open Exit Game from Settings, cancel once, and confirm the game remains playable.
+9. Open Exit Game again and confirm. Verify current progress was auto-saved.
+10. Test Exit Game from the Title Screen.
 
-1. Open the live game in Android Chrome.
-2. Tap `Tap to begin`.
-3. Confirm the browser enters Full Screen when permission is available.
-4. Confirm the game still reaches the Title Screen if Full Screen is refused.
-5. Open Game Menu and test `Enter Full Screen` / `Exit Full Screen`.
-6. Open Settings and test the same command.
-7. Press Android Back while in Full Screen.
-8. Confirm both controls immediately change back to `Enter Full Screen`.
-9. Switch Thai and English and confirm Full Screen labels update.
-10. Confirm scenes remain correctly fitted with no stretched artwork.
-11. Confirm dialogue, top bar, bottom controls and safe-area spacing remain visible.
+Expected browser behavior:
 
-## Immigration officer portraits
-
-1. Developer-jump or play to Changi Airport.
-2. Check Neutral, Speaking and Assessing poses.
-3. Confirm the face and shoulders are large and visually comparable to Benedict and North.
-4. Check the passport pose.
-5. Confirm enough of the passport remains visible.
-6. Inspect hair, ears, shoulders, hands and passport edges against the dark portrait background.
-7. Confirm there is no white rectangle, checkerboard, white fringe or gray matte.
-8. Confirm portrait position does not jump unnaturally between poses.
-
-## Regression
-
-- Complete the immigration dialogue.
-- Collect all three Changi evidence items.
-- Complete Passenger Trail Reconciliation.
-- Save and load once during Changi.
-- Confirm the approved chicken-rice and Charles & Keith / Prada dialogue remains unchanged.
+- Chrome may close the tab when allowed.
+- If Chrome blocks automatic tab closing, the game tries browser Back.
+- If neither is permitted, a polished Game Saved screen explains that the tab can be closed safely.

@@ -1,7 +1,14 @@
 # Known Limitations
 
-- A website cannot guarantee Full Screen without a valid user gesture and browser permission.
-- Some in-app browsers or embedded webviews may disable the Fullscreen API.
-- Android may retain a small system gesture indicator even when Chrome enters Full Screen.
-- Leaving the app, locking the device or pressing Back may cause the browser to exit Full Screen. The controls track the browser's real state and allow re-entry.
-- Full Screen preference is intentionally not saved because the browser owns this permission and state.
+A normal website cannot guarantee that Chrome will close its own tab. Browsers usually allow `window.close()` only for windows created by script.
+
+Exit Game therefore follows this safe sequence:
+
+1. Auto-save current gameplay.
+2. Stop media.
+3. Leave Full Screen.
+4. Attempt to close the tab.
+5. If blocked, attempt browser Back.
+6. If still blocked, display a Game Saved exit screen.
+
+This is a browser security limitation, not a game defect.

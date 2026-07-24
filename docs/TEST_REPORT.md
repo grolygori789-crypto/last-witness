@@ -1,41 +1,27 @@
-# Test Report — Build 0.8.1 Candidate
+# Test Report
 
 ## Passed
 
-- JavaScript syntax for all modified and added JavaScript files
-- Index load order and cache-version checks
-- Build label and Save snapshot build bridge updated to 0.8.1
-- Full Screen controls injected once into Settings and Game Menu
-- Tap to Begin requests Full Screen within the original user gesture
-- Full Screen enter, exit and browser-owned state-change simulation
-- Unsupported-browser behavior
-- Permission-denied behavior with non-blocking feedback
-- Thai and English Full Screen labels
-- Game Menu closes after its Full Screen command
-- Changi fresh flow regression
-- Changi partial-save restore
-- Changi completed-save restore
-- Changi Thai dialogue and approved jokes
-- Immigration officer portrait alpha transparency
-- Transparent pixels contain zero RGB data
-- White-matte edge contamination substantially reduced
-- Portrait width increased while preserving 768 × 1024 production dimensions
+- JavaScript syntax validation.
+- Index cache-version and Build label validation.
+- Save Manager starts outside `#game` and is reparented into `#game`.
+- A Save button press repairs the overlay root before the existing Save handler runs.
+- Full Screen target is the document root.
+- Full Screen active/inactive state updates correctly in the UI.
+- Title Screen Exit Game control is injected.
+- Settings Exit Game control is injected.
+- Exit confirmation opens and cancels correctly.
+- Thai and English labels update correctly.
+- Confirmed exit auto-saves active gameplay.
+- Confirmed exit leaves Full Screen and attempts `window.close()`.
+- Fallback exit screen appears when browser tab closing is blocked.
 
-## Portrait scale changes
+## Test method
 
-- Neutral: approximately 24.1% wider visible subject
-- Speaking: approximately 24.1% wider visible subject
-- Assessing: approximately 20.0% wider visible subject
-- Checking document: approximately 18.0% wider visible subject
+Chromium DevTools Protocol DOM/runtime simulation using the production 0.8.2 Full Screen module, mocked Fullscreen API, Save Manager overlay and game state.
 
-The document pose remains slightly less enlarged so the passport remains readable in the dialogue frame.
+## Not tested here
 
-## Not tested
-
-- Real Android Chrome Fullscreen API behavior
-- GitHub Pages cache behavior after upload
-- Device-specific navigation-bar and gesture-bar behavior
-- Visual confirmation on the owner's exact screen
-- Real-device portrait framing after browser font and viewport differences
-
-The patch remains a Candidate until owner testing passes.
+- Physical Android Chrome tab-closing policy.
+- GitHub Pages cache propagation.
+- Real-device safe-area layout and browser navigation history behavior.

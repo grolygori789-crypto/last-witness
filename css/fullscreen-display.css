@@ -1,10 +1,11 @@
-/* LAST WITNESS — Full Screen Display 0.8.1
- * Fits the mobile-first game to the browser's true fullscreen viewport while
- * preserving scene aspect ratio, safe-area spacing and existing UI ownership.
- */
+/* LAST WITNESS - Full Screen Display and Exit Flow 0.8.2 */
 
 html.lw-fullscreen,
-html.lw-fullscreen body {
+html.lw-fullscreen body,
+html:fullscreen,
+html:fullscreen body,
+html:-webkit-full-screen,
+html:-webkit-full-screen body {
   width: 100%;
   height: 100%;
   overflow: hidden;
@@ -12,6 +13,8 @@ html.lw-fullscreen body {
   background: #050609;
 }
 
+html:fullscreen #game,
+html:-webkit-full-screen #game,
 #game:fullscreen,
 #game:-webkit-full-screen {
   width: 100vw;
@@ -25,12 +28,15 @@ html.lw-fullscreen body {
   background: #050609;
 }
 
+html:fullscreen #game .screen,
+html:-webkit-full-screen #game .screen,
 #game:fullscreen .screen,
 #game:-webkit-full-screen .screen {
   inset: 0;
 }
 
-.lw-display-setting {
+.lw-display-setting,
+.lw-exit-setting {
   margin: 18px 0 12px;
   padding-top: 16px;
   border-top: 1px solid rgba(255,255,255,.10);
@@ -44,7 +50,8 @@ html.lw-fullscreen body {
   margin-bottom: 6px;
 }
 
-.lw-display-setting-title {
+.lw-display-setting-title,
+.lw-exit-setting-title {
   color: #f2ede3;
   font-size: 13px;
   font-weight: 700;
@@ -69,17 +76,102 @@ html.lw-fullscreen body {
   background: rgba(221,181,109,.08);
 }
 
-.lw-display-setting-help {
+.lw-display-setting-help,
+.lw-exit-setting-help {
   margin: 0 0 10px;
   color: #aaa39a;
   font-size: 11px;
   line-height: 1.45;
 }
 
-.lw-fullscreen-button { margin-top: 0; }
-.lw-fullscreen-button:disabled { opacity: .45; }
+.lw-fullscreen-button,
+.lw-exit-button { margin-top: 0; }
+.lw-fullscreen-button:disabled,
+.lw-exit-button:disabled { opacity: .45; }
+
+.lw-title-exit {
+  margin-top: 12px;
+  border-color: rgba(174,78,70,.42);
+  color: #d8c7c3;
+  background: rgba(73,24,24,.42);
+}
+
+.lw-exit-setting .lw-exit-button {
+  border-color: rgba(174,78,70,.42);
+  color: #dfc8c4;
+  background: rgba(73,24,24,.32);
+}
+
+#lwExitConfirm {
+  z-index: 430;
+  background: rgba(2,3,6,.82);
+  backdrop-filter: blur(8px);
+}
+
+.lw-exit-confirm-card {
+  width: min(92vw,430px);
+  text-align: center;
+  border-color: rgba(221,181,109,.34);
+  box-shadow: 0 28px 80px rgba(0,0,0,.72);
+}
+
+.lw-exit-confirm-card h3 {
+  margin: 8px 0 10px;
+  font: 500 30px Georgia,serif;
+}
+
+.lw-exit-confirm-card p {
+  margin: 0 0 18px;
+  color: #cfc5b8;
+  line-height: 1.55;
+}
+
+.lw-exit-confirm-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 9px;
+}
+
+.lw-exit-confirm-actions button { margin-top: 0; }
+
+.lw-exit-screen {
+  position: absolute;
+  inset: 0;
+  z-index: 520;
+  display: none;
+  place-items: center;
+  padding: max(24px,env(safe-area-inset-top)) 22px max(24px,env(safe-area-inset-bottom));
+  background: radial-gradient(circle at 50% 24%,#29232d,#08090c 58%,#010102);
+}
+
+.lw-exit-screen.show { display: grid; }
+
+.lw-exit-screen-card {
+  width: min(100%,460px);
+}
+
+.lw-exit-screen-card h2 {
+  margin: 10px 0 12px;
+  font: 500 clamp(34px,10vw,48px) Georgia,serif;
+}
+
+.lw-exit-screen-card p {
+  color: #cfc5b8;
+  line-height: 1.58;
+}
 
 html[lang="th"] .lw-fullscreen-status {
   letter-spacing: .035em;
   text-transform: none;
+}
+
+html[lang="th"] .lw-exit-confirm-card h3,
+html[lang="th"] .lw-exit-screen-card h2 {
+  font-family: "Noto Sans Thai","Leelawadee UI",Tahoma,system-ui,sans-serif;
+}
+
+@media(max-height:650px){
+  .lw-display-setting,.lw-exit-setting{margin-top:13px;padding-top:12px}
+  .lw-exit-confirm-card{padding:18px}
+  .lw-exit-confirm-card h3{font-size:26px}
 }
