@@ -1,11 +1,19 @@
-/* LAST WITNESS — Chapter III / Phase IV: Singapore Investigation Office 0.9.0 */
-#chapter3Phase4Transition .scene,
+/* LAST WITNESS — Chapter III / Phase IV: Singapore Investigation Office 0.9.1 */
 #chapter3SingaporeOffice .scene{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
-.ch3-p4-video{background:#000}
-.ch3-p4-video-overlay{background:linear-gradient(to top,rgba(3,5,10,.78),rgba(3,5,10,.16) 36%,rgba(3,5,10,.44));pointer-events:none}
-.ch3-p4-card{position:absolute;left:50%;top:11%;transform:translateX(-50%);width:min(82vw,30rem);z-index:3}
+.ch3-p4-transition{overflow:hidden;background:#050608}
+.ch3-p4-video-layer{position:absolute;inset:0;z-index:90;display:none;background:#020306;overflow:hidden}
+.ch3-p4-video-layer.show{display:block}
+.ch3-p4-video-layer video{width:100%;height:100%;display:block;object-fit:cover;background:#020306}
+.ch3-p4-video-shade{position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,rgba(0,0,0,.03),transparent 64%,rgba(0,0,0,.30))}
+.ch3-p4-skip{position:absolute;z-index:3;right:14px;bottom:calc(18px + var(--bottom));width:auto;min-width:124px;margin:0;padding:9px 13px;border-color:rgba(255,255,255,.28);background:rgba(4,5,8,.58);backdrop-filter:blur(8px);font-size:10px;letter-spacing:.08em}
+.ch3-p4-travel-card{position:absolute;inset:0;z-index:85;display:none;place-items:center;padding:24px;background:#050608;opacity:0;transition:opacity .28s ease}
+.ch3-p4-travel-card.show{display:grid;opacity:1}
+.ch3-p4-travel-card .chapter-card{width:min(88vw,430px)}
+.ch3-p4-travel-card .ch3-day-time{margin:12px 0 5px;color:#f2ede3;font:500 clamp(28px,9vw,44px) Georgia,serif;letter-spacing:.06em}
+.ch3-p4-travel-card h2{margin:4px 0 12px;font:500 clamp(20px,6vw,30px)/1.18 Georgia,serif;letter-spacing:.045em}
+.ch3-p4-travel-card p{color:#d4c5ae;letter-spacing:.13em;text-transform:uppercase;font-size:12px}
 .ch3-office-overlay{background:linear-gradient(to top,rgba(5,7,12,.86),rgba(5,7,12,.28) 42%,rgba(5,7,12,.54));pointer-events:none}
-.ch3-office .topbar,.ch3-p4-transition .topbar{z-index:4}
+.ch3-office .topbar{z-index:4}
 .ch3-office-hotspot{position:absolute;display:flex;align-items:center;gap:.55rem;background:rgba(12,17,26,.72);border:1px solid rgba(221,187,116,.36);border-radius:999px;padding:.3rem .75rem .3rem .3rem;color:#ead7a5;box-shadow:0 .6rem 1.2rem rgba(0,0,0,.24);z-index:4;transition:transform .2s ease,opacity .24s ease,background .2s ease}
 .ch3-office-hotspot i{display:block;width:.95rem;height:.95rem;border-radius:50%;background:#f1c46f;box-shadow:0 0 0 .25rem rgba(241,196,111,.22),0 0 .9rem rgba(241,196,111,.46)}
 .ch3-office-hotspot .ch3-hotspot-label{font-size:.8rem;letter-spacing:.06em;text-transform:uppercase;white-space:nowrap}
@@ -23,4 +31,10 @@
 .ch3-evidence-visual .ch3-dual-table{width:100%;border-collapse:collapse;font-size:.84rem}.ch3-evidence-visual .ch3-dual-table th,.ch3-evidence-visual .ch3-dual-table td{border:1px solid rgba(237,215,156,.16);padding:.45rem .5rem;text-align:left}.ch3-evidence-visual .ch3-dual-table th{color:#f0d998;background:rgba(255,255,255,.04)}
 .ch3-fact-row{border:1px solid rgba(255,255,255,.08);border-radius:1rem;padding:.85rem 1rem;margin:.75rem 0;background:rgba(255,255,255,.025)}
 .ch3-fact-text{margin-bottom:.7rem;line-height:1.42}.ch3-fact-actions{display:flex;flex-wrap:wrap;gap:.45rem}.ch3-fact-actions button,.ch3-conclusion-option{border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.035);color:#f4f4f4;border-radius:.85rem;padding:.75rem .95rem}.ch3-fact-actions button.selected{border-color:rgba(224,187,102,.62);background:rgba(224,187,102,.12);color:#f0d998}.ch3-conclusion-option{display:block;width:100%;text-align:left;margin:.75rem 0;line-height:1.4}
-@media (max-width:430px){.ch3-p4-card{top:10.5%;width:min(88vw,24rem)}.ch3-office-choice{bottom:12rem;padding:.9rem}.ch3-office-review{bottom:6.5rem}.ch3-office-hotspot .ch3-hotspot-label{font-size:.72rem}.ch3-office .hs-relay{left:6%;top:43%}.ch3-office .hs-logs{left:35%;top:46%}.ch3-office .hs-token{right:5%;top:55%}}
+/* Phase IV portrait QC: head-and-shoulders crops are anchored like Benedict/North. */
+#chapter3OfficeDialogue .portrait-wrap{background:linear-gradient(160deg,#181820,#090a0e)}
+#chapter3OfficeDialogue .portrait.Goh,#chapter3OfficeDialogue .portrait.Rahman{width:102%;height:102%;max-width:none;object-fit:cover;object-position:center 8%;transform:translate(-1%,-1%);transform-origin:center top}
+html[lang="th"] .ch3-p4-travel-card p{letter-spacing:.035em;text-transform:none}
+html[lang="th"] .ch3-p4-travel-card .ch3-day-time{letter-spacing:.02em}
+@media (max-width:430px){.ch3-office-choice{bottom:12rem;padding:.9rem}.ch3-office-review{bottom:6.5rem}.ch3-office-hotspot .ch3-hotspot-label{font-size:.72rem}.ch3-office .hs-relay{left:6%;top:43%}.ch3-office .hs-logs{left:35%;top:46%}.ch3-office .hs-token{right:5%;top:55%}.ch3-p4-skip{bottom:calc(14px + var(--bottom));padding:8px 11px}}
+@media(prefers-reduced-motion:reduce){.ch3-p4-travel-card{transition:none!important}}

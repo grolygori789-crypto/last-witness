@@ -1,15 +1,15 @@
-/* LAST WITNESS — Chapter III / Phase IV: Singapore Investigation Office 0.9.0 */
+/* LAST WITNESS — Chapter III / Phase IV: Singapore Investigation Office 0.9.1 */
 (function(){
 "use strict";
-if(window.LastWitnessPhase4?.version==="0.9.0")return;
+if(window.LastWitnessPhase4?.version==="0.9.1")return;
 
-const BUILD="0.9.0";
+const BUILD="0.9.1";
 const TRANSITION_SCREEN="chapter3Phase4Transition";
 const OFFICE_SCREEN="chapter3SingaporeOffice";
-const VIDEO_PATH="assets/video/chapter-03/phase-04/drive-to-investigation-office.mp4?v=0900";
-const TRANSITION_AUDIO="assets/audio/chapter-03/phase-04/drive-to-investigation-office.mp3?v=0900";
-const OFFICE_IMAGE="assets/images/chapter-03/phase-04/singapore-investigation-office.png?v=0900";
-const OFFICE_AUDIO="assets/audio/chapter-03/phase-04/singapore-investigation-office-ambience.mp3?v=0900";
+const VIDEO_PATH="assets/video/chapter-03/phase-04/drive-to-investigation-office.mp4?v=0910";
+const TRANSITION_AUDIO="assets/audio/chapter-03/phase-04/drive-to-investigation-office.mp3?v=0910";
+const OFFICE_IMAGE="assets/images/chapter-03/phase-04/singapore-investigation-office.png?v=0910";
+const OFFICE_AUDIO="assets/audio/chapter-03/phase-04/singapore-investigation-office-ambience.mp3?v=0910";
 const CHERYL_BASE="assets/images/chapter-03/phase-04/cheryl/";
 const FARID_BASE="assets/images/chapter-03/phase-04/farid/";
 const EVIDENCE_IDS=["relay","logs","token"];
@@ -33,6 +33,7 @@ function ensureChapterState(){
  const p=s.chapter3.phase4=s.chapter3.phase4||{};
  if(typeof p.started!=="boolean")p.started=false;
  if(typeof p.transitionSeen!=="boolean")p.transitionSeen=false;
+ if(typeof p.travelCardSeen!=="boolean")p.travelCardSeen=false;
  if(typeof p.introComplete!=="boolean")p.introComplete=false;
  if(typeof p.choiceMade!=="boolean")p.choiceMade=false;
  if(typeof p.choiceKey!=="string")p.choiceKey="";
@@ -49,7 +50,17 @@ function allEvidenceCollected(){const set=collectedSet();return EVIDENCE_IDS.eve
 function save(){try{if(typeof autoSave==="function")autoSave()}catch(_){}}
 function safeShow(screen){internalRouting=true;try{show(screen)}finally{internalRouting=false}}
 function stopElement(a,reset=false){if(!a)return;try{a.pause();if(reset)a.currentTime=0}catch(_){}}
-function stopAudio(reset=false){clearTimeout(transitionTimer);clearTimeout(revealTimer);cancelAnimationFrame(officeFadeFrame);stopElement($("#ch3Phase4TransitionAudio"),reset);stopElement($("#ch3Phase4OfficeAmbience"),reset)}
+function stopAudio(reset=false){
+ clearTimeout(transitionTimer);clearTimeout(revealTimer);cancelAnimationFrame(officeFadeFrame);
+ stopElement($("#ch3Phase4TransitionAudio"),reset);stopElement($("#ch3Phase4OfficeAmbience"),reset);
+ const video=$("#ch3Phase4TransitionVideo");if(video)try{video.pause();if(reset)video.currentTime=0}catch(_){}
+}
+function resumeTransitionMedia(){
+ const p=ensureChapterState();if(activeScreen()!==TRANSITION_SCREEN||p?.travelCardSeen)return;
+ const video=$("#ch3Phase4TransitionVideo"),audio=$("#ch3Phase4TransitionAudio");
+ if(video)video.play().catch(()=>{});
+ if(audio&&soundOn()){audio.volume=clamp(musicLevel()*.58,0,.46);audio.play().catch(()=>{})}
+}
 function phase4OverlayOpen(){return Boolean($("#ch3OfficeEvidencePanel")?.classList.contains("open")||$("#ch3OfficeMatrix")?.classList.contains("open")||$("#ch3OfficeChoice")?.classList.contains("show"))}
 function fadeOffice(target,duration=320){
  const audio=$("#ch3Phase4OfficeAmbience"); if(!audio) return;
@@ -71,8 +82,8 @@ function syncAudio(){
 
 function installPortraits(){
  try{
-  const cheryl={neutral:CHERYL_BASE+"neutral.png?v=0900",serious:CHERYL_BASE+"neutral.png?v=0900",skeptical:CHERYL_BASE+"skeptical.png?v=0900",side:CHERYL_BASE+"side.png?v=0900",arms_crossed:CHERYL_BASE+"arms_crossed.png?v=0900",surprised:CHERYL_BASE+"surprised.png?v=0900",thinking:CHERYL_BASE+"thinking.png?v=0900",faint_smile:CHERYL_BASE+"faint_smile.png?v=0900",explaining:CHERYL_BASE+"explaining.png?v=0900",alert:CHERYL_BASE+"alert.png?v=0900",concerned:CHERYL_BASE+"concerned.png?v=0900",reading:CHERYL_BASE+"reading.png?v=0900",closed_off:CHERYL_BASE+"closed_off.png?v=0900"};
-  const farid={neutral:FARID_BASE+"neutral.png?v=0900",side:FARID_BASE+"side.png?v=0900",tablet:FARID_BASE+"tablet.png?v=0900",smirk:FARID_BASE+"smirk.png?v=0900",look_up:FARID_BASE+"look_up.png?v=0900",surprised:FARID_BASE+"surprised.png?v=0900",explaining:FARID_BASE+"explaining.png?v=0900",amused:FARID_BASE+"amused.png?v=0900",thinking:FARID_BASE+"thinking.png?v=0900",concerned:FARID_BASE+"concerned.png?v=0900",warm_smile:FARID_BASE+"warm_smile.png?v=0900",focused:FARID_BASE+"focused.png?v=0900",alert:FARID_BASE+"alert.png?v=0900",downcast:FARID_BASE+"downcast.png?v=0900",arms_crossed:FARID_BASE+"arms_crossed.png?v=0900",tablet_read:FARID_BASE+"tablet_read.png?v=0900",coffee:FARID_BASE+"coffee.png?v=0900"};
+  const cheryl={neutral:CHERYL_BASE+"neutral.png?v=0910",serious:CHERYL_BASE+"neutral.png?v=0910",skeptical:CHERYL_BASE+"skeptical.png?v=0910",side:CHERYL_BASE+"side.png?v=0910",arms_crossed:CHERYL_BASE+"arms_crossed.png?v=0910",surprised:CHERYL_BASE+"surprised.png?v=0910",thinking:CHERYL_BASE+"thinking.png?v=0910",faint_smile:CHERYL_BASE+"faint_smile.png?v=0910",explaining:CHERYL_BASE+"explaining.png?v=0910",alert:CHERYL_BASE+"alert.png?v=0910",concerned:CHERYL_BASE+"concerned.png?v=0910",reading:CHERYL_BASE+"reading.png?v=0910",closed_off:CHERYL_BASE+"closed_off.png?v=0910"};
+  const farid={neutral:FARID_BASE+"neutral.png?v=0910",side:FARID_BASE+"side.png?v=0910",tablet:FARID_BASE+"tablet.png?v=0910",smirk:FARID_BASE+"smirk.png?v=0910",look_up:FARID_BASE+"look_up.png?v=0910",surprised:FARID_BASE+"surprised.png?v=0910",explaining:FARID_BASE+"explaining.png?v=0910",amused:FARID_BASE+"amused.png?v=0910",thinking:FARID_BASE+"thinking.png?v=0910",concerned:FARID_BASE+"concerned.png?v=0910",warm_smile:FARID_BASE+"warm_smile.png?v=0910",focused:FARID_BASE+"focused.png?v=0910",alert:FARID_BASE+"alert.png?v=0910",downcast:FARID_BASE+"downcast.png?v=0910",arms_crossed:FARID_BASE+"arms_crossed.png?v=0910",tablet_read:FARID_BASE+"tablet_read.png?v=0910",coffee:FARID_BASE+"coffee.png?v=0910"};
   PORTRAITS["Inspector Cheryl Goh"]=cheryl; PORTRAITS["สารวัตร Cheryl Goh"]=cheryl;
   PORTRAITS["Farid Rahman"]=farid; PORTRAITS["Farid Rahman (SPF)"]=farid; PORTRAITS["ฟาริด ราห์มาน"]=farid;
  }catch(_){}
@@ -82,77 +93,81 @@ function installLanguage(){
   if(typeof LANG!=="object")return;
   Object.assign(LANG.en,{
    ch3p4_intro_1:"Inspector Cheryl Goh.",
-   ch3p4_intro_2:"You proved Daniel Voss never entered Singapore. His records did.",
-   ch3p4_intro_3:"Records are why we're here.",
-   ch3p4_intro_4:"Good. Then keep your conclusions on a short leash.",
-   ch3p4_intro_5:"You'll have read-only review inside this office. Nothing leaves the room without context.",
+   ch3p4_intro_2:"Changi proved Daniel never crossed immigration. The 06:09 request crossed a Singapore relay. Those are different facts.",
+   ch3p4_intro_3:"That distinction is why we're here.",
+   ch3p4_intro_4:"Good. Then don't turn a route into a suspect.",
+   ch3p4_intro_5:"Read-only access. Certified headers and relay acknowledgements only. The raw reconciliation record stays restricted.",
    ch3p4_choice_title:"How do you respond?",
-   ch3p4_choice_evidence:"We only need the records separated before anyone forces them into one story.",
-   ch3p4_choice_urgency:"The same pattern reshaped forensic timing in Bangkok. Delay helps whoever built it.",
-   ch3p4_choice_cooperate:"Your boundaries are fine. We came for verification, not theatre.",
-   ch3p4_choice_evidence_r:"Better. Start with evidence and we can keep the politics outside.",
-   ch3p4_choice_urgency_r:"Then let's move before your eleven borrowed minutes turn into a day.",
-   ch3p4_choice_cooperate_r:"That already puts you ahead of most visitors with a badge.",
+   ch3p4_choice_evidence:"Separate the certified header from the relay acknowledgement. No story until each record stands on its own.",
+   ch3p4_choice_urgency:"The same accepted permission moved the collection time before Daniel was officially found. We need to know what Singapore accepted.",
+   ch3p4_choice_cooperate:"Read-only is enough. We came to verify the route, not claim the operator.",
+   ch3p4_choice_evidence_r:"Good. Evidence first, jurisdiction second, theory last.",
+   ch3p4_choice_urgency_r:"Urgency earns attention, not wider conclusions. Keep both.",
+   ch3p4_choice_cooperate_r:"Then we understand each other.",
    ch3p4_intro_6:"Farid.",
-   ch3p4_intro_7:"Morning. Or afternoon. Time gets weird when the logs start arguing.",
-   ch3p4_intro_8:"Show them the relay and the duplicate validation headers.",
-   ch3p4_intro_9:"Two accepted records, same chain, different timestamps. Either elegant engineering or a migraine with paperwork.",
-   ch3p4_intro_10:"Usually both.",
-   ch3p4_intro_11:"Knew I liked you.",
-   ch3p4_intro_12:"Start with the relay snapshot. Then the dual logs. Then the token policy.",
-   ch3p4_relay_1:"The relay snapshot shows a Singapore node accepting a booking-verification request at 06:09.",
-   ch3p4_relay_2:"Accepted access. Still not identity.",
-   ch3p4_logs_1:"Here are the two headers. One preserves the signed local event at 05:58. The other reflects the revised administrative event at 06:09.",
-   ch3p4_logs_2:"Two valid memories in the same machine.",
-   ch3p4_token_1:"This offline signature token is the hinge. Delayed sync stays valid if it lands inside the reconciliation window.",
-   ch3p4_token_2:"Which means policy can preserve contradiction without calling it one.",
-   ch3p4_close_1:"So both records survive because validation checks signature and sync policy, not whether the timeline tells the cleaner truth.",
-   ch3p4_close_2:"Authentication proves access. Validation proves the system accepted the record. Neither tells us who shaped the sequence.",
-   ch3p4_close_3:"Someone borrowed eleven minutes and taught the system to remember both versions.",
-   ch3p4_close_4:"The relay trail resurfaced near Marina Bay twenty minutes ago.",
-   ch3p4_close_5:"Then we stop interviewing records and go where the signal went.",
-   ch3p4_close_6:"Try not to buy anyone chicken rice before we get there.",
-   ch3p4_close_7:"Or Prada.",
-   ch3p4_open_access:"SPF LIAISON REVIEW · READ-ONLY SESSION",
-   ch3p4_complete_text:"The Singapore office confirms how two valid logs can survive at once. The live relay trail now points toward Marina Bay.",
+   ch3p4_intro_7:"Farid Rahman. Digital forensics. Early evening, apparently. The logs are still arguing about the morning.",
+   ch3p4_intro_8:"Show them what we can prove, not what the system might be hiding.",
+   ch3p4_intro_9:"One original header at 05:58. One corrected header at 06:09. Both validate. The raw event order is still behind secure access.",
+   ch3p4_intro_10:"So we have the outline of a rule, not the mechanism.",
+   ch3p4_intro_11:"Less satisfying. More honest.",
+   ch3p4_intro_12:"Relay acknowledgement first. Header comparison second. Policy marker last.",
+   ch3p4_relay_1:"The relay acknowledged the 06:09 verification event. It carried accepted Evidence Division permission and resolved to Temporary Operational Profile 18-07.",
+   ch3p4_relay_2:"Same accepted route. Still no operator.",
+   ch3p4_logs_1:"The archived original preserves 05:58. The certified corrected header preserves 06:09. Both signatures validate; the corrected event claims FS-12.",
+   ch3p4_logs_2:"The same machine signature from a terminal whose local session was offline.",
+   ch3p4_token_1:"This is only a policy marker, not the raw record. Signed delayed events inside an eleven-minute reconciliation window remain eligible for acceptance.",
+   ch3p4_token_2:"A rule can explain how the contradiction survived. It cannot identify who used it.",
+   ch3p4_close_1:"The limited headers establish two accepted states and an eleven-minute policy marker. They do not establish raw event order, source device or operator.",
+   ch3p4_close_2:"Authentication proves accepted access. Validation proves accepted records. Attribution is still empty.",
+   ch3p4_close_3:"Room 1807 staged a scene with real objects. This stages a timeline with real records.",
+   ch3p4_close_4:"Until we obtain the raw reconciliation record, that remains a working theory, not a charge.",
+   ch3p4_close_5:"Opening this review woke a dormant audit subscriber. It queried the same transaction through a public network gateway near Marina Bay.",
+   ch3p4_close_6:"Automated callback or someone watching us.",
+   ch3p4_close_7:"You may verify the endpoint. You may not call it a suspect.",
+   ch3p4_close_8:"I prefer suspects with names.",
+   ch3p4_close_9:"At the moment, we have a gateway with commitment issues.",
+   ch3p4_open_access:"SPF LIAISON REVIEW · LIMITED READ-ONLY ACCESS",
+   ch3p4_complete_text:"The office confirms that an eleven-minute reconciliation rule exists, while raw event order and operator remain unproven. A fresh audit query points toward Marina Bay.",
    ch3p4_continue_phase5:"Continue to Phase V",
    ch3p4_return_title:"Return to Title"
   });
   Object.assign(LANG.th,{
    ch3p4_intro_1:"สารวัตร Cheryl Goh",
-   ch3p4_intro_2:"คุณพิสูจน์ได้แล้วว่าแดเนียล วอสส์ไม่ได้เข้าสิงคโปร์ มีแต่บันทึกของเขาที่เข้ามา",
-   ch3p4_intro_3:"เรามาที่นี่เพราะบันทึกเหล่านั้นค่ะ",
-   ch3p4_intro_4:"ดี งั้นก็อย่ารีบสรุปเกินหลักฐาน",
-   ch3p4_intro_5:"คุณจะได้สิทธิ์ตรวจแบบอ่านอย่างเดียวภายในสำนักงานนี้ ยังไม่มีอะไรออกจากห้องนี้ถ้าขาดบริบท",
+   ch3p4_intro_2:"ที่ชางงีพิสูจน์แล้วว่าแดเนียลไม่ได้ผ่านตรวจคนเข้าเมือง แต่คำขอเวลา 06:09 ผ่าน relay ในสิงคโปร์ นั่นเป็นข้อเท็จจริงคนละเรื่องกัน",
+   ch3p4_intro_3:"เรามาที่นี่เพราะต้องแยกสองเรื่องนี้ออกจากกันค่ะ",
+   ch3p4_intro_4:"ดี งั้นก็อย่าเปลี่ยนเส้นทางของข้อมูลให้กลายเป็นผู้ต้องสงสัย",
+   ch3p4_intro_5:"สิทธิ์อ่านอย่างเดียว คุณจะเห็นเพียงหัวบันทึกที่รับรองแล้วกับ relay acknowledgement ส่วน raw reconciliation record ยังถูกจำกัดสิทธิ์",
    ch3p4_choice_title:"คุณจะตอบอย่างไร?",
-   ch3p4_choice_evidence:"เราต้องการแยกบันทึกแต่ละชุดออกจากกันก่อนที่จะมีใครบังคับให้มันกลายเป็นเรื่องเดียว",
-   ch3p4_choice_urgency:"รูปแบบเดียวกันนี้บิดเวลาในงานนิติวิทยาศาสตร์ที่กรุงเทพฯ ยิ่งช้า คนที่สร้างมันยิ่งได้ประโยชน์",
-   ch3p4_choice_cooperate:"ขอบเขตของคุณไม่ใช่ปัญหา เรามาเพื่อยืนยันข้อเท็จจริง ไม่ได้มาสร้างละคร",
-   ch3p4_choice_evidence_r:"ดี เริ่มจากหลักฐานก่อน แล้วเราจะปล่อยการเมืองไว้นอกห้องนี้",
-   ch3p4_choice_urgency_r:"งั้นก็รีบเถอะ ก่อนสิบเอ็ดนาทีที่ถูกยืมจะกลายเป็นทั้งวัน",
-   ch3p4_choice_cooperate_r:"แค่นั้นก็ทำให้คุณเหนือกว่าคนถือป้ายส่วนใหญ่ที่เข้ามาที่นี่แล้ว",
+   ch3p4_choice_evidence:"แยก certified header ออกจาก relay acknowledgement ก่อน ยังไม่ควรมีเรื่องเล่าใดจนกว่าบันทึกแต่ละชุดจะยืนได้ด้วยตัวเอง",
+   ch3p4_choice_urgency:"สิทธิ์ที่ระบบยอมรับชุดเดียวกันเปลี่ยนเวลาเก็บตัวอย่างก่อนมีรายงานพบแดเนียล เราต้องรู้ว่าสิงคโปร์ยอมรับอะไรเข้าไป",
+   ch3p4_choice_cooperate:"สิทธิ์อ่านอย่างเดียวก็พอ เรามายืนยันเส้นทาง ไม่ได้มาระบุตัวผู้ใช้",
+   ch3p4_choice_evidence_r:"ดี หลักฐานมาก่อน เขตอำนาจตามมา แล้วค่อยถึงทฤษฎี",
+   ch3p4_choice_urgency_r:"ความเร่งด่วนทำให้เรื่องนี้ได้ความสนใจ ไม่ได้ทำให้ข้อสรุปกว้างขึ้น รักษาทั้งสองอย่างไว้",
+   ch3p4_choice_cooperate_r:"งั้นเราก็เข้าใจกัน",
    ch3p4_intro_6:"Farid",
-   ch3p4_intro_7:"สวัสดีครับ หรือจะบอกว่าบ่ายแล้วก็ได้ เวลามันชอบเพี้ยนเวลาพวก log เริ่มเถียงกันเอง",
-   ch3p4_intro_8:"เอาภาพ relay กับหัวบันทึกที่ validate ซ้ำให้พวกเขาดู",
-   ch3p4_intro_9:"สองบันทึกที่ระบบยอมรับใน chain เดียวกัน แต่คนละเวลา จะเรียกว่าวิศวกรรมที่สวยงามหรือไมเกรนพร้อมเอกสารก็ได้ครับ",
-   ch3p4_intro_10:"ส่วนใหญ่เป็นทั้งสองอย่าง",
-   ch3p4_intro_11:"รู้อยู่แล้วว่าผมต้องชอบคุณ",
-   ch3p4_intro_12:"เริ่มจาก relay snapshot แล้วค่อยดู dual logs ก่อนจะไปที่ policy ของ token",
-   ch3p4_relay_1:"relay snapshot แสดงให้เห็นว่า node ในสิงคโปร์ยอมรับคำขอตรวจรายการจองเวลา 06:09",
-   ch3p4_relay_2:"ยอมรับการเข้าถึง แต่ยังไม่ใช่ตัวตนผู้ใช้",
-   ch3p4_logs_1:"นี่คือหัวบันทึกสองชุด ชุดหนึ่งเก็บ signed local event เวลา 05:58 ไว้ อีกชุดสะท้อน administrative event ที่ถูกแก้เป็น 06:09",
-   ch3p4_logs_2:"ความทรงจำสองแบบที่ยังใช้ได้ในเครื่องเดียวกัน",
-   ch3p4_token_1:"offline signature token คือตัวบานพับ ถ้าส่งข้อมูลช้าแต่ยังอยู่ใน reconciliation window ระบบก็ยังถือว่า valid",
-   ch3p4_token_2:"แปลว่านโยบายของระบบรักษาความขัดกันไว้ได้ โดยไม่ยอมเรียกมันว่าความขัดกัน",
-   ch3p4_close_1:"งั้นทั้งสองบันทึกจึงอยู่รอดได้ เพราะการ validate ตรวจลายเซ็นกับนโยบายการ sync ไม่ได้ตรวจว่า timeline แบบไหนเล่าเรื่องได้สะอาดกว่า",
-   ch3p4_close_2:"Authentication พิสูจน์การเข้าถึง Validation พิสูจน์ว่าระบบยอมรับบันทึก ทั้งคู่ไม่ได้บอกว่าใครจัดลำดับเหตุการณ์",
-   ch3p4_close_3:"มีคนยืมเวลาสิบเอ็ดนาที แล้วสอนให้ระบบจำได้ทั้งสองเวอร์ชัน",
-   ch3p4_close_4:"เส้นทาง relay โผล่ขึ้นอีกครั้งใกล้ Marina Bay เมื่อยี่สิบนาทีก่อน",
-   ch3p4_close_5:"งั้นเราเลิกสอบปากคำบันทึก แล้วไปหาสัญญาณจริงกัน",
-   ch3p4_close_6:"พยายามอย่าเพิ่งซื้อข้าวมันไก่ให้ใครระหว่างทางล่ะ",
-   ch3p4_close_7:"หรือ Prada",
-   ch3p4_open_access:"ตรวจร่วมกับตำรวจสิงคโปร์ · สิทธิ์อ่านอย่างเดียว",
-   ch3p4_complete_text:"สำนักงานสิงคโปร์ยืนยันแล้วว่าทำไมสองบันทึกที่ valid ถึงอยู่พร้อมกันได้ เส้นทาง relay ที่ยังมีชีวิตตอนนี้ชี้ไปยัง Marina Bay",
+   ch3p4_intro_7:"Farid Rahman ฝ่ายดิจิทัลฟอเรนสิกครับ ตอนนี้เย็นแล้ว แต่พวก log ยังเถียงกันเรื่องตอนเช้าอยู่เลย",
+   ch3p4_intro_8:"ให้พวกเขาดูเฉพาะสิ่งที่เราพิสูจน์ได้ ไม่ใช่สิ่งที่เราคิดว่าระบบกำลังซ่อน",
+   ch3p4_intro_9:"หัวบันทึกต้นฉบับอยู่ที่ 05:58 ฉบับแก้ไขอยู่ที่ 06:09 ทั้งคู่ validate ผ่าน แต่ลำดับ event ดิบยังอยู่หลังสิทธิ์เข้าถึงระดับ secure",
+   ch3p4_intro_10:"งั้นเรามีเพียงโครงร่างของกฎ ยังไม่เห็นกลไกจริง",
+   ch3p4_intro_11:"น่าพอใจน้อยกว่า แต่ซื่อตรงกว่า",
+   ch3p4_intro_12:"เริ่มจาก relay acknowledgement ต่อด้วยการเทียบหัวบันทึก แล้วจบที่ policy marker",
+   ch3p4_relay_1:"relay ตอบรับ verification event เวลา 06:09 คำขอนั้นพกสิทธิ์ฝ่ายพยานหลักฐานที่ระบบยอมรับและเชื่อมกับ Temporary Operational Profile 18-07",
+   ch3p4_relay_2:"เส้นทางเดิมที่ระบบยอมรับ แต่ยังไม่มีตัวผู้ใช้",
+   ch3p4_logs_1:"ต้นฉบับที่เก็บถาวรรักษาเวลา 05:58 ไว้ ส่วนหัวบันทึกฉบับแก้ไขที่รับรองแล้วรักษาเวลา 06:09 ลายเซ็นของทั้งคู่ validate ผ่าน และ event ที่แก้ไขอ้าง FS-12",
+   ch3p4_logs_2:"ลายเซ็นของเครื่องเดิม จาก Terminal ที่ local session ถูกบันทึกว่า offline",
+   ch3p4_token_1:"นี่เป็นเพียง policy marker ไม่ใช่ raw record signed delayed event ที่เข้ามาภายใน reconciliation window สิบเอ็ดนาทียังมีสิทธิ์ได้รับการยอมรับ",
+   ch3p4_token_2:"กฎนี้อธิบายได้ว่าความขัดกันอยู่รอดอย่างไร แต่ระบุตัวคนใช้ไม่ได้",
+   ch3p4_close_1:"หัวบันทึกที่เราเห็นพิสูจน์ได้เพียงว่ามีสองสถานะที่ระบบยอมรับ และมี policy marker สิบเอ็ดนาที ยังพิสูจน์ลำดับ event ดิบ อุปกรณ์ต้นทาง หรือตัวผู้ใช้ไม่ได้",
+   ch3p4_close_2:"Authentication พิสูจน์การเข้าถึงที่ระบบยอมรับ Validation พิสูจน์บันทึกที่ระบบยอมรับ ส่วน Attribution ยังว่างเปล่า",
+   ch3p4_close_3:"ห้อง 1807 จัดฉากด้วยวัตถุจริง ที่นี่จัด timeline ด้วยบันทึกจริง",
+   ch3p4_close_4:"จนกว่าเราจะได้ raw reconciliation record นั่นยังเป็นทฤษฎีที่ใช้สืบต่อ ไม่ใช่ข้อกล่าวหา",
+   ch3p4_close_5:"การเปิด review ครั้งนี้ปลุก audit subscriber ที่เงียบอยู่ มันร้องขอ transaction เดียวกันผ่าน public network gateway ใกล้ Marina Bay",
+   ch3p4_close_6:"อาจเป็น callback อัตโนมัติ หรือมีคนกำลังดูเราอยู่",
+   ch3p4_close_7:"พวกคุณตรวจ endpoint ได้ แต่ยังเรียกมันว่าผู้ต้องสงสัยไม่ได้",
+   ch3p4_close_8:"ผมชอบผู้ต้องสงสัยที่มีชื่อมากกว่า",
+   ch3p4_close_9:"ตอนนี้เรามีแค่ gateway ที่ยังไม่ยอมผูกมัดกับใคร",
+   ch3p4_open_access:"ตรวจร่วมกับตำรวจสิงคโปร์ · สิทธิ์อ่านอย่างเดียวแบบจำกัด",
+   ch3p4_complete_text:"สำนักงานยืนยันแล้วว่ามีกฎ reconciliation สิบเอ็ดนาที แต่ลำดับ event ดิบและตัวผู้ใช้ยังไม่ถูกพิสูจน์ audit query ใหม่ชี้ต่อไปยัง Marina Bay",
    ch3p4_continue_phase5:"ไปต่อ Phase V",
    ch3p4_return_title:"กลับหน้าแรก"
   });
@@ -161,52 +176,52 @@ function installLanguage(){
 
 function copy(){return {
  day:tr("DAY 3","วันที่ 3"),
- time:tr("EARLY AFTERNOON","ช่วงบ่ายต้น"),
+ time:tr("EARLY EVENING","ช่วงเย็นต้นๆ"),
  place:tr("SINGAPORE · INVESTIGATION OFFICE","สิงคโปร์ · สำนักงานสืบสวน"),
  phase:tr("LOCAL ACCESS, LIMITED TRUST","สิทธิ์เฉพาะพื้นที่ ความไว้ใจอย่างจำกัด"),
  skip:tr("Skip transition","ข้ามฉากเดินทาง"),
  location:tr("Singapore Investigation Office","สำนักงานสืบสวนสิงคโปร์"),
  scene:tr("LOCAL ACCESS, LIMITED TRUST","สิทธิ์เฉพาะพื้นที่ ความไว้ใจอย่างจำกัด"),
- openingObjective:tr("Meet the local liaison and secure office access","พบผู้ประสานงานท้องถิ่นและรับสิทธิ์เข้าตรวจในสำนักงาน"),
- investigateObjective:tr("Inspect relay evidence and explain how both logs remain valid","ตรวจหลักฐาน relay และอธิบายว่าทำไมทั้งสอง log ยัง valid พร้อมกันได้"),
- labels:{relay:tr("Relay Snapshot","ภาพรวม Relay"),logs:tr("Dual Logs","บันทึกสองชุด"),token:tr("Offline Token","Offline Token")},
- evidenceKicker:tr("Office Evidence Review","ตรวจหลักฐานในสำนักงาน"),
+ openingObjective:tr("Meet the local liaison and secure limited office access","พบผู้ประสานงานท้องถิ่นและรับสิทธิ์เข้าตรวจแบบจำกัด"),
+ investigateObjective:tr("Compare the relay acknowledgement, validation headers and policy marker","เปรียบเทียบ relay acknowledgement หัวบันทึกที่ validate และ policy marker"),
+ labels:{relay:tr("Relay Acknowledgement","Relay Acknowledgement"),logs:tr("Validation Headers","หัวบันทึกที่ Validate"),token:tr("Policy Marker","Policy Marker")},
+ evidenceKicker:tr("Limited Office Review","การตรวจแบบจำกัดในสำนักงาน"),
  caseEvidence:tr("Case Evidence","หลักฐานในคดี"),
  tap:tr("Tap evidence to inspect","แตะหลักฐานเพื่อตรวจสอบ"),
  inspect:tr("Inspect","ตรวจสอบ"),
  collect:tr("Add to Case File","เพิ่มในแฟ้มคดี"),
  close:tr("Close","ปิด"),
  choiceTitle:tr("How do you respond?","คุณจะตอบอย่างไร?"),
- review:tr("Run Validation Matrix","เปิด Validation Matrix"),
- matrixTitle:tr("Validation Matrix","Validation Matrix"),
- matrixHelp:tr("Assign each fact to the record or rule it belongs to.","จัดข้อเท็จจริงแต่ละข้อให้ตรงกับบันทึกหรือกฎของระบบที่เป็นเจ้าของมัน"),
- matrixA:tr("Record A","บันทึก A"), matrixB:tr("Record B","บันทึก B"), matrixBoth:tr("Both","ทั้งคู่"), matrixPolicy:tr("Policy","นโยบาย"),
- confirm:tr("Confirm Matrix","ยืนยัน Matrix"), reset:tr("Reset","เริ่มใหม่"),
+ review:tr("Compare Limited Headers","เปรียบเทียบหัวบันทึกที่เปิดให้ดู"),
+ matrixTitle:tr("Limited Header Comparison","การเปรียบเทียบหัวบันทึกแบบจำกัด"),
+ matrixHelp:tr("Assign each verified fact to the source that actually establishes it.","จัดข้อเท็จจริงแต่ละข้อให้ตรงกับแหล่งที่พิสูจน์มันได้จริง"),
+ matrixA:tr("Original Header","หัวบันทึกต้นฉบับ"), matrixB:tr("Corrected Header","หัวบันทึกแก้ไข"), matrixBoth:tr("Shared","ข้อมูลร่วม"), matrixPolicy:tr("Policy Marker","Policy Marker"),
+ confirm:tr("Confirm Comparison","ยืนยันการเปรียบเทียบ"), reset:tr("Reset","เริ่มใหม่"),
  incomplete:tr("Assign all four facts before confirming.","จัดหมวดข้อเท็จจริงให้ครบทั้งสี่รายการก่อน"),
- wrong:tr("At least one fact belongs elsewhere.","มีอย่างน้อยหนึ่งข้ออยู่ผิดหมวด"),
- matrixCorrect:tr("Now choose the explanation supported by the records.","ตอนนี้เลือกคำอธิบายที่บันทึกรองรับจริง"),
- conclusionTitle:tr("Why can both logs validate?","ทำไมทั้งสอง log จึง validate ได้พร้อมกัน?"),
- beyond:tr("That explanation goes beyond the records.","คำอธิบายนั้นไกลเกินกว่าที่บันทึกยืนยันได้"),
+ wrong:tr("At least one fact is assigned beyond what its source proves.","มีอย่างน้อยหนึ่งข้อถูกจัดเกินกว่าสิ่งที่แหล่งข้อมูลพิสูจน์ได้"),
+ matrixCorrect:tr("The records are separated. Choose the conclusion these limited headers support.","แยกบันทึกออกจากกันแล้ว เลือกข้อสรุปที่หัวบันทึกแบบจำกัดเหล่านี้รองรับ"),
+ conclusionTitle:tr("What do these limited records prove?","บันทึกแบบจำกัดเหล่านี้พิสูจน์อะไรได้?"),
+ beyond:tr("That conclusion requires the raw reconciliation record or operator evidence.","ข้อสรุปนั้นต้องอาศัย raw reconciliation record หรือหลักฐานระบุตัวผู้ใช้"),
  completeEye:tr("PHASE IV COMPLETE","จบเฟส IV"), completeTitle:tr("LOCAL ACCESS, LIMITED TRUST","สิทธิ์เฉพาะพื้นที่ ความไว้ใจอย่างจำกัด"), completeText:tr(LANG.en.ch3p4_complete_text,LANG.th.ch3p4_complete_text),
  continuePhase5:tr(LANG.en.ch3p4_continue_phase5,LANG.th.ch3p4_continue_phase5), returnTitle:tr(LANG.en.ch3p4_return_title,LANG.th.ch3p4_return_title)
 }}
 
 const EVIDENCE={
- relay:{title:{en:"Relay Snapshot",th:"ภาพรวม Relay"},description:{en:"A Singapore relay node accepted a booking-verification request at 06:09. The request carried valid Evidence Division permission and referenced Daniel Voss.",th:"relay node ในสิงคโปร์ยอมรับคำขอตรวจรายการจองเวลา 06:09 คำขอนั้นพกสิทธิ์ฝ่ายพยานหลักฐานที่ระบบยอมรับและอ้างถึงแดเนียล วอสส์"},observation:{en:"The request was accepted locally. That still does not identify the operator.",th:"ระบบในพื้นที่ยอมรับคำขอแล้ว แต่นั่นยังไม่ยืนยันตัวผู้ใช้งาน"}},
- logs:{title:{en:"Dual Validation Headers",th:"หัวบันทึกที่ validate สองชุด"},description:{en:"Record A preserves the signed local event at 05:58. Record B preserves the revised administrative event at 06:09. Both headers validate against the same chain.",th:"บันทึก A เก็บ signed local event เวลา 05:58 ไว้ ส่วนบันทึก B เก็บ administrative event ที่แก้เป็น 06:09 ทั้งสองหัวบันทึก validate ผ่าน chain เดียวกัน"},observation:{en:"Two records can survive together when the system is built to preserve accepted states, not narrative clarity.",th:"บันทึกสองชุดอยู่รอดพร้อมกันได้เมื่อระบบถูกสร้างมาเพื่อรักษาสถานะที่ยอมรับแล้ว ไม่ใช่เพื่อเล่าเรื่องให้ชัด"}},
- token:{title:{en:"Offline Signature Token Policy",th:"นโยบาย Offline Signature Token"},description:{en:"Delayed sync remains valid when a signed local event reaches central infrastructure inside the reconciliation window. The window explains why both records were preserved.",th:"การ sync ที่ล่าช้ายังถือว่า valid หาก signed local event ไปถึงโครงสร้างกลางภายใน reconciliation window กฎนี้อธิบายว่าทำไมทั้งสองบันทึกจึงถูกเก็บไว้"},observation:{en:"Policy can preserve contradiction without resolving attribution.",th:"นโยบายของระบบรักษาความขัดกันไว้ได้ โดยยังไม่แตะคำถามเรื่องตัวผู้ใช้จริง"}}
+ relay:{title:{en:"Singapore Relay Acknowledgement",th:"Relay Acknowledgement จากสิงคโปร์"},description:{en:"Singapore infrastructure acknowledged the 06:09 verification event. The request carried accepted Evidence Division permission, referenced Daniel's booking and resolved to Temporary Operational Profile 18-07. The operator remains unverified.",th:"โครงสร้างพื้นฐานสิงคโปร์ตอบรับ verification event เวลา 06:09 คำขอนั้นพกสิทธิ์ฝ่ายพยานหลักฐานที่ระบบยอมรับ อ้างถึงรายการจองของแดเนียล และเชื่อมกับ Temporary Operational Profile 18-07 โดยยังยืนยันตัวผู้ใช้ไม่ได้"},observation:{en:"The relay proves accepted cross-border access, not that Daniel travelled or that the operator was in Singapore.",th:"relay พิสูจน์การเข้าถึงข้ามพรมแดนที่ระบบยอมรับ ไม่ได้พิสูจน์ว่าแดเนียลเดินทางหรือผู้ใช้อยู่ในสิงคโปร์"}},
+ logs:{title:{en:"Original and Corrected Validation Headers",th:"หัวบันทึกต้นฉบับและฉบับแก้ไข"},description:{en:"The archived original header preserves 05:58. The certified corrected header preserves 06:09. Both signatures validate. The corrected event claims FS-12, while Chapter II established that the terminal's local session was offline.",th:"หัวบันทึกต้นฉบับที่เก็บถาวรรักษาเวลา 05:58 ไว้ ส่วนฉบับแก้ไขที่รับรองแล้วรักษาเวลา 06:09 ลายเซ็นของทั้งคู่ validate ผ่าน โดย event ที่แก้ไขอ้าง FS-12 ขณะที่ Chapter II พิสูจน์แล้วว่า local session ของ Terminal อยู่ในสถานะ offline"},observation:{en:"A trusted machine signature is a claimed device field. It does not establish the command's physical origin.",th:"ลายเซ็นของเครื่องที่ระบบเชื่อถือเป็นเพียงข้อมูลอุปกรณ์ที่ event อ้าง ไม่ได้ยืนยันต้นทางทางกายภาพของคำสั่ง"}},
+ token:{title:{en:"Eleven-Minute Reconciliation Policy Marker",th:"Policy Marker ของ Reconciliation Window สิบเอ็ดนาที"},description:{en:"A limited policy marker states that signed delayed events submitted inside an eleven-minute reconciliation window remain eligible for acceptance. The raw ordering record and submitting device are not included in the office view.",th:"policy marker แบบจำกัดระบุว่า signed delayed event ที่ถูกส่งเข้ามาภายใน reconciliation window สิบเอ็ดนาทียังมีสิทธิ์ได้รับการยอมรับ โดยหน้าจอสำนักงานไม่แสดงลำดับ event ดิบหรืออุปกรณ์ที่ส่งข้อมูล"},observation:{en:"The marker establishes that the rule exists. It does not yet prove exactly how the 05:58 and 06:09 events were ordered or who submitted them.",th:"marker พิสูจน์ว่ากฎนี้มีอยู่จริง แต่ยังไม่พิสูจน์ว่า event เวลา 05:58 และ 06:09 ถูกจัดลำดับอย่างไรหรือใครเป็นผู้ส่ง"}}
 };
 const MATRIX_FACTS={
- signed_local_event:{en:"The signed local event remains at 05:58.",th:"signed local event ยังคงอยู่ที่เวลา 05:58"},
- revised_relay_event:{en:"The revised administrative event is accepted at 06:09.",th:"administrative event ที่แก้ไขแล้วถูกยอมรับที่เวลา 06:09"},
- both_signed:{en:"Both headers carry valid signatures.",th:"หัวบันทึกทั้งสองชุดมีลายเซ็นที่ valid"},
- window_policy:{en:"Delayed sync remains valid inside the reconciliation window.",th:"การ sync ที่ล่าช้ายัง valid ถ้าอยู่ใน reconciliation window"}
+ signed_local_event:{en:"The archived original header preserves 05:58.",th:"หัวบันทึกต้นฉบับที่เก็บถาวรรักษาเวลา 05:58 ไว้"},
+ revised_relay_event:{en:"The certified corrected header preserves 06:09.",th:"หัวบันทึกฉบับแก้ไขที่รับรองแล้วรักษาเวลา 06:09 ไว้"},
+ both_signed:{en:"Both headers validate; the corrected header claims FS-12.",th:"หัวบันทึกทั้งสองชุด validate ผ่าน โดยหัวบันทึกที่แก้ไขอ้าง FS-12"},
+ window_policy:{en:"A policy marker names an eleven-minute reconciliation window.",th:"policy marker ระบุ reconciliation window สิบเอ็ดนาที"}
 };
 const CONCLUSIONS=[
- {id:"manual_override",en:"A Singapore officer manually overrode the timeline, making both logs official.",th:"เจ้าหน้าที่สิงคโปร์ override timeline ด้วยตนเอง จึงทำให้ทั้งสอง log กลายเป็นทางการ"},
- {id:"inside_window",en:"Both logs validate because signed delayed-sync events can be accepted inside policy, preserving both records.",th:"ทั้งสอง log validate ได้ เพราะ signed delayed-sync event สามารถถูกยอมรับภายใน policy และเก็บทั้งสองบันทึกไว้"},
- {id:"daniel_present",en:"Daniel authenticated both records in person during travel.",th:"แดเนียลเป็นผู้ยืนยันตัวตนของทั้งสองบันทึกด้วยตนเองระหว่างการเดินทาง"},
- {id:"cctv_corrupt",en:"The CCTV index was corrupted, so the system accepted two replacement logs.",th:"ดัชนีกล้องวงจรปิดเสียหาย ระบบจึงยอมรับ log ทดแทนสองชุด"}
+ {id:"manual_override",en:"A Singapore officer manually created both versions and therefore operated profile 18-07.",th:"เจ้าหน้าที่สิงคโปร์สร้างทั้งสองเวอร์ชันด้วยตนเองและเป็นผู้ใช้โปรไฟล์ 18-07"},
+ {id:"inside_window",en:"Two versions passed validation and an eleven-minute reconciliation rule exists, but raw event order, source device and operator remain unproven.",th:"บันทึกสองเวอร์ชันผ่านการ validate และมีกฎ reconciliation สิบเอ็ดนาที แต่ลำดับ event ดิบ อุปกรณ์ต้นทาง และตัวผู้ใช้ยังไม่ถูกพิสูจน์"},
+ {id:"daniel_present",en:"Daniel personally used FS-12 and sent both records while travelling to Singapore.",th:"แดเนียลใช้ FS-12 ด้วยตนเองและส่งบันทึกทั้งสองชุดระหว่างเดินทางมาสิงคโปร์"},
+ {id:"method_proven",en:"The limited headers fully prove the attack method and identify the remote device.",th:"หัวบันทึกแบบจำกัดพิสูจน์วิธีโจมตีทั้งหมดและระบุอุปกรณ์ทางไกลได้แล้ว"}
 ];
 
 function inject(){
@@ -214,10 +229,12 @@ function inject(){
  const game=$("#game"); if(!game) return;
  game.insertAdjacentHTML("beforeend",`
  <section id="${TRANSITION_SCREEN}" class="screen ch3-p4-transition" aria-label="Drive to Singapore Investigation Office">
-   <video id="ch3Phase4TransitionVideo" class="scene ch3-p4-video" playsinline preload="auto" muted src="${VIDEO_PATH}"></video>
-   <div class="overlay ch3-p4-video-overlay"></div>
-   <div class="ch3-arrival-card ch3-p4-card"><div id="ch3P4Day" class="eyebrow"></div><div id="ch3P4Time" class="ch3-day-time"></div><h2 id="ch3P4Place"></h2><div class="ch3-rule"></div><p id="ch3P4Phase"></p></div>
-   <button id="ch3P4Skip" class="ghost ch3-arrival-skip" type="button"></button>
+   <div id="ch3P4VideoLayer" class="ch3-p4-video-layer">
+    <video id="ch3Phase4TransitionVideo" playsinline preload="auto" muted src="${VIDEO_PATH}"></video>
+    <div class="ch3-p4-video-shade"></div>
+    <button id="ch3P4Skip" class="ghost ch3-p4-skip" type="button"></button>
+   </div>
+   <div id="ch3P4TravelCard" class="ch3-p4-travel-card" aria-hidden="true"><div class="chapter-card ch3-day-card"><div id="ch3P4Day" class="eyebrow"></div><div id="ch3P4Time" class="ch3-day-time"></div><h2 id="ch3P4Place"></h2><div class="ch3-rule"></div><p id="ch3P4Phase"></p></div></div>
    <audio id="ch3Phase4TransitionAudio" preload="auto" src="${TRANSITION_AUDIO}"></audio>
  </section>
  <section id="${OFFICE_SCREEN}" class="screen ch3-office ch3-investigation-locked" aria-label="Singapore Investigation Office">
@@ -241,9 +258,9 @@ function inject(){
 }
 
 function runSceneDialogue(lines,done){
- const box=$("#chapter3OfficeDialogue"); if(!box||typeof runDialogue!=="function"){done?.(); return}
- dialogueActive=true; syncAudio();
- runDialogue(box,lines,()=>{dialogueActive=false; syncAudio(); done?.()});
+ const box=$("#chapter3OfficeDialogue"); if(!box||typeof runDialogue!=="function"){dialogueActive=false;updateReview();done?.(); return}
+ dialogueActive=true; updateReview(); syncAudio();
+ runDialogue(box,lines,()=>{dialogueActive=false; updateReview(); syncAudio(); done?.()});
 }
 function introLines(){return [
  {speaker:"Inspector Cheryl Goh",emotion:"neutral",key:"ch3p4_intro_1"},
@@ -275,10 +292,12 @@ function closingLines(){return [
  {speaker:"Farid Rahman",emotion:"explaining",key:"ch3p4_close_1"},
  {speaker:"North",emotion:"analyzing",key:"ch3p4_close_2"},
  {speaker:"Benedict",emotion:"serious",key:"ch3p4_close_3"},
- {speaker:"Inspector Cheryl Goh",emotion:"alert",key:"ch3p4_close_4"},
- {speaker:"Benedict",emotion:"smirk",key:"ch3p4_close_5"},
- {speaker:"North",emotion:"dry",key:"ch3p4_close_6"},
- {speaker:"Farid Rahman",emotion:"amused",key:"ch3p4_close_7"}
+ {speaker:"Inspector Cheryl Goh",emotion:"skeptical",key:"ch3p4_close_4"},
+ {speaker:"Farid Rahman",emotion:"alert",key:"ch3p4_close_5"},
+ {speaker:"North",emotion:"serious",key:"ch3p4_close_6"},
+ {speaker:"Inspector Cheryl Goh",emotion:"arms_crossed",key:"ch3p4_close_7"},
+ {speaker:"Benedict",emotion:"smirk",key:"ch3p4_close_8"},
+ {speaker:"North",emotion:"dry",key:"ch3p4_close_9"}
 ]}
 
 function updateProgress(){
@@ -325,37 +344,48 @@ function startIntro(){
  runSceneDialogue(introLines(), openChoice); save();
 }
 
+function hideTransitionLayers(){
+ const layer=$("#ch3P4VideoLayer"),card=$("#ch3P4TravelCard");
+ layer?.classList.remove("show");card?.classList.remove("show");card?.setAttribute("aria-hidden","true");
+}
+function showTravelCard(){
+ clearTimeout(transitionTimer);inject();const p=ensureChapterState();if(!p||activeScreen()!==TRANSITION_SCREEN)return;
+ const v=$("#ch3Phase4TransitionVideo");if(v)try{v.pause();v.currentTime=0}catch(_){}
+ stopElement($("#ch3Phase4TransitionAudio"),true);$("#ch3P4VideoLayer")?.classList.remove("show");
+ const card=$("#ch3P4TravelCard");card?.classList.add("show");card?.setAttribute("aria-hidden","false");
+ p.transitionSeen=true;p.travelCardSeen=true;p.stage="arrival-card";gameState().checkpoint="ch3_phase4_arrival_card";save();
+ transitionTimer=setTimeout(enterOffice,2500);
+}
 function beginTransition(force=false){
  inject(); const p=ensureChapterState(); if(!p) return;
- if(p.started&&!force){ if(p.transitionSeen){ enterOffice(); return; } }
- p.started=true; p.stage="transition"; p.transitionSeen=false; gameState().screen=TRANSITION_SCREEN; gameState().checkpoint="ch3_phase4_transition";
- window.LastWitnessChangi?.stopAudio?.(true); stopAudio(true); safeShow(TRANSITION_SCREEN); updateLanguage();
- const v=$("#ch3Phase4TransitionVideo"), a=$("#ch3Phase4TransitionAudio");
- if(v){ try{v.currentTime=0; v.play().catch(()=>{})}catch(_){} }
- if(a&&soundOn()){ try{a.currentTime=0; a.volume=clamp(musicLevel()*.58,0,.46); a.play().catch(()=>{})}catch(_){} }
- clearTimeout(transitionTimer); transitionTimer=setTimeout(enterOffice,10200); save();
+ if(p.started&&!force){if(p.travelCardSeen){safeShow(TRANSITION_SCREEN);updateLanguage();showTravelCard();return}if(p.transitionSeen){enterOffice();return}}
+ p.started=true;p.stage="transition";p.transitionSeen=false;p.travelCardSeen=false;gameState().screen=TRANSITION_SCREEN;gameState().checkpoint="ch3_phase4_transition";
+ window.LastWitnessChangi?.stopAudio?.(true);stopAudio(true);safeShow(TRANSITION_SCREEN);updateLanguage();hideTransitionLayers();
+ const layer=$("#ch3P4VideoLayer"),v=$("#ch3Phase4TransitionVideo"),a=$("#ch3Phase4TransitionAudio");layer?.classList.add("show");
+ if(v){try{v.currentTime=0;v.play().catch(()=>{})}catch(_){}}
+ if(a&&soundOn()){try{a.currentTime=0;a.volume=clamp(musicLevel()*.58,0,.46);a.play().catch(()=>{})}catch(_){}}
+ clearTimeout(transitionTimer);transitionTimer=setTimeout(showTravelCard,10400);save();
 }
 function enterOffice(){
- clearTimeout(transitionTimer); inject(); const p=ensureChapterState(); if(!p) return;
- p.started=true; p.transitionSeen=true; gameState().screen=OFFICE_SCREEN; gameState().checkpoint=p.introComplete?"ch3_phase4_investigation":"ch3_phase4_intro";
- const v=$("#ch3Phase4TransitionVideo"); if(v){try{v.pause();v.currentTime=0}catch(_){}}
- stopElement($("#ch3Phase4TransitionAudio"),true); safeShow(OFFICE_SCREEN); closeEvidence(); closeMatrix(false); $("#ch3OfficeComplete")?.style.setProperty("display","none"); updateLanguage();
- const o=$("#ch3Phase4OfficeAmbience"); if(o){o.loop=true; if(soundOn()) o.play().catch(()=>{})} syncAudio();
- if(p.complete){showComplete(); return}
- if(p.matrixComplete&&!p.closingDialogueComplete){runClosingDialogue(); return}
- if(p.introComplete||p.evidenceCollected.length){p.introComplete=true; setHotspotsLocked(false,false); syncScene(); return}
- setHotspotsLocked(true,false); setTimeout(startIntro,320);
+ clearTimeout(transitionTimer);inject();const p=ensureChapterState();if(!p)return;
+ p.started=true;p.transitionSeen=true;p.travelCardSeen=true;gameState().screen=OFFICE_SCREEN;gameState().checkpoint=p.introComplete?"ch3_phase4_investigation":"ch3_phase4_intro";
+ const v=$("#ch3Phase4TransitionVideo");if(v)try{v.pause();v.currentTime=0}catch(_){};hideTransitionLayers();stopElement($("#ch3Phase4TransitionAudio"),true);
+ safeShow(OFFICE_SCREEN);closeEvidence();closeMatrix(false);$("#ch3OfficeComplete")?.style.setProperty("display","none");updateLanguage();
+ const o=$("#ch3Phase4OfficeAmbience");if(o){o.loop=true;if(soundOn())o.play().catch(()=>{})}syncAudio();
+ if(p.complete){showComplete();return}
+ if(p.matrixComplete&&!p.closingDialogueComplete){runClosingDialogue();return}
+ if(p.introComplete||p.evidenceCollected.length){p.introComplete=true;setHotspotsLocked(false,false);syncScene();return}
+ setHotspotsLocked(true,false);setTimeout(startIntro,320);
 }
 
 function evidenceVisual(id){
- if(id==="relay")return `<article class="ch3-evidence-visual"><header class="ch3-record-head"><span>SINGAPORE RELAY NODE</span><span>06:09</span></header><dl class="ch3-record-grid"><dt>REQUEST</dt><dd>BOOKING_VERIFY</dd><dt>SUBJECT</dt><dd>DANIEL VOSS</dd><dt>PERMISSION</dt><dd>EVIDENCE DIVISION</dd><dt>STATUS</dt><dd>ACCEPTED</dd><dt>PROFILE</dt><dd>18-07</dd></dl><div class="ch3-record-ok">LOCAL ACCEPTANCE CONFIRMED</div></article>`;
- if(id==="logs")return `<article class="ch3-evidence-visual ch3-dual-headers"><header class="ch3-record-head"><span>DUAL VALIDATION</span><span>HEADER A / B</span></header><table class="ch3-dual-table"><tr><th></th><th>RECORD A</th><th>RECORD B</th></tr><tr><td>TIMESTAMP</td><td>05:58</td><td>06:09</td></tr><tr><td>SIGNATURE</td><td>VALID</td><td>VALID</td></tr><tr><td>CHAIN</td><td>SHARED</td><td>SHARED</td></tr><tr><td>STATE</td><td>LOCAL EVENT</td><td>REVISED EVENT</td></tr></table><div class="ch3-record-alert">BOTH HEADERS VALIDATE</div></article>`;
- return `<article class="ch3-evidence-visual ch3-request-terminal"><header class="ch3-record-head"><span>OFFLINE TOKEN POLICY</span><span>WINDOW: 11 MIN</span></header><pre>TOKEN: OFFLINE_SIGNATURE
-LOCAL EVENT: SIGNED
-SYNC MODE: DELAYED
-WINDOW STATUS: WITHIN POLICY
-VALIDATION RESULT: ACCEPTED
-ATTRIBUTION RESULT: UNRESOLVED</pre><footer>POLICY PRESERVES ACCEPTED STATES</footer></article>`;
+ if(id==="relay")return `<article class="ch3-evidence-visual"><header class="ch3-record-head"><span>SINGAPORE RELAY ACKNOWLEDGEMENT</span><span>06:09</span></header><dl class="ch3-record-grid"><dt>EVENT</dt><dd>VERIFICATION</dd><dt>SUBJECT</dt><dd>DANIEL VOSS</dd><dt>PERMISSION</dt><dd>EVIDENCE DIVISION</dd><dt>STATUS</dt><dd>ACCEPTED</dd><dt>PROFILE</dt><dd>18-07</dd><dt>OPERATOR</dt><dd>UNVERIFIED</dd></dl><div class="ch3-record-ok">CROSS-BORDER ACCESS CONFIRMED</div></article>`;
+ if(id==="logs")return `<article class="ch3-evidence-visual ch3-dual-headers"><header class="ch3-record-head"><span>LIMITED HEADER COMPARISON</span><span>ORIGINAL / CORRECTED</span></header><table class="ch3-dual-table"><tr><th></th><th>ORIGINAL</th><th>CORRECTED</th></tr><tr><td>COLLECTION_TIME</td><td>05:58</td><td>06:09</td></tr><tr><td>SIGNATURE</td><td>VALID</td><td>VALID</td></tr><tr><td>CLAIMED DEVICE</td><td>NOT EXPOSED</td><td>FS-12</td></tr><tr><td>RAW ORDER</td><td>RESTRICTED</td><td>RESTRICTED</td></tr></table><div class="ch3-record-alert">VALID HEADERS · OPERATOR UNRESOLVED</div></article>`;
+ return `<article class="ch3-evidence-visual ch3-request-terminal"><header class="ch3-record-head"><span>RECONCILIATION POLICY MARKER</span><span>WINDOW: 11 MIN</span></header><pre>SIGNED DELAYED EVENT: ELIGIBLE
+WINDOW: ELEVEN MINUTES
+RAW EVENT ORDER: RESTRICTED
+SUBMITTING DEVICE: NOT EXPOSED
+OPERATOR ATTRIBUTION: UNRESOLVED</pre><footer>RULE EXISTS · METHOD NOT YET PROVEN</footer></article>`;
 }
 function openEvidence(id){
  const item=EVIDENCE[id], panel=$("#ch3OfficeEvidencePanel"); if(!item||!panel) return;
@@ -364,13 +394,15 @@ function openEvidence(id){
  $("#ch3OfficeEvidenceMeta")?.classList.remove("show"); $("#collectCh3OfficeEvidence").disabled=!evidenceInspected||set.has(id); $("#collectCh3OfficeEvidence").classList.toggle("done", set.has(id)); $("#inspectCh3OfficeEvidence").disabled=false; $("#ch3OfficeEvidenceObject")?.classList.remove("inspected"); syncAudio();
 }
 function inspectEvidence(){
- if(!activeEvidence||evidenceInspected) return; evidenceInspected=true; $("#ch3OfficeEvidenceMeta")?.classList.add("show"); $("#collectCh3OfficeEvidence").disabled=false; $("#ch3OfficeEvidenceObject")?.classList.add("inspected"); runSceneDialogue(evidenceLines(activeEvidence),()=>{}); syncAudio();
+ if(!activeEvidence||evidenceInspected)return;evidenceInspected=true;$("#ch3OfficeEvidenceMeta")?.classList.add("show");$("#collectCh3OfficeEvidence").disabled=false;$("#ch3OfficeEvidenceObject")?.classList.add("inspected");syncAudio();
 }
 function collectEvidence(){
- const id=activeEvidence, p=ensureChapterState(); if(!id||!p||!evidenceInspected) return; if(!p.evidenceCollected.includes(id)) p.evidenceCollected.push(id);
- try{window.LastWitnessAudioCue?.playEvidenceAdded?.()}catch(_){}; save(); closeEvidence(); syncScene();
+ const id=activeEvidence,p=ensureChapterState();if(!id||!p||!evidenceInspected||p.evidenceCollected.includes(id))return;
+ p.evidenceCollected.push(id);dialogueActive=true;try{gameState().found?.add?.("office_"+id)}catch(_){};closeEvidence();paintHotspots();updateProgress();updateReview();
+ try{window.LastWitnessAudioCue?.playCollection?.()}catch(_){};try{if(typeof showBadge==="function")showBadge(tr("Evidence added","เพิ่มหลักฐานแล้ว"))}catch(_){}
+ runSceneDialogue(evidenceLines(id),()=>{if(allEvidenceCollected())try{if(typeof showBadge==="function")showBadge(tr("Limited header comparison unlocked","ปลดล็อกการเปรียบเทียบหัวบันทึกแล้ว"))}catch(_){};syncScene();save()});save();
 }
-function closeEvidence(){ const panel=$("#ch3OfficeEvidencePanel"); if(!panel) return; panel.classList.remove("open"); panel.setAttribute("aria-hidden","true"); activeEvidence=null; evidenceInspected=false; syncAudio(); }
+function closeEvidence(){const panel=$("#ch3OfficeEvidencePanel");if(!panel)return;panel.classList.remove("open");panel.setAttribute("aria-hidden","true");activeEvidence=null;evidenceInspected=false;updateReview();syncAudio();}
 
 function renderFacts(){
  const wrap=$("#ch3OfficeFactList"), c=copy(); if(!wrap) return; wrap.hidden=false; $("#ch3OfficeConclusionList").hidden=true;
@@ -396,7 +428,7 @@ function confirmMatrix(){
 }
 function chooseConclusion(id){
  const status=$("#ch3OfficeMatrixStatus"), c=copy(); if(id!=="inside_window"){status.textContent=c.beyond; status.className='ch3-reconcile-status error'; return}
- const p=ensureChapterState(); p.matrixComplete=true; p.stage='closing'; p.matrixAssignments={...matrixAssignments}; gameState().checkpoint='ch3_phase4_matrix'; status.textContent=tr('Conclusion supported by the office records.','ข้อสรุปนี้ได้รับการรองรับจากบันทึกในสำนักงาน'); status.className='ch3-reconcile-status success';
+ const p=ensureChapterState(); p.matrixComplete=true; p.stage='closing'; p.matrixAssignments={...matrixAssignments}; gameState().checkpoint='ch3_phase4_matrix'; status.textContent=tr('Conclusion supported within the limits of the available headers.','ข้อสรุปนี้ได้รับการรองรับภายในขอบเขตของหัวบันทึกที่เปิดให้ตรวจ'); status.className='ch3-reconcile-status success';
  try{window.LastWitnessAudioCue?.playPuzzleSuccess?.()}catch(_){}; save(); setTimeout(()=>{closeMatrix(false); runClosingDialogue()},620);
 }
 function runClosingDialogue(){
@@ -434,14 +466,14 @@ function goPhase5Wip(){
  if(btn) btn.textContent=tr('Return to Title','กลับหน้าแรก');
  safeShow('chapter3Wip'); save();
 }
-function resumePhase4(screen){ inject(); ensureChapterState(); updateLanguage(); if(screen===TRANSITION_SCREEN){beginTransition(true); return} if(screen===OFFICE_SCREEN){enterOffice(); return} }
+function resumePhase4(screen){inject();const p=ensureChapterState();updateLanguage();if(screen===TRANSITION_SCREEN){if(p?.travelCardSeen){safeShow(TRANSITION_SCREEN);showTravelCard()}else beginTransition(true);return}if(screen===OFFICE_SCREEN){enterOffice();return}}
 function installResumeBridge(){
- const api=window.LastWitnessChapter3; if(api&& !api.__lwPhase40900){ const original=api.resumeFromState; api.resumeFromState=function(screen){ const res=typeof original==='function'?original.apply(this,arguments):undefined; if(internalRouting) return res; if(screen===TRANSITION_SCREEN||screen===OFFICE_SCREEN){setTimeout(()=>resumePhase4(screen),0); return res} return res; }; api.__lwPhase40900=true; }
+ const api=window.LastWitnessChapter3; if(api&& !api.__lwPhase40910){ const original=api.resumeFromState; api.resumeFromState=function(screen){ const res=typeof original==='function'?original.apply(this,arguments):undefined; if(internalRouting) return res; if(screen===TRANSITION_SCREEN||screen===OFFICE_SCREEN){setTimeout(()=>resumePhase4(screen),0); return res} return res; }; api.__lwPhase40910=true; }
  window.LastWitnessPhase4={startTransition:beginTransition,resumeFromState:resumePhase4,goPhase5Wip,version:BUILD};
 }
 function bind(){
- $("#ch3P4Skip")?.addEventListener('click', enterOffice);
- $("#ch3Phase4TransitionVideo")?.addEventListener('ended', enterOffice);
+ $("#ch3P4Skip")?.addEventListener('click',showTravelCard);
+ $("#ch3Phase4TransitionVideo")?.addEventListener('ended',showTravelCard);
  $$('[data-office-clue]').forEach(node=>node.addEventListener('click',()=>openEvidence(node.dataset.officeClue)));
  $("#inspectCh3OfficeEvidence")?.addEventListener('click', inspectEvidence); $("#ch3OfficeEvidenceObject")?.addEventListener('click', inspectEvidence); $("#collectCh3OfficeEvidence")?.addEventListener('click', collectEvidence); $("#closeCh3OfficeEvidence")?.addEventListener('click', closeEvidence); $("#ch3OfficeEvidencePanel")?.addEventListener('click',e=>{if(e.target===$("#ch3OfficeEvidencePanel")) closeEvidence()});
  $("#ch3OfficeReview")?.addEventListener('click', openMatrix); $("#ch3OfficeMatrixConfirm")?.addEventListener('click', confirmMatrix); $("#ch3OfficeMatrixReset")?.addEventListener('click', resetMatrix); $("#ch3OfficeMatrixClose")?.addEventListener('click',()=>closeMatrix(true));
@@ -449,7 +481,7 @@ function bind(){
  $("#ch3OfficeContinuePhase5")?.addEventListener('click', goPhase5Wip); $("#ch3OfficeReturnTitle")?.addEventListener('click', ()=>window.LastWitnessChapter2Integration?.returnToTitle?.());
  $("#"+OFFICE_SCREEN+" .ch3-office-save")?.addEventListener('click',()=>manualSave()); $("#"+OFFICE_SCREEN+" .ch3-office-menu")?.addEventListener('click',()=>$("#drawer")?.classList.add('open'));
  $("#caseButton")?.addEventListener('click',()=>setTimeout(appendCaseEntries,0),true);
- $("#soundToggle")?.addEventListener('change', syncAudio, true); $("#musicRange")?.addEventListener('input', syncAudio, true); document.addEventListener('click',e=>{ if(e.target.closest?.('[data-lang]')) setTimeout(updateLanguage,0) }, true); document.addEventListener('visibilitychange',()=>{ if(document.hidden) stopAudio(false); else if(activeScreen()===OFFICE_SCREEN) syncAudio() });
+ $("#soundToggle")?.addEventListener('change', syncAudio, true); $("#musicRange")?.addEventListener('input', syncAudio, true); document.addEventListener('click',e=>{ if(e.target.closest?.('[data-lang]')) setTimeout(updateLanguage,0) }, true); document.addEventListener('visibilitychange',()=>{if(document.hidden)stopAudio(false);else if(activeScreen()===TRANSITION_SCREEN)resumeTransitionMedia();else if(activeScreen()===OFFICE_SCREEN)syncAudio()});
  }
 function installBuild(){ const label=$("#settingsVersion"); if(label) label.textContent=`LAST WITNESS · BUILD ${BUILD}`; if(window.LastWitnessSaveManager) window.LastWitnessSaveManager.version=BUILD; }
 function initialize(){ inject(); document.body.classList.add('lw-phase4-runtime'); installResumeBridge(); installBuild(); const screen=activeScreen(); if(screen===TRANSITION_SCREEN||screen===OFFICE_SCREEN) setTimeout(()=>resumePhase4(screen),0); }

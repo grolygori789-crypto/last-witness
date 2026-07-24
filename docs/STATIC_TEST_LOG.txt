@@ -1,4 +1,11 @@
-[OK] node --check js/chapters/chapter-03/02-changi-airport.js
-[OK] node --check js/chapters/chapter-03/03-singapore-office.js
-[OK] new media assets copied into candidate package
-[OK] sample portrait transparency visually verified
+[PASS] JavaScript syntax: Phase III
+[PASS] JavaScript syntax: Phase IV
+[PASS] Build and cache references: 0.9.1 / 0910
+[PASS] Changi final-evidence dialogue gate
+[PASS] Phase III direct handoff to driving transition
+[PASS] Driving video and arrival card separated
+[PASS] Early-evening time copy consistent
+[PASS] Phase IV continuity guardrails present
+[PASS] Cheryl portrait count/mode/canvas: 12 RGBA files, 744x1000
+[PASS] Farid portrait count/mode/canvas: 17 RGBA files, 744x1000
+[PASS] Visual edge/framing QC performed on dark navy and dark red backgrounds

@@ -1,13 +1,25 @@
-# Test Report — 0.9.0 Phase IV Candidate
+# Test Report — 0.9.1 Candidate
 
-## Completed checks
+## Completed
+- Latest production `GAME_MASTER_PLAN.md`, `index.html`, Phase III, Phase IV and shared dialogue/CSS ownership were reviewed before patching.
 - JavaScript syntax check passed:
   - `js/chapters/chapter-03/02-changi-airport.js`
   - `js/chapters/chapter-03/03-singapore-office.js`
-- Asset presence verified for all new image/audio/video files.
-- Transparent PNG extraction verified visually for Cheryl and Farid sample portraits.
-- Phase III English/Thai line update applied.
-- Phase III completion flow patched to expose Phase IV entry point.
+- Static sequencing checks passed:
+  - final evidence dialogue gates review-button visibility
+  - Phase III closes directly into Phase IV
+  - transition video and arrival card are separate layers
+  - arrival card cannot cover the moving video
+- Build/cache references verified as `0.9.1` / `0910`.
+- Portrait asset checks passed:
+  - Cheryl: 12 PNG files
+  - Farid: 17 PNG files
+  - every file is RGBA
+  - every file uses a `744 × 1000` canvas
+  - all portrait filenames referenced by Phase IV exist
+- Portraits were visually checked against dark navy and dark red backgrounds for pale fringe and framing.
+- Narrative continuity audit completed from Chapter I through Phase IV.
 
-## Notes
-This candidate was prepared as a patch package. Static validation is complete. Full runtime playthrough should be performed after replacing the files in the project tree.
+## Not claimed
+- No claim of an owner-device Android pass is made.
+- Audio balance, browser media behavior and full Save/Load flow still require the owner's real-device test after upload.

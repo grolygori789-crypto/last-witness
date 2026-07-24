@@ -1,12 +1,12 @@
-/* LAST WITNESS — Chapter III / Phase III: Changi Airport 0.8.1
+/* LAST WITNESS — Chapter III / Phase III: Changi Airport 0.9.1
  * Continues directly from the in-flight scene.
  * Verifies passenger movement separately from booking and accepted system access.
  */
 (function(){
 "use strict";
-if(window.LastWitnessChangi?.version==="0.9.0")return;
+if(window.LastWitnessChangi?.version==="0.9.1")return;
 
-const BUILD="0.9.0";
+const BUILD="0.9.1";
 const FLIGHT_SCREEN="chapter3Phase2Wip";
 const ARRIVAL_SCREEN="chapter3ArrivalTransition";
 const CHANGI_SCREEN="chapter3Changi";
@@ -227,10 +227,10 @@ function inject(){
 
 function officerName(){return isThai()?"เจ้าหน้าที่ตรวจคนเข้าเมือง":"Immigration Officer"}
 function runSceneDialogue(lines,done){
- const box=$("#chapter3ChangiDialogue");if(!box||typeof runDialogue!=="function"){done?.();return}
- dialogueActive=true;syncAudio();
+ const box=$("#chapter3ChangiDialogue");if(!box||typeof runDialogue!=="function"){dialogueActive=false;updateReview();done?.();return}
+ dialogueActive=true;updateReview();syncAudio();
  const normalized=lines.map(line=>({speaker:line.speaker==="officer"?officerName():line.speaker,emotion:line.emotion||"neutral",key:line.key}));
- runDialogue(box,normalized,()=>{dialogueActive=false;syncAudio();done?.()});
+ runDialogue(box,normalized,()=>{dialogueActive=false;updateReview();syncAudio();done?.()});
 }
 function openingLines(){return[
  {speaker:"officer",emotion:"checking_document",key:"ch3p3_passport"},{speaker:"officer",emotion:"speaking",key:"ch3p3_purpose"},{speaker:"Benedict",emotion:"smirk",key:"ch3p3_chicken_1"},{speaker:"North",emotion:"dry",key:"ch3p3_business"},{speaker:"officer",emotion:"assessing",key:"ch3p3_stay"},{speaker:"North",emotion:"serious",key:"ch3p3_three_days"},{speaker:"Benedict",emotion:"smile",key:"ch3p3_chicken_2"},{speaker:"officer",emotion:"neutral",key:"ch3p3_welcome"},{speaker:"North",emotion:"dry",key:"ch3p3_sent_back"},{speaker:"Benedict",emotion:"smirk",key:"ch3p3_ck"},{speaker:"North",emotion:"neutral",key:"ch3p3_prada"},{speaker:"Benedict",emotion:"surprised",key:"ch3p3_escalated"},{speaker:"North",emotion:"dry",key:"ch3p3_case_escalated"},{speaker:"North",emotion:"analyzing",key:"ch3p3_access_ready"},{speaker:"Benedict",emotion:"serious",key:"ch3p3_verify_first"}
@@ -292,7 +292,7 @@ function enterChangi(){
  stopElement($("#ch3ArrivalAudio"),true);p.started=true;p.arrivalSeen=true;gameState().checkpoint=p.introComplete?"ch3_phase3_investigation":"ch3_phase3_immigration";
  safeShow(CHANGI_SCREEN);closeEvidence();closePuzzle(false);$("#ch3ChangiComplete")?.style.setProperty("display","none");updateLanguage();
  const airport=$("#ch3ChangiAmbience");if(airport){airport.loop=true;if(soundOn())airport.play().catch(()=>{})}syncAudio();
- if(p.complete){showComplete();return}
+ if(p.complete){handoffToPhase4();return}
  if(p.puzzleComplete&&!p.closingDialogueComplete){runClosingDialogue();return}
  if(p.introComplete||p.evidenceCollected.length){p.introComplete=true;setHotspotsLocked(false,false);syncScene();return}
  setHotspotsLocked(true,false);setTimeout(startOpening,340);
@@ -332,7 +332,7 @@ function closeEvidence(){
 }
 function collectEvidence(){
  const id=activeEvidence,p=ensureChapterState();if(!id||!evidenceInspected||!p||collectedSet().has(id))return;
- p.evidenceCollected.push(id);try{gameState().found?.add?.("changi_"+id)}catch(_){};closeEvidence();paintHotspots();updateProgress();
+ p.evidenceCollected.push(id);dialogueActive=true;try{gameState().found?.add?.("changi_"+id)}catch(_){};closeEvidence();paintHotspots();updateProgress();updateReview();
  try{window.LastWitnessAudioCue?.playCollection?.()}catch(_){};try{if(typeof showBadge==="function")showBadge(tr("Evidence added","เพิ่มหลักฐานแล้ว"))}catch(_){}
  runSceneDialogue(evidenceLines(id),()=>{if(allEvidenceCollected())try{if(typeof showBadge==="function")showBadge(tr("Passenger trail reconciliation unlocked","ปลดล็อกการเปรียบเทียบเส้นทางผู้โดยสารแล้ว"))}catch(_){};syncScene();save()});save();
 }
@@ -374,13 +374,17 @@ function chooseConclusion(id){
  const p=ensureChapterState();p.puzzleComplete=true;p.stage="closing";p.puzzleAssignments={...puzzleAssignments};gameState().checkpoint="ch3_phase3_conclusion";status.textContent=tr("Conclusion supported by all three systems.","ข้อสรุปได้รับการรองรับจากทั้งสามระบบ");status.className="ch3-reconcile-status success";
  try{window.LastWitnessAudioCue?.playPuzzleSuccess?.()}catch(_){};save();setTimeout(()=>{closePuzzle(false);runClosingDialogue()},620);
 }
+function handoffToPhase4(){
+ const p=ensureChapterState();if(!p)return;
+ p.complete=true;p.closingDialogueComplete=true;p.stage="complete";gameState().checkpoint="ch3_phase3_complete";
+ $("#chapter3ChangiDialogue")?.classList.add("hidden");$("#ch3ChangiReview")?.classList.remove("show");$("#ch3ChangiComplete")?.style.setProperty("display","none");setHotspotsLocked(false,false);updateProgress();save();
+ stopAudio(true);setTimeout(()=>window.LastWitnessPhase4?.startTransition?.(),80);
+}
 function runClosingDialogue(){
  const p=ensureChapterState();if(dialogueActive||p.complete)return;
- setHotspotsLocked(false,false);$("#ch3ChangiReview")?.classList.remove("show");runSceneDialogue(closingLines(),()=>{p.closingDialogueComplete=true;p.complete=true;p.stage="complete";gameState().checkpoint="ch3_phase3_complete";showComplete();save()});
+ setHotspotsLocked(false,false);$("#ch3ChangiReview")?.classList.remove("show");runSceneDialogue(closingLines(),handoffToPhase4);
 }
-function showComplete(){
- const p=ensureChapterState();p.complete=true;p.closingDialogueComplete=true;p.stage="complete";$("#chapter3ChangiDialogue")?.classList.add("hidden");$("#ch3ChangiReview")?.classList.remove("show");setHotspotsLocked(false,false);$("#ch3ChangiComplete")?.style.setProperty("display","block");updateProgress();syncAudio();
-}
+function showComplete(){handoffToPhase4()}
 
 function appendCaseEntries(){
  const list=$("#caseList"),p=ensureChapterState();if(!list||!p?.evidenceCollected?.length)return;

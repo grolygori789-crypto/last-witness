@@ -1,26 +1,24 @@
-# LAST WITNESS 0.9.0 — Chapter III Phase IV Candidate
+# LAST WITNESS 0.9.1 — Phase IV Production Repair Candidate
 
-## Purpose
-Adds **Chapter III / Phase IV: Singapore Investigation Office** and connects it directly after Phase III (Changi Airport).
+## Scope
+This patch repairs the owner-reported Phase III → Phase IV presentation and sequencing defects on top of the current `0.9.0` production branch.
 
-## Included files
+## Changed files
 - `index.html`
 - `css/chapter-03-phase-04.css`
 - `js/chapters/chapter-03/02-changi-airport.js`
 - `js/chapters/chapter-03/03-singapore-office.js`
-- `assets/images/chapter-03/phase-04/singapore-investigation-office.png`
-- `assets/images/chapter-03/phase-04/cheryl/*.png`
-- `assets/images/chapter-03/phase-04/farid/*.png`
-- `assets/video/chapter-03/phase-04/drive-to-investigation-office.mp4`
-- `assets/audio/chapter-03/phase-04/drive-to-investigation-office.mp3`
-- `assets/audio/chapter-03/phase-04/singapore-investigation-office-ambience.mp3`
+- `assets/images/chapter-03/phase-04/cheryl/*.png` (12 portraits)
+- `assets/images/chapter-03/phase-04/farid/*.png` (17 portraits)
 
-## Functional additions
-1. Phase III completion card now includes **Continue to Phase IV**.
-2. New transition clip from Changi to the Singapore Investigation Office.
-3. New office scene with Cheryl Goh and Farid Rahman.
-4. New dialogue choice panel during Cheryl introduction.
-5. New evidence lifecycle for three office clues.
-6. New **Validation Matrix** minigame.
-7. New Phase IV completion card with handoff toward Phase V / Marina Bay WIP.
-8. Save/Load resume support for Phase IV screens.
+## Repairs included
+1. Changi review/minigame button remains hidden until the final evidence dialogue fully completes.
+2. Phase III completion card is bypassed. The closing dialogue now hands directly to the approved driving transition.
+3. Driving transition follows the takeoff presentation model:
+   - clean full-screen video
+   - skip control only during playback
+   - separate full-screen Day / Time / Location card after the clip
+   - office scene begins after the card
+4. Cheryl and Farid portraits were rebuilt as close head-and-shoulder RGBA assets with consistent anchoring, larger facial scale and cleaned matte edges.
+5. Phase IV story was tightened against Chapter I–III canon and deliberately stops short of proving the full reconciliation mechanism.
+6. Build label and cache versions updated to `0.9.1` / `0910`.
