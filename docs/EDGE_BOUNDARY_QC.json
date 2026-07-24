@@ -1,0 +1,122 @@
+{
+  "cheryl": [
+    {
+      "file": "alert.png",
+      "near_white_boundary_pixels_at_110x148": 0
+    },
+    {
+      "file": "arms_crossed.png",
+      "near_white_boundary_pixels_at_110x148": 0
+    },
+    {
+      "file": "closed_off.png",
+      "near_white_boundary_pixels_at_110x148": 0
+    },
+    {
+      "file": "concerned.png",
+      "near_white_boundary_pixels_at_110x148": 0
+    },
+    {
+      "file": "explaining.png",
+      "near_white_boundary_pixels_at_110x148": 0
+    },
+    {
+      "file": "faint_smile.png",
+      "near_white_boundary_pixels_at_110x148": 0
+    },
+    {
+      "file": "neutral.png",
+      "near_white_boundary_pixels_at_110x148": 0
+    },
+    {
+      "file": "reading.png",
+      "near_white_boundary_pixels_at_110x148": 0
+    },
+    {
+      "file": "side.png",
+      "near_white_boundary_pixels_at_110x148": 0
+    },
+    {
+      "file": "skeptical.png",
+      "near_white_boundary_pixels_at_110x148": 0
+    },
+    {
+      "file": "surprised.png",
+      "near_white_boundary_pixels_at_110x148": 0
+    },
+    {
+      "file": "thinking.png",
+      "near_white_boundary_pixels_at_110x148": 0
+    }
+  ],
+  "farid": [
+    {
+      "file": "alert.png",
+      "near_white_boundary_pixels_at_110x148": 0
+    },
+    {
+      "file": "amused.png",
+      "near_white_boundary_pixels_at_110x148": 0
+    },
+    {
+      "file": "arms_crossed.png",
+      "near_white_boundary_pixels_at_110x148": 0
+    },
+    {
+      "file": "coffee.png",
+      "near_white_boundary_pixels_at_110x148": 0
+    },
+    {
+      "file": "concerned.png",
+      "near_white_boundary_pixels_at_110x148": 0
+    },
+    {
+      "file": "downcast.png",
+      "near_white_boundary_pixels_at_110x148": 0
+    },
+    {
+      "file": "explaining.png",
+      "near_white_boundary_pixels_at_110x148": 0
+    },
+    {
+      "file": "focused.png",
+      "near_white_boundary_pixels_at_110x148": 0
+    },
+    {
+      "file": "look_up.png",
+      "near_white_boundary_pixels_at_110x148": 0
+    },
+    {
+      "file": "neutral.png",
+      "near_white_boundary_pixels_at_110x148": 0
+    },
+    {
+      "file": "side.png",
+      "near_white_boundary_pixels_at_110x148": 0
+    },
+    {
+      "file": "smirk.png",
+      "near_white_boundary_pixels_at_110x148": 0
+    },
+    {
+      "file": "surprised.png",
+      "near_white_boundary_pixels_at_110x148": 0
+    },
+    {
+      "file": "tablet.png",
+      "near_white_boundary_pixels_at_110x148": 0
+    },
+    {
+      "file": "tablet_read.png",
+      "near_white_boundary_pixels_at_110x148": 0
+    },
+    {
+      "file": "thinking.png",
+      "near_white_boundary_pixels_at_110x148": 0
+    },
+    {
+      "file": "warm_smile.png",
+      "near_white_boundary_pixels_at_110x148": 0
+    }
+  ]
+}

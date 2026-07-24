@@ -1,0 +1,557 @@
+{
+  "cheryl": [
+    {
+      "file": "alert.png",
+      "size": [
+        744,
+        1000
+      ],
+      "mode": "RGBA",
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "alpha_bbox": [
+        59,
+        0,
+        744,
+        1000
+      ],
+      "transparent_rgb_nonzero": 0
+    },
+    {
+      "file": "arms_crossed.png",
+      "size": [
+        744,
+        1000
+      ],
+      "mode": "RGBA",
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "alpha_bbox": [
+        0,
+        0,
+        744,
+        1000
+      ],
+      "transparent_rgb_nonzero": 0
+    },
+    {
+      "file": "closed_off.png",
+      "size": [
+        744,
+        1000
+      ],
+      "mode": "RGBA",
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "alpha_bbox": [
+        21,
+        0,
+        725,
+        1000
+      ],
+      "transparent_rgb_nonzero": 0
+    },
+    {
+      "file": "concerned.png",
+      "size": [
+        744,
+        1000
+      ],
+      "mode": "RGBA",
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "alpha_bbox": [
+        29,
+        0,
+        743,
+        1000
+      ],
+      "transparent_rgb_nonzero": 0
+    },
+    {
+      "file": "explaining.png",
+      "size": [
+        744,
+        1000
+      ],
+      "mode": "RGBA",
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "alpha_bbox": [
+        0,
+        0,
+        731,
+        1000
+      ],
+      "transparent_rgb_nonzero": 0
+    },
+    {
+      "file": "faint_smile.png",
+      "size": [
+        744,
+        1000
+      ],
+      "mode": "RGBA",
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "alpha_bbox": [
+        20,
+        0,
+        724,
+        1000
+      ],
+      "transparent_rgb_nonzero": 0
+    },
+    {
+      "file": "neutral.png",
+      "size": [
+        744,
+        1000
+      ],
+      "mode": "RGBA",
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "alpha_bbox": [
+        24,
+        0,
+        720,
+        1000
+      ],
+      "transparent_rgb_nonzero": 0
+    },
+    {
+      "file": "reading.png",
+      "size": [
+        744,
+        1000
+      ],
+      "mode": "RGBA",
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "alpha_bbox": [
+        0,
+        0,
+        744,
+        1000
+      ],
+      "transparent_rgb_nonzero": 0
+    },
+    {
+      "file": "side.png",
+      "size": [
+        744,
+        1000
+      ],
+      "mode": "RGBA",
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "alpha_bbox": [
+        0,
+        0,
+        675,
+        1000
+      ],
+      "transparent_rgb_nonzero": 0
+    },
+    {
+      "file": "skeptical.png",
+      "size": [
+        744,
+        1000
+      ],
+      "mode": "RGBA",
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "alpha_bbox": [
+        25,
+        0,
+        734,
+        1000
+      ],
+      "transparent_rgb_nonzero": 0
+    },
+    {
+      "file": "surprised.png",
+      "size": [
+        744,
+        1000
+      ],
+      "mode": "RGBA",
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "alpha_bbox": [
+        24,
+        0,
+        720,
+        1000
+      ],
+      "transparent_rgb_nonzero": 0
+    },
+    {
+      "file": "thinking.png",
+      "size": [
+        744,
+        1000
+      ],
+      "mode": "RGBA",
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "alpha_bbox": [
+        29,
+        0,
+        743,
+        1000
+      ],
+      "transparent_rgb_nonzero": 0
+    }
+  ],
+  "farid": [
+    {
+      "file": "alert.png",
+      "size": [
+        744,
+        1000
+      ],
+      "mode": "RGBA",
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "alpha_bbox": [
+        0,
+        0,
+        744,
+        988
+      ],
+      "transparent_rgb_nonzero": 0
+    },
+    {
+      "file": "amused.png",
+      "size": [
+        744,
+        1000
+      ],
+      "mode": "RGBA",
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "alpha_bbox": [
+        0,
+        0,
+        744,
+        1000
+      ],
+      "transparent_rgb_nonzero": 0
+    },
+    {
+      "file": "arms_crossed.png",
+      "size": [
+        744,
+        1000
+      ],
+      "mode": "RGBA",
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "alpha_bbox": [
+        0,
+        0,
+        744,
+        986
+      ],
+      "transparent_rgb_nonzero": 0
+    },
+    {
+      "file": "coffee.png",
+      "size": [
+        744,
+        1000
+      ],
+      "mode": "RGBA",
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "alpha_bbox": [
+        0,
+        0,
+        733,
+        972
+      ],
+      "transparent_rgb_nonzero": 0
+    },
+    {
+      "file": "concerned.png",
+      "size": [
+        744,
+        1000
+      ],
+      "mode": "RGBA",
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "alpha_bbox": [
+        0,
+        0,
+        744,
+        1000
+      ],
+      "transparent_rgb_nonzero": 0
+    },
+    {
+      "file": "downcast.png",
+      "size": [
+        744,
+        1000
+      ],
+      "mode": "RGBA",
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "alpha_bbox": [
+        0,
+        0,
+        744,
+        988
+      ],
+      "transparent_rgb_nonzero": 0
+    },
+    {
+      "file": "explaining.png",
+      "size": [
+        744,
+        1000
+      ],
+      "mode": "RGBA",
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "alpha_bbox": [
+        0,
+        0,
+        744,
+        1000
+      ],
+      "transparent_rgb_nonzero": 0
+    },
+    {
+      "file": "focused.png",
+      "size": [
+        744,
+        1000
+      ],
+      "mode": "RGBA",
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "alpha_bbox": [
+        0,
+        0,
+        744,
+        1000
+      ],
+      "transparent_rgb_nonzero": 0
+    },
+    {
+      "file": "look_up.png",
+      "size": [
+        744,
+        1000
+      ],
+      "mode": "RGBA",
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "alpha_bbox": [
+        0,
+        0,
+        744,
+        1000
+      ],
+      "transparent_rgb_nonzero": 0
+    },
+    {
+      "file": "neutral.png",
+      "size": [
+        744,
+        1000
+      ],
+      "mode": "RGBA",
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "alpha_bbox": [
+        0,
+        0,
+        744,
+        1000
+      ],
+      "transparent_rgb_nonzero": 0
+    },
+    {
+      "file": "side.png",
+      "size": [
+        744,
+        1000
+      ],
+      "mode": "RGBA",
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "alpha_bbox": [
+        0,
+        0,
+        744,
+        1000
+      ],
+      "transparent_rgb_nonzero": 0
+    },
+    {
+      "file": "smirk.png",
+      "size": [
+        744,
+        1000
+      ],
+      "mode": "RGBA",
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "alpha_bbox": [
+        0,
+        0,
+        744,
+        1000
+      ],
+      "transparent_rgb_nonzero": 0
+    },
+    {
+      "file": "surprised.png",
+      "size": [
+        744,
+        1000
+      ],
+      "mode": "RGBA",
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "alpha_bbox": [
+        0,
+        0,
+        744,
+        1000
+      ],
+      "transparent_rgb_nonzero": 0
+    },
+    {
+      "file": "tablet.png",
+      "size": [
+        744,
+        1000
+      ],
+      "mode": "RGBA",
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "alpha_bbox": [
+        0,
+        0,
+        744,
+        1000
+      ],
+      "transparent_rgb_nonzero": 0
+    },
+    {
+      "file": "tablet_read.png",
+      "size": [
+        744,
+        1000
+      ],
+      "mode": "RGBA",
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "alpha_bbox": [
+        0,
+        0,
+        744,
+        973
+      ],
+      "transparent_rgb_nonzero": 0
+    },
+    {
+      "file": "thinking.png",
+      "size": [
+        744,
+        1000
+      ],
+      "mode": "RGBA",
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "alpha_bbox": [
+        0,
+        0,
+        744,
+        992
+      ],
+      "transparent_rgb_nonzero": 0
+    },
+    {
+      "file": "warm_smile.png",
+      "size": [
+        744,
+        1000
+      ],
+      "mode": "RGBA",
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "alpha_bbox": [
+        0,
+        0,
+        744,
+        1000
+      ],
+      "transparent_rgb_nonzero": 0
+    }
+  ]
+}

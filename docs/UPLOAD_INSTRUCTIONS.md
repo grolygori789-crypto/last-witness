@@ -1,17 +1,15 @@
-# Upload Instructions
+# Upload instructions
 
-Upload this patch into the root of branch `restore-game-recovered`, preserving all folder paths.
+Upload every file in this ZIP to the same repository path and replace the existing file.
 
-Replace:
-- `index.html`
-- `css/chapter-03-phase-04.css`
-- `js/chapters/chapter-02/05-chapter2-integration.js`
-- `js/chapters/chapter-03/02-changi-airport.js`
-- `js/chapters/chapter-03/03-singapore-office.js`
-- `assets/images/chapter-03/phase-04/cheryl/`
-- `assets/images/chapter-03/phase-04/farid/`
+Changed runtime files:
+- index.html
+- css/chapter-03-phase-04.css
+- js/chapters/chapter-02/05-chapter2-integration.js
+- js/chapters/chapter-03/03-singapore-office.js
 
-Add:
-- `js/engine/14-character-canon.js`
+Portrait assets:
+- assets/images/chapter-03/phase-04/cheryl/*.png
+- assets/images/chapter-03/phase-04/farid/*.png
 
-The approved vehicle transition video, transition audio, office ambience, and office background are unchanged and are not duplicated in this patch.
+Do not delete or move any other repository file.

@@ -1,4 +1,4 @@
-/* LAST WITNESS — Chapter II / Chapter III Production Integration 0.9.2
+/* LAST WITNESS — Chapter II / Chapter III Production Integration 0.9.3
  * Owns the Medical transition and loads Chapter III on demand.
  * Chapter III Phase III–IV load after the stable Phase I–II runtime.
  * Production Runtime 11 is loaded once by 08-stability-repair.js.
@@ -31,7 +31,7 @@ function ensureProductionRuntime(){
  addStylesheetOnce("css/chapter-03-phase-03.css?v=0801","lwChapter03Phase03Style");
  runtimePromise=loadScriptOnce("js/chapters/chapter-03/01-title-phase1.js?v=0920","lwChapter03Script")
   .then(()=>loadScriptOnce("js/chapters/chapter-03/02-changi-airport.js?v=0920","lwChapter03Phase03Script"))
-  .then(()=>loadScriptOnce("js/chapters/chapter-03/03-singapore-office.js?v=0920","lwChapter03Phase04Script"))
+  .then(()=>loadScriptOnce("js/chapters/chapter-03/03-singapore-office.js?v=0930","lwChapter03Phase04Script"))
   .catch(error=>{console.error("LAST WITNESS Chapter III runtime failed to load",error);runtimePromise=null;throw error});
  return runtimePromise
 }

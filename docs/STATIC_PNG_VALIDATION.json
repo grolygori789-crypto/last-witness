@@ -1,0 +1,499 @@
+{
+  "cheryl": [
+    {
+      "file": "alert.png",
+      "size": [
+        744,
+        1000
+      ],
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "bbox": [
+        92,
+        0,
+        714,
+        1000
+      ]
+    },
+    {
+      "file": "arms_crossed.png",
+      "size": [
+        744,
+        1000
+      ],
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "bbox": [
+        14,
+        0,
+        730,
+        1000
+      ]
+    },
+    {
+      "file": "closed_off.png",
+      "size": [
+        744,
+        1000
+      ],
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "bbox": [
+        58,
+        0,
+        687,
+        1000
+      ]
+    },
+    {
+      "file": "concerned.png",
+      "size": [
+        744,
+        1000
+      ],
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "bbox": [
+        66,
+        0,
+        704,
+        1000
+      ]
+    },
+    {
+      "file": "explaining.png",
+      "size": [
+        744,
+        1000
+      ],
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "bbox": [
+        0,
+        0,
+        693,
+        1000
+      ]
+    },
+    {
+      "file": "faint_smile.png",
+      "size": [
+        744,
+        1000
+      ],
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "bbox": [
+        57,
+        0,
+        686,
+        1000
+      ]
+    },
+    {
+      "file": "neutral.png",
+      "size": [
+        744,
+        1000
+      ],
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "bbox": [
+        61,
+        0,
+        683,
+        1000
+      ]
+    },
+    {
+      "file": "reading.png",
+      "size": [
+        744,
+        1000
+      ],
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "bbox": [
+        0,
+        0,
+        743,
+        1000
+      ]
+    },
+    {
+      "file": "side.png",
+      "size": [
+        744,
+        1000
+      ],
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "bbox": [
+        13,
+        0,
+        642,
+        1000
+      ]
+    },
+    {
+      "file": "skeptical.png",
+      "size": [
+        744,
+        1000
+      ],
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "bbox": [
+        61,
+        0,
+        695,
+        1000
+      ]
+    },
+    {
+      "file": "surprised.png",
+      "size": [
+        744,
+        1000
+      ],
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "bbox": [
+        61,
+        0,
+        683,
+        1000
+      ]
+    },
+    {
+      "file": "thinking.png",
+      "size": [
+        744,
+        1000
+      ],
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "bbox": [
+        66,
+        0,
+        704,
+        1000
+      ]
+    }
+  ],
+  "farid": [
+    {
+      "file": "alert.png",
+      "size": [
+        744,
+        1000
+      ],
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "bbox": [
+        0,
+        0,
+        744,
+        988
+      ]
+    },
+    {
+      "file": "amused.png",
+      "size": [
+        744,
+        1000
+      ],
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "bbox": [
+        0,
+        0,
+        744,
+        1000
+      ]
+    },
+    {
+      "file": "arms_crossed.png",
+      "size": [
+        744,
+        1000
+      ],
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "bbox": [
+        0,
+        0,
+        744,
+        986
+      ]
+    },
+    {
+      "file": "coffee.png",
+      "size": [
+        744,
+        1000
+      ],
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "bbox": [
+        0,
+        0,
+        733,
+        972
+      ]
+    },
+    {
+      "file": "concerned.png",
+      "size": [
+        744,
+        1000
+      ],
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "bbox": [
+        0,
+        0,
+        744,
+        1000
+      ]
+    },
+    {
+      "file": "downcast.png",
+      "size": [
+        744,
+        1000
+      ],
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "bbox": [
+        0,
+        0,
+        744,
+        988
+      ]
+    },
+    {
+      "file": "explaining.png",
+      "size": [
+        744,
+        1000
+      ],
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "bbox": [
+        0,
+        0,
+        744,
+        1000
+      ]
+    },
+    {
+      "file": "focused.png",
+      "size": [
+        744,
+        1000
+      ],
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "bbox": [
+        0,
+        0,
+        744,
+        1000
+      ]
+    },
+    {
+      "file": "look_up.png",
+      "size": [
+        744,
+        1000
+      ],
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "bbox": [
+        0,
+        0,
+        744,
+        1000
+      ]
+    },
+    {
+      "file": "neutral.png",
+      "size": [
+        744,
+        1000
+      ],
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "bbox": [
+        0,
+        0,
+        744,
+        1000
+      ]
+    },
+    {
+      "file": "side.png",
+      "size": [
+        744,
+        1000
+      ],
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "bbox": [
+        0,
+        0,
+        744,
+        1000
+      ]
+    },
+    {
+      "file": "smirk.png",
+      "size": [
+        744,
+        1000
+      ],
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "bbox": [
+        0,
+        0,
+        744,
+        1000
+      ]
+    },
+    {
+      "file": "surprised.png",
+      "size": [
+        744,
+        1000
+      ],
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "bbox": [
+        0,
+        0,
+        744,
+        1000
+      ]
+    },
+    {
+      "file": "tablet.png",
+      "size": [
+        744,
+        1000
+      ],
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "bbox": [
+        0,
+        0,
+        744,
+        1000
+      ]
+    },
+    {
+      "file": "tablet_read.png",
+      "size": [
+        744,
+        1000
+      ],
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "bbox": [
+        0,
+        0,
+        744,
+        973
+      ]
+    },
+    {
+      "file": "thinking.png",
+      "size": [
+        744,
+        1000
+      ],
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "bbox": [
+        0,
+        0,
+        744,
+        992
+      ]
+    },
+    {
+      "file": "warm_smile.png",
+      "size": [
+        744,
+        1000
+      ],
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "bbox": [
+        0,
+        0,
+        744,
+        1000
+      ]
+    }
+  ]
+}

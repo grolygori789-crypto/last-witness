@@ -1,37 +1,20 @@
-# Test Report — Build 0.9.2 Candidate
+# Test report
 
-## Source verification completed
-- Fetched the latest `GAME_MASTER_PLAN.md` from `restore-game-recovered`.
-- Fetched the latest `index.html` and related Chapter III/Character Registry runtime files.
-- Confirmed the effective production baseline was Build 0.9.1 before modification.
+## Completed
+- Verified all 29 portrait files are RGBA PNG at 744 × 1000.
+- Verified every portrait has true transparent pixels and opaque subject pixels.
+- Verified fully transparent pixels carry zero RGB, preventing white colour bleed during resampling.
+- Verified aspect ratio is preserved. No portrait is stretched horizontally or vertically.
+- Reviewed every Cheryl and Farid expression on a dark dialogue-like background at the exact portrait-cell ratio.
+- Reviewed representative expressions at simulated 110 × 148 dialogue resolution.
+- Checked stable face/upper-torso framing and consistent visual anchors.
+- Checked JavaScript syntax for the integration loader and Phase IV runtime.
+- Checked cache-busting paths for CSS, Phase IV JavaScript and portrait PNG assets.
 
-## Automated/static checks passed
-- JavaScript syntax:
-  - `05-chapter2-integration.js`
-  - `02-changi-airport.js`
-  - `03-singapore-office.js`
-  - `14-character-canon.js`
-- Static Chapter III load-order validation:
-  - no early static Changi load
-  - no early static Phase IV load
-  - dynamic order is Phase I–II → Changi → Singapore Office
-- Phase IV Compare gate unit test:
-  - hidden during intro
-  - hidden during choice dialogue
-  - hidden before all evidence
-  - visible only in the correct investigation-ready state
-  - hidden while an overlay is open
-  - hidden after completion
-- Character canon module mock test passed.
-- Portrait validation:
-  - Cheryl: 12 RGBA PNG files
-  - Farid: 17 RGBA PNG files
-  - every file: `744 × 1000`
-  - transparent corners verified
-  - aspect ratio preserved
-- Visual portrait preview inspected on a dark dialogue-style background.
+## Not completed
+- Automated browser runtime rendering could not be completed in this container because Chromium navigation is blocked by the environment administrator policy.
+- Real Android device rendering has not been tested.
+- Live GitHub Pages cache behaviour has not been tested.
+- Audio was not tested because no audio code or audio file changed.
 
-## Not claimed
-- The full game was not run in a local Chromium browser because the available environment blocks localhost pages by organization policy.
-- No Android, live GitHub Pages, real audio, or real Save/Load pass is claimed.
-- Final approval still depends on the owner's device test.
+Owner device confirmation remains required before marking BUILD 0.9.3 as passed.

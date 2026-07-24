@@ -1,23 +1,15 @@
-# LAST WITNESS 0.9.2 — System and Portrait Repair Candidate
+# BUILD 0.9.3 patch manifest
 
-## Scope
-This patch repairs four owner-reported defects in the current 0.9.1 production tree:
-
-1. Character Journal canon accuracy
-2. In-flight dialogue handoff to Changi Airport
-3. Cheryl Goh and Farid Rahman dialogue portrait framing
-4. Premature Singapore-office Compare button
-
-## Changed and added paths
+## Runtime files
 - `index.html`
 - `css/chapter-03-phase-04.css`
 - `js/chapters/chapter-02/05-chapter2-integration.js`
-- `js/chapters/chapter-03/02-changi-airport.js`
 - `js/chapters/chapter-03/03-singapore-office.js`
-- `js/engine/14-character-canon.js`
-- `assets/images/chapter-03/phase-04/cheryl/*.png` — 12 files
-- `assets/images/chapter-03/phase-04/farid/*.png` — 17 files
 
-## Build
-- Build label: `0.9.2`
-- New cache tag: `0920`
+## Cheryl portraits, 12 PNG files
+`neutral`, `skeptical`, `side`, `arms_crossed`, `surprised`, `thinking`, `faint_smile`, `explaining`, `alert`, `concerned`, `closed_off`, `reading`
+
+## Farid portraits, 17 PNG files
+`neutral`, `side`, `tablet`, `smirk`, `look_up`, `surprised`, `explaining`, `amused`, `thinking`, `concerned`, `warm_smile`, `focused`, `alert`, `downcast`, `arms_crossed`, `tablet_read`, `coffee`
+
+No story, puzzle, evidence, relationship, save-state or audio logic was changed.

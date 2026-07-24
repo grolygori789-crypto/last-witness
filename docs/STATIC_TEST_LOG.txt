@@ -1,20 +1,19 @@
-[PASS] JavaScript syntax — Chapter II/III integration
-[PASS] JavaScript syntax — Changi Airport
-[PASS] JavaScript syntax — Singapore Investigation Office
-[PASS] JavaScript syntax — Character Canon module
-[PASS] Removed early static Changi script loading
-[PASS] Removed early static Phase IV script loading
-[PASS] Dynamic load sequence: Phase I–II -> Changi -> Singapore Office
-[PASS] Changi flight handoff bridge attaches after base runtime
-[PASS] Compare hidden during intro, dialogue, choices and incomplete evidence
-[PASS] Compare visible only in strict investigation-ready state
-[PASS] Compare open handler repeats strict state guard
-[PASS] Character canon verification module loads after registry
-[PASS] Kittisak corrected to Police Captain / ร้อยตำรวจเอก
-[PASS] Somchai retained as Police Officer / เจ้าหน้าที่ตำรวจ
-[PASS] Ratchata exact journal name locked
-[PASS] Portrait aspect ratio preserved; CSS transform disabled
-[PASS] Cheryl portrait count, RGBA mode, canvas and transparent corners
-[PASS] Farid portrait count, RGBA mode, canvas and transparent corners
-[PASS] Character canon mock test
-[PASS] Phase IV Compare gate unit test
+BUILD 0.9.3 PORTRAIT MASTER QC
+
+PASS  JavaScript syntax: 05-chapter2-integration.js
+PASS  JavaScript syntax: 03-singapore-office.js
+PASS  CSS cache key: v=0930
+PASS  Integration loader cache key: v=0930
+PASS  Phase IV script cache key: v=0930
+PASS  Portrait asset cache key: v=0930
+PASS  Cheryl portrait count: 12
+PASS  Farid portrait count: 17
+PASS  Canvas: 744 x 1000 RGBA
+PASS  Transparent pixels contain zero RGB
+PASS  No aspect-ratio stretching in asset construction
+PASS  Dark-background QC contact sheets generated
+
+NOT RUN  Real Android device
+NOT RUN  Live GitHub Pages
+NOT RUN  Audio listening test
+NOT RUN  Automated Chromium navigation, blocked by container administrator policy

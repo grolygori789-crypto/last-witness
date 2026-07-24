@@ -1,9 +1,9 @@
-/* LAST WITNESS — Chapter III / Phase IV: Singapore Investigation Office 0.9.2 */
+/* LAST WITNESS — Chapter III / Phase IV: Singapore Investigation Office 0.9.3 */
 (function(){
 "use strict";
-if(window.LastWitnessPhase4?.version==="0.9.2")return;
+if(window.LastWitnessPhase4?.version==="0.9.3")return;
 
-const BUILD="0.9.2";
+const BUILD="0.9.3";
 const TRANSITION_SCREEN="chapter3Phase4Transition";
 const OFFICE_SCREEN="chapter3SingaporeOffice";
 const VIDEO_PATH="assets/video/chapter-03/phase-04/drive-to-investigation-office.mp4?v=0920";
@@ -82,8 +82,8 @@ function syncAudio(){
 
 function installPortraits(){
  try{
-  const cheryl={neutral:CHERYL_BASE+"neutral.png?v=0920",serious:CHERYL_BASE+"neutral.png?v=0920",skeptical:CHERYL_BASE+"skeptical.png?v=0920",side:CHERYL_BASE+"side.png?v=0920",arms_crossed:CHERYL_BASE+"arms_crossed.png?v=0920",surprised:CHERYL_BASE+"surprised.png?v=0920",thinking:CHERYL_BASE+"thinking.png?v=0920",faint_smile:CHERYL_BASE+"faint_smile.png?v=0920",explaining:CHERYL_BASE+"explaining.png?v=0920",alert:CHERYL_BASE+"alert.png?v=0920",concerned:CHERYL_BASE+"concerned.png?v=0920",reading:CHERYL_BASE+"reading.png?v=0920",closed_off:CHERYL_BASE+"closed_off.png?v=0920"};
-  const farid={neutral:FARID_BASE+"neutral.png?v=0920",side:FARID_BASE+"side.png?v=0920",tablet:FARID_BASE+"tablet.png?v=0920",smirk:FARID_BASE+"smirk.png?v=0920",look_up:FARID_BASE+"look_up.png?v=0920",surprised:FARID_BASE+"surprised.png?v=0920",explaining:FARID_BASE+"explaining.png?v=0920",amused:FARID_BASE+"amused.png?v=0920",thinking:FARID_BASE+"thinking.png?v=0920",concerned:FARID_BASE+"concerned.png?v=0920",warm_smile:FARID_BASE+"warm_smile.png?v=0920",focused:FARID_BASE+"focused.png?v=0920",alert:FARID_BASE+"alert.png?v=0920",downcast:FARID_BASE+"downcast.png?v=0920",arms_crossed:FARID_BASE+"arms_crossed.png?v=0920",tablet_read:FARID_BASE+"tablet_read.png?v=0920",coffee:FARID_BASE+"coffee.png?v=0920"};
+  const cheryl={neutral:CHERYL_BASE+"neutral.png?v=0930",serious:CHERYL_BASE+"neutral.png?v=0930",skeptical:CHERYL_BASE+"skeptical.png?v=0930",side:CHERYL_BASE+"side.png?v=0930",arms_crossed:CHERYL_BASE+"arms_crossed.png?v=0930",surprised:CHERYL_BASE+"surprised.png?v=0930",thinking:CHERYL_BASE+"thinking.png?v=0930",faint_smile:CHERYL_BASE+"faint_smile.png?v=0930",explaining:CHERYL_BASE+"explaining.png?v=0930",alert:CHERYL_BASE+"alert.png?v=0930",concerned:CHERYL_BASE+"concerned.png?v=0930",reading:CHERYL_BASE+"reading.png?v=0930",closed_off:CHERYL_BASE+"closed_off.png?v=0930"};
+  const farid={neutral:FARID_BASE+"neutral.png?v=0930",side:FARID_BASE+"side.png?v=0930",tablet:FARID_BASE+"tablet.png?v=0930",smirk:FARID_BASE+"smirk.png?v=0930",look_up:FARID_BASE+"look_up.png?v=0930",surprised:FARID_BASE+"surprised.png?v=0930",explaining:FARID_BASE+"explaining.png?v=0930",amused:FARID_BASE+"amused.png?v=0930",thinking:FARID_BASE+"thinking.png?v=0930",concerned:FARID_BASE+"concerned.png?v=0930",warm_smile:FARID_BASE+"warm_smile.png?v=0930",focused:FARID_BASE+"focused.png?v=0930",alert:FARID_BASE+"alert.png?v=0930",downcast:FARID_BASE+"downcast.png?v=0930",arms_crossed:FARID_BASE+"arms_crossed.png?v=0930",tablet_read:FARID_BASE+"tablet_read.png?v=0930",coffee:FARID_BASE+"coffee.png?v=0930"};
   PORTRAITS["Inspector Cheryl Goh"]=cheryl; PORTRAITS["สารวัตร Cheryl Goh"]=cheryl;
   PORTRAITS["Farid Rahman"]=farid; PORTRAITS["Farid Rahman (SPF)"]=farid; PORTRAITS["ฟาริด ราห์มาน"]=farid;
  }catch(_){}
