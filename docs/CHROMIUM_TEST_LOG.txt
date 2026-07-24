@@ -1,36 +1,23 @@
-PASS build label
-PASS save snapshot build
-PASS room locked before intro
-PASS room lock blocks pointer, keyboard and accessibility focus
-PASS room unlocked after intro
-PASS room reveal restores interaction semantics
-PASS phone remains yellow until phone data complete
-PASS phone green after sub-evidence
-PASS room completion feedback persisted
-PASS room completion does not misuse puzzle audio
-PASS apartment locked before intro
-PASS apartment unlocked after intro
-PASS apartment all green after collection
-PASS apartment completion feedback persisted
-PASS forensic locked during intro
-PASS forensic intro persisted
-PASS forensic unlocked after intro
-PASS forensic collected state
-PASS forensic green after collection
-PASS medical locked during intro
-PASS medical intro persisted
-PASS medical unlocked after intro
-PASS medical stays yellow after inspect only
-PASS medical green after case-file collection
-PASS medical collected state
-PASS medical review gated by collection
-PASS partial apartment save resumes investigation without replay
-PASS partial room save resumes investigation without replay
-PASS forensic intro not replayed after load
-PASS medical intro not replayed after load
-PASS forensic collected-only save normalized
-PASS legacy forensic intro not replayed
-PASS legacy medical state migrated
-PASS legacy hotspots remain complete
-PASS legacy medical intro not replayed
-PASS no browser page errors
+## full flow
+PASS arrival screen
+PASS changi screen
+PASS intro complete
+PASS evidence complete
+PASS phase complete
+PASS checkpoint
+## partial restore
+PASS restored screen
+PASS no intro restart
+PASS booking green
+PASS movement yellow
+## complete restore
+PASS complete card restored
+PASS complete state
+## Thai
+PASS Thai location
+PASS Thai officer
+PASS Thai chicken rice
+PASS Thai Prada
+## direct Phase II handoff
+PASS flight dialogue -> arrival
+PASS no page errors

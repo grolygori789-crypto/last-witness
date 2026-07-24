@@ -1,0 +1,88 @@
+/* LAST WITNESS — Chapter III Phase III / Changi Airport 0.8.0 */
+
+body.lw-changi-runtime #ch3FlightComplete{display:none!important}
+
+.ch3-arrival-transition{overflow:hidden;background:#030508}
+.ch3-arrival-transition>.scene{filter:saturate(.88) contrast(1.04);transform:scale(1.025);animation:ch3ArrivalPush 7.4s ease-out both}
+.ch3-arrival-transition .overlay{background:linear-gradient(180deg,rgba(3,7,12,.10),rgba(3,6,10,.18) 42%,rgba(2,4,8,.82) 100%)}
+.ch3-arrival-card{position:absolute;z-index:12;left:18px;right:18px;bottom:calc(72px + var(--bottom));padding:23px 20px;text-align:center;border:1px solid rgba(221,181,109,.36);background:rgba(7,9,13,.90);box-shadow:0 24px 72px rgba(0,0,0,.66);backdrop-filter:blur(9px)}
+.ch3-arrival-card .eyebrow{margin-bottom:8px}.ch3-arrival-card h2{margin:5px 0 7px;font:500 clamp(28px,8vw,42px) Georgia,serif}.ch3-arrival-card p{margin:0;color:#d1c5b4;font-size:11px;letter-spacing:.12em;text-transform:uppercase}
+.ch3-arrival-skip{position:absolute;z-index:14;right:14px;bottom:calc(17px + var(--bottom));width:auto;min-width:112px;margin:0;padding:9px 13px;background:rgba(4,6,10,.68);backdrop-filter:blur(8px);font-size:10px}
+
+.ch3-changi{overflow:hidden;background:#040609}
+.ch3-changi>.scene{object-position:center center;transform:scale(1.012);filter:saturate(.89) contrast(1.045) brightness(.93)}
+.ch3-changi-overlay{opacity:.58;background:linear-gradient(180deg,rgba(2,4,8,.13) 0%,rgba(3,5,9,.26) 48%,rgba(2,3,7,.82) 100%)}
+#ch3ChangiSceneLabel{top:calc(58px + var(--top))}
+#ch3ChangiObjective{top:calc(103px + var(--top));max-width:min(84vw,430px)}
+#chapter3ChangiDialogue{z-index:42}
+.ch3-changi-progress{z-index:20}
+
+.ch3-changi-hotspot{position:absolute;z-index:15;border:0;background:transparent;opacity:1;transition:opacity .32s ease,transform .32s ease;touch-action:manipulation}
+.ch3-changi-hotspot i{position:absolute;left:50%;top:50%;width:18px;height:18px;margin:-9px;border-radius:50%;background:#ddb363;box-shadow:0 0 0 8px rgba(221,179,99,.17),0 0 25px rgba(221,179,99,.82);animation:ch3ChangiPulse 2.2s ease-in-out infinite}
+.ch3-changi-hotspot.found i{background:#86b79a;box-shadow:0 0 0 8px rgba(134,183,154,.17),0 0 22px rgba(134,183,154,.58);animation:none}
+.ch3-changi-hotspot .ch3-hotspot-label{position:absolute;left:50%;top:calc(50% + 21px);transform:translateX(-50%);padding:5px 8px;white-space:nowrap;border-radius:16px;background:rgba(5,6,9,.84);border:1px solid rgba(255,255,255,.14);color:#e6ddd0;font-size:9px;letter-spacing:.07em;text-transform:uppercase;opacity:0;transition:opacity .2s ease}
+.ch3-changi-hotspot:focus-visible .ch3-hotspot-label,.ch3-changi-hotspot:active .ch3-hotspot-label{opacity:1}
+.ch3-hs-booking{right:4%;top:54%;width:31%;height:24%}
+.ch3-hs-movement{left:31%;top:35%;width:32%;height:26%}
+.ch3-hs-request{right:8%;top:15%;width:30%;height:22%}
+.ch3-changi.ch3-investigation-locked .ch3-changi-hotspot{opacity:0!important;pointer-events:none!important;transform:scale(.92)}
+.ch3-changi.ch3-investigation-revealing .ch3-changi-hotspot{animation:ch3HotspotReveal .62s both;animation-delay:calc(var(--ch3-hotspot-order,0)*.12s)}
+.ch3-changi-review{position:absolute;z-index:25;left:16px;right:16px;bottom:calc(67px + var(--bottom));display:none}
+.ch3-changi-review.show{display:block}
+
+.ch3-authorization{position:absolute;z-index:60;left:16px;right:16px;top:calc(116px + var(--top));padding:15px 16px;border:1px solid rgba(117,184,157,.42);background:linear-gradient(145deg,rgba(8,20,20,.96),rgba(7,11,15,.95));box-shadow:0 20px 60px rgba(0,0,0,.56);opacity:0;transform:translateY(-10px);pointer-events:none;transition:opacity .26s ease,transform .26s ease}
+.ch3-authorization.show{opacity:1;transform:translateY(0)}
+.ch3-authorization strong{display:block;color:#a8d9c4;font:700 11px ui-monospace,SFMono-Regular,Consolas,monospace;letter-spacing:.13em}
+.ch3-authorization span{display:block;margin-top:5px;color:#d4cec3;font-size:11px;line-height:1.45}
+
+#ch3ChangiEvidencePanel{z-index:150}
+#ch3ChangiEvidencePanel .evidence-card{width:min(100%,520px);max-height:calc(100svh - 94px)}
+#ch3ChangiEvidenceObject{min-height:250px;display:grid;place-items:center;cursor:pointer}
+.ch3-evidence-visual{width:min(100%,360px);min-height:225px;padding:15px;border:1px solid rgba(255,255,255,.15);border-radius:10px;background:linear-gradient(150deg,#161b22,#080b10 72%);box-shadow:0 20px 48px rgba(0,0,0,.45);font-family:ui-monospace,SFMono-Regular,Consolas,monospace}
+.ch3-record-head{display:flex;justify-content:space-between;gap:12px;padding-bottom:10px;border-bottom:1px solid rgba(255,255,255,.12);color:#c9af77;font-size:10px;letter-spacing:.11em}
+.ch3-record-grid{display:grid;grid-template-columns:minmax(98px,.8fr) 1.3fr;gap:7px 10px;margin-top:14px;font-size:11px;line-height:1.38}
+.ch3-record-grid dt{color:#8e9aa3}.ch3-record-grid dd{margin:0;color:#e3ded5;word-break:break-word}
+.ch3-record-ok,.ch3-record-alert{margin-top:15px;padding:9px 10px;border-radius:6px;font-size:10px;font-weight:800;letter-spacing:.08em;text-align:center}
+.ch3-record-ok{color:#b9dfc7;background:rgba(73,143,98,.12);border:1px solid rgba(73,143,98,.30)}
+.ch3-record-alert{color:#e6aaa3;background:rgba(176,66,58,.10);border:1px solid rgba(176,66,58,.27)}
+.ch3-movement-list{display:grid;gap:8px;margin-top:13px}
+.ch3-movement-row{display:grid;grid-template-columns:1fr auto;align-items:center;gap:12px;padding:9px 10px;border-radius:7px;background:rgba(255,255,255,.045);font-size:10px}
+.ch3-movement-row b{color:#d8d0c5;font-weight:650}.ch3-movement-row span{color:#dd928b;font-weight:800;letter-spacing:.08em}
+.ch3-request-terminal{background:linear-gradient(155deg,#071316,#04080b);box-shadow:inset 0 0 32px rgba(61,152,157,.08),0 20px 48px rgba(0,0,0,.45)}
+.ch3-request-terminal pre{margin:13px 0 0;white-space:pre-wrap;color:#a8cbc8;font-size:10px;line-height:1.55}
+.ch3-request-terminal footer{margin-top:12px;padding-top:9px;border-top:1px solid rgba(153,203,199,.16);color:#d2af70;font-size:9px;letter-spacing:.12em;text-align:center}
+
+.ch3-reconcile-modal{z-index:170}
+.ch3-reconcile-modal[aria-hidden="true"]:not(.open){display:none!important}
+.ch3-reconcile-card{width:min(100%,620px);max-height:93svh;padding:18px}
+.ch3-reconcile-card h3{margin:6px 0 5px;font:500 27px Georgia,serif}
+.ch3-reconcile-help{margin:0 0 12px;color:#cfc5b8;font-size:12px;line-height:1.48}
+.ch3-fact-list{display:grid;gap:9px}
+.ch3-fact-card{padding:10px;border:1px solid rgba(255,255,255,.12);border-radius:9px;background:rgba(255,255,255,.045)}
+.ch3-fact-card.wrong{border-color:rgba(189,77,66,.55);background:rgba(154,53,47,.08)}
+.ch3-fact-text{font-size:11px;line-height:1.42;color:#e2dbd1}
+.ch3-fact-categories{display:grid;grid-template-columns:repeat(3,1fr);gap:5px;margin-top:8px}
+.ch3-fact-categories button{min-height:34px;padding:5px;border-radius:6px;border:1px solid rgba(255,255,255,.13);background:rgba(255,255,255,.045);font-size:8px;letter-spacing:.045em;text-transform:uppercase}
+.ch3-fact-categories button.selected{border-color:#d8b46d;background:rgba(216,180,109,.16);color:#f1d79e}
+.ch3-reconcile-status{min-height:36px;margin-top:10px;padding:9px 10px;border-radius:8px;font-size:11px;line-height:1.45}
+.ch3-reconcile-status:empty{min-height:0;margin:0;padding:0}
+.ch3-reconcile-status.error{color:#e6aaa3;background:rgba(176,66,58,.10);border:1px solid rgba(176,66,58,.25)}
+.ch3-reconcile-status.success{color:#b9dfc7;background:rgba(73,143,98,.11);border:1px solid rgba(73,143,98,.28)}
+.ch3-reconcile-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}.ch3-reconcile-actions button{margin:0}.ch3-reconcile-actions .primary{grid-column:1/3}
+.ch3-conclusion-list{display:grid;gap:8px;margin-top:12px}.ch3-conclusion-list button{width:100%;min-height:45px;padding:10px 12px;border:1px solid rgba(255,255,255,.14);border-radius:8px;background:rgba(255,255,255,.05);text-align:left;font-size:11px;line-height:1.42}
+#ch3ChangiComplete{z-index:70}
+
+html[lang="th"] .ch3-arrival-card p,html[lang="th"] .ch3-changi-hotspot .ch3-hotspot-label,html[lang="th"] .ch3-fact-categories button{text-transform:none;letter-spacing:.02em}
+
+@keyframes ch3ArrivalPush{from{transform:scale(1.025)}to{transform:scale(1.075)}}
+@keyframes ch3ChangiPulse{0%,100%{transform:scale(.92);opacity:.80}50%{transform:scale(1.08);opacity:1}}
+@keyframes ch3HotspotReveal{from{opacity:0;transform:scale(.78)}to{opacity:1;transform:scale(1)}}
+
+@media(max-height:710px){
+ .ch3-arrival-card{bottom:calc(58px + var(--bottom));padding:17px}.ch3-arrival-card h2{font-size:29px}
+ #ch3ChangiObjective{top:calc(96px + var(--top));font-size:10px}
+ #ch3ChangiEvidenceObject{min-height:205px}.ch3-evidence-visual{min-height:190px;padding:12px}
+ .ch3-reconcile-card{max-height:96svh;padding:14px}.ch3-fact-list{gap:6px}.ch3-fact-card{padding:7px}.ch3-fact-categories button{min-height:30px}
+}
+@media(max-width:370px){.ch3-fact-categories{grid-template-columns:1fr}.ch3-fact-categories button{min-height:31px}.ch3-reconcile-card h3{font-size:23px}}
+@media(prefers-reduced-motion:reduce){.ch3-arrival-transition>.scene,.ch3-changi-hotspot i,.ch3-changi.ch3-investigation-revealing .ch3-changi-hotspot{animation:none!important}.ch3-changi-hotspot,.ch3-authorization{transition:none!important}}

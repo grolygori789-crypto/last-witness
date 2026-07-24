@@ -1,11 +1,24 @@
-FINAL STATIC VALIDATION
-UTC: 2026-07-23 16:55:44
+LAST WITNESS 0.8.0 STATIC TEST LOG
+UTC: 2026-07-24T04:18:25Z
 
-PASS lifecycle syntax
-PASS forensic syntax
-PASS medical syntax
-PASS HTML structure and exact source preservation
-Modified index bytes: 30392
-Original index bytes: 30249
-Index growth: 143 bytes
-PASS no prohibited lifecycle construct or embedded payload
+[JavaScript syntax]
+PASS js/chapters/chapter-03/02-changi-airport.js
+PASS js/chapters/chapter-02/05-chapter2-integration.js
+PASS js/engine/12-investigation-lifecycle.js
+
+[Images]
+PASS assets/images/chapter-03/phase-03/changi-arrival-operations.jpg mode=RGB size=(864, 1536)
+PASS assets/images/chapter-03/phase-03/immigration-officer/assessing.png mode=RGBA size=(768, 1024) real-alpha
+PASS assets/images/chapter-03/phase-03/immigration-officer/checking-document.png mode=RGBA size=(768, 1024) real-alpha
+PASS assets/images/chapter-03/phase-03/immigration-officer/neutral.png mode=RGBA size=(768, 1024) real-alpha
+PASS assets/images/chapter-03/phase-03/immigration-officer/speaking.png mode=RGBA size=(768, 1024) real-alpha
+PASS assets/images/chapter-03/phase-03/singapore-arrival.jpg mode=RGB size=(864, 1536)
+
+[Audio]
+PASS assets/audio/chapter-03/phase-03/changi-airport-ambience.mp3 duration=318.216000
+PASS assets/audio/chapter-03/phase-03/singapore-arrival-transition.mp3 duration=126.040813
+
+[Architecture]
+PASS no embedded image/audio Base64 in delivery text files
+PASS no polling or MutationObserver added by Phase III module
+PASS Phase III is loaded after stable Phase I-II runtime
