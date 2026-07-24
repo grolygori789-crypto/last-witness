@@ -1,11 +1,4 @@
-LAST WITNESS 0.8.2 STATIC TEST LOG
-
-PASS node --check js/engine/13-fullscreen-display.js
-PASS index references css/fullscreen-display.css?v=0802
-PASS index references js/engine/13-fullscreen-display.js?v=0802
-PASS Settings Build label is 0.8.2
-PASS Save Manager overlay-root repair
-PASS Full Screen document-root target
-PASS Title and Settings Exit Game controls
-PASS EN/TH localization
-PASS exit auto-save / close attempt / fullscreen exit / fallback
+[OK] node --check js/chapters/chapter-03/02-changi-airport.js
+[OK] node --check js/chapters/chapter-03/03-singapore-office.js
+[OK] new media assets copied into candidate package
+[OK] sample portrait transparency visually verified

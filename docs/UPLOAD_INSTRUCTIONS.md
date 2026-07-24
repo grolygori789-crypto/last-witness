@@ -1,17 +1,9 @@
 # Upload Instructions
 
-Upload and overwrite exactly these files on branch `restore-game-recovered`:
+Replace the included files into the project root while preserving folder structure.
 
-```text
-index.html
-css/fullscreen-display.css
-js/engine/13-fullscreen-display.js
-```
-
-Do not upload the `docs` folder or `SHA256SUMS.txt`; they are delivery references only.
-
-After GitHub Pages updates, confirm Settings shows:
-
-```text
-LAST WITNESS · BUILD 0.8.2
-```
+Recommended workflow:
+1. Back up the current working copy.
+2. Replace files/folders from this package into the project tree.
+3. Clear browser cache or force refresh.
+4. Test from a clean save path and from a Chapter III resume path.

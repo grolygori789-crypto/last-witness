@@ -1,23 +1,26 @@
-# LAST WITNESS 0.8.2 Candidate
+# LAST WITNESS 0.9.0 — Chapter III Phase IV Candidate
 
-## Scope
+## Purpose
+Adds **Chapter III / Phase IV: Singapore Investigation Office** and connects it directly after Phase III (Changi Airport).
 
-- Fix Save/Load Manager visibility while native Full Screen is active.
-- Add Exit Game to the Title Screen and Settings.
-- Preserve all Chapter I-III story, evidence, audio and Save/Load data structures.
-
-## Modified production files
-
+## Included files
 - `index.html`
-- `css/fullscreen-display.css`
-- `js/engine/13-fullscreen-display.js`
+- `css/chapter-03-phase-04.css`
+- `js/chapters/chapter-03/02-changi-airport.js`
+- `js/chapters/chapter-03/03-singapore-office.js`
+- `assets/images/chapter-03/phase-04/singapore-investigation-office.png`
+- `assets/images/chapter-03/phase-04/cheryl/*.png`
+- `assets/images/chapter-03/phase-04/farid/*.png`
+- `assets/video/chapter-03/phase-04/drive-to-investigation-office.mp4`
+- `assets/audio/chapter-03/phase-04/drive-to-investigation-office.mp3`
+- `assets/audio/chapter-03/phase-04/singapore-investigation-office-ambience.mp3`
 
-## Root cause
-
-Build 0.8.1 requested Full Screen on `#game`, while the dynamically created Save Manager was appended to `document.body`. Browsers render only the fullscreen element and its descendants, so the Save Manager opened outside the visible fullscreen tree and appeared only after Full Screen ended.
-
-## Resolution
-
-- Request Full Screen on the document root.
-- Defensively move the Save Manager under `#game` before Save/Load actions.
-- Keep the repair event-driven. No polling or MutationObserver was added.
+## Functional additions
+1. Phase III completion card now includes **Continue to Phase IV**.
+2. New transition clip from Changi to the Singapore Investigation Office.
+3. New office scene with Cheryl Goh and Farid Rahman.
+4. New dialogue choice panel during Cheryl introduction.
+5. New evidence lifecycle for three office clues.
+6. New **Validation Matrix** minigame.
+7. New Phase IV completion card with handoff toward Phase V / Marina Bay WIP.
+8. Save/Load resume support for Phase IV screens.

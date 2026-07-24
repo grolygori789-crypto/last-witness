@@ -1,18 +1,18 @@
-# Android Owner Test Checklist
+# Owner Test Checklist — Phase IV
 
-1. Open the game and tap `Tap to Begin` to enter Full Screen.
-2. Start Chapter I and tap the top Save icon without leaving Full Screen.
-3. Confirm Save Manager appears immediately.
-4. Close Save Manager, open Menu, and choose Save Game. Confirm it appears immediately.
-5. Open Load Game from the Title Screen while Full Screen is active.
-6. Save a named slot, load it, and verify the correct Chapter and checkpoint return.
-7. Open Settings and test Exit Full Screen, then Enter Full Screen.
-8. Open Exit Game from Settings, cancel once, and confirm the game remains playable.
-9. Open Exit Game again and confirm. Verify current progress was auto-saved.
-10. Test Exit Game from the Title Screen.
-
-Expected browser behavior:
-
-- Chrome may close the tab when allowed.
-- If Chrome blocks automatic tab closing, the game tries browser Back.
-- If neither is permitted, a polished Game Saved screen explains that the tab can be closed safely.
+1. Finish Phase III normally.
+2. On the Phase III complete card, press **Continue to Phase IV**.
+3. Confirm the driving clip plays and the location/time card appears.
+4. Confirm skip works.
+5. Confirm office ambience starts in the Singapore office.
+6. Confirm Cheryl intro dialogue runs, then the choice panel appears.
+7. Test all three response choices.
+8. Confirm Farid introduction continues after the choice.
+9. Confirm three hotspots appear only after intro access is granted.
+10. Inspect and collect all three office evidence items.
+11. Open and clear the Validation Matrix.
+12. Confirm closing dialogue runs.
+13. Confirm Phase IV completion card appears.
+14. Press **Continue to Phase V** and confirm the WIP handoff appears.
+15. Save/Load once during transition and once inside the office.
+16. Switch EN/TH in Phase IV and confirm text updates.

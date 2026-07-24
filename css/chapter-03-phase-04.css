@@ -1,0 +1,26 @@
+/* LAST WITNESS — Chapter III / Phase IV: Singapore Investigation Office 0.9.0 */
+#chapter3Phase4Transition .scene,
+#chapter3SingaporeOffice .scene{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.ch3-p4-video{background:#000}
+.ch3-p4-video-overlay{background:linear-gradient(to top,rgba(3,5,10,.78),rgba(3,5,10,.16) 36%,rgba(3,5,10,.44));pointer-events:none}
+.ch3-p4-card{position:absolute;left:50%;top:11%;transform:translateX(-50%);width:min(82vw,30rem);z-index:3}
+.ch3-office-overlay{background:linear-gradient(to top,rgba(5,7,12,.86),rgba(5,7,12,.28) 42%,rgba(5,7,12,.54));pointer-events:none}
+.ch3-office .topbar,.ch3-p4-transition .topbar{z-index:4}
+.ch3-office-hotspot{position:absolute;display:flex;align-items:center;gap:.55rem;background:rgba(12,17,26,.72);border:1px solid rgba(221,187,116,.36);border-radius:999px;padding:.3rem .75rem .3rem .3rem;color:#ead7a5;box-shadow:0 .6rem 1.2rem rgba(0,0,0,.24);z-index:4;transition:transform .2s ease,opacity .24s ease,background .2s ease}
+.ch3-office-hotspot i{display:block;width:.95rem;height:.95rem;border-radius:50%;background:#f1c46f;box-shadow:0 0 0 .25rem rgba(241,196,111,.22),0 0 .9rem rgba(241,196,111,.46)}
+.ch3-office-hotspot .ch3-hotspot-label{font-size:.8rem;letter-spacing:.06em;text-transform:uppercase;white-space:nowrap}
+.ch3-office-hotspot.found{border-color:rgba(134,206,127,.48);color:#bfe2b8}
+.ch3-office-hotspot.found i{background:#7dcf75;box-shadow:0 0 0 .25rem rgba(125,207,117,.18),0 0 .9rem rgba(125,207,117,.34)}
+.ch3-office-hotspot:disabled{opacity:0;pointer-events:none;transform:translateY(.6rem) scale(.97)}
+#chapter3SingaporeOffice.ch3-investigation-revealing .ch3-office-hotspot{animation:lwHotspotReveal .42s ease both;animation-delay:calc(var(--ch3-hotspot-order,0) * .11s)}
+@keyframes lwHotspotReveal{from{opacity:0;transform:translateY(.65rem) scale(.95)}to{opacity:1;transform:translateY(0) scale(1)}}
+.ch3-office .hs-relay{left:9%;top:45%}.ch3-office .hs-logs{left:44%;top:47%}.ch3-office .hs-token{right:11%;top:55%}
+.ch3-office-choice{position:absolute;left:50%;bottom:13.2rem;transform:translateX(-50%);width:min(90vw,34rem);z-index:8;background:rgba(8,10,16,.94);border:1px solid rgba(222,185,106,.26);border-radius:1.1rem;box-shadow:0 1rem 2.4rem rgba(0,0,0,.36);padding:1rem}
+.ch3-office-choice .choice-title{margin-bottom:.7rem;color:#f1e6cb;font-size:.98rem}
+.ch3-office-choice .choice-option{display:block;width:100%;text-align:left;margin:.5rem 0;padding:.95rem 1rem;border-radius:.9rem;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03);color:#f5f5f5}
+.ch3-office-review{position:absolute;left:50%;bottom:7.15rem;transform:translateX(-50%);z-index:7;opacity:0;pointer-events:none;transition:opacity .22s ease,transform .22s ease}.ch3-office-review.show{opacity:1;pointer-events:auto;transform:translateX(-50%) translateY(0)}
+.ch3-office-progress{position:absolute;left:1rem;right:1rem;bottom:1.1rem;z-index:5}
+.ch3-evidence-visual .ch3-dual-table{width:100%;border-collapse:collapse;font-size:.84rem}.ch3-evidence-visual .ch3-dual-table th,.ch3-evidence-visual .ch3-dual-table td{border:1px solid rgba(237,215,156,.16);padding:.45rem .5rem;text-align:left}.ch3-evidence-visual .ch3-dual-table th{color:#f0d998;background:rgba(255,255,255,.04)}
+.ch3-fact-row{border:1px solid rgba(255,255,255,.08);border-radius:1rem;padding:.85rem 1rem;margin:.75rem 0;background:rgba(255,255,255,.025)}
+.ch3-fact-text{margin-bottom:.7rem;line-height:1.42}.ch3-fact-actions{display:flex;flex-wrap:wrap;gap:.45rem}.ch3-fact-actions button,.ch3-conclusion-option{border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.035);color:#f4f4f4;border-radius:.85rem;padding:.75rem .95rem}.ch3-fact-actions button.selected{border-color:rgba(224,187,102,.62);background:rgba(224,187,102,.12);color:#f0d998}.ch3-conclusion-option{display:block;width:100%;text-align:left;margin:.75rem 0;line-height:1.4}
+@media (max-width:430px){.ch3-p4-card{top:10.5%;width:min(88vw,24rem)}.ch3-office-choice{bottom:12rem;padding:.9rem}.ch3-office-review{bottom:6.5rem}.ch3-office-hotspot .ch3-hotspot-label{font-size:.72rem}.ch3-office .hs-relay{left:6%;top:43%}.ch3-office .hs-logs{left:35%;top:46%}.ch3-office .hs-token{right:5%;top:55%}}

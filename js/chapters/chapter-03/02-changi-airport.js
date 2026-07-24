@@ -4,9 +4,9 @@
  */
 (function(){
 "use strict";
-if(window.LastWitnessChangi?.version==="0.8.1")return;
+if(window.LastWitnessChangi?.version==="0.9.0")return;
 
-const BUILD="0.8.1";
+const BUILD="0.9.0";
 const FLIGHT_SCREEN="chapter3Phase2Wip";
 const ARRIVAL_SCREEN="chapter3ArrivalTransition";
 const CHANGI_SCREEN="chapter3Changi";
@@ -121,7 +121,7 @@ function installLanguage(){
    ch3p3_close_4:"Someone needed the system to expect him. They didn’t need him to arrive.",
    ch3p3_close_5:"The relay continues into a restricted Singapore Police environment. The local liaison approved an office review.",
    ch3p3_close_6:"Think the liaison likes chicken rice?",
-   ch3p3_close_7:"At this rate, you’re buying Prada before lunch."
+   ch3p3_close_7:"One more chicken-rice joke and you’ll owe me a Prada by tonight."
   });
   Object.assign(LANG.th,{
    ch3p3_passport:"ขอหนังสือเดินทางด้วยครับ",
@@ -151,19 +151,19 @@ function installLanguage(){
    ch3p3_close_4:"มีคนต้องการให้ระบบคาดว่าเขาจะมา โดยไม่จำเป็นต้องให้ตัวเขามาถึงจริง",
    ch3p3_close_5:"เส้นทางส่งต่อยังเข้าไปถึงระบบจำกัดสิทธิ์ของตำรวจสิงคโปร์ ผู้ประสานงานท้องถิ่นอนุมัติให้ตรวจต่อที่สำนักงานแล้ว",
    ch3p3_close_6:"คิดว่าผู้ประสานงานชอบข้าวมันไก่ไหม?",
-   ch3p3_close_7:"ด้วยอัตรานี้ คุณได้ซื้อ Prada ก่อนเที่ยงแน่"
+   ch3p3_close_7:"เล่นมุกข้าวมันไก่อีกที คืนนี้คุณติด Prada ฉันหนึ่งใบแน่"
   });
  }catch(_){}
 }
 
 function copy(){return{
- arrivalDay:tr("DAY 3","วันที่ 3"),arrivalTime:tr("LATE MORNING","ช่วงสาย"),arrivalPlace:tr("SINGAPORE · CHANGI AIRPORT","สิงคโปร์ · สนามบินชางงี"),arrivalPhase:tr("THE PASSENGER WHO NEVER ARRIVED","ผู้โดยสารที่ไม่เคยมาถึง"),skip:tr("Skip transition","ข้ามฉากเดินทาง"),
+ arrivalDay:tr("DAY 3","วันที่ 3"),arrivalTime:tr("EARLY AFTERNOON","ช่วงบ่ายต้น"),arrivalPlace:tr("SINGAPORE · CHANGI AIRPORT","สิงคโปร์ · สนามบินชางงี"),arrivalPhase:tr("THE PASSENGER WHO NEVER ARRIVED","ผู้โดยสารที่ไม่เคยมาถึง"),skip:tr("Skip transition","ข้ามฉากเดินทาง"),
  location:tr("Changi Airport · Arrival Operations","สนามบินชางงี · ฝ่ายปฏิบัติการขาเข้า"),scene:tr("THE PASSENGER WHO NEVER ARRIVED","ผู้โดยสารที่ไม่เคยมาถึง"),openingObjective:tr("Complete arrival processing","ผ่านขั้นตอนขาเข้า"),investigateObjective:tr("Verify booking, passenger movement and accepted system access","ตรวจสอบรายการจอง การเคลื่อนไหวผู้โดยสาร และการเข้าถึงที่ระบบยอมรับ"),review:tr("Reconcile Passenger Trail","เปรียบเทียบเส้นทางผู้โดยสาร"),
  labels:{booking:tr("Booking","รายการจอง"),movement:tr("Movement","การเดินทาง"),request:tr("System Request","คำขอระบบ")},
  evidenceKicker:tr("Evidence Inspection","ตรวจสอบหลักฐาน"),caseEvidence:tr("Case Evidence","หลักฐานในคดี"),tap:tr("Tap evidence to inspect","แตะหลักฐานเพื่อตรวจสอบ"),inspect:tr("Inspect","ตรวจสอบ"),collect:tr("Add to Case File","เพิ่มในแฟ้มคดี"),close:tr("Close","ปิด"),
  puzzleTitle:tr("Passenger Trail Reconciliation","การเปรียบเทียบเส้นทางผู้โดยสาร"),puzzleHelp:tr("Assign each verified fact to the system it belongs to.","จัดข้อเท็จจริงแต่ละข้อให้ตรงกับระบบที่เป็นเจ้าของข้อมูล"),documents:tr("Documents","เอกสาร"),physical:tr("Physical Movement","การเดินทางจริง"),access:tr("System Access","การเข้าถึงระบบ"),confirm:tr("Confirm Classification","ยืนยันการจัดหมวด"),reset:tr("Reset","เริ่มใหม่"),
  incomplete:tr("Assign all six facts before confirming.","จัดหมวดข้อเท็จจริงให้ครบทั้งหกรายการก่อน"),wrong:tr("At least one fact belongs to a different system.","มีอย่างน้อยหนึ่งรายการอยู่ผิดระบบ"),classificationCorrect:tr("The systems are separated. Choose the conclusion the evidence supports.","แยกระบบออกจากกันแล้ว เลือกข้อสรุปที่หลักฐานรองรับ"),conclusionTitle:tr("What does the combined record prove?","บันทึกทั้งหมดพิสูจน์อะไรได้?"),beyond:tr("That conclusion goes beyond the verified records.","ข้อสรุปนั้นไกลกว่าสิ่งที่บันทึกยืนยันได้"),
- completeEye:tr("PHASE III COMPLETE","จบเฟส III"),completeTitle:tr("THE PASSENGER WHO NEVER ARRIVED","ผู้โดยสารที่ไม่เคยมาถึง"),completeText:tr("The booking existed. The passenger did not. The accepted request now leads to the Singapore Investigation Office.","รายการจองมีอยู่จริง แต่ผู้โดยสารไม่ได้เดินทาง คำขอที่ระบบยอมรับนำไปสู่สำนักงานสืบสวนสิงคโปร์"),returnTitle:tr("Return to Title","กลับหน้าแรก")
+ completeEye:tr("PHASE III COMPLETE","จบเฟส III"),completeTitle:tr("THE PASSENGER WHO NEVER ARRIVED","ผู้โดยสารที่ไม่เคยมาถึง"),completeText:tr("The booking existed. The passenger did not. The accepted request now leads to the Singapore Investigation Office.","รายการจองมีอยู่จริง แต่ผู้โดยสารไม่ได้เดินทาง คำขอที่ระบบยอมรับนำไปสู่สำนักงานสืบสวนสิงคโปร์"),continuePhase4:tr("Continue to Phase IV","ไปต่อ Phase IV"),returnTitle:tr("Return to Title","กลับหน้าแรก")
 }}
 
 const EVIDENCE={
@@ -216,7 +216,7 @@ function inject(){
   <button class="ch3-changi-hotspot ch3-hs-request" data-changi-clue="request" type="button"><i></i><span class="ch3-hotspot-label"></span></button>
   <div id="chapter3ChangiDialogue" class="dialogue hidden"></div><button id="ch3ChangiReview" class="primary ch3-changi-review" type="button"></button>
   <div id="ch3Authorization" class="ch3-authorization" aria-live="polite"><strong>LIMITED ACCESS AUTHORISED</strong><span id="ch3AuthorizationText"></span></div>
-  <div id="ch3ChangiComplete" class="phase-card" style="display:none"><div id="ch3ChangiCompleteEye" class="eyebrow"></div><h2 id="ch3ChangiCompleteTitle"></h2><p id="ch3ChangiCompleteText"></p><button id="ch3ChangiReturnTitle" class="ghost" type="button"></button></div>
+  <div id="ch3ChangiComplete" class="phase-card" style="display:none"><div id="ch3ChangiCompleteEye" class="eyebrow"></div><h2 id="ch3ChangiCompleteTitle"></h2><p id="ch3ChangiCompleteText"></p><button id="ch3ChangiContinuePhase4" class="primary" type="button"></button><button id="ch3ChangiReturnTitle" class="ghost" type="button"></button></div>
   <div class="progress ch3-changi-progress"><span id="ch3ChangiProgressText" class="progressText">0%</span><div class="progress-bar"><div id="ch3ChangiProgressFill" class="progress-fill"></div></div></div>
   <audio id="ch3ChangiAmbience" preload="auto" src="${CHANGI_AUDIO}"></audio>
  </section>
@@ -395,7 +395,7 @@ function updateLanguage(){
  $$('[data-changi-clue]').forEach(node=>{const label=$(".ch3-hotspot-label",node);if(label)label.textContent=c.labels[node.dataset.changiClue]});
  $("#ch3ChangiEvidenceKicker").textContent=c.evidenceKicker;$("#ch3ChangiEvidenceStamp").textContent=c.caseEvidence;$("#ch3ChangiEvidenceHint").textContent=c.tap;$("#inspectCh3ChangiEvidence").textContent=c.inspect;$("#collectCh3ChangiEvidence").textContent=c.collect;$("#closeCh3ChangiEvidence").textContent=c.close;
  $("#ch3PuzzleTitle").textContent=c.puzzleTitle;if(puzzleStage==="classify")$("#ch3PuzzleHelp").textContent=c.puzzleHelp;else $("#ch3PuzzleHelp").textContent=c.conclusionTitle;$("#ch3PuzzleConfirm").textContent=c.confirm;$("#ch3PuzzleReset").textContent=c.reset;$("#ch3PuzzleClose").textContent=c.close;
- $("#ch3ChangiCompleteEye").textContent=c.completeEye;$("#ch3ChangiCompleteTitle").textContent=c.completeTitle;$("#ch3ChangiCompleteText").textContent=c.completeText;$("#ch3ChangiReturnTitle").textContent=c.returnTitle;
+ $("#ch3ChangiCompleteEye").textContent=c.completeEye;$("#ch3ChangiCompleteTitle").textContent=c.completeTitle;$("#ch3ChangiCompleteText").textContent=c.completeText;$("#ch3ChangiContinuePhase4").textContent=c.continuePhase4;$("#ch3ChangiReturnTitle").textContent=c.returnTitle;
  if(activeEvidence){const item=EVIDENCE[activeEvidence],key=isThai()?"th":"en";$("#ch3ChangiEvidenceTitle").textContent=item.title[key];$("#ch3ChangiEvidenceDescription").textContent=item.description[key];$("#ch3ChangiEvidenceObservation").textContent=item.observation[key]}
  if($("#ch3ChangiPuzzle")?.classList.contains("open")){if(puzzleStage==="classify")renderFacts();else renderConclusions()}
  if($("#caseModal")?.classList.contains("open"))appendCaseEntries();
@@ -436,7 +436,7 @@ function bind(){
  $("#inspectCh3ChangiEvidence")?.addEventListener("click",inspectEvidence);$("#ch3ChangiEvidenceObject")?.addEventListener("click",inspectEvidence);$("#collectCh3ChangiEvidence")?.addEventListener("click",collectEvidence);$("#closeCh3ChangiEvidence")?.addEventListener("click",closeEvidence);
  $("#ch3ChangiEvidencePanel")?.addEventListener("click",event=>{if(event.target===$("#ch3ChangiEvidencePanel"))closeEvidence()});
  $("#ch3ChangiReview")?.addEventListener("click",openPuzzle);$("#ch3PuzzleConfirm")?.addEventListener("click",confirmClassification);$("#ch3PuzzleReset")?.addEventListener("click",resetPuzzle);$("#ch3PuzzleClose")?.addEventListener("click",()=>closePuzzle(true));
- $("#ch3ChangiReturnTitle")?.addEventListener("click",returnTitle);$("#"+CHANGI_SCREEN+" .ch3-changi-save")?.addEventListener("click",()=>manualSave());$("#"+CHANGI_SCREEN+" .ch3-changi-menu")?.addEventListener("click",()=>$("#drawer")?.classList.add("open"));
+ $("#ch3ChangiContinuePhase4")?.addEventListener("click",()=>{window.LastWitnessChangi?.stopAudio?.(true);window.LastWitnessPhase4?.startTransition?.();});$("#ch3ChangiReturnTitle")?.addEventListener("click",returnTitle);$("#"+CHANGI_SCREEN+" .ch3-changi-save")?.addEventListener("click",()=>manualSave());$("#"+CHANGI_SCREEN+" .ch3-changi-menu")?.addEventListener("click",()=>$("#drawer")?.classList.add("open"));
  $("#chapter3FlightDialogue")?.addEventListener("click",scheduleFlightHandoff);$("#ch3FlightReturnTitle")?.addEventListener("click",event=>{event.preventDefault();event.stopImmediatePropagation();beginArrivalTransition(false)},true);
  $("#caseButton")?.addEventListener("click",()=>setTimeout(appendCaseEntries,0),true);
  $("#soundToggle")?.addEventListener("change",syncAudio,true);$("#musicRange")?.addEventListener("input",syncAudio,true);
