@@ -1,9 +1,9 @@
-/* LAST WITNESS — Chapter III / Phase IV: Singapore Investigation Office 0.9.3 */
+/* LAST WITNESS — Chapter III / Phase IV: Singapore Investigation Office 0.10.3 */
 (function(){
 "use strict";
-if(window.LastWitnessPhase4?.version==="0.9.3")return;
+if(window.LastWitnessPhase4?.version==="0.10.3")return;
 
-const BUILD="0.9.3";
+const BUILD="0.10.3";
 const TRANSITION_SCREEN="chapter3Phase4Transition";
 const OFFICE_SCREEN="chapter3SingaporeOffice";
 const VIDEO_PATH="assets/video/chapter-03/phase-04/drive-to-investigation-office.mp4?v=0920";
@@ -25,11 +25,11 @@ const tr=(en,th)=>isThai()?th:en;
 const activeScreen=()=>$(".screen.active")?.id||gameState()?.screen||"";
 const soundOn=()=>gameState()?.sound!==false;
 const musicLevel=()=>clamp(gameState()?.music??.33);
-let transitionTimer=0, revealTimer=0, officeFadeFrame=0, dialogueActive=false, activeEvidence=null, evidenceInspected=false, choiceLocked=false, handoffQueued=false, internalRouting=false, matrixAssignments={}, matrixStage="classify";
+let transitionTimer=0,revealTimer=0,officeFadeFrame=0,dialogueActive=false,activeEvidence=null,evidenceInspected=false,choiceLocked=false,handoffQueued=false,internalRouting=false,matrixAssignments={},matrixStage="classify";
 
 function ensureChapterState(){
- const s=gameState(); if(!s) return null;
- s.chapter=3; s.chapter3=s.chapter3||{}; s.flags=s.flags||{};
+ const s=gameState();if(!s)return null;
+ s.chapter=3;s.chapter3=s.chapter3||{};s.flags=s.flags||{};
  const p=s.chapter3.phase4=s.chapter3.phase4||{};
  if(typeof p.started!=="boolean")p.started=false;
  if(typeof p.transitionSeen!=="boolean")p.transitionSeen=false;
@@ -45,7 +45,19 @@ function ensureChapterState(){
  if(!p.stage)p.stage="transition";
  return p;
 }
-function collectedSet(){return new Set(ensureChapterState()?.evidenceCollected||[])}
+function foundContains(key){
+ const found=gameState()?.found;
+ try{if(typeof found?.has==="function")return found.has(key)}catch(_){}
+ return Array.isArray(found)&&found.includes(key);
+}
+function reconcileEvidenceState(){
+ const p=ensureChapterState();if(!p)return[];
+ const known=new Set((p.evidenceCollected||[]).filter(id=>EVIDENCE_IDS.includes(id)));
+ EVIDENCE_IDS.forEach(id=>{if(foundContains("office_"+id))known.add(id)});
+ p.evidenceCollected=EVIDENCE_IDS.filter(id=>known.has(id));
+ return p.evidenceCollected;
+}
+function collectedSet(){return new Set(reconcileEvidenceState())}
 function allEvidenceCollected(){const set=collectedSet();return EVIDENCE_IDS.every(id=>set.has(id))}
 function save(){try{if(typeof autoSave==="function")autoSave()}catch(_){}}
 function safeShow(screen){internalRouting=true;try{show(screen)}finally{internalRouting=false}}
@@ -63,29 +75,29 @@ function resumeTransitionMedia(){
 }
 function phase4OverlayOpen(){return Boolean($("#ch3OfficeEvidencePanel")?.classList.contains("open")||$("#ch3OfficeMatrix")?.classList.contains("open")||$("#ch3OfficeChoice")?.classList.contains("show"))}
 function fadeOffice(target,duration=320){
- const audio=$("#ch3Phase4OfficeAmbience"); if(!audio) return;
+ const audio=$("#ch3Phase4OfficeAmbience");if(!audio)return;
  cancelAnimationFrame(officeFadeFrame);
- const start=clamp(audio.volume), end=clamp(target,0,.23), began=performance.now();
- if(end>0 && audio.paused){audio.play().catch(()=>{})}
- const step=now=>{const pct=Math.max(0,Math.min(1,(now-began)/duration));audio.volume=start+(end-start)*pct; if(pct<1) officeFadeFrame=requestAnimationFrame(step); else if(end===0) stopElement(audio,false)};
+ const start=clamp(audio.volume),end=clamp(target,0,.23),began=performance.now();
+ if(end>0&&audio.paused){audio.play().catch(()=>{})}
+ const step=now=>{const pct=Math.max(0,Math.min(1,(now-began)/duration));audio.volume=start+(end-start)*pct;if(pct<1)officeFadeFrame=requestAnimationFrame(step);else if(end===0)stopElement(audio,false)};
  officeFadeFrame=requestAnimationFrame(step);
 }
 function syncAudio(){
- const t=$("#ch3Phase4TransitionAudio"), o=$("#ch3Phase4OfficeAmbience");
- if(t) t.volume=soundOn()?clamp(musicLevel()*.58,0,.46):0;
- const active=activeScreen()===OFFICE_SCREEN && soundOn() && musicLevel()>0;
+ const t=$("#ch3Phase4TransitionAudio"),o=$("#ch3Phase4OfficeAmbience");
+ if(t)t.volume=soundOn()?clamp(musicLevel()*.58,0,.46):0;
+ const active=activeScreen()===OFFICE_SCREEN&&soundOn()&&musicLevel()>0;
  if(!active){fadeOffice(0,180);return}
  const duck=(dialogueActive||phase4OverlayOpen())?.58:1;
  fadeOffice(clamp(musicLevel()*.34*duck,0,.21),280);
- if(o) o.loop=true;
+ if(o)o.loop=true;
 }
 
 function installPortraits(){
  try{
   const cheryl={neutral:CHERYL_BASE+"neutral.png?v=0930",serious:CHERYL_BASE+"neutral.png?v=0930",skeptical:CHERYL_BASE+"skeptical.png?v=0930",side:CHERYL_BASE+"side.png?v=0930",arms_crossed:CHERYL_BASE+"arms_crossed.png?v=0930",surprised:CHERYL_BASE+"surprised.png?v=0930",thinking:CHERYL_BASE+"thinking.png?v=0930",faint_smile:CHERYL_BASE+"faint_smile.png?v=0930",explaining:CHERYL_BASE+"explaining.png?v=0930",alert:CHERYL_BASE+"alert.png?v=0930",concerned:CHERYL_BASE+"concerned.png?v=0930",reading:CHERYL_BASE+"reading.png?v=0930",closed_off:CHERYL_BASE+"closed_off.png?v=0930"};
   const farid={neutral:FARID_BASE+"neutral.png?v=0930",side:FARID_BASE+"side.png?v=0930",tablet:FARID_BASE+"tablet.png?v=0930",smirk:FARID_BASE+"smirk.png?v=0930",look_up:FARID_BASE+"look_up.png?v=0930",surprised:FARID_BASE+"surprised.png?v=0930",explaining:FARID_BASE+"explaining.png?v=0930",amused:FARID_BASE+"amused.png?v=0930",thinking:FARID_BASE+"thinking.png?v=0930",concerned:FARID_BASE+"concerned.png?v=0930",warm_smile:FARID_BASE+"warm_smile.png?v=0930",focused:FARID_BASE+"focused.png?v=0930",alert:FARID_BASE+"alert.png?v=0930",downcast:FARID_BASE+"downcast.png?v=0930",arms_crossed:FARID_BASE+"arms_crossed.png?v=0930",tablet_read:FARID_BASE+"tablet_read.png?v=0930",coffee:FARID_BASE+"coffee.png?v=0930"};
-  PORTRAITS["Inspector Cheryl Goh"]=cheryl; PORTRAITS["สารวัตร Cheryl Goh"]=cheryl;
-  PORTRAITS["Farid Rahman"]=farid; PORTRAITS["Farid Rahman (SPF)"]=farid; PORTRAITS["ฟาริด ราห์มาน"]=farid;
+  PORTRAITS["Inspector Cheryl Goh"]=cheryl;PORTRAITS["สารวัตร Cheryl Goh"]=cheryl;
+  PORTRAITS["Farid Rahman"]=farid;PORTRAITS["Farid Rahman (SPF)"]=farid;PORTRAITS["ฟาริด ราห์มาน"]=farid;
  }catch(_){}
 }
 function installLanguage(){
@@ -174,7 +186,7 @@ function installLanguage(){
  }catch(_){}
 }
 
-function copy(){return {
+function copy(){return{
  day:tr("DAY 3","วันที่ 3"),
  time:tr("EARLY EVENING","ช่วงเย็นต้นๆ"),
  place:tr("SINGAPORE · INVESTIGATION OFFICE","สิงคโปร์ · สำนักงานสืบสวน"),
@@ -195,15 +207,15 @@ function copy(){return {
  review:tr("Compare Limited Headers","เปรียบเทียบหัวบันทึกที่เปิดให้ดู"),
  matrixTitle:tr("Limited Header Comparison","การเปรียบเทียบหัวบันทึกแบบจำกัด"),
  matrixHelp:tr("Assign each verified fact to the source that actually establishes it.","จัดข้อเท็จจริงแต่ละข้อให้ตรงกับแหล่งที่พิสูจน์มันได้จริง"),
- matrixA:tr("Original Header","หัวบันทึกต้นฉบับ"), matrixB:tr("Corrected Header","หัวบันทึกแก้ไข"), matrixBoth:tr("Shared","ข้อมูลร่วม"), matrixPolicy:tr("Policy Marker","Policy Marker"),
- confirm:tr("Confirm Comparison","ยืนยันการเปรียบเทียบ"), reset:tr("Reset","เริ่มใหม่"),
+ matrixA:tr("Original Header","หัวบันทึกต้นฉบับ"),matrixB:tr("Corrected Header","หัวบันทึกแก้ไข"),matrixBoth:tr("Shared","ข้อมูลร่วม"),matrixPolicy:tr("Policy Marker","Policy Marker"),
+ confirm:tr("Confirm Comparison","ยืนยันการเปรียบเทียบ"),reset:tr("Reset","เริ่มใหม่"),
  incomplete:tr("Assign all four facts before confirming.","จัดหมวดข้อเท็จจริงให้ครบทั้งสี่รายการก่อน"),
  wrong:tr("At least one fact is assigned beyond what its source proves.","มีอย่างน้อยหนึ่งข้อถูกจัดเกินกว่าสิ่งที่แหล่งข้อมูลพิสูจน์ได้"),
  matrixCorrect:tr("The records are separated. Choose the conclusion these limited headers support.","แยกบันทึกออกจากกันแล้ว เลือกข้อสรุปที่หัวบันทึกแบบจำกัดเหล่านี้รองรับ"),
  conclusionTitle:tr("What do these limited records prove?","บันทึกแบบจำกัดเหล่านี้พิสูจน์อะไรได้?"),
  beyond:tr("That conclusion requires the raw reconciliation record or operator evidence.","ข้อสรุปนั้นต้องอาศัย raw reconciliation record หรือหลักฐานระบุตัวผู้ใช้"),
- completeEye:tr("PHASE IV COMPLETE","จบเฟส IV"), completeTitle:tr("LOCAL ACCESS, LIMITED TRUST","สิทธิ์เฉพาะพื้นที่ ความไว้ใจอย่างจำกัด"), completeText:tr(LANG.en.ch3p4_complete_text,LANG.th.ch3p4_complete_text),
- continuePhase5:tr(LANG.en.ch3p4_continue_phase5,LANG.th.ch3p4_continue_phase5), returnTitle:tr(LANG.en.ch3p4_return_title,LANG.th.ch3p4_return_title)
+ completeEye:tr("PHASE IV COMPLETE","จบเฟส IV"),completeTitle:tr("LOCAL ACCESS, LIMITED TRUST","สิทธิ์เฉพาะพื้นที่ ความไว้ใจอย่างจำกัด"),completeText:tr(LANG.en.ch3p4_complete_text,LANG.th.ch3p4_complete_text),
+ continuePhase5:tr(LANG.en.ch3p4_continue_phase5,LANG.th.ch3p4_continue_phase5),returnTitle:tr(LANG.en.ch3p4_return_title,LANG.th.ch3p4_return_title)
 }}
 
 const EVIDENCE={
@@ -225,8 +237,8 @@ const CONCLUSIONS=[
 ];
 
 function inject(){
- if($("#"+TRANSITION_SCREEN)) return;
- const game=$("#game"); if(!game) return;
+ if($("#"+TRANSITION_SCREEN))return;
+ const game=$("#game");if(!game)return;
  game.insertAdjacentHTML("beforeend",`
  <section id="${TRANSITION_SCREEN}" class="screen ch3-p4-transition" aria-label="Drive to Singapore Investigation Office">
    <div id="ch3P4VideoLayer" class="ch3-p4-video-layer">
@@ -254,27 +266,27 @@ function inject(){
  </section>
  <div id="ch3OfficeEvidencePanel" class="evidence-panel" aria-hidden="true"><div class="evidence-card"><div id="ch3OfficeEvidenceKicker" class="eyebrow"></div><h3 id="ch3OfficeEvidenceTitle"></h3><div class="evidence-stage"><div id="ch3OfficeEvidenceStamp" class="evidence-stamp"></div><div id="ch3OfficeEvidenceObject" class="evidence-object"></div><div id="ch3OfficeEvidenceHint" class="evidence-zoom-hint"></div></div><div id="ch3OfficeEvidenceMeta" class="evidence-meta"><p id="ch3OfficeEvidenceDescription"></p><div id="ch3OfficeEvidenceObservation" class="evidence-observation"></div></div><div class="evidence-actions"><button id="inspectCh3OfficeEvidence" class="ghost" type="button"></button><button id="collectCh3OfficeEvidence" class="primary" type="button"></button><button id="closeCh3OfficeEvidence" class="ghost" type="button"></button></div></div></div>
  <div id="ch3OfficeMatrix" class="modal ch3-reconcile-modal" aria-hidden="true"><div class="modal-card ch3-reconcile-card"><div class="eyebrow">LAST WITNESS</div><h3 id="ch3OfficeMatrixTitle"></h3><p id="ch3OfficeMatrixHelp" class="ch3-reconcile-help"></p><div id="ch3OfficeFactList" class="ch3-fact-list"></div><div id="ch3OfficeConclusionList" class="ch3-conclusion-list" hidden></div><div id="ch3OfficeMatrixStatus" class="ch3-reconcile-status" aria-live="polite"></div><div class="ch3-reconcile-actions"><button id="ch3OfficeMatrixConfirm" class="primary" type="button"></button><button id="ch3OfficeMatrixReset" class="ghost" type="button"></button><button id="ch3OfficeMatrixClose" class="ghost" type="button"></button></div></div></div>`);
- installPortraits(); installLanguage(); bind(); updateLanguage(); paintHotspots(); setHotspotsLocked(true,false);
+ installPortraits();installLanguage();bind();updateLanguage();paintHotspots();setHotspotsLocked(true,false);
 }
 
 function runSceneDialogue(lines,done){
- const box=$("#chapter3OfficeDialogue"); if(!box||typeof runDialogue!=="function"){dialogueActive=false;updateReview();done?.(); return}
- dialogueActive=true; updateReview(); syncAudio();
- runDialogue(box,lines,()=>{dialogueActive=false; updateReview(); syncAudio(); done?.()});
+ const box=$("#chapter3OfficeDialogue");if(!box||typeof runDialogue!=="function"){dialogueActive=false;updateReview();done?.();return}
+ dialogueActive=true;updateReview();syncAudio();
+ runDialogue(box,lines,()=>{dialogueActive=false;updateReview();syncAudio();done?.()});
 }
-function introLines(){return [
+function introLines(){return[
  {speaker:"Inspector Cheryl Goh",emotion:"neutral",key:"ch3p4_intro_1"},
  {speaker:"Inspector Cheryl Goh",emotion:"skeptical",key:"ch3p4_intro_2"},
  {speaker:"Benedict",emotion:"serious",key:"ch3p4_intro_3"},
  {speaker:"Inspector Cheryl Goh",emotion:"arms_crossed",key:"ch3p4_intro_4"},
  {speaker:"Inspector Cheryl Goh",emotion:"explaining",key:"ch3p4_intro_5"}
 ]}
-function introPostChoice(choice){return {
+function introPostChoice(choice){return{
  evidence:[{speaker:"Inspector Cheryl Goh",emotion:"faint_smile",key:"ch3p4_choice_evidence_r"}],
  urgency:[{speaker:"Inspector Cheryl Goh",emotion:"alert",key:"ch3p4_choice_urgency_r"}],
  cooperate:[{speaker:"Inspector Cheryl Goh",emotion:"faint_smile",key:"ch3p4_choice_cooperate_r"}]
 }[choice]||[]}
-function faridLines(){return [
+function faridLines(){return[
  {speaker:"Inspector Cheryl Goh",emotion:"neutral",key:"ch3p4_intro_6"},
  {speaker:"Farid Rahman",emotion:"smirk",key:"ch3p4_intro_7"},
  {speaker:"Inspector Cheryl Goh",emotion:"explaining",key:"ch3p4_intro_8"},
@@ -283,12 +295,12 @@ function faridLines(){return [
  {speaker:"Farid Rahman",emotion:"warm_smile",key:"ch3p4_intro_11"},
  {speaker:"Inspector Cheryl Goh",emotion:"reading",key:"ch3p4_intro_12"}
 ]}
-function evidenceLines(id){return {
+function evidenceLines(id){return{
  relay:[{speaker:"Farid Rahman",emotion:"tablet",key:"ch3p4_relay_1"},{speaker:"North",emotion:"serious",key:"ch3p4_relay_2"}],
  logs:[{speaker:"Farid Rahman",emotion:"explaining",key:"ch3p4_logs_1"},{speaker:"Benedict",emotion:"thinking",key:"ch3p4_logs_2"}],
  token:[{speaker:"Farid Rahman",emotion:"focused",key:"ch3p4_token_1"},{speaker:"North",emotion:"analyzing",key:"ch3p4_token_2"}]
- }[id]||[]}
-function closingLines(){return [
+}[id]||[]}
+function closingLines(){return[
  {speaker:"Farid Rahman",emotion:"explaining",key:"ch3p4_close_1"},
  {speaker:"North",emotion:"analyzing",key:"ch3p4_close_2"},
  {speaker:"Benedict",emotion:"serious",key:"ch3p4_close_3"},
@@ -301,49 +313,47 @@ function closingLines(){return [
 ]}
 
 function updateProgress(){
- const p=ensureChapterState(); if(!p) return;
- let pct=8;
- if(p.choiceMade)pct=18;
- if(p.introComplete){pct=32; pct+=collectedSet().size*16; if(p.matrixComplete)pct=88; if(p.complete)pct=100}
- $("#ch3OfficeProgressText")?.replaceChildren(document.createTextNode(pct+"%")); const fill=$("#ch3OfficeProgressFill"); if(fill) fill.style.width=pct+"%";
+ const p=ensureChapterState();if(!p)return;
+ let pct=8;if(p.choiceMade)pct=18;if(p.introComplete){pct=32;pct+=collectedSet().size*16;if(p.matrixComplete)pct=88;if(p.complete)pct=100}
+ $("#ch3OfficeProgressText")?.replaceChildren(document.createTextNode(pct+"%"));const fill=$("#ch3OfficeProgressFill");if(fill)fill.style.width=pct+"%";
 }
 function setHotspotsLocked(locked,animate=true){
- const root=$("#"+OFFICE_SCREEN); if(!root)return;
- root.classList.toggle("ch3-investigation-locked",locked); root.classList.remove("ch3-investigation-revealing");
- $$('[data-office-clue]',root).forEach((n,i)=>{n.style.setProperty("--ch3-hotspot-order", String(i)); n.disabled=locked; n.setAttribute("aria-disabled", locked?"true":"false"); n.tabIndex=locked?-1:0});
- if(!locked&&animate&&root.classList.contains("active")){void root.offsetWidth; root.classList.add("ch3-investigation-revealing"); setTimeout(()=>root.classList.remove("ch3-investigation-revealing"),900)}
+ const root=$("#"+OFFICE_SCREEN);if(!root)return;
+ root.classList.toggle("ch3-investigation-locked",locked);root.classList.remove("ch3-investigation-revealing");
+ $$('[data-office-clue]',root).forEach((n,i)=>{n.style.setProperty("--ch3-hotspot-order",String(i));n.disabled=locked;n.setAttribute("aria-disabled",locked?"true":"false");n.tabIndex=locked?-1:0});
+ if(!locked&&animate&&root.classList.contains("active")){void root.offsetWidth;root.classList.add("ch3-investigation-revealing");setTimeout(()=>root.classList.remove("ch3-investigation-revealing"),900)}
 }
-function paintHotspots(){const done=collectedSet(); $$('[data-office-clue]').forEach(node=>node.classList.toggle('found',done.has(node.dataset.officeClue)))}
+function paintHotspots(){const done=collectedSet();$$('[data-office-clue]').forEach(node=>node.classList.toggle("found",done.has(node.dataset.officeClue)))}
 function updateReview(){
- const btn=$("#ch3OfficeReview"); if(!btn)return;
+ const btn=$("#ch3OfficeReview");if(!btn)return;
  const p=ensureChapterState();
  const ready=p.introComplete===true&&p.choiceMade===true&&p.stage==="investigation"&&allEvidenceCollected()&&!p.matrixComplete&&!dialogueActive&&!$("#ch3OfficeEvidencePanel")?.classList.contains("open")&&!$("#ch3OfficeMatrix")?.classList.contains("open")&&!$("#ch3OfficeChoice")?.classList.contains("show");
- btn.classList.toggle("show",ready); btn.disabled=!ready; btn.hidden=!ready; btn.setAttribute("aria-hidden",ready?"false":"true");
+ btn.classList.toggle("show",ready);btn.disabled=!ready;btn.hidden=!ready;btn.setAttribute("aria-hidden",ready?"false":"true");
 }
-function syncScene(){paintHotspots(); updateProgress(); updateReview()}
+function syncScene(){paintHotspots();updateProgress();updateReview()}
 
 function openChoice(){
- const panel=$("#ch3OfficeChoice"); if(!panel) return;
- choiceLocked=false; panel.classList.remove("hidden"); panel.classList.add("show"); updateReview(); syncAudio();
+ const panel=$("#ch3OfficeChoice");if(!panel)return;
+ choiceLocked=false;panel.classList.remove("hidden");panel.classList.add("show");updateReview();syncAudio();
 }
-function closeChoice(){ const panel=$("#ch3OfficeChoice"); if(!panel) return; panel.classList.remove("show"); panel.classList.add("hidden"); updateReview(); syncAudio(); }
+function closeChoice(){const panel=$("#ch3OfficeChoice");if(!panel)return;panel.classList.remove("show");panel.classList.add("hidden");updateReview();syncAudio()}
 function showAccess(done){
- const card=$("#ch3OfficeAccess"); if(!card){done?.(); return}
+ const card=$("#ch3OfficeAccess");if(!card){done?.();return}
  $("#ch3OfficeAccessText").textContent=tr(LANG.en.ch3p4_open_access,LANG.th.ch3p4_open_access);
  try{window.LastWitnessAudioCue?.playSoftScanner?.()}catch(_){}
- card.classList.add("show"); revealTimer=setTimeout(()=>{card.classList.remove("show"); done?.()},1500);
+ card.classList.add("show");revealTimer=setTimeout(()=>{card.classList.remove("show");done?.()},1500);
 }
 function completeIntro(){
- const p=ensureChapterState(); p.introComplete=true; p.stage="investigation"; gameState().checkpoint="ch3_phase4_investigation"; setHotspotsLocked(false,true); syncScene(); save();
+ const p=ensureChapterState();p.introComplete=true;p.stage="investigation";gameState().checkpoint="ch3_phase4_investigation";setHotspotsLocked(false,true);syncScene();save();
 }
 function finishChoice(choice){
- if(choiceLocked) return; choiceLocked=true; closeChoice(); const p=ensureChapterState(); p.choiceMade=true; p.choiceKey=choice; p.stage="liaison"; gameState().checkpoint="ch3_phase4_choice";
- runSceneDialogue([{speaker:"Benedict",emotion:"serious",key:"ch3p4_choice_"+choice},{speaker:"Inspector Cheryl Goh",emotion:"faint_smile",key:"ch3p4_choice_"+choice+"_r"}, ...faridLines()], ()=>showAccess(completeIntro)); save();
+ if(choiceLocked)return;choiceLocked=true;closeChoice();const p=ensureChapterState();p.choiceMade=true;p.choiceKey=choice;p.stage="liaison";gameState().checkpoint="ch3_phase4_choice";
+ runSceneDialogue([{speaker:"Benedict",emotion:"serious",key:"ch3p4_choice_"+choice},{speaker:"Inspector Cheryl Goh",emotion:"faint_smile",key:"ch3p4_choice_"+choice+"_r"},...faridLines()],()=>showAccess(completeIntro));save();
 }
 function startIntro(){
- const p=ensureChapterState(); if(dialogueActive||p.introComplete) return;
- p.stage="intro"; gameState().checkpoint="ch3_phase4_intro"; setHotspotsLocked(true,false); updateReview(); $("#ch3OfficeObjective").textContent=copy().openingObjective;
- runSceneDialogue(introLines(), openChoice); save();
+ const p=ensureChapterState();if(dialogueActive||p.introComplete)return;
+ p.stage="intro";gameState().checkpoint="ch3_phase4_intro";setHotspotsLocked(true,false);updateReview();$("#ch3OfficeObjective").textContent=copy().openingObjective;
+ runSceneDialogue(introLines(),openChoice);save();
 }
 
 function hideTransitionLayers(){
@@ -359,7 +369,7 @@ function showTravelCard(){
  transitionTimer=setTimeout(enterOffice,2500);
 }
 function beginTransition(force=false){
- inject(); const p=ensureChapterState(); if(!p) return;
+ inject();const p=ensureChapterState();if(!p)return;
  if(p.started&&!force){if(p.travelCardSeen){safeShow(TRANSITION_SCREEN);updateLanguage();showTravelCard();return}if(p.transitionSeen){enterOffice();return}}
  p.started=true;p.stage="transition";p.transitionSeen=false;p.travelCardSeen=false;gameState().screen=TRANSITION_SCREEN;gameState().checkpoint="ch3_phase4_transition";
  window.LastWitnessChangi?.stopAudio?.(true);stopAudio(true);safeShow(TRANSITION_SCREEN);updateLanguage();hideTransitionLayers();
@@ -389,103 +399,115 @@ RAW EVENT ORDER: RESTRICTED
 SUBMITTING DEVICE: NOT EXPOSED
 OPERATOR ATTRIBUTION: UNRESOLVED</pre><footer>RULE EXISTS · METHOD NOT YET PROVEN</footer></article>`;
 }
+function syncCollectButton(){
+ const button=$("#collectCh3OfficeEvidence");if(!button)return;
+ const alreadyCollected=Boolean(activeEvidence&&collectedSet().has(activeEvidence));
+ button.hidden=alreadyCollected;
+ button.disabled=alreadyCollected||!evidenceInspected;
+ button.classList.toggle("done",alreadyCollected);
+ button.setAttribute("aria-hidden",alreadyCollected?"true":"false");
+}
 function openEvidence(id){
- const item=EVIDENCE[id], panel=$("#ch3OfficeEvidencePanel"); if(!item||!panel) return;
- activeEvidence=id; evidenceInspected=false; panel.classList.add("open"); panel.setAttribute("aria-hidden","false");
- const key=isThai()?"th":"en", set=collectedSet(); $("#ch3OfficeEvidenceTitle").textContent=item.title[key]; $("#ch3OfficeEvidenceDescription").textContent=item.description[key]; $("#ch3OfficeEvidenceObservation").textContent=item.observation[key]; $("#ch3OfficeEvidenceObject").innerHTML=evidenceVisual(id);
- $("#ch3OfficeEvidenceMeta")?.classList.remove("show"); $("#collectCh3OfficeEvidence").disabled=!evidenceInspected||set.has(id); $("#collectCh3OfficeEvidence").classList.toggle("done", set.has(id)); $("#inspectCh3OfficeEvidence").disabled=false; $("#ch3OfficeEvidenceObject")?.classList.remove("inspected"); syncAudio();
+ const item=EVIDENCE[id],panel=$("#ch3OfficeEvidencePanel");if(!item||!panel)return;
+ activeEvidence=id;evidenceInspected=false;panel.classList.add("open");panel.setAttribute("aria-hidden","false");
+ const key=isThai()?"th":"en";$("#ch3OfficeEvidenceTitle").textContent=item.title[key];$("#ch3OfficeEvidenceDescription").textContent=item.description[key];$("#ch3OfficeEvidenceObservation").textContent=item.observation[key];$("#ch3OfficeEvidenceObject").innerHTML=evidenceVisual(id);
+ $("#ch3OfficeEvidenceMeta")?.classList.remove("show");$("#inspectCh3OfficeEvidence").disabled=false;$("#ch3OfficeEvidenceObject")?.classList.remove("inspected");syncCollectButton();syncAudio();
 }
 function inspectEvidence(){
- if(!activeEvidence||evidenceInspected)return;evidenceInspected=true;$("#ch3OfficeEvidenceMeta")?.classList.add("show");$("#collectCh3OfficeEvidence").disabled=false;$("#ch3OfficeEvidenceObject")?.classList.add("inspected");syncAudio();
+ if(!activeEvidence||evidenceInspected)return;
+ evidenceInspected=true;$("#ch3OfficeEvidenceMeta")?.classList.add("show");$("#ch3OfficeEvidenceObject")?.classList.add("inspected");syncCollectButton();syncAudio();
 }
 function collectEvidence(){
- const id=activeEvidence,p=ensureChapterState();if(!id||!p||!evidenceInspected||p.evidenceCollected.includes(id))return;
- p.evidenceCollected.push(id);dialogueActive=true;try{gameState().found?.add?.("office_"+id)}catch(_){};closeEvidence();paintHotspots();updateProgress();updateReview();
+ const id=activeEvidence,p=ensureChapterState();
+ if(!id||!p||!evidenceInspected||collectedSet().has(id)){syncCollectButton();return}
+ p.evidenceCollected=EVIDENCE_IDS.filter(evidenceId=>evidenceId===id||p.evidenceCollected.includes(evidenceId));dialogueActive=true;try{gameState().found?.add?.("office_"+id)}catch(_){};closeEvidence();paintHotspots();updateProgress();updateReview();
  try{window.LastWitnessAudioCue?.playCollection?.()}catch(_){};try{if(typeof showBadge==="function")showBadge(tr("Evidence added","เพิ่มหลักฐานแล้ว"))}catch(_){}
  runSceneDialogue(evidenceLines(id),()=>{if(allEvidenceCollected())try{if(typeof showBadge==="function")showBadge(tr("Limited header comparison unlocked","ปลดล็อกการเปรียบเทียบหัวบันทึกแล้ว"))}catch(_){};syncScene();save()});save();
 }
-function closeEvidence(){const panel=$("#ch3OfficeEvidencePanel");if(!panel)return;panel.classList.remove("open");panel.setAttribute("aria-hidden","true");activeEvidence=null;evidenceInspected=false;updateReview();syncAudio();}
+function closeEvidence(){const panel=$("#ch3OfficeEvidencePanel");if(!panel)return;panel.classList.remove("open");panel.setAttribute("aria-hidden","true");activeEvidence=null;evidenceInspected=false;const collect=$("#collectCh3OfficeEvidence");if(collect){collect.hidden=false;collect.disabled=true;collect.classList.remove("done");collect.setAttribute("aria-hidden","false")}updateReview();syncAudio()}
 
 function renderFacts(){
- const wrap=$("#ch3OfficeFactList"), c=copy(); if(!wrap) return; wrap.hidden=false; $("#ch3OfficeConclusionList").hidden=true;
+ const wrap=$("#ch3OfficeFactList"),c=copy();if(!wrap)return;wrap.hidden=false;$("#ch3OfficeConclusionList").hidden=true;
  wrap.innerHTML=MATRIX_ORDER.map(id=>`<div class="ch3-fact-row" data-fact="${id}"><div class="ch3-fact-text">${MATRIX_FACTS[id][isThai()?"th":"en"]}</div><div class="ch3-fact-actions"><button type="button" data-assign="a">${c.matrixA}</button><button type="button" data-assign="b">${c.matrixB}</button><button type="button" data-assign="both">${c.matrixBoth}</button><button type="button" data-assign="policy">${c.matrixPolicy}</button></div></div>`).join("");
- $$('[data-fact]',wrap).forEach(row=>{const id=row.dataset.fact, current=matrixAssignments[id]; if(current) row.querySelector(`[data-assign="${current}"]`)?.classList.add("selected")});
- $$('[data-assign]',wrap).forEach(btn=>btn.addEventListener('click',()=>{const row=btn.closest('[data-fact]'); if(!row)return; const id=row.dataset.fact; matrixAssignments[id]=btn.dataset.assign; const p=ensureChapterState(); if(p) p.matrixAssignments={...matrixAssignments}; save(); renderFacts(); clearMatrixStatus(); }));
+ $$('[data-fact]',wrap).forEach(row=>{const id=row.dataset.fact,current=matrixAssignments[id];if(current)row.querySelector(`[data-assign="${current}"]`)?.classList.add("selected")});
+ $$('[data-assign]',wrap).forEach(btn=>btn.addEventListener("click",()=>{const row=btn.closest("[data-fact]");if(!row)return;const id=row.dataset.fact;matrixAssignments[id]=btn.dataset.assign;const p=ensureChapterState();if(p)p.matrixAssignments={...matrixAssignments};save();renderFacts();clearMatrixStatus()}));
 }
 function renderConclusions(){
- const wrap=$("#ch3OfficeConclusionList"), c=copy(); if(!wrap) return; wrap.hidden=false; $("#ch3OfficeFactList").hidden=true; $("#ch3OfficeMatrixHelp").textContent=c.conclusionTitle;
+ const wrap=$("#ch3OfficeConclusionList"),c=copy();if(!wrap)return;wrap.hidden=false;$("#ch3OfficeFactList").hidden=true;$("#ch3OfficeMatrixHelp").textContent=c.conclusionTitle;
  wrap.innerHTML=CONCLUSIONS.map(item=>`<button type="button" class="ch3-conclusion-option" data-conclusion="${item.id}">${item[isThai()?"th":"en"]}</button>`).join("");
- $$('[data-conclusion]',wrap).forEach(btn=>btn.addEventListener('click',()=>chooseConclusion(btn.dataset.conclusion)));
+ $$('[data-conclusion]',wrap).forEach(btn=>btn.addEventListener("click",()=>chooseConclusion(btn.dataset.conclusion)));
 }
-function clearMatrixStatus(){const node=$("#ch3OfficeMatrixStatus"); if(node){node.textContent=""; node.className="ch3-reconcile-status"}}
-function openMatrix(){ const modal=$("#ch3OfficeMatrix"),p=ensureChapterState(); if(!modal||!p||p.introComplete!==true||p.choiceMade!==true||p.stage!=="investigation"||!allEvidenceCollected()||p.matrixComplete||dialogueActive)return; matrixStage="classify"; matrixAssignments={...p.matrixAssignments}; modal.classList.add('open'); modal.setAttribute('aria-hidden','false'); clearMatrixStatus(); renderFacts(); updateReview(); syncAudio(); }
-function closeMatrix(resetUI=true){ const modal=$("#ch3OfficeMatrix"); if(!modal)return; modal.classList.remove('open'); modal.setAttribute('aria-hidden','true'); if(resetUI){matrixStage='classify';} updateReview(); syncAudio(); }
-function resetMatrix(){ matrixAssignments={}; matrixStage='classify'; const p=ensureChapterState(); if(p) p.matrixAssignments={}; save(); clearMatrixStatus(); renderFacts(); }
+function clearMatrixStatus(){const node=$("#ch3OfficeMatrixStatus");if(node){node.textContent="";node.className="ch3-reconcile-status"}}
+function openMatrix(){const modal=$("#ch3OfficeMatrix"),p=ensureChapterState();if(!modal||!p||p.introComplete!==true||p.choiceMade!==true||p.stage!=="investigation"||!allEvidenceCollected()||p.matrixComplete||dialogueActive)return;matrixStage="classify";matrixAssignments={...p.matrixAssignments};modal.classList.add("open");modal.setAttribute("aria-hidden","false");clearMatrixStatus();renderFacts();updateReview();syncAudio()}
+function closeMatrix(resetUI=true){const modal=$("#ch3OfficeMatrix");if(!modal)return;modal.classList.remove("open");modal.setAttribute("aria-hidden","true");if(resetUI){matrixStage="classify"}updateReview();syncAudio()}
+function resetMatrix(){matrixAssignments={};matrixStage="classify";const p=ensureChapterState();if(p)p.matrixAssignments={};save();clearMatrixStatus();renderFacts()}
 function confirmMatrix(){
- if(matrixStage!=="classify") return; const c=copy(), status=$("#ch3OfficeMatrixStatus");
- if(MATRIX_ORDER.some(id=>!matrixAssignments[id])){status.textContent=c.incomplete; status.className='ch3-reconcile-status error'; return}
+ if(matrixStage!=="classify")return;const c=copy(),status=$("#ch3OfficeMatrixStatus");
+ if(MATRIX_ORDER.some(id=>!matrixAssignments[id])){status.textContent=c.incomplete;status.className="ch3-reconcile-status error";return}
  const wrong=MATRIX_ORDER.filter(id=>matrixAssignments[id]!==MATRIX_CORRECT[id]);
- if(wrong.length){status.textContent=c.wrong; status.className='ch3-reconcile-status error'; return}
- const p=ensureChapterState(); p.matrixAssignments={...matrixAssignments}; status.textContent=c.matrixCorrect; status.className='ch3-reconcile-status success'; matrixStage='conclusion'; save(); renderConclusions();
+ if(wrong.length){status.textContent=c.wrong;status.className="ch3-reconcile-status error";return}
+ const p=ensureChapterState();p.matrixAssignments={...matrixAssignments};status.textContent=c.matrixCorrect;status.className="ch3-reconcile-status success";matrixStage="conclusion";save();renderConclusions();
 }
 function chooseConclusion(id){
- const status=$("#ch3OfficeMatrixStatus"), c=copy(); if(id!=="inside_window"){status.textContent=c.beyond; status.className='ch3-reconcile-status error'; return}
- const p=ensureChapterState(); p.matrixComplete=true; p.stage='closing'; p.matrixAssignments={...matrixAssignments}; gameState().checkpoint='ch3_phase4_matrix'; status.textContent=tr('Conclusion supported within the limits of the available headers.','ข้อสรุปนี้ได้รับการรองรับภายในขอบเขตของหัวบันทึกที่เปิดให้ตรวจ'); status.className='ch3-reconcile-status success';
- try{window.LastWitnessAudioCue?.playPuzzleSuccess?.()}catch(_){}; save(); setTimeout(()=>{closeMatrix(false); runClosingDialogue()},620);
+ const status=$("#ch3OfficeMatrixStatus"),c=copy();if(id!=="inside_window"){status.textContent=c.beyond;status.className="ch3-reconcile-status error";return}
+ const p=ensureChapterState();p.matrixComplete=true;p.stage="closing";p.matrixAssignments={...matrixAssignments};gameState().checkpoint="ch3_phase4_matrix";status.textContent=tr("Conclusion supported within the limits of the available headers.","ข้อสรุปนี้ได้รับการรองรับภายในขอบเขตของหัวบันทึกที่เปิดให้ตรวจ");status.className="ch3-reconcile-status success";
+ try{window.LastWitnessAudioCue?.playPuzzleSuccess?.()}catch(_){};save();setTimeout(()=>{closeMatrix(false);runClosingDialogue()},620);
 }
 function runClosingDialogue(){
- const p=ensureChapterState(); if(dialogueActive||p.complete)return; setHotspotsLocked(false,false); $("#ch3OfficeReview")?.classList.remove('show'); runSceneDialogue(closingLines(),()=>{p.closingDialogueComplete=true; p.complete=true; p.stage='complete'; gameState().checkpoint='ch3_phase4_complete'; showComplete(); save()});
+ const p=ensureChapterState();if(dialogueActive||p.complete)return;setHotspotsLocked(false,false);$("#ch3OfficeReview")?.classList.remove("show");runSceneDialogue(closingLines(),()=>{p.closingDialogueComplete=true;p.complete=true;p.stage="complete";gameState().checkpoint="ch3_phase4_complete";showComplete();save()});
 }
 function showComplete(){
- const p=ensureChapterState(); p.complete=true; p.closingDialogueComplete=true; p.stage='complete'; $("#chapter3OfficeDialogue")?.classList.add('hidden'); const review=$("#ch3OfficeReview"); if(review){review.classList.remove('show');review.hidden=true;review.disabled=true;review.setAttribute('aria-hidden','true')}; setHotspotsLocked(false,false); $("#ch3OfficeComplete")?.style.setProperty('display','block'); updateProgress(); syncAudio();
+ const p=ensureChapterState();p.complete=true;p.closingDialogueComplete=true;p.stage="complete";$("#chapter3OfficeDialogue")?.classList.add("hidden");const review=$("#ch3OfficeReview");if(review){review.classList.remove("show");review.hidden=true;review.disabled=true;review.setAttribute("aria-hidden","true")}setHotspotsLocked(false,false);$("#ch3OfficeComplete")?.style.setProperty("display","block");updateProgress();syncAudio();
 }
 
 function appendCaseEntries(){
- const list=$("#caseList"), p=ensureChapterState(); if(!list||!p?.evidenceCollected?.length) return;
- $("[data-p4-case-section]",list)?.remove(); $$('[data-p4-case-entry]',list).forEach(n=>n.remove());
- const heading=document.createElement('div'); heading.className='case-section-title'; heading.dataset.p4CaseSection='1'; heading.textContent=tr('CHAPTER III · SINGAPORE INVESTIGATION OFFICE','บทที่ III · สำนักงานสืบสวนสิงคโปร์'); list.appendChild(heading);
- p.evidenceCollected.forEach(id=>{const item=EVIDENCE[id]; if(!item) return; const row=document.createElement('div'); row.className='case-row'; row.dataset.p4CaseEntry=id; row.innerHTML=`<b>${item.title[isThai()?'th':'en']}</b><div>${item.description[isThai()?'th':'en']}</div>`; list.appendChild(row)});
+ const list=$("#caseList");if(!list)return;
+ $("[data-p4-case-section]",list)?.remove();$$('[data-p4-case-entry]',list).forEach(n=>n.remove());
+ const ids=reconcileEvidenceState();if(!ids.length)return;
+ const heading=document.createElement("div");heading.className="case-section-title";heading.dataset.p4CaseSection="1";heading.textContent=tr("CHAPTER III · SINGAPORE INVESTIGATION OFFICE","บทที่ III · สำนักงานสืบสวนสิงคโปร์");list.appendChild(heading);
+ ids.forEach(id=>{const item=EVIDENCE[id];if(!item)return;const row=document.createElement("div");row.className="case-row";row.dataset.p4CaseEntry=id;const title=document.createElement("b"),description=document.createElement("div");title.textContent=item.title[isThai()?"th":"en"];description.textContent=item.description[isThai()?"th":"en"];row.appendChild(title);row.appendChild(description);list.appendChild(row)});
+ save();
 }
 function updateLanguage(){
- if(!$("#"+TRANSITION_SCREEN)) return; installLanguage(); const c=copy();
- $("#ch3P4Day").textContent=c.day; $("#ch3P4Time").textContent=c.time; $("#ch3P4Place").textContent=c.place; $("#ch3P4Phase").textContent=c.phase; $("#ch3P4Skip").textContent=c.skip;
- $("#ch3OfficeLocation").textContent=c.location; $("#ch3OfficeSceneLabel").textContent=c.scene; $("#ch3OfficeObjective").textContent=ensureChapterState()?.introComplete?c.investigateObjective:c.openingObjective; $("#ch3OfficeReview").textContent=c.review;
- $$('[data-office-clue]').forEach(node=>{const label=$(".ch3-hotspot-label",node); if(label) label.textContent=c.labels[node.dataset.officeClue]});
- $("#ch3OfficeEvidenceKicker").textContent=c.evidenceKicker; $("#ch3OfficeEvidenceStamp").textContent=c.caseEvidence; $("#ch3OfficeEvidenceHint").textContent=c.tap; $("#inspectCh3OfficeEvidence").textContent=c.inspect; $("#collectCh3OfficeEvidence").textContent=c.collect; $("#closeCh3OfficeEvidence").textContent=c.close;
- $("#ch3OfficeChoiceTitle").textContent=c.choiceTitle; const [b1,b2,b3]=$$('[data-office-choice]'); if(b1){b1.textContent=tr(LANG.en.ch3p4_choice_evidence,LANG.th.ch3p4_choice_evidence)} if(b2){b2.textContent=tr(LANG.en.ch3p4_choice_urgency,LANG.th.ch3p4_choice_urgency)} if(b3){b3.textContent=tr(LANG.en.ch3p4_choice_cooperate,LANG.th.ch3p4_choice_cooperate)}
- $("#ch3OfficeMatrixTitle").textContent=c.matrixTitle; $("#ch3OfficeMatrixHelp").textContent=matrixStage==="classify"?c.matrixHelp:c.conclusionTitle; $("#ch3OfficeMatrixConfirm").textContent=c.confirm; $("#ch3OfficeMatrixReset").textContent=c.reset; $("#ch3OfficeMatrixClose").textContent=c.close;
- $("#ch3OfficeCompleteEye").textContent=c.completeEye; $("#ch3OfficeCompleteTitle").textContent=c.completeTitle; $("#ch3OfficeCompleteText").textContent=c.completeText; $("#ch3OfficeContinuePhase5").textContent=c.continuePhase5; $("#ch3OfficeReturnTitle").textContent=c.returnTitle;
- if(activeEvidence){const item=EVIDENCE[activeEvidence], key=isThai()?"th":"en"; $("#ch3OfficeEvidenceTitle").textContent=item.title[key]; $("#ch3OfficeEvidenceDescription").textContent=item.description[key]; $("#ch3OfficeEvidenceObservation").textContent=item.observation[key]}
- if($("#ch3OfficeMatrix")?.classList.contains('open')){ if(matrixStage==="classify") renderFacts(); else renderConclusions(); }
- if($("#caseModal")?.classList.contains('open')) appendCaseEntries();
+ if(!$("#"+TRANSITION_SCREEN))return;installLanguage();const c=copy();
+ $("#ch3P4Day").textContent=c.day;$("#ch3P4Time").textContent=c.time;$("#ch3P4Place").textContent=c.place;$("#ch3P4Phase").textContent=c.phase;$("#ch3P4Skip").textContent=c.skip;
+ $("#ch3OfficeLocation").textContent=c.location;$("#ch3OfficeSceneLabel").textContent=c.scene;$("#ch3OfficeObjective").textContent=ensureChapterState()?.introComplete?c.investigateObjective:c.openingObjective;$("#ch3OfficeReview").textContent=c.review;
+ $$('[data-office-clue]').forEach(node=>{const label=$(".ch3-hotspot-label",node);if(label)label.textContent=c.labels[node.dataset.officeClue]});
+ $("#ch3OfficeEvidenceKicker").textContent=c.evidenceKicker;$("#ch3OfficeEvidenceStamp").textContent=c.caseEvidence;$("#ch3OfficeEvidenceHint").textContent=c.tap;$("#inspectCh3OfficeEvidence").textContent=c.inspect;$("#collectCh3OfficeEvidence").textContent=c.collect;$("#closeCh3OfficeEvidence").textContent=c.close;
+ $("#ch3OfficeChoiceTitle").textContent=c.choiceTitle;const[b1,b2,b3]=$$('[data-office-choice]');if(b1){b1.textContent=tr(LANG.en.ch3p4_choice_evidence,LANG.th.ch3p4_choice_evidence)}if(b2){b2.textContent=tr(LANG.en.ch3p4_choice_urgency,LANG.th.ch3p4_choice_urgency)}if(b3){b3.textContent=tr(LANG.en.ch3p4_choice_cooperate,LANG.th.ch3p4_choice_cooperate)}
+ $("#ch3OfficeMatrixTitle").textContent=c.matrixTitle;$("#ch3OfficeMatrixHelp").textContent=matrixStage==="classify"?c.matrixHelp:c.conclusionTitle;$("#ch3OfficeMatrixConfirm").textContent=c.confirm;$("#ch3OfficeMatrixReset").textContent=c.reset;$("#ch3OfficeMatrixClose").textContent=c.close;
+ $("#ch3OfficeCompleteEye").textContent=c.completeEye;$("#ch3OfficeCompleteTitle").textContent=c.completeTitle;$("#ch3OfficeCompleteText").textContent=c.completeText;$("#ch3OfficeContinuePhase5").textContent=c.continuePhase5;$("#ch3OfficeReturnTitle").textContent=c.returnTitle;
+ if(activeEvidence){const item=EVIDENCE[activeEvidence],key=isThai()?"th":"en";$("#ch3OfficeEvidenceTitle").textContent=item.title[key];$("#ch3OfficeEvidenceDescription").textContent=item.description[key];$("#ch3OfficeEvidenceObservation").textContent=item.observation[key];syncCollectButton()}
+ if($("#ch3OfficeMatrix")?.classList.contains("open")){if(matrixStage==="classify")renderFacts();else renderConclusions()}
+ if($("#caseModal")?.classList.contains("open"))appendCaseEntries();
 }
 
 function goPhase5Wip(){
- const s=gameState(); if(!s) return; stopAudio(true); s.screen='chapter3Wip';
- const title=$("#chapter3WipTitle"), text=$("#chapter3WipText"), btn=$("#chapter3WipReturnTitle");
- if(title) title.textContent=tr('PHASE V · MARINA BAY','เฟส V · Marina Bay');
- if(text) text.textContent=tr('Phase V is currently in development. Your Chapter III progress has been saved.','เฟส V กำลังอยู่ระหว่างการพัฒนา ความคืบหน้าของ Chapter III ถูกบันทึกไว้แล้ว');
- if(btn) btn.textContent=tr('Return to Title','กลับหน้าแรก');
- safeShow('chapter3Wip'); save();
+ const s=gameState();if(!s)return;stopAudio(true);s.screen="chapter3Wip";
+ const title=$("#chapter3WipTitle"),text=$("#chapter3WipText"),btn=$("#chapter3WipReturnTitle");
+ if(title)title.textContent=tr("PHASE V · MARINA BAY","เฟส V · Marina Bay");
+ if(text)text.textContent=tr("Phase V is currently in development. Your Chapter III progress has been saved.","เฟส V กำลังอยู่ระหว่างการพัฒนา ความคืบหน้าของ Chapter III ถูกบันทึกไว้แล้ว");
+ if(btn)btn.textContent=tr("Return to Title","กลับหน้าแรก");
+ safeShow("chapter3Wip");save();
 }
 function resumePhase4(screen){inject();const p=ensureChapterState();updateLanguage();if(screen===TRANSITION_SCREEN){if(p?.travelCardSeen){safeShow(TRANSITION_SCREEN);showTravelCard()}else beginTransition(true);return}if(screen===OFFICE_SCREEN){enterOffice();return}}
 function installResumeBridge(){
- const api=window.LastWitnessChapter3; if(api&& !api.__lwPhase40920){ const original=api.resumeFromState; api.resumeFromState=function(screen){ const res=typeof original==='function'?original.apply(this,arguments):undefined; if(internalRouting) return res; if(screen===TRANSITION_SCREEN||screen===OFFICE_SCREEN){setTimeout(()=>resumePhase4(screen),0); return res} return res; }; api.__lwPhase40920=true; }
- window.LastWitnessPhase4={startTransition:beginTransition,resumeFromState:resumePhase4,goPhase5Wip,version:BUILD};
+ const api=window.LastWitnessChapter3;if(api&&!api.__lwPhase40103){const original=api.resumeFromState;api.resumeFromState=function(screen){const res=typeof original==="function"?original.apply(this,arguments):undefined;if(internalRouting)return res;if(screen===TRANSITION_SCREEN||screen===OFFICE_SCREEN){setTimeout(()=>resumePhase4(screen),0);return res}return res};api.__lwPhase40103=true}
+ window.LastWitnessPhase4={startTransition:beginTransition,resumeFromState:resumePhase4,goPhase5Wip,stopAudio,version:BUILD};
 }
 function bind(){
- $("#ch3P4Skip")?.addEventListener('click',showTravelCard);
- $("#ch3Phase4TransitionVideo")?.addEventListener('ended',showTravelCard);
- $$('[data-office-clue]').forEach(node=>node.addEventListener('click',()=>openEvidence(node.dataset.officeClue)));
- $("#inspectCh3OfficeEvidence")?.addEventListener('click', inspectEvidence); $("#ch3OfficeEvidenceObject")?.addEventListener('click', inspectEvidence); $("#collectCh3OfficeEvidence")?.addEventListener('click', collectEvidence); $("#closeCh3OfficeEvidence")?.addEventListener('click', closeEvidence); $("#ch3OfficeEvidencePanel")?.addEventListener('click',e=>{if(e.target===$("#ch3OfficeEvidencePanel")) closeEvidence()});
- $("#ch3OfficeReview")?.addEventListener('click', openMatrix); $("#ch3OfficeMatrixConfirm")?.addEventListener('click', confirmMatrix); $("#ch3OfficeMatrixReset")?.addEventListener('click', resetMatrix); $("#ch3OfficeMatrixClose")?.addEventListener('click',()=>closeMatrix(true));
- $$('[data-office-choice]').forEach(btn=>btn.addEventListener('click',()=>finishChoice(btn.dataset.officeChoice)));
- $("#ch3OfficeContinuePhase5")?.addEventListener('click', goPhase5Wip); $("#ch3OfficeReturnTitle")?.addEventListener('click', ()=>window.LastWitnessChapter2Integration?.returnToTitle?.());
- $("#"+OFFICE_SCREEN+" .ch3-office-save")?.addEventListener('click',()=>manualSave()); $("#"+OFFICE_SCREEN+" .ch3-office-menu")?.addEventListener('click',()=>$("#drawer")?.classList.add('open'));
- $("#caseButton")?.addEventListener('click',()=>setTimeout(appendCaseEntries,0),true);
- $("#soundToggle")?.addEventListener('change', syncAudio, true); $("#musicRange")?.addEventListener('input', syncAudio, true); document.addEventListener('click',e=>{ if(e.target.closest?.('[data-lang]')) setTimeout(updateLanguage,0) }, true); document.addEventListener('visibilitychange',()=>{if(document.hidden)stopAudio(false);else if(activeScreen()===TRANSITION_SCREEN)resumeTransitionMedia();else if(activeScreen()===OFFICE_SCREEN)syncAudio()});
- }
-function installBuild(){ const label=$("#settingsVersion"); if(label) label.textContent=`LAST WITNESS · BUILD ${BUILD}`; if(window.LastWitnessSaveManager) window.LastWitnessSaveManager.version=BUILD; }
-function initialize(){ inject(); document.body.classList.add('lw-phase4-runtime'); installResumeBridge(); installBuild(); const screen=activeScreen(); if(screen===TRANSITION_SCREEN||screen===OFFICE_SCREEN) setTimeout(()=>resumePhase4(screen),0); }
+ $("#ch3P4Skip")?.addEventListener("click",showTravelCard);
+ $("#ch3Phase4TransitionVideo")?.addEventListener("ended",showTravelCard);
+ $$('[data-office-clue]').forEach(node=>node.addEventListener("click",()=>openEvidence(node.dataset.officeClue)));
+ $("#inspectCh3OfficeEvidence")?.addEventListener("click",inspectEvidence);$("#ch3OfficeEvidenceObject")?.addEventListener("click",inspectEvidence);$("#collectCh3OfficeEvidence")?.addEventListener("click",collectEvidence);$("#closeCh3OfficeEvidence")?.addEventListener("click",closeEvidence);$("#ch3OfficeEvidencePanel")?.addEventListener("click",e=>{if(e.target===$("#ch3OfficeEvidencePanel"))closeEvidence()});
+ $("#ch3OfficeReview")?.addEventListener("click",openMatrix);$("#ch3OfficeMatrixConfirm")?.addEventListener("click",confirmMatrix);$("#ch3OfficeMatrixReset")?.addEventListener("click",resetMatrix);$("#ch3OfficeMatrixClose")?.addEventListener("click",()=>closeMatrix(true));
+ $$('[data-office-choice]').forEach(btn=>btn.addEventListener("click",()=>finishChoice(btn.dataset.officeChoice)));
+ $("#ch3OfficeContinuePhase5")?.addEventListener("click",goPhase5Wip);$("#ch3OfficeReturnTitle")?.addEventListener("click",()=>window.LastWitnessChapter2Integration?.returnToTitle?.());
+ $("#"+OFFICE_SCREEN+" .ch3-office-save")?.addEventListener("click",()=>manualSave());$("#"+OFFICE_SCREEN+" .ch3-office-menu")?.addEventListener("click",()=>$("#drawer")?.classList.add("open"));
+ $("#caseButton")?.addEventListener("click",()=>setTimeout(appendCaseEntries,0),true);
+ $("#soundToggle")?.addEventListener("change",syncAudio,true);$("#musicRange")?.addEventListener("input",syncAudio,true);document.addEventListener("click",e=>{if(e.target.closest?.("[data-lang]"))setTimeout(updateLanguage,0)},true);document.addEventListener("visibilitychange",()=>{if(document.hidden)stopAudio(false);else if(activeScreen()===TRANSITION_SCREEN)resumeTransitionMedia();else if(activeScreen()===OFFICE_SCREEN)syncAudio()});
+}
+function installBuild(){const label=$("#settingsVersion");if(label)label.textContent=`LAST WITNESS · BUILD ${BUILD}`;if(window.LastWitnessSaveManager)window.LastWitnessSaveManager.version=BUILD}
+function initialize(){inject();document.body.classList.add("lw-phase4-runtime");installResumeBridge();installBuild();const screen=activeScreen();if(screen===TRANSITION_SCREEN||screen===OFFICE_SCREEN)setTimeout(()=>resumePhase4(screen),0)}
 initialize();
 })();
