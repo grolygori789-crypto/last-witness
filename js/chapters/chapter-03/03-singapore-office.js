@@ -1,9 +1,9 @@
-/* LAST WITNESS — Chapter III / Phase IV: Singapore Investigation Office 0.10.3 */
+/* LAST WITNESS — Chapter III / Phase IV: Singapore Investigation Office 0.10.4 */
 (function(){
 "use strict";
-if(window.LastWitnessPhase4?.version==="0.10.3")return;
+if(window.LastWitnessPhase4?.version==="0.10.4")return;
 
-const BUILD="0.10.3";
+const BUILD="0.10.4";
 const TRANSITION_SCREEN="chapter3Phase4Transition";
 const OFFICE_SCREEN="chapter3SingaporeOffice";
 const VIDEO_PATH="assets/video/chapter-03/phase-04/drive-to-investigation-office.mp4?v=0920";
@@ -343,17 +343,28 @@ function showAccess(done){
  try{window.LastWitnessAudioCue?.playSoftScanner?.()}catch(_){}
  card.classList.add("show");revealTimer=setTimeout(()=>{card.classList.remove("show");done?.()},1500);
 }
+function unlockSingaporeCharacter(id,quiet=false){
+ const s=gameState();if(!s)return false;s.flags=s.flags||{};s.relationships=s.relationships||{};
+ if(id==="cheryl"){s.flags.ch3_cheryl_met=true;s.relationships["Cheryl Goh"]=s.relationships["Cheryl Goh"]||{trust:48,respect:68,attachment:12,suspicion:18}}
+ if(id==="farid"){s.flags.ch3_farid_met=true;s.relationships["Farid Rahman"]=s.relationships["Farid Rahman"]||{trust:60,respect:72,attachment:20,suspicion:7}}
+ try{return Boolean(window.LastWitnessContentRegistry?.unlockCharacter?.(id,{unread:true,source:"story",quiet}))}catch(_){return false}
+}
+function recoverSingaporeCast(p){
+ if(!p)return;
+ if(p.choiceMade||p.introComplete||p.matrixComplete||p.complete)unlockSingaporeCharacter("cheryl",true);
+ if(p.introComplete||p.matrixComplete||p.complete)unlockSingaporeCharacter("farid",true);
+}
 function completeIntro(){
- const p=ensureChapterState();p.introComplete=true;p.stage="investigation";gameState().checkpoint="ch3_phase4_investigation";setHotspotsLocked(false,true);syncScene();save();
+ const p=ensureChapterState();p.introComplete=true;p.stage="investigation";gameState().checkpoint="ch3_phase4_investigation";unlockSingaporeCharacter("farid");setHotspotsLocked(false,true);syncScene();save();
 }
 function finishChoice(choice){
  if(choiceLocked)return;choiceLocked=true;closeChoice();const p=ensureChapterState();p.choiceMade=true;p.choiceKey=choice;p.stage="liaison";gameState().checkpoint="ch3_phase4_choice";
- runSceneDialogue([{speaker:"Benedict",emotion:"serious",key:"ch3p4_choice_"+choice},{speaker:"Inspector Cheryl Goh",emotion:"faint_smile",key:"ch3p4_choice_"+choice+"_r"},...faridLines()],()=>showAccess(completeIntro));save();
+ runSceneDialogue([{speaker:"Benedict",emotion:"serious",key:"ch3p4_choice_"+choice},{speaker:"Inspector Cheryl Goh",emotion:"faint_smile",key:"ch3p4_choice_"+choice+"_r"},...faridLines()],()=>{unlockSingaporeCharacter("farid");showAccess(completeIntro)});save();
 }
 function startIntro(){
  const p=ensureChapterState();if(dialogueActive||p.introComplete)return;
  p.stage="intro";gameState().checkpoint="ch3_phase4_intro";setHotspotsLocked(true,false);updateReview();$("#ch3OfficeObjective").textContent=copy().openingObjective;
- runSceneDialogue(introLines(),openChoice);save();
+ runSceneDialogue(introLines(),()=>{unlockSingaporeCharacter("cheryl");openChoice()});save();
 }
 
 function hideTransitionLayers(){
@@ -380,6 +391,7 @@ function beginTransition(force=false){
 }
 function enterOffice(){
  clearTimeout(transitionTimer);inject();const p=ensureChapterState();if(!p)return;
+ document.title="Last Witness — The Borrowed Minutes";recoverSingaporeCast(p);
  p.started=true;p.transitionSeen=true;p.travelCardSeen=true;gameState().screen=OFFICE_SCREEN;gameState().checkpoint=p.introComplete?"ch3_phase4_investigation":"ch3_phase4_intro";
  const v=$("#ch3Phase4TransitionVideo");if(v)try{v.pause();v.currentTime=0}catch(_){};hideTransitionLayers();stopElement($("#ch3Phase4TransitionAudio"),true);
  safeShow(OFFICE_SCREEN);closeEvidence();closeMatrix(false);$("#ch3OfficeComplete")?.style.setProperty("display","none");updateLanguage();
