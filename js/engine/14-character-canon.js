@@ -1,10 +1,10 @@
-/* LAST WITNESS — Character Journal Canon Verification 0.10.5
+/* LAST WITNESS — Character Journal Canon Verification 0.10.6
  * Applies owner-confirmed identity and role data to the authoritative
  * Character Journal registry. One-time mutation only. No polling/observer.
  */
 (function(){
 "use strict";
-const VERSION="0.10.5";
+const VERSION="0.10.6";
 const CANON={
  benedict:{name:{en:"Benedict",th:"เบเนดิกต์"},age:42,role:{en:"Detective",th:"นักสืบ"},status:{en:"Lead Investigator",th:"หัวหน้าผู้สืบสวน"},bio:{en:"A calm, observant detective who uses humour to keep pressure from controlling the room.",th:"นักสืบสุขุม ช่างสังเกต ใช้อารมณ์ขันช่วยควบคุมแรงกดดันในสถานการณ์"}},
  north:{name:{en:"North",th:"นอร์ธ"},age:32,role:{en:"IT Specialist",th:"ผู้เชี่ยวชาญด้านไอที"},status:{en:"Trusted Partner",th:"คู่หูที่ไว้ใจได้"},bio:{en:"A precise technical investigator with dry wit and little patience for unsupported conclusions.",th:"ผู้สืบสวนด้านเทคนิคที่แม่นยำ มีอารมณ์ขันแห้งๆ และไม่ยอมรับข้อสรุปที่ไร้หลักฐาน"}},

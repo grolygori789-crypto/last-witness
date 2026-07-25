@@ -1,10 +1,10 @@
-/* LAST WITNESS — Chapter II / Chapter III Production Integration 0.10.5
+/* LAST WITNESS — Chapter II / Chapter III Production Integration 0.10.6
  * Owns the Medical transition and loads Chapter III on demand.
  * Chapter III modules load in strict narrative order.
  */
 (function(){
 "use strict";
-const BUILD="0.10.5";
+const BUILD="0.10.6";
 const $=(s,r=document)=>r.querySelector(s),$$=(s,r=document)=>Array.from(r.querySelectorAll(s));let medicalTransitioning=false;
 function language(){try{return window.state?.language==="th"?"th":"en"}catch(_){return document.documentElement.lang==="th"?"th":"en"}}
 function stopAudio(audio,reset=true){if(!audio)return;try{audio.pause();if(reset)audio.currentTime=0}catch(_){}}
@@ -20,7 +20,7 @@ function installDirectForensicTransition(){if(!$("#lwDirectForensicMedical065"))
 function addStylesheetOnce(href,id){if(document.getElementById(id))return;const link=document.createElement("link");link.id=id;link.rel="stylesheet";link.href=href;document.head.appendChild(link)}
 function loadScriptOnce(src,id){const existing=document.getElementById(id);if(existing?.dataset.loaded==="1")return Promise.resolve();if(existing?.__lwPromise)return existing.__lwPromise;const script=existing||document.createElement("script");script.id=id;script.src=src;script.async=false;script.__lwPromise=new Promise((resolve,reject)=>{script.addEventListener("load",()=>{script.dataset.loaded="1";resolve()},{once:true});script.addEventListener("error",reject,{once:true})});if(!existing)document.body.appendChild(script);return script.__lwPromise}
 let runtimePromise=null;
-function ensureProductionRuntime(){if(runtimePromise)return runtimePromise;addStylesheetOnce("css/chapter-03.css?v=074","lwChapter03Style");addStylesheetOnce("css/chapter-03-phase-03.css?v=0801","lwChapter03Phase03Style");addStylesheetOnce("css/chapter-03-phase-05.css?v=0105","lwChapter03Phase05Style");runtimePromise=loadScriptOnce("js/chapters/chapter-03/01-title-phase1.js?v=0920","lwChapter03Script").then(()=>loadScriptOnce("js/chapters/chapter-03/02-changi-airport.js?v=0920","lwChapter03Phase03Script")).then(()=>loadScriptOnce("js/chapters/chapter-03/03-singapore-office.js?v=0105","lwChapter03Phase04Script")).then(()=>loadScriptOnce("js/chapters/chapter-03/04-marina-bay.js?v=0105","lwChapter03Phase05Script")).catch(error=>{console.error("LAST WITNESS Chapter III runtime failed to load",error);runtimePromise=null;throw error});return runtimePromise}
+function ensureProductionRuntime(){if(runtimePromise)return runtimePromise;addStylesheetOnce("css/chapter-03.css?v=074","lwChapter03Style");addStylesheetOnce("css/chapter-03-phase-03.css?v=0801","lwChapter03Phase03Style");addStylesheetOnce("css/chapter-03-phase-05.css?v=0106","lwChapter03Phase05Style");runtimePromise=loadScriptOnce("js/chapters/chapter-03/01-title-phase1.js?v=0920","lwChapter03Script").then(()=>loadScriptOnce("js/chapters/chapter-03/02-changi-airport.js?v=0920","lwChapter03Phase03Script")).then(()=>loadScriptOnce("js/chapters/chapter-03/03-singapore-office.js?v=0106","lwChapter03Phase04Script")).then(()=>loadScriptOnce("js/chapters/chapter-03/04-marina-bay.js?v=0106","lwChapter03Phase05Script")).catch(error=>{console.error("LAST WITNESS Chapter III runtime failed to load",error);runtimePromise=null;throw error});return runtimePromise}
 function setChapter3DocumentTitle(){document.title="Last Witness — The Borrowed Minutes"}
 async function startChapter3(event){event?.preventDefault();event?.stopImmediatePropagation();stopAudio($("#chapterAudio"),true);closeOverlays();setChapter3DocumentTitle();try{await ensureProductionRuntime();if(!window.LastWitnessChapter3?.startFromChapter2)throw new Error("Chapter III runtime unavailable");window.LastWitnessChapter3.startFromChapter2()}catch(_){activateScreen("chapter3Wip");localizeEnding()}}
 function saveStorageKey(kind){try{if(typeof SAVE!=="undefined"&&SAVE?.[kind])return SAVE[kind]}catch(_){}return kind==="manual"?"last_witness_rc1_manual":"last_witness_rc1_auto"}
