@@ -1,8 +1,8 @@
-/* LAST WITNESS — Chapter III / Phase V: Marina Bay 0.10.4 */
+/* LAST WITNESS — Chapter III / Phase V: Marina Bay 0.10.5 */
 (function(){
 "use strict";
-if(window.LastWitnessPhase5?.version==="0.10.4")return;
-const BUILD="0.10.4",CARD="chapter3Phase5Card",SCREEN="chapter3MarinaBay",LOCATION_CARD_HOLD_MS=2850;
+if(window.LastWitnessPhase5?.version==="0.10.5")return;
+const BUILD="0.10.5",CARD="chapter3Phase5Card",SCREEN="chapter3MarinaBay",LOCATION_CARD_HOLD_MS=2850;
 const IMAGE="assets/images/chapter-03/phase-05/marina-bay-promenade-night.png?v=0100";
 const AMBIENCE="assets/audio/chapter-03/phase-05/marina-bay-outdoor-ambience.mp3?v=0100";
 const EVIDENCE_IDS=["snapshot","response","handoff"];

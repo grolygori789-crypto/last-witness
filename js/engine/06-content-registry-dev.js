@@ -1,4 +1,4 @@
-/* LAST WITNESS — Canon Character Journal + Registry/Dev Integration 0.10.4
+/* LAST WITNESS — Canon Character Journal + Registry/Dev Integration 0.10.5
  * One authoritative unread state, idempotent story unlocks and deterministic
  * Case File visibility. No polling and no duplicate unlock event.
  */
@@ -111,17 +111,24 @@ function devUnlockCharacters(event){event?.preventDefault();event?.stopImmediate
 function devUnlockEvidence(event){event?.preventDefault();event?.stopImmediatePropagation();ensureState();state.flags=state.flags||{};state.flags.developer_evidence_unlock_all=true;state.lwEvidenceUnlocked=[];Object.keys(EVIDENCE).forEach(unlockEvidence);persist();renderRegistryEvidence();try{showBadge(language()==='th'?'ปลดล็อกหลักฐานครบแล้ว':'All evidence unlocked')}catch(_){}}
 function observeDialogueUnlocks(){const sessions=new WeakMap();const map={elena:'elena',ratchata:'ratchata'};const observer=new MutationObserver(records=>records.forEach(record=>{const box=record.target.closest?.('.dialogue')||record.target;if(!box?.classList?.contains('dialogue'))return;const set=sessions.get(box)||new Set();const speaker=box.querySelector('.speaker')?.textContent?.trim()?.toLowerCase();if(map[speaker])set.add(map[speaker]);sessions.set(box,set);if(box.classList.contains('hidden')||getComputedStyle(box).display==='none'){set.forEach(id=>unlockCharacter(id,{unread:true,source:'story'}));set.clear()}}));$$('.dialogue').forEach(box=>observer.observe(box,{subtree:true,childList:true,attributes:true,attributeFilter:['class']}))}
 function observeScreens(){const observer=new MutationObserver(()=>{ensureState();updateJournalVisibility();if(canonicalJournalEnabled())renderCharacters();updateDots()});$$('.screen').forEach(screen=>observer.observe(screen,{attributes:true,attributeFilter:['class']}))}
-function installJournalStyles(){if($("#lwJournalPortraitStandard0104"))return;const style=document.createElement('style');style.id='lwJournalPortraitStandard0104';style.textContent=`
-.character-portrait-frame{display:block;float:left;width:54px;height:54px;margin-right:10px;overflow:hidden;border-radius:8px;background:linear-gradient(160deg,#181820,#090a0e)}
-.character-portrait-frame img{display:block!important;float:none!important;width:100%!important;height:100%!important;margin:0!important;border-radius:0!important;object-fit:cover!important;object-position:center 22%;transform-origin:center 24%}
-.character-detail-portrait{display:block;flex:0 0 78px;width:78px;height:78px;overflow:hidden;border-radius:10px;background:linear-gradient(160deg,#181820,#090a0e)}
-.character-detail-portrait img{display:block!important;width:100%!important;height:100%!important;margin:0!important;border-radius:0!important;object-fit:cover!important;object-position:center 22%;transform-origin:center 24%}
-[data-portrait-frame="ratchata"] img{transform:scale(1.34);object-position:center 18%}
-[data-portrait-frame="cheryl"] img{transform:scale(1.16);object-position:center 17%}
-[data-portrait-frame="farid"] img{transform:scale(1.15);object-position:center 18%}
-.character-card{overflow:hidden}
+function installJournalStyles(){if($("#lwJournalPortraitStandard0105"))return;const style=document.createElement('style');style.id='lwJournalPortraitStandard0105';style.textContent=`
+#characterGrid.character-grid{grid-template-columns:1fr!important;gap:12px!important}
+#characterGrid .character-card{position:relative;display:grid!important;grid-template-columns:clamp(118px,31vw,148px) minmax(0,1fr);grid-template-rows:auto auto 1fr;column-gap:16px;row-gap:0;min-height:220px!important;padding:14px 16px 12px!important;overflow:hidden;align-items:start}
+#characterGrid .character-portrait-frame{display:block;grid-column:1;grid-row:1/4;float:none;width:100%;height:100%;min-height:184px;margin:0;overflow:hidden;border-radius:10px;background:linear-gradient(160deg,#181820,#090a0e);align-self:stretch}
+.character-portrait-frame img{display:block!important;float:none!important;width:100%!important;height:100%!important;margin:0!important;border-radius:0!important;object-fit:cover!important;object-position:center 22%;transform-origin:center 22%}
+#characterGrid .character-name{grid-column:2;grid-row:1;font-size:18px;line-height:1.22;align-self:start}
+#characterGrid .character-status{grid-column:2;grid-row:2;margin-top:10px;font-size:12px;line-height:1.35}
+#characterGrid .relation-summary{grid-column:2;grid-row:3;align-self:end;clear:none;padding-top:18px}
+#characterGrid .character-card::after{grid-column:1/-1}
+.character-detail-head{align-items:flex-start!important}
+.character-detail-portrait{display:block;flex:0 0 132px;width:132px;height:166px;overflow:hidden;border-radius:10px;background:linear-gradient(160deg,#181820,#090a0e)}
+.character-detail-portrait img{display:block!important;width:100%!important;height:100%!important;margin:0!important;border-radius:0!important;object-fit:cover!important;object-position:center 22%;transform-origin:center 22%}
+[data-portrait-frame="ratchata"] img{transform:scale(1.52);object-position:center 15%}
+[data-portrait-frame="cheryl"] img{transform:scale(1.28);object-position:center 15%}
+[data-portrait-frame="farid"] img{transform:scale(1.27);object-position:center 16%}
+@media(max-width:390px){#characterGrid .character-card{grid-template-columns:112px minmax(0,1fr);column-gap:13px;min-height:208px;padding:13px!important}#characterGrid .character-portrait-frame{min-height:174px}#characterGrid .character-name{font-size:17px}.character-detail-portrait{flex-basis:116px;width:116px;height:148px}}
 `;
 document.head.appendChild(style)}
-function bind(){ensureState();installJournalStyles();loadRatchataPortrait();updateJournalVisibility();renderCharacters(true);updateDots();observeDialogueUnlocks();observeScreens();window.unlockPoliceCharacters=unlockPoliceCast;document.addEventListener('click',openCharacters,true);document.addEventListener('click',backToGrid,true);document.addEventListener('click',event=>{if(event.target.closest?.('[data-lang]'))setTimeout(()=>{renderCharacters(true);renderRegistryEvidence();updateDots()},0)},true);$("#caseButton")?.addEventListener('click',()=>setTimeout(renderRegistryEvidence,0),true);$("#devUnlockCharacters")?.addEventListener('click',devUnlockCharacters,true);$("#devUnlockEvidence")?.addEventListener('click',devUnlockEvidence,true);window.LastWitnessContentRegistry={characters:CHARACTERS,evidence:EVIDENCE,unlockCharacter,unlockEvidence,renderCharacters,renderEvidence:renderRegistryEvidence,devUnlockCharacters,devUnlockEvidence,enableJournal,unlockChapter2North,unlockPoliceCast,resetForChapter2,updateVisibility:updateJournalVisibility,updateDots,canonicalJournalEnabled,version:'0.10.4'}}
+function bind(){ensureState();installJournalStyles();loadRatchataPortrait();updateJournalVisibility();renderCharacters(true);updateDots();observeDialogueUnlocks();observeScreens();window.unlockPoliceCharacters=unlockPoliceCast;document.addEventListener('click',openCharacters,true);document.addEventListener('click',backToGrid,true);document.addEventListener('click',event=>{if(event.target.closest?.('[data-lang]'))setTimeout(()=>{renderCharacters(true);renderRegistryEvidence();updateDots()},0)},true);$("#caseButton")?.addEventListener('click',()=>setTimeout(renderRegistryEvidence,0),true);$("#devUnlockCharacters")?.addEventListener('click',devUnlockCharacters,true);$("#devUnlockEvidence")?.addEventListener('click',devUnlockEvidence,true);window.LastWitnessContentRegistry={characters:CHARACTERS,evidence:EVIDENCE,unlockCharacter,unlockEvidence,renderCharacters,renderEvidence:renderRegistryEvidence,devUnlockCharacters,devUnlockEvidence,enableJournal,unlockChapter2North,unlockPoliceCast,resetForChapter2,updateVisibility:updateJournalVisibility,updateDots,canonicalJournalEnabled,version:'0.10.5'}}
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',bind,{once:true});else bind();
 })();
