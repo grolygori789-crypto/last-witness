@@ -1,9 +1,9 @@
-/* LAST WITNESS — Chapter III / Phase IV: Singapore Investigation Office 0.10.6 */
+/* LAST WITNESS — Chapter III / Phase IV: Singapore Investigation Office 0.10.9 */
 (function(){
 "use strict";
-if(window.LastWitnessPhase4?.version==="0.10.6")return;
+if(window.LastWitnessPhase4?.version==="0.10.9")return;
 
-const BUILD="0.10.6";
+const BUILD="0.10.9";
 const TRANSITION_SCREEN="chapter3Phase4Transition";
 const OFFICE_SCREEN="chapter3SingaporeOffice";
 const VIDEO_PATH="assets/video/chapter-03/phase-04/drive-to-investigation-office.mp4?v=0920";
