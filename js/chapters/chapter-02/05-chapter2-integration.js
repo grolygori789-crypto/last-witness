@@ -1,10 +1,10 @@
-/* LAST WITNESS — Chapter II / Chapter III Production Integration 0.11.1
+/* LAST WITNESS — Chapter II / Chapter III Production Integration 0.11.1A
  * Owns the Medical transition and loads Chapter III on demand.
  * Chapter III modules load in strict narrative order.
  */
 (function(){
 "use strict";
-const BUILD="0.11.1";
+const BUILD="0.11.1A";
 const $=(s,r=document)=>r.querySelector(s);
 const $$=(s,r=document)=>Array.from(r.querySelectorAll(s));
 let medicalTransitioning=false;
@@ -53,12 +53,12 @@ function ensureProductionRuntime(){
  addStylesheetOnce("css/chapter-03-phase-03.css?v=0801","lwChapter03Phase03Style");
  addStylesheetOnce("css/chapter-03-phase-05.css?v=0109","lwChapter03Phase05Style");
  addStylesheetOnce("css/chapter-03-phase-06.css?v=0110","lwChapter03Phase06Style");
- addStylesheetOnce("css/chapter-03-phase-07.css?v=0111","lwChapter03Phase07Style");
+ addStylesheetOnce("css/chapter-03-phase-07.css?v=0111a","lwChapter03Phase07Style");
  runtimePromise=loadScriptOnce("js/chapters/chapter-03/01-title-phase1.js?v=0920","lwChapter03Script")
   .then(()=>loadScriptOnce("js/chapters/chapter-03/02-changi-airport.js?v=0920","lwChapter03Phase03Script"))
   .then(()=>loadScriptOnce("js/chapters/chapter-03/03-singapore-office.js?v=0109","lwChapter03Phase04Script"))
   .then(()=>loadScriptOnce("js/chapters/chapter-03/04-marina-bay.js?v=0110","lwChapter03Phase05Script"))
-  .then(()=>loadScriptOnce("js/chapters/chapter-03/05-serviced-apartment.js?v=0111","lwChapter03Phase06Script"))
+  .then(()=>loadScriptOnce("js/chapters/chapter-03/05-serviced-apartment.js?v=0111a","lwChapter03Phase06Script"))
   .then(()=>loadScriptOnce("js/chapters/chapter-03/06-hawker-centre.js?v=0111","lwChapter03Phase07Script"))
   .then(()=>{installChapter3DevJumps();scheduleBuildSync();return true})
   .catch(error=>{console.error("LAST WITNESS Chapter III runtime failed to load",error);runtimePromise=null;throw error});

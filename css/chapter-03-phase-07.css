@@ -1,4 +1,4 @@
-/* LAST WITNESS — Chapter III Phase VII: Hawker Centre 0.11.1 */
+/* LAST WITNESS — Chapter III Phase VII: Hawker Centre 0.11.1A */
 
 .ch3-p7-card{
   background:
@@ -148,8 +148,12 @@
   border-color:#88c69b;background:rgba(23,73,50,.82);
   box-shadow:0 0 0 8px rgba(75,147,102,.14);
 }
-.ch3-p7-token{left:37%;top:69%}
-.ch3-p7-locator{left:54%;top:68%}
+.ch3-p7-token{left:34%;top:70%}
+.ch3-p7-locator{left:58%;top:67%}
+/* Keep the compact evidence labels readable on portrait screens by letting
+   each label open away from the neighbouring hotspot. */
+.ch3-p7-token span{left:auto;right:50%;transform:translate(12px,-145%)}
+.ch3-p7-locator span{left:50%;transform:translate(-12px,-145%)}
 
 .ch3-p7-evidence,.ch3-p7-cross{z-index:90}
 .ch3-p7-evidence .modal-card,.ch3-p7-cross .modal-card{

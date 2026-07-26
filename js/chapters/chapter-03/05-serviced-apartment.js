@@ -1,9 +1,9 @@
-/* LAST WITNESS — Chapter III / Phase VI: Serviced Apartment 0.11.1 */
+/* LAST WITNESS — Chapter III / Phase VI: Serviced Apartment 0.11.1A */
 (function(){
 "use strict";
-if(window.LastWitnessPhase6?.version==="0.11.1")return;
+if(window.LastWitnessPhase6?.version==="0.11.1A")return;
 
-const BUILD="0.11.1";
+const BUILD="0.11.1A";
 const RETURN_CARD="chapter3Phase6ReturnCard";
 const NIGHT_OFFICE="chapter3Phase6NightOffice";
 const TRACE_CARD="chapter3Phase6TraceCard";
@@ -56,6 +56,10 @@ function ensure(){
  return p;
 }
 function save(){try{if(typeof autoSave==="function")autoSave()}catch(_){}}
+function ownsWipFallback(){
+ const s=gs(),p=ensure(),p7=s?.chapter3?.phase7;
+ return p?.complete===true&&!Boolean(p7?.started||p7?.locationCardSeen||p7?.introComplete||p7?.identityVerified||p7?.complete);
+}
 function safeShow(id){internal=true;try{show(id)}finally{internal=false}}
 function foundAdd(id){try{const found=gs()?.found;if(typeof found?.add==="function")found.add(id);else if(Array.isArray(found)&&!found.includes(id))found.push(id)}catch(_){}}
 function stopElement(media,reset=false){if(!media)return;try{media.pause();if(reset)media.currentTime=0}catch(_){}}
@@ -223,7 +227,7 @@ function updateLanguage(){
  const clues={cache:c.hotspotCache,document:c.hotspotDocument,phone:c.hotspotPhone,drive:c.hotspotDrive};
  $$('[data-p6-evidence] span').forEach(n=>n.textContent=clues[n.parentElement.dataset.p6Evidence]);
  if(activeEvidence)paintEvidence(activeEvidence);if(dialogue)renderDialogue();if($("#ch3P6Puzzle")?.classList.contains("open"))renderPuzzle();
- if(active()==="chapter3Wip"&&ensure()?.complete)showPhase7Fallback();
+ if(active()==="chapter3Wip"&&ownsWipFallback())showPhase7Fallback();
 }
 function progress(){
  const p=ensure();let pct=4;if(p.nightOfficeComplete)pct=12;if(p.locationCardSeen)pct=18;if(p.introComplete)pct=27;if(p.entryChoiceMade)pct=34;pct+=p.evidenceCollected.filter(id=>BASE_EVIDENCE.includes(id)).length*14;if(p.credentialUnlockComplete)pct=82;if(p.driveCollected)pct=93;if(p.complete)pct=100;
@@ -347,7 +351,7 @@ function resume(screen){
  if(screen===LOCATION_CARD){safeShow(LOCATION_CARD);clearTimeout(cardTimer);cardTimer=setTimeout(showDoorScreen,1800);return}
  if(screen===DOOR_SCREEN){safeShow(DOOR_SCREEN);playDoor();clearTimeout(cardTimer);cardTimer=setTimeout(enterApartment,1200);return}
  if(screen===APARTMENT){enterApartment();return}
- if(screen==="chapter3Wip"&&p.complete){showPhase7Fallback()}
+ if(screen==="chapter3Wip"&&ownsWipFallback()){showPhase7Fallback()}
 }
 function appendCase(){
  const list=$("#caseList"),p=ensure();if(!list||!p.evidenceCollected.length)return;
@@ -364,7 +368,7 @@ function bindElements(){
  $$(".ch3-p6-save").forEach(b=>b.onclick=()=>{try{manualSave()}catch(_){}});$$(".ch3-p6-menu").forEach(b=>b.onclick=()=>$("#drawer")?.classList.add("open"));
 }
 function installBridge(){
- const api=window.LastWitnessChapter3;if(api&&!api.__lwPhase60111){const old=api.resumeFromState;api.resumeFromState=function(screen){const result=typeof old==="function"?old.apply(this,arguments):undefined;if(internal)return result;if(PHASE6_SCREENS.has(screen)||(screen==="chapter3Wip"&&ensure()?.complete)){setTimeout(()=>resume(screen),0);return result}if(screen==="chapter3MarinaBay"&&gs()?.chapter3?.phase5?.complete&&!ensure().started){setTimeout(startFromMarina,0)}return result};api.__lwPhase60111=true}
+ const api=window.LastWitnessChapter3;if(api&&!api.__lwPhase60111A){const old=api.resumeFromState;api.resumeFromState=function(screen){const result=typeof old==="function"?old.apply(this,arguments):undefined;if(internal)return result;if(PHASE6_SCREENS.has(screen)||(screen==="chapter3Wip"&&ownsWipFallback())){setTimeout(()=>resume(screen),0);return result}if(screen==="chapter3MarinaBay"&&gs()?.chapter3?.phase5?.complete&&!ensure().started){setTimeout(startFromMarina,0)}return result};api.__lwPhase60111A=true}
  window.LastWitnessPhase6={startFromMarina,startFreshForDev,resumeFromState:resume,stopAudio,version:BUILD};
 }
 function bind(){
@@ -374,7 +378,7 @@ function bind(){
  document.addEventListener("click",event=>{if(event.target.closest?.("[data-lang]"))setTimeout(updateLanguage,0)},true);
  document.addEventListener("visibilitychange",()=>{if(document.hidden)stopAudio(false);else syncAudio()});
  const label=$("#settingsVersion");if(label)label.textContent=`LAST WITNESS · BUILD ${BUILD}`;if(window.LastWitnessSaveManager)window.LastWitnessSaveManager.version=BUILD;
- const screen=active();if(PHASE6_SCREENS.has(screen)||(screen==="chapter3Wip"&&ensure()?.complete))setTimeout(()=>resume(screen),0);
+ const screen=active();if(PHASE6_SCREENS.has(screen)||(screen==="chapter3Wip"&&ownsWipFallback()))setTimeout(()=>resume(screen),0);
 }
 if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",bind,{once:true});else bind();
 })();
