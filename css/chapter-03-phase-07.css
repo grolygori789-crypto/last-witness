@@ -1,0 +1,233 @@
+/* LAST WITNESS — Chapter III Phase VII: Hawker Centre 0.11.1 */
+
+.ch3-p7-card{
+  background:
+    radial-gradient(circle at 50% 35%,rgba(63,49,33,.34),rgba(7,8,10,.96) 58%,#020203 100%);
+  color:#f3ede3;
+  text-align:center;
+}
+.ch3-p7-card.active{
+  display:grid;
+  place-items:center;
+  padding:24px;
+}
+.ch3-p7-card .chapter-card{
+  width:min(88vw,430px);
+  padding:32px 25px 29px;
+  border:1px solid rgba(221,181,109,.48);
+  background:
+    linear-gradient(155deg,rgba(22,19,17,.96),rgba(8,9,12,.96) 72%);
+  box-shadow:0 30px 90px rgba(0,0,0,.82),inset 0 0 0 1px rgba(255,255,255,.025);
+  transform:translateY(8px);
+  opacity:0;
+  animation:ch3P7CardIn .72s ease .08s forwards;
+}
+.ch3-p7-card .eyebrow{color:#c8ab72;letter-spacing:.19em}
+.ch3-p7-time{
+  margin:9px 0 7px;
+  color:#f1e7d4;
+  font:500 clamp(31px,9vw,46px)/1 Georgia,serif;
+  letter-spacing:.08em;
+}
+.ch3-p7-card h2{
+  margin:8px 0 0;
+  color:#f3eee6;
+  font:500 clamp(23px,6vw,33px)/1.12 Georgia,serif;
+  letter-spacing:.045em;
+}
+.ch3-p7-rule{
+  width:62px;height:1px;margin:20px auto;
+  background:linear-gradient(90deg,transparent,#d0ab65,transparent);
+}
+.ch3-p7-card p{
+  margin:0;color:#d8bd83;
+  font-size:11px;font-weight:700;line-height:1.45;
+  letter-spacing:.13em;text-transform:uppercase;
+}
+@keyframes ch3P7CardIn{to{opacity:1;transform:translateY(0)}}
+
+.ch3-p7-scene{overflow:hidden;background:#090a0a}
+.ch3-p7-scene>.scene{
+  width:100%;height:100%;object-fit:cover;object-position:center center;
+  filter:saturate(.9) contrast(1.02) brightness(.92);
+}
+.ch3-p7-overlay{
+  background:
+    linear-gradient(180deg,rgba(3,4,5,.29),rgba(5,6,6,.03) 34%,rgba(2,3,4,.56)),
+    radial-gradient(circle at 50% 71%,transparent 0 22%,rgba(4,5,5,.12) 56%,rgba(2,3,4,.24) 100%);
+}
+.ch3-p7-label{
+  position:absolute;z-index:12;
+  left:14px;top:calc(var(--top) + 63px);
+  max-width:76%;padding:8px 12px;
+  border-left:3px solid #c7a461;
+  border-top:1px solid rgba(255,255,255,.09);
+  border-right:1px solid rgba(255,255,255,.06);
+  border-bottom:1px solid rgba(255,255,255,.08);
+  background:rgba(7,8,8,.56);
+  color:#f0e9de;font-size:12px;font-weight:800;letter-spacing:.08em;
+  text-shadow:0 2px 8px rgba(0,0,0,.92);
+  backdrop-filter:blur(4px);
+}
+.ch3-p7-objective{
+  position:absolute;z-index:11;
+  left:12px;right:12px;top:calc(var(--top) + 109px);
+  padding:10px 13px;border-radius:10px;
+  border:1px solid rgba(255,255,255,.16);
+  background:rgba(7,8,9,.66);
+  color:#e3d9cc;font-size:12px;line-height:1.42;
+  text-shadow:0 2px 8px rgba(0,0,0,.86);
+  backdrop-filter:blur(5px);
+}
+
+.ch3-p7-dialogue{z-index:37}
+.ch3-p7-dialogue .portrait-wrap{background:#030407}
+.ch3-p7-dialogue .portrait{
+  width:100%;height:100%;object-fit:cover;object-position:center top;
+  display:block;transform:none;
+}
+.ch3-p7-dialogue.adrian{
+  border-color:rgba(207,168,94,.54);
+  box-shadow:0 22px 68px rgba(0,0,0,.72),0 0 0 1px rgba(215,178,105,.05);
+}
+.ch3-p7-dialogue.adrian .portrait-wrap{
+  background:linear-gradient(160deg,#06080b,#010203);
+}
+
+.ch3-p7-choice{
+  z-index:42;
+  background:linear-gradient(165deg,rgba(18,18,18,.98),rgba(6,7,9,.98));
+  border-color:rgba(221,181,109,.47);
+  box-shadow:0 26px 80px rgba(0,0,0,.78);
+}
+.ch3-p7-choice.show{display:block}
+.ch3-p7-choice .choice-option{display:block;width:100%}
+.ch3-p7-choice .choice-option span{display:block;font-weight:760}
+.ch3-p7-choice .choice-option small{
+  display:block;margin-top:4px;color:#bfb5a8;
+  font-size:11px;font-weight:400;line-height:1.38;
+}
+.ch3-p7-topics .choice-option.completed{
+  border-color:rgba(111,178,132,.46);
+  color:#a9d5b6;background:rgba(48,100,66,.16);
+}
+
+.ch3-p7-action{
+  position:absolute;z-index:27;left:50%;bottom:103px;
+  width:min(88%,390px);transform:translateX(-50%);
+  display:none;
+}
+.ch3-p7-action.show{display:block}
+.ch3-p7-progress{
+  position:absolute;z-index:20;left:16px;right:16px;bottom:62px;
+  display:flex;align-items:center;gap:9px;
+  color:#e0d5c5;font-size:11px;text-shadow:0 2px 7px rgba(0,0,0,.9);
+}
+.ch3-p7-progress>div{height:5px;flex:1;background:rgba(255,255,255,.19);overflow:hidden}
+.ch3-p7-progress i{display:block;height:100%;width:0;background:#c7a461;transition:width .3s ease}
+
+.ch3-p7-hotspots{position:absolute;inset:0;z-index:16}
+.ch3-p7-hotspots.locked{pointer-events:none}
+.ch3-p7-hotspots.locked .ch3-p7-hotspot{opacity:0;visibility:hidden}
+.ch3-p7-hotspot{
+  position:absolute;min-width:46px;min-height:46px;
+  border-radius:50%;border:1px solid rgba(224,190,116,.8);
+  background:rgba(9,17,18,.74);
+  box-shadow:0 0 0 8px rgba(190,151,76,.13),0 0 25px rgba(202,166,91,.47);
+  transition:opacity .24s ease,visibility .24s ease,transform .18s ease,background .2s ease,border-color .2s ease;
+}
+.ch3-p7-hotspot:active{transform:scale(.96)}
+.ch3-p7-hotspot span{
+  position:absolute;left:50%;top:0;white-space:nowrap;
+  transform:translate(-50%,-145%);
+  padding:5px 8px;border:1px solid rgba(213,181,113,.46);
+  background:rgba(5,9,10,.92);color:#eee6db;
+  font-size:10px;letter-spacing:.045em;
+}
+.ch3-p7-hotspot.found{
+  border-color:#88c69b;background:rgba(23,73,50,.82);
+  box-shadow:0 0 0 8px rgba(75,147,102,.14);
+}
+.ch3-p7-token{left:37%;top:69%}
+.ch3-p7-locator{left:54%;top:68%}
+
+.ch3-p7-evidence,.ch3-p7-cross{z-index:90}
+.ch3-p7-evidence .modal-card,.ch3-p7-cross .modal-card{
+  width:min(93vw,540px);max-height:89svh;overflow:auto;
+  padding:18px;border:1px solid rgba(207,173,102,.52);
+  background:linear-gradient(165deg,#171a1d,#090b0e 74%);
+  box-shadow:0 30px 100px rgba(0,0,0,.9);
+}
+.ch3-p7-evidence-visual{
+  margin:12px 0;padding:14px;
+  border:1px solid rgba(126,163,184,.35);
+  background:#071015;
+  font:12px/1.48 ui-monospace,SFMono-Regular,Menlo,monospace;
+  color:#dce7e9;
+}
+.ch3-p7-evidence-visual header,.ch3-p7-evidence-visual footer{
+  color:#d8bd7b;font-weight:800;letter-spacing:.06em;
+}
+.ch3-p7-evidence-visual dl{
+  display:grid;grid-template-columns:44% 1fr;
+  gap:7px 10px;margin:12px 0;
+}
+.ch3-p7-evidence-visual dt{color:#81a9b8}
+.ch3-p7-evidence-visual dd{margin:0;overflow-wrap:anywhere}
+.ch3-p7-evidence-meta{
+  max-height:0;overflow:hidden;opacity:0;
+  transition:max-height .3s ease,opacity .25s ease;
+}
+.ch3-p7-evidence-meta.show{max-height:440px;opacity:1}
+#ch3P7Evidence .actions,.ch3-p7-cross .actions{
+  display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:14px;
+}
+#ch3P7Evidence .actions>button,.ch3-p7-cross .actions>button{margin-top:0}
+#ch3P7Evidence .actions .wide,.ch3-p7-cross .actions .wide{grid-column:1/3}
+
+.ch3-p7-cross #ch3P7CrossHelp{color:#cfc5b8;line-height:1.48}
+.ch3-p7-claim{padding:11px 0;border-bottom:1px solid rgba(255,255,255,.1)}
+.ch3-p7-claim p{margin:0 0 9px;color:#eee7dd;font-size:13px;line-height:1.42}
+.ch3-p7-claim>div{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+.ch3-p7-claim button{
+  min-height:38px;padding:7px 4px;
+  border:1px solid rgba(204,174,111,.4);
+  border-radius:6px;background:#10191e;color:#dce5e7;
+  font-size:10px;font-weight:700;letter-spacing:.025em;
+}
+.ch3-p7-claim button.selected{
+  background:#91703a;color:#fff;border-color:#e2c67f;
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.08);
+}
+.ch3-p7-status{min-height:24px;margin:12px 0;font-size:12px;line-height:1.42}
+.ch3-p7-status.error{color:#efa59c}
+.ch3-p7-status.success{color:#9ed6ae}
+
+html[lang="th"] .ch3-p7-card p,
+html[lang="th"] .ch3-p7-claim button{
+  text-transform:none;letter-spacing:.025em;
+}
+html[lang="th"] .ch3-p7-label{letter-spacing:.035em}
+
+@media(max-width:420px){
+  .ch3-p7-card .chapter-card{padding:28px 20px 25px}
+  .ch3-p7-label{top:calc(var(--top) + 61px);font-size:11px;max-width:81%}
+  .ch3-p7-objective{top:calc(var(--top) + 105px);font-size:11px}
+  .ch3-p7-choice{padding:12px}
+  .ch3-p7-choice .choice-option{padding:10px 11px}
+  .ch3-p7-choice .choice-option small{font-size:10px}
+  .ch3-p7-action{bottom:92px}
+  .ch3-p7-progress{bottom:54px}
+  .ch3-p7-hotspot span{font-size:9px}
+  .ch3-p7-evidence .modal-card,.ch3-p7-cross .modal-card{padding:15px}
+  .ch3-p7-claim button{font-size:9px;padding:6px 2px}
+  .ch3-p7-claim p{font-size:12px}
+}
+
+@media(max-height:720px){
+  .ch3-p7-objective{display:none}
+  .ch3-p7-label{top:calc(var(--top) + 59px)}
+  .ch3-p7-choice{max-height:60svh;overflow:auto}
+  .ch3-p7-action{bottom:87px}
+  .ch3-p7-progress{bottom:51px}
+}

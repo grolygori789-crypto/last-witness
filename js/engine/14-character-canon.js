@@ -1,10 +1,10 @@
-/* LAST WITNESS — Character Journal Canon Verification 0.10.9
+/* LAST WITNESS — Character Journal Canon Verification 0.11.1
  * Applies owner-confirmed identity and role data to the authoritative
  * Character Journal registry. One-time mutation only. No polling/observer.
  */
 (function(){
 "use strict";
-const VERSION="0.10.9";
+const VERSION="0.11.1";
 const CANON={
  benedict:{name:{en:"Benedict",th:"เบเนดิกต์"},age:42,role:{en:"Detective",th:"นักสืบ"},status:{en:"Lead Investigator",th:"หัวหน้าผู้สืบสวน"},bio:{en:"A calm, observant detective who uses humour to keep pressure from controlling the room.",th:"นักสืบสุขุม ช่างสังเกต ใช้อารมณ์ขันช่วยควบคุมแรงกดดันในสถานการณ์"}},
  north:{name:{en:"North",th:"นอร์ธ"},age:32,role:{en:"IT Specialist",th:"ผู้เชี่ยวชาญด้านไอที"},status:{en:"Trusted Partner",th:"คู่หูที่ไว้ใจได้"},bio:{en:"A precise technical investigator with dry wit and little patience for unsupported conclusions.",th:"ผู้สืบสวนด้านเทคนิคที่แม่นยำ มีอารมณ์ขันแห้งๆ และไม่ยอมรับข้อสรุปที่ไร้หลักฐาน"}},
@@ -13,7 +13,8 @@ const CANON={
  kittisak:{name:{en:"Kittisak Siriwat",th:"กิตติศักดิ์ ศิริวัฒน์"},role:{en:"Police Captain",th:"ร้อยตำรวจเอก"},status:{en:"Reserved",th:"ระมัดระวังตัว"},bio:{en:"A disciplined police captain who controls access to the certified evidence record and refuses conclusions that outrun the evidence.",th:"นายตำรวจยศร้อยตำรวจเอกผู้เคร่งครัด ควบคุมการเข้าถึงบันทึกพยานหลักฐานที่รับรองแล้ว และไม่ยอมรับข้อสรุปที่ไกลเกินหลักฐาน"}},
  ratchata:{name:{en:"Ratchata (Dr. Singh)",th:"Ratchata (Dr. Singh)"},age:43,role:{en:"Senior Medical Examiner",th:"แพทย์นิติเวชอาวุโส"},status:{en:"Independent Expert",th:"ผู้เชี่ยวชาญอิสระ"},bio:{en:"A Thai Sikh forensic pathologist: dry-witted and uncompromising about what the body can actually prove.",th:"แพทย์นิติเวชชาวไทยเชื้อสายซิกข์ พูดมุกหน้าตาย และเคร่งครัดกับสิ่งที่ร่างกายพิสูจน์ได้จริง"}},
  cheryl:{name:{en:"Inspector Cheryl Goh",th:"สารวัตร Cheryl Goh"},age:40,role:{en:"Singapore Police Liaison",th:"ผู้ประสานงานตำรวจสิงคโปร์"},status:{en:"Measured Authority",th:"ผู้ควบคุมการสืบสวนอย่างรอบคอบ"},bio:{en:"A disciplined Singapore Police liaison who separates lawful access from unsupported accusation and respects conclusions that stay within the evidence.",th:"ผู้ประสานงานตำรวจสิงคโปร์ผู้สุขุมและเด็ดขาด แยกสิทธิ์เข้าถึงตามกฎหมายออกจากข้อกล่าวหาที่ไร้หลักฐาน และให้คุณค่ากับข้อสรุปที่ไม่ล้ำเกินสิ่งที่พิสูจน์ได้"}},
- farid:{name:{en:"Farid Rahman",th:"Farid Rahman"},age:31,role:{en:"Digital Forensics Specialist",th:"ผู้เชี่ยวชาญดิจิทัลฟอเรนสิก"},status:{en:"Collaborative Analyst",th:"นักวิเคราะห์ผู้ร่วมมือ"},bio:{en:"A fast, meticulous digital-forensics specialist who tests technical claims without turning possibilities into facts.",th:"ผู้เชี่ยวชาญดิจิทัลฟอเรนสิกที่ทำงานรวดเร็วและละเอียด เขาทดสอบข้ออ้างทางเทคนิคโดยไม่เปลี่ยนความเป็นไปได้ให้กลายเป็นข้อเท็จจริง"}}
+ farid:{name:{en:"Farid Rahman",th:"Farid Rahman"},age:31,role:{en:"Digital Forensics Specialist",th:"ผู้เชี่ยวชาญดิจิทัลฟอเรนสิก"},status:{en:"Collaborative Analyst",th:"นักวิเคราะห์ผู้ร่วมมือ"},bio:{en:"A fast, meticulous digital-forensics specialist who tests technical claims without turning possibilities into facts.",th:"ผู้เชี่ยวชาญดิจิทัลฟอเรนสิกที่ทำงานรวดเร็วและละเอียด เขาทดสอบข้ออ้างทางเทคนิคโดยไม่เปลี่ยนความเป็นไปได้ให้กลายเป็นข้อเท็จจริง"}},
+ adrian:{name:{en:"Adrian Tan Wei Ming",th:"Adrian Tan Wei Ming"},age:45,role:{en:"Former System Architect",th:"อดีตสถาปนิกระบบ"},status:{en:"Key Witness",th:"พยานสำคัญ"},bio:{en:"A cautious former system architect whose knowledge may explain the reconciliation mechanism. His involvement, presence and control must still be separated from what the records actually prove.",th:"อดีตสถาปนิกระบบผู้ระวังตัว ซึ่งความรู้ของเขาอาจอธิบายกลไกการประสานข้อมูลได้ แต่ความเกี่ยวข้อง การปรากฏตัว และอำนาจควบคุมของเขายังต้องแยกออกจากสิ่งที่บันทึกพิสูจน์จริง"}}
 };
 function applyCanon(){
  const api=window.LastWitnessContentRegistry;

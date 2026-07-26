@@ -1,9 +1,9 @@
-/* LAST WITNESS — Chapter III / Phase VI: Serviced Apartment 0.11.0 */
+/* LAST WITNESS — Chapter III / Phase VI: Serviced Apartment 0.11.1 */
 (function(){
 "use strict";
-if(window.LastWitnessPhase6?.version==="0.11.0")return;
+if(window.LastWitnessPhase6?.version==="0.11.1")return;
 
-const BUILD="0.11.0";
+const BUILD="0.11.1";
 const RETURN_CARD="chapter3Phase6ReturnCard";
 const NIGHT_OFFICE="chapter3Phase6NightOffice";
 const TRACE_CARD="chapter3Phase6TraceCard";
@@ -300,10 +300,12 @@ function completePhase6(){
  const p=ensure();p.closingDialogueComplete=true;p.complete=true;p.stage="complete";gs().checkpoint="ch3_phase6_complete";progress();save();showPhase7Fallback();
 }
 function showPhase7Fallback(){
- stopAudio(true);const s=gs();if(!s)return;s.screen="chapter3Wip";
+ stopAudio(true);const s=gs();if(!s)return;
+ if(window.LastWitnessPhase7?.startFromPhase6){window.LastWitnessPhase7.startFromPhase6();return}
+ s.screen="chapter3Wip";
  const title=$("#chapter3WipTitle"),text=$("#chapter3WipText"),btn=$("#chapter3WipReturnTitle");
  if(title)title.textContent=tr("PHASE VII · HAWKER CENTRE","เฟส VII · Hawker Centre");
- if(text)text.textContent=tr("The serviced-apartment evidence establishes a public meeting protocol at HC-12 for 12:10 PM. The contact may be Adrian Tan Wei Ming, but operator identity remains unproven. Phase VII is currently in development; your progress has been saved.","หลักฐานจาก serviced apartment ยืนยันระเบียบการนัดหมายในพื้นที่สาธารณะ HC-12 เวลา 12:10 น. ผู้ติดต่ออาจเป็น Adrian Tan Wei Ming แต่ตัวผู้ใช้คำสั่งยังไม่ถูกพิสูจน์ ขณะนี้เฟส VII อยู่ระหว่างการพัฒนาและบันทึกความคืบหน้าแล้ว");
+ if(text)text.textContent=tr("The serviced-apartment evidence establishes a public meeting protocol at HC-12 for 12:10 PM. The contact may be Adrian Tan Wei Ming, but operator identity remains unproven. Phase VII could not be loaded; your progress has been saved.","หลักฐานจาก serviced apartment ยืนยันระเบียบการนัดหมายในพื้นที่สาธารณะ HC-12 เวลา 12:10 น. ผู้ติดต่ออาจเป็น Adrian Tan Wei Ming แต่ตัวผู้ใช้คำสั่งยังไม่ถูกพิสูจน์ ไม่สามารถโหลดเฟส VII ได้ในขณะนี้ และบันทึกความคืบหน้าแล้ว");
  if(btn)btn.textContent=tr("Return to Title","กลับหน้าแรก");safeShow("chapter3Wip");
 }
 
@@ -362,7 +364,7 @@ function bindElements(){
  $$(".ch3-p6-save").forEach(b=>b.onclick=()=>{try{manualSave()}catch(_){}});$$(".ch3-p6-menu").forEach(b=>b.onclick=()=>$("#drawer")?.classList.add("open"));
 }
 function installBridge(){
- const api=window.LastWitnessChapter3;if(api&&!api.__lwPhase60110){const old=api.resumeFromState;api.resumeFromState=function(screen){const result=typeof old==="function"?old.apply(this,arguments):undefined;if(internal)return result;if(PHASE6_SCREENS.has(screen)||(screen==="chapter3Wip"&&ensure()?.complete)){setTimeout(()=>resume(screen),0);return result}if(screen==="chapter3MarinaBay"&&gs()?.chapter3?.phase5?.complete&&!ensure().started){setTimeout(startFromMarina,0)}return result};api.__lwPhase60110=true}
+ const api=window.LastWitnessChapter3;if(api&&!api.__lwPhase60111){const old=api.resumeFromState;api.resumeFromState=function(screen){const result=typeof old==="function"?old.apply(this,arguments):undefined;if(internal)return result;if(PHASE6_SCREENS.has(screen)||(screen==="chapter3Wip"&&ensure()?.complete)){setTimeout(()=>resume(screen),0);return result}if(screen==="chapter3MarinaBay"&&gs()?.chapter3?.phase5?.complete&&!ensure().started){setTimeout(startFromMarina,0)}return result};api.__lwPhase60111=true}
  window.LastWitnessPhase6={startFromMarina,startFreshForDev,resumeFromState:resume,stopAudio,version:BUILD};
 }
 function bind(){
