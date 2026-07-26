@@ -210,3 +210,13 @@ html[lang="th"] .choice-title{text-transform:none;letter-spacing:.04em}
 .portrait-wrap{
   background:linear-gradient(160deg,#181820,#090a0e);
 }
+
+/* CHAPTER DAY CARD — match the established gold-frame location/time standard.
+ * Scoped to the injected Day Card only; Chapter number/title intros remain unchanged. */
+#chapterDayCard .chapter-intro-card{
+  width:min(88vw,430px);
+  max-width:430px;
+  border:1px solid rgba(221,181,109,.36);
+  background:rgba(11,12,16,.92);
+  box-shadow:0 30px 90px #000;
+}
