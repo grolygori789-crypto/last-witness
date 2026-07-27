@@ -1,17 +1,16 @@
-/* LAST WITNESS - Chapter III / Phase IX: Callback 0.12.0 */
+/* LAST WITNESS - Chapter III / Phase IX: Callback 0.12.1 */
 (function(){
 "use strict";
-if(window.LastWitnessPhase9?.version==="0.12.0")return;
+if(window.LastWitnessPhase9?.version==="0.12.1")return;
 
-const BUILD="0.12.0";
+const BUILD="0.12.1";
 const SCREEN="chapter3Callback";
 const END_SCREEN="chapter3Complete";
 const TEASER_SCREEN="chapter3Phase9Teaser";
 const SCREENS=new Set([SCREEN,END_SCREEN,TEASER_SCREEN]);
-const IMAGE="assets/images/chapter-03/phase-09/north-workstation.png?v=0120";
-const MASK_BASE="assets/images/chapter-03/phase-09/palimpsest/";
+const IMAGE="assets/images/chapter-03/phase-09/north-workstation.png?v=0121";
+const FEED_BASE="assets/images/chapter-03/phase-09/palimpsest-feed/";
 const AUDIO_BASE="assets/audio/chapter-03/phase-09/";
-const LAB_AMBIENCE="assets/audio/chapter-03/phase-08/secure-mirror-lab-loop";
 const CONTAIN_IDS=["memory","packet","credential","process"];
 const CONTAIN_CORRECT=["memory","packet","credential","process"];
 const CONTAIN_DISPLAY=["process","packet","memory","credential"];
@@ -62,7 +61,7 @@ function stopElement(media,reset=false){if(!media)return;try{media.pause();if(re
 function stopAudio(reset=false){
  clearTimeout(introTimer);introTimer=0;clearTimeout(endingTimer);endingTimer=0;
  for(const frame of fadeFrames.values())cancelAnimationFrame(frame);fadeFrames.clear();
- ["ch3P9Ambience","ch3P9Score","ch3P9StingerUnknown","ch3P9StingerCleanup","ch3P9StingerDeadDrop","ch3P9StingerClose"].forEach(id=>stopElement($("#"+id),reset))
+ ["ch3P9Score","ch3P9StingerUnknown","ch3P9StingerCleanup","ch3P9StingerDeadDrop","ch3P9StingerClose"].forEach(id=>stopElement($("#"+id),reset))
 }
 function fade(media,target,duration=420){
  if(!media)return;const old=fadeFrames.get(media);if(old)cancelAnimationFrame(old);
@@ -76,18 +75,17 @@ function playStinger(key,gain=.25){const s=gs(),a=$("#"+STINGERS[key]);if(!a||s?
 function overlaysOpen(){return consoleOpen||choiceOpen||decisionOpen||dropOpen}
 function syncAudio(){
  const s=gs(),on=SCREENS.has(active()),enabled=s?.sound!==false&&Number(s?.music??.33)>0,p=ensure();
- const ambience=$("#ch3P9Ambience"),score=$("#ch3P9Score");if(ambience)ambience.loop=true;if(score)score.loop=true;
- const dialogueDuck=dialogue?.48:1,overlayDuck=overlaysOpen()?.80:1,endingDuck=(active()===END_SCREEN||active()===TEASER_SCREEN)?0.58:1;
- const ambTarget=enabled&&on?Math.min(.052,Number(s.music??.33)*.13*dialogueDuck*overlayDuck*endingDuck):0;
+ const score=$("#ch3P9Score");if(score)score.loop=true;
+ const dialogueDuck=dialogue?.62:1,overlayDuck=overlaysOpen()?.84:1,endingDuck=(active()===END_SCREEN||active()===TEASER_SCREEN)?0.58:1;
  const scoreActive=enabled&&on&&!p?.complete;
- const scoreTarget=scoreActive?Math.min(.092,Number(s.music??.33)*.235*dialogueDuck*overlayDuck):0;
- fade(ambience,ambTarget,430);fade(score,scoreTarget,scoreActive?540:340)
+ const scoreTarget=scoreActive?Math.min(.16,Number(s.music??.33)*.38*dialogueDuck*overlayDuck):0;
+ fade(score,scoreTarget,scoreActive?720:420)
 }
 
-const MASK={neutral:"neutral.png",side:"side.png",guarded:"guarded.png",leaning:"leaning.png",thinking:"thinking.png",warning:"warning.png"};
-function maskedSource(emotion){return MASK_BASE+(MASK[emotion]||MASK.neutral)+"?v=0120"}
+const FEED_BY_EMOTION={neutral:"connected.png",side:"connected.png",guarded:"connected.png",thinking:"connected.png",leaning:"warning.png",warning:"warning.png"};
+function feedPlateSource(mode,emotion){const file=mode==="unknown"?"unknown.png":(FEED_BY_EMOTION[emotion]||"connected.png");return FEED_BASE+file+"?v=0121"}
 function portraitSource(speaker,emotion){
- if(speaker==="UNKNOWN SOURCE"||speaker==="PALIMPSEST")return maskedSource(emotion||"neutral");
+ if(speaker==="UNKNOWN SOURCE"||speaker==="PALIMPSEST")return "";
  try{return typeof portrait==="function"?portrait(speaker,emotion||"neutral"):""}catch(_){return""}
 }
 function speakerLabel(speaker){if(!thai())return speaker;const map={"Inspector Cheryl Goh":"สารวัตร Cheryl Goh","Farid Rahman":"Farid Rahman","Adrian Tan":"Adrian Tan","UNKNOWN SOURCE":"แหล่งสัญญาณไม่ทราบที่มา","PALIMPSEST":"PALIMPSEST"};return map[speaker]||speaker}
@@ -99,11 +97,11 @@ function feedModeForSpeaker(speaker,emotion,line){
 }
 function renderDialogue(){
  const box=$("#ch3P9Dialogue");if(!box||!dialogue)return;
- const line=dialogue.lines[dialogue.i],speaker=line[0],right=speaker==="North"||speaker==="Inspector Cheryl Goh",remote=speaker==="UNKNOWN SOURCE"||speaker==="PALIMPSEST"||speaker==="Adrian Tan",src=portraitSource(speaker,line[1]);
+ const line=dialogue.lines[dialogue.i],speaker=line[0],right=speaker==="North"||speaker==="Inspector Cheryl Goh",remote=speaker==="UNKNOWN SOURCE"||speaker==="PALIMPSEST"||speaker==="Adrian Tan",screenOnly=speaker==="UNKNOWN SOURCE"||speaker==="PALIMPSEST",src=screenOnly?"":portraitSource(speaker,line[1]);
  feedModeForSpeaker(speaker,line[1],line);
  if(speaker==="UNKNOWN SOURCE"&&!ensure().unknownRevealPlayed){ensure().unknownRevealPlayed=true;playStinger("unknown",.27);save()}
- box.className="dialogue ch3-p9-dialogue"+(right?" right":"")+(remote?" remote":"");
- box.innerHTML=`<div class="portrait-wrap">${src?`<img class="portrait" src="${src}" alt="">`:""}</div><div class="dialogue-copy"><div class="speaker">${speakerLabel(speaker)}</div><div class="line">${thai()?line[3]:line[2]}</div></div><div class="next">${tr("TAP TO CONTINUE","แตะเพื่อดำเนินต่อ")}</div>`;
+ box.className="dialogue ch3-p9-dialogue"+(right?" right":"")+(remote?" remote":"")+(screenOnly?" no-portrait":"");
+ box.innerHTML=`${src?`<div class="portrait-wrap"><img class="portrait" src="${src}" alt=""></div>`:""}<div class="dialogue-copy"><div class="speaker">${speakerLabel(speaker)}</div><div class="line">${thai()?line[3]:line[2]}</div></div><div class="next">${tr("TAP TO CONTINUE","แตะเพื่อดำเนินต่อ")}</div>`;
  syncAudio()
 }
 function talk(lines,done){
@@ -230,7 +228,7 @@ function copy(){return{
  chapterEyebrow:tr("CHAPTER III COMPLETE","จบบทที่ III"),chapterTitle:tr("THE BORROWED MINUTES","สิบเอ็ดนาทีที่ถูกยืม"),
  principle:tr("A VALID CREDENTIAL PROVES ACCESS, NOT IDENTITY.","CREDENTIAL ที่ถูกต้องพิสูจน์การเข้าถึง ไม่ใช่ตัวตน"),
  continue4:tr("CONTINUE TO CHAPTER IV","ไปต่อบทที่ IV"),returnTitle:tr("RETURN TO TITLE","กลับหน้าแรก"),
- teaserEyebrow:tr("CHAPTER IV","บทที่ IV"),teaserTitle:"PALIMPSEST",teaserPlace:"JAKARTA",teaserText:tr("A toolmaker waits behind an alias. A watcher remains inside the Bangkok evidence chain.","คนสร้างเครื่องมือรออยู่หลัง Alias ขณะที่ Watcher ยังคงซ่อนอยู่ใน Bangkok Evidence Chain"),
+ teaserEyebrow:tr("CHAPTER IV","บทที่ IV"),teaserTitle:"SHADOW OF THE TRUTH",teaserPlace:"JAKARTA · PALIMPSEST",teaserText:tr("A toolmaker waits behind an alias. A watcher remains inside the Bangkok evidence chain.","คนสร้างเครื่องมือรออยู่หลัง Alias ขณะที่ Watcher ยังคงซ่อนอยู่ใน Bangkok Evidence Chain"),
  bookFlight:tr("BOOK THE FLIGHT.","จองเที่ยวบิน")
 }}
 function objectiveText(){const p=ensure();if(!p?.introComplete)return tr("Keep the callback alive without surrendering the workstation","รักษา Callback ให้ทำงานโดยไม่เสียการควบคุม Workstation");if(!p.containmentComplete)return tr("Preserve volatile evidence before quarantine","รักษาหลักฐาน Volatile ก่อนกักระบบ");if(!p.choiceMade)return tr("Use Benedict's read of PALIMPSEST to expose motive","ใช้การอ่านคนของ Benedict เปิดแรงจูงใจของ PALIMPSEST");if(!p.cleanupDecisionComplete)return tr("Preserve the cleanup credential before it erases itself","รักษา Cleanup Credential ก่อนมันลบตัวเอง");if(!p.bundleSealed)return tr("Hash, receive and seal the eleven-minute dead drop","รักษา Hash รับข้อมูล และปิดผนึก Dead Drop สิบเอ็ดนาที");return tr("Follow both hands: Jakarta and Bangkok","ตามมือทั้งสองข้าง: Jakarta และกรุงเทพฯ")}
@@ -242,8 +240,7 @@ function inject(){
  <section id="${SCREEN}" class="screen ch3-p9-scene"><img class="scene" src="${IMAGE}" alt="North's laptop at the Singapore digital forensics lab"><div class="overlay ch3-p9-overlay"></div><div class="topbar"><span id="ch3P9Location"></span><div class="hud"><button class="icon ch3-p9-save" type="button">💾</button><button class="icon ch3-p9-menu" type="button">☰</button></div></div><div id="ch3P9SceneLabel" class="ch3-p9-label"></div><div id="ch3P9Objective" class="ch3-p9-objective"></div>
  <div id="ch3P9LaptopScreen" class="ch3-p9-laptop-screen" aria-live="polite"><div class="ch3-p9-feed-head"><span id="ch3P9FeedSource">CALLBACK PROBE</span><b id="ch3P9FeedState">VOLATILE</b></div><div id="ch3P9FeedBody" class="ch3-p9-feed-body"><div class="ch3-p9-terminal"><i>FORENSIC CHANNEL · READ ONLY</i><span>CALLBACK PROBE DETECTED</span><span>LOCAL PROCESS · ACTIVE</span><span>REMOTE ROUTE · UNVERIFIED</span></div></div><div class="ch3-p9-signal"><span id="ch3P9SignalLabel">SESSION STABILITY</span><div><i id="ch3P9SignalFill"></i></div><b id="ch3P9SignalValue">62%</b></div></div>
  <div id="ch3P9Dialogue" class="dialogue ch3-p9-dialogue hidden"></div><button id="ch3P9Action" class="primary ch3-p9-action" type="button" hidden></button>
- <audio id="ch3P9Ambience" preload="auto" loop><source src="${LAB_AMBIENCE}.webm?v=0120" type="audio/webm"><source src="${LAB_AMBIENCE}.mp3?v=0120" type="audio/mpeg"></audio>
- <audio id="ch3P9Score" preload="auto" loop><source src="${AUDIO_BASE}callback-under-glass-loop.webm?v=0120" type="audio/webm"><source src="${AUDIO_BASE}callback-under-glass-loop.mp3?v=0120" type="audio/mpeg"></audio>
+ <audio id="ch3P9Score" preload="auto" loop><source src="${AUDIO_BASE}true-crime-callback-loop.webm?v=0121" type="audio/webm"><source src="${AUDIO_BASE}true-crime-callback-loop.mp3?v=0121" type="audio/mpeg"></audio>
  <audio id="ch3P9StingerUnknown" preload="auto" src="${AUDIO_BASE}stingers/unknown-source-reveal.wav?v=0120"></audio><audio id="ch3P9StingerCleanup" preload="auto" src="${AUDIO_BASE}stingers/cleanup-process-detected.wav?v=0120"></audio><audio id="ch3P9StingerDeadDrop" preload="auto" src="${AUDIO_BASE}stingers/dead-drop-available.wav?v=0120"></audio><audio id="ch3P9StingerClose" preload="auto" src="${AUDIO_BASE}stingers/chapter-three-close.wav?v=0120"></audio></section>
  <section id="${END_SCREEN}" class="screen ch3-p9-end"><div class="ch3-p9-end-card"><div id="ch3P9EndEyebrow" class="eyebrow"></div><h2 id="ch3P9EndTitle"></h2><div class="ch3-p9-end-rule"></div><p id="ch3P9Principle" class="ch3-p9-principle"></p><div class="ch3-p9-end-grid"><div><span>MECHANISM</span><b>PROVEN</b></div><div><span>PALIMPSEST</span><b>ALIAS</b></div><div><span>NEXT NODE</span><b>JAKARTA</b></div><div><span>DECISION OWNER</span><b>UNKNOWN</b></div></div><div class="ch3-p9-dead-status"><i>DEAD DROP PRESERVED</i><strong>IDENTITY · UNCONFIRMED</strong></div><button id="ch3P9Continue4" class="primary" type="button"></button><button id="ch3P9ReturnTitle" class="ghost" type="button"></button></div></section>
  <section id="${TEASER_SCREEN}" class="screen ch3-p9-teaser"><div class="ch3-p9-teaser-map"></div><div class="ch3-p9-teaser-card"><div id="ch3P9TeaserEyebrow" class="eyebrow"></div><h2 id="ch3P9TeaserTitle"></h2><div id="ch3P9TeaserPlace" class="ch3-p9-teaser-place"></div><p id="ch3P9TeaserText"></p><blockquote id="ch3P9BookFlight"></blockquote><button id="ch3P9TeaserReturn" class="primary" type="button"></button></div></section>
@@ -261,7 +258,7 @@ function setLaptopFeed(mode,emotion="neutral"){
   source.textContent="CALLBACK PROBE";stateNode.textContent="VOLATILE";body.innerHTML='<div class="ch3-p9-terminal"><i>FORENSIC CHANNEL · READ ONLY</i><span>CALLBACK PROBE DETECTED</span><span>LOCAL PROCESS · ACTIVE</span><span>REMOTE ROUTE · UNVERIFIED</span></div>';fill.style.width="62%";value.textContent="62%";return
  }
  if(mode==="unknown"||mode==="palimpsest"){
-  source.textContent=mode==="unknown"?tr("UNKNOWN SOURCE","แหล่งสัญญาณไม่ทราบที่มา"):"PALIMPSEST";stateNode.textContent="LIVE FEED";body.innerHTML=`<div class="ch3-p9-remote-feed"><img src="${maskedSource(emotion)}" alt=""><div class="ch3-p9-scanlines"></div><span>${mode==="unknown"?"IDENTITY · UNVERIFIED":"TOOL FAMILY · MATCH"}</span></div>`;fill.style.width=p.containmentComplete?"88%":"69%";value.textContent=p.containmentComplete?"88%":"69%";return
+  source.textContent=mode==="unknown"?tr("UNKNOWN SOURCE","แหล่งสัญญาณไม่ทราบที่มา"):"PALIMPSEST";stateNode.textContent="LIVE FEED";body.innerHTML=`<div class="ch3-p9-remote-feed"><img class="ch3-p9-feed-plate" src="${feedPlateSource(mode,emotion)}" alt=""><div class="ch3-p9-screen-glass"></div><div class="ch3-p9-scanlines"></div><span>${mode==="unknown"?"IDENTITY · UNVERIFIED":"TOOL FAMILY · MATCH"}</span></div>`;fill.style.width=p.containmentComplete?"88%":"69%";value.textContent=p.containmentComplete?"88%":"69%";return
  }
  if(mode==="cleanup"){
   source.textContent="SECOND PROCESS";stateNode.textContent="CLEANUP";body.innerHTML='<div class="ch3-p9-cleanup-feed"><strong>CLEANUP PROCESS DETECTED</strong><span>CALLBACK TOKEN · ERASE REQUEST</span><span>LOCAL CREDENTIAL · ACCEPTED</span><span>DEPLOYED · BEFORE SINGAPORE</span></div>';fill.style.width="41%";value.textContent="41%";return
@@ -383,7 +380,7 @@ function bindElements(){
  $(".ch3-p9-save").onclick=()=>{try{manualSave()}catch(_){}};$(".ch3-p9-menu").onclick=()=>$("#drawer")?.classList.add("open")
 }
 function installBridge(){
- const api=window.LastWitnessChapter3;if(api&&!api.__lwPhase90120){const old=api.resumeFromState;api.resumeFromState=function(screen){const result=typeof old==="function"?old.apply(this,arguments):undefined;if(internal)return result;if(SCREENS.has(screen)||(screen==="chapter3Wip"&&gs()?.chapter3?.phase8?.complete)){setTimeout(()=>resume(screen),0);return result}if(screen==="chapter3DigitalForensicsLab"&&gs()?.chapter3?.phase8?.complete&&!ensure().started)setTimeout(startFromPhase8,0);return result};api.__lwPhase90120=true}
+ const api=window.LastWitnessChapter3;if(api&&!api.__lwPhase90121){const old=api.resumeFromState;api.resumeFromState=function(screen){const result=typeof old==="function"?old.apply(this,arguments):undefined;if(internal)return result;if(SCREENS.has(screen)||(screen==="chapter3Wip"&&gs()?.chapter3?.phase8?.complete)){setTimeout(()=>resume(screen),0);return result}if(screen==="chapter3DigitalForensicsLab"&&gs()?.chapter3?.phase8?.complete&&!ensure().started)setTimeout(startFromPhase8,0);return result};api.__lwPhase90121=true}
  window.LastWitnessPhase9={startFromPhase8,startFreshForDev,resumeFromState:resume,stopAudio,showChapterComplete,returnToTitle,version:BUILD}
 }
 function bind(){

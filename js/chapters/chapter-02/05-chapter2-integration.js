@@ -1,10 +1,10 @@
-/* LAST WITNESS — Chapter II / Chapter III Production Integration 0.12.0
+/* LAST WITNESS — Chapter II / Chapter III Production Integration 0.12.1
  * Owns the Medical transition and loads Chapter III on demand.
  * Chapter III modules load in strict narrative order.
  */
 (function(){
 "use strict";
-const BUILD="0.12.0";
+const BUILD="0.12.1";
 const $=(s,r=document)=>r.querySelector(s);
 const $$=(s,r=document)=>Array.from(r.querySelectorAll(s));
 let medicalTransitioning=false;
@@ -55,7 +55,7 @@ function ensureProductionRuntime(){
  addStylesheetOnce("css/chapter-03-phase-06.css?v=0110","lwChapter03Phase06Style");
  addStylesheetOnce("css/chapter-03-phase-07.css?v=0111a","lwChapter03Phase07Style");
  addStylesheetOnce("css/chapter-03-phase-08.css?v=0120","lwChapter03Phase08Style");
- addStylesheetOnce("css/chapter-03-phase-09.css?v=0120","lwChapter03Phase09Style");
+ addStylesheetOnce("css/chapter-03-phase-09.css?v=0121","lwChapter03Phase09Style");
  runtimePromise=loadScriptOnce("js/chapters/chapter-03/01-title-phase1.js?v=0920","lwChapter03Script")
   .then(()=>loadScriptOnce("js/chapters/chapter-03/02-changi-airport.js?v=0920","lwChapter03Phase03Script"))
   .then(()=>loadScriptOnce("js/chapters/chapter-03/03-singapore-office.js?v=0109","lwChapter03Phase04Script"))
@@ -63,7 +63,7 @@ function ensureProductionRuntime(){
   .then(()=>loadScriptOnce("js/chapters/chapter-03/05-serviced-apartment.js?v=0111a","lwChapter03Phase06Script"))
   .then(()=>loadScriptOnce("js/chapters/chapter-03/06-hawker-centre.js?v=0112","lwChapter03Phase07Script"))
   .then(()=>loadScriptOnce("js/chapters/chapter-03/07-digital-forensics-lab.js?v=0120","lwChapter03Phase08Script"))
-  .then(()=>loadScriptOnce("js/chapters/chapter-03/08-callback.js?v=0120","lwChapter03Phase09Script"))
+  .then(()=>loadScriptOnce("js/chapters/chapter-03/08-callback.js?v=0121","lwChapter03Phase09Script"))
   .then(()=>{installChapter3DevJumps();scheduleBuildSync();return true})
   .catch(error=>{console.error("LAST WITNESS Chapter III runtime failed to load",error);runtimePromise=null;throw error});
  return runtimePromise
