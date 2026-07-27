@@ -389,8 +389,8 @@ const ROOM_1807_EVIDENCE={
    th:"เสื้อผ้าสำหรับการเดินทางระยะสั้นถูกจัดไว้ ของมีค่ายังอยู่ครบ แต่ช่องเอกสารและกระเป๋าด้านในช่องหนึ่งถูกรื้อค้น"
   },
   observation:{
-   en:"Daniel intended to leave soon. Whoever searched the case was looking for something specific rather than stealing.",
-   th:"แดเนียลตั้งใจจะออกเดินทางในเร็วๆ นี้ คนที่ค้นกระเป๋ากำลังหาอะไรบางอย่างโดยเฉพาะ ไม่ได้ต้องการขโมยทรัพย์สิน"
+   en:"The victim intended to leave soon. Whoever searched the case was looking for something specific rather than stealing.",
+   th:"ผู้ตายตั้งใจจะออกเดินทางในเร็วๆ นี้ คนที่ค้นกระเป๋ากำลังหาอะไรบางอย่างโดยเฉพาะ ไม่ได้ต้องการขโมยทรัพย์สิน"
   },
   visual:`<div class="room-evidence-visual room-suitcase-visual" aria-hidden="true">
    <div class="room-suitcase-handle"></div>
@@ -715,7 +715,7 @@ function applyRoom1807EvidenceCopy(){
    LANG.en.clue_laptop_title="Victim’s Laptop";
    LANG.en.clue_laptop_desc="Recent-file history and the activity trail were deliberately cleared.";
    LANG.en.clue_suitcase_title="Half-packed Suitcase";
-   LANG.en.clue_suitcase_desc="Daniel intended to leave soon, and someone searched the document compartments.";
+   LANG.en.clue_suitcase_desc="The victim intended to leave soon, and someone searched the document compartments.";
   }
   if(window.LANG?.th){
    LANG.th.clue_blood_title="ผ้าเปื้อนเลือด";
@@ -723,7 +723,7 @@ function applyRoom1807EvidenceCopy(){
    LANG.th.clue_laptop_title="แล็ปท็อปของผู้ตาย";
    LANG.th.clue_laptop_desc="ประวัติไฟล์ล่าสุดและร่องรอยการใช้งานถูกลบอย่างจงใจ";
    LANG.th.clue_suitcase_title="กระเป๋าเดินทางที่จัดไว้ครึ่งหนึ่ง";
-   LANG.th.clue_suitcase_desc="แดเนียลตั้งใจจะออกเดินทาง และมีคนรื้อค้นช่องเก็บเอกสาร";
+   LANG.th.clue_suitcase_desc="ผู้ตายตั้งใจจะออกเดินทาง และมีคนรื้อค้นช่องเก็บเอกสาร";
   }
  }catch(_){}
 }
