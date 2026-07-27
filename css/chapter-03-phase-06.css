@@ -237,3 +237,29 @@ html[lang="th"] .ch3-p6-door-screen p{text-transform:none;letter-spacing:.035em}
   .ch3-p6-apartment>.scene{object-position:center 46%}
 }
 #ch3P6Puzzle .actions .wide{grid-column:1/3}
+
+
+/* 0.12.1F — keep the two lower evidence labels readable and visually separated.
+ * Hotspot circles stay anchored to the same evidence; only their captions fan outward. */
+.ch3-p6-phone span{
+  left:auto;
+  right:50%;
+  transform:translate(-8px,-145%);
+  text-align:right;
+}
+.ch3-p6-drive span{
+  left:50%;
+  right:auto;
+  transform:translate(8px,-145%);
+  text-align:left;
+}
+.ch3-p6-phone span,
+.ch3-p6-drive span{
+  max-width:42vw;
+  line-height:1.25;
+  z-index:3;
+}
+@media(max-width:360px){
+  .ch3-p6-phone span{transform:translate(4px,-150%)}
+  .ch3-p6-drive span{transform:translate(-4px,-150%)}
+}
