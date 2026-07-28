@@ -1,9 +1,9 @@
-/* LAST WITNESS — Chapter IV / Phase I: AFTERIMAGE 0.13.0 */
+/* LAST WITNESS — Chapter IV / Phase I: AFTERIMAGE 0.13.1 */
 (function(){
 "use strict";
-if(window.LastWitnessChapter4Phase1?.version==="0.13.0")return;
+if(window.LastWitnessChapter4Phase1?.version==="0.13.1")return;
 
-const BUILD="0.13.0";
+const BUILD="0.13.1";
 const INTRO="chapter4Intro";
 const CARD="chapter4Phase1Card";
 const SCREEN="chapter4Afterimage";
@@ -74,7 +74,7 @@ function syncAudio(){
  const s=gs(),score=$("#ch4P1Score"),on=SCREENS.has(active()),enabled=s?.sound!==false&&Number(s?.music??.33)>0;
  if(score)score.loop=true;
  const dialogueDuck=dialogue?.58:1,overlayDuck=overlaysOpen()?.72:1,cardDuck=(active()===INTRO||active()===CARD)?.82:1,completeDuck=active()===COMPLETE?.62:1;
- const target=enabled&&on?clamp(Number(s.music??.33)*.46*dialogueDuck*overlayDuck*cardDuck*completeDuck,0,.46):0;
+ const target=enabled&&on?clamp(Number(s.music??.33)*.38*dialogueDuck*overlayDuck*cardDuck*completeDuck,0,.38):0;
  fade(score,target,on?620:260)
 }
 function playQueryCue(){const s=gs(),a=$("#ch4P1QueryCue");if(!a||s?.sound===false)return;try{a.pause();a.currentTime=0;a.volume=clamp(Number(s?.sfx??.55)*.24,0,.28);a.play().catch(()=>{})}catch(_){} }
@@ -163,7 +163,7 @@ function boardText(id){const m={
 }
 function laneText(id){const m={jakarta:["JAKARTA · TOOL ROUTE","JAKARTA · เส้นทางเครื่องมือ"],bangkok:["BANGKOK · DEPLOYMENT PATH","กรุงเทพฯ · เส้นทาง DEPLOY"],unresolved:["ATTRIBUTION · UNRESOLVED","การระบุตัว · ยังไม่คลี่คลาย"]};return thai()?m[id][1]:m[id][0]}
 
-function injectStyle(){if($("#lwChapter04Phase01Style"))return;const link=document.createElement("link");link.id="lwChapter04Phase01Style";link.rel="stylesheet";link.href="css/chapter-04-phase-01.css?v=0130";document.head.appendChild(link)}
+function injectStyle(){if($("#lwChapter04Phase01Style"))return;const link=document.createElement("link");link.id="lwChapter04Phase01Style";link.rel="stylesheet";link.href="css/chapter-04-phase-01.css?v=0131";document.head.appendChild(link)}
 function inject(){
  if($("#"+SCREEN))return;const game=$("#game");if(!game)return;
  game.insertAdjacentHTML("beforeend",`

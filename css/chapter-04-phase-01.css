@@ -1,4 +1,4 @@
-/* LAST WITNESS — Chapter IV / Phase I: AFTERIMAGE 0.13.0 */
+/* LAST WITNESS — Chapter IV / Phase I: AFTERIMAGE 0.13.1 */
 .ch4-p1-intro,.ch4-p1-card,.ch4-p1-complete{background:#05070b;color:#f4eee5;display:none;align-items:center;justify-content:center;padding:calc(24px + env(safe-area-inset-top)) 22px calc(28px + env(safe-area-inset-bottom));text-align:center}
 .ch4-p1-intro.active,.ch4-p1-card.active,.ch4-p1-complete.active{display:flex}
 .ch4-p1-intro:before,.ch4-p1-card:before,.ch4-p1-complete:before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 50% 38%,rgba(91,117,130,.16),transparent 42%),linear-gradient(145deg,rgba(199,161,94,.055),transparent 42%),repeating-linear-gradient(90deg,rgba(255,255,255,.012) 0 1px,transparent 1px 7px);pointer-events:none}
@@ -15,9 +15,9 @@
 .ch4-p1-label{position:absolute;top:calc(64px + env(safe-area-inset-top));left:16px;color:#c7a15e;font-size:11px;font-weight:800;letter-spacing:.19em;text-shadow:0 2px 9px #000}
 .ch4-p1-objective{position:absolute;top:calc(88px + env(safe-area-inset-top));left:16px;right:16px;max-width:520px;padding:10px 12px;border-left:2px solid rgba(199,161,94,.78);background:linear-gradient(90deg,rgba(5,8,12,.82),rgba(5,8,12,.34));color:#e4ddd3;font-size:12px;line-height:1.45;box-shadow:0 10px 30px rgba(0,0,0,.22)}
 .ch4-p1-action{position:absolute;left:50%;bottom:calc(96px + env(safe-area-inset-bottom));z-index:8;transform:translateX(-50%);width:min(84vw,360px);letter-spacing:.055em}
-.ch4-p1-progress{position:absolute;left:16px;right:16px;bottom:calc(54px + env(safe-area-inset-bottom));z-index:6;display:flex;align-items:center;gap:10px;color:#d7c7ac;font-size:11px;font-weight:800;letter-spacing:.08em}
-.ch4-p1-progress>div{flex:1;height:4px;background:rgba(255,255,255,.11);overflow:hidden;border-radius:999px}.ch4-p1-progress i{display:block;height:100%;width:0;background:linear-gradient(90deg,#6c8791,#c7a15e);transition:width .32s ease}
-.ch4-p1-dialogue{z-index:16}
+.ch4-p1-progress{position:absolute;z-index:20;right:12px;left:auto;bottom:calc(12px + var(--bottom,14px));display:block;min-width:132px;width:min(44vw,172px);padding:9px 12px;border-radius:24px;background:rgba(5,6,9,.84);border:1px solid rgba(255,255,255,.16);color:#d7c7ac;font-size:11px;font-weight:800;letter-spacing:.08em;box-shadow:0 10px 28px rgba(0,0,0,.34)}
+.ch4-p1-progress>div{width:100%;height:4px;margin-top:6px;background:rgba(255,255,255,.13);overflow:hidden;border-radius:3px}.ch4-p1-progress i{display:block;height:100%;width:0;background:linear-gradient(90deg,#6c8791,#c7a15e);transition:width .32s ease}
+.ch4-p1-dialogue{z-index:16;bottom:calc(68px + var(--bottom,14px))}
 .ch4-p1-dialogue .portrait-wrap:empty{display:none}
 .ch4-p1-choice,.ch4-p1-board,.ch4-p1-query{z-index:330;background:rgba(2,4,7,.88);backdrop-filter:blur(7px)}
 .ch4-p1-choice .modal-card,.ch4-p1-query .modal-card{width:min(91vw,520px);padding:22px;background:linear-gradient(155deg,#171c22,#080b10 74%);border:1px solid rgba(199,161,94,.43);box-shadow:0 24px 75px rgba(0,0,0,.72)}
@@ -45,6 +45,6 @@
 html[lang="th"] .ch4-p1-intro h2,html[lang="th"] .ch4-p1-card h2,html[lang="th"] .ch4-p1-complete h2{letter-spacing:.01em}
 html[lang="th"] .ch4-p1-card p,html[lang="th"] .ch4-p1-intro-number{letter-spacing:.035em;text-transform:none}
 html[lang="th"] .ch4-p1-choice button{letter-spacing:0}
-@media(max-width:430px){.ch4-p1-objective{font-size:11px}.ch4-p1-dialogue{bottom:calc(67px + env(safe-area-inset-bottom))}.ch4-p1-action{bottom:calc(112px + env(safe-area-inset-bottom))}.ch4-p1-progress{bottom:calc(62px + env(safe-area-inset-bottom))}}
+@media(max-width:430px){.ch4-p1-objective{font-size:11px}.ch4-p1-action{bottom:calc(112px + env(safe-area-inset-bottom))}.ch4-p1-progress{width:min(46vw,164px)}}
 @media(max-width:360px){.ch4-p1-lane-head div{font-size:7.7px}.ch4-p1-board-grid article{padding:9px}.ch4-p1-board-grid article>div:first-child{display:block}.ch4-p1-board-grid small{display:block;max-width:none;margin-top:4px;text-align:left}.ch4-p1-lane-buttons button{padding:8px 2px;font-size:8.5px}.ch4-p1-complete-grid{grid-template-columns:1fr}}
 @media(prefers-reduced-motion:reduce){.ch4-p1-progress i{transition:none}.ch4-p1-intro:before,.ch4-p1-card:before,.ch4-p1-complete:before{background:linear-gradient(145deg,rgba(199,161,94,.055),transparent 42%)}}
