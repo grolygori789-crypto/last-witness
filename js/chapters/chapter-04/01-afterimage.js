@@ -1,9 +1,9 @@
-/* LAST WITNESS — Chapter IV / Phase I: AFTERIMAGE 0.13.1 */
+/* LAST WITNESS — Chapter IV / Phase I: AFTERIMAGE 0.13.2 */
 (function(){
 "use strict";
-if(window.LastWitnessChapter4Phase1?.version==="0.13.1")return;
+if(window.LastWitnessChapter4Phase1?.version==="0.13.2")return;
 
-const BUILD="0.13.1";
+const BUILD="0.13.2";
 const INTRO="chapter4Intro";
 const CARD="chapter4Phase1Card";
 const SCREEN="chapter4Afterimage";
@@ -24,7 +24,7 @@ const clamp=(n,min=0,max=1)=>Math.max(min,Math.min(max,Number(n)||0));
 const active=()=>$(".screen.active")?.id||gs()?.screen||"";
 const clone=value=>JSON.parse(JSON.stringify(value));
 let dialogue=null,boardOpen=false,choiceOpen=false,queryOpen=false;
-let chapterTimer=0,cardTimer=0;
+let chapterTimer=0,cardTimer=0,completeTimer=0;
 const fadeFrames=new Map();
 
 function endingDefaults(){return{
@@ -58,7 +58,7 @@ function ensure(){
 function save(){try{if(typeof autoSave==="function")autoSave()}catch(_){} }
 function stopElement(media,reset=false){if(!media)return;try{media.pause();if(reset)media.currentTime=0}catch(_){} }
 function stopAudio(reset=false){
- clearTimeout(chapterTimer);chapterTimer=0;clearTimeout(cardTimer);cardTimer=0;
+ clearTimeout(chapterTimer);chapterTimer=0;clearTimeout(cardTimer);cardTimer=0;clearTimeout(completeTimer);completeTimer=0;
  for(const frame of fadeFrames.values())cancelAnimationFrame(frame);fadeFrames.clear();
  ["ch4P1Score","ch4P1QueryCue"].forEach(id=>stopElement($("#"+id),reset))
 }
@@ -163,7 +163,7 @@ function boardText(id){const m={
 }
 function laneText(id){const m={jakarta:["JAKARTA · TOOL ROUTE","JAKARTA · เส้นทางเครื่องมือ"],bangkok:["BANGKOK · DEPLOYMENT PATH","กรุงเทพฯ · เส้นทาง DEPLOY"],unresolved:["ATTRIBUTION · UNRESOLVED","การระบุตัว · ยังไม่คลี่คลาย"]};return thai()?m[id][1]:m[id][0]}
 
-function injectStyle(){if($("#lwChapter04Phase01Style"))return;const link=document.createElement("link");link.id="lwChapter04Phase01Style";link.rel="stylesheet";link.href="css/chapter-04-phase-01.css?v=0131";document.head.appendChild(link)}
+function injectStyle(){if($("#lwChapter04Phase01Style"))return;const link=document.createElement("link");link.id="lwChapter04Phase01Style";link.rel="stylesheet";link.href="css/chapter-04-phase-01.css?v=0132";document.head.appendChild(link)}
 function inject(){
  if($("#"+SCREEN))return;const game=$("#game");if(!game)return;
  game.insertAdjacentHTML("beforeend",`
@@ -176,7 +176,7 @@ function inject(){
  <div id="ch4P1Query" class="modal ch4-p1-query" aria-hidden="true"><div class="modal-card"><div class="eyebrow">LIVE MONITOR · READ ONLY</div><h3 id="ch4P1QueryTitle"></h3><div class="ch4-p1-query-readout"><span>QUERY TERM</span><strong>ANALYST OF RECORD</strong><span>REQUEST TYPE</span><b>IDENTITY RESOLUTION</b><span>REQUESTOR</span><b>AUTHENTICATED · UNATTRIBUTED</b></div><p id="ch4P1QueryBody"></p><button id="ch4P1QueryAck" class="primary" type="button"></button></div></div>`);
  bindElements();updateLanguage();paint()
 }
-function progress(){const p=ensure();let n=4;if(p.chapterCardSeen)n=8;if(p.locationCardSeen)n=14;if(p.introComplete)n=28;if(p.choiceMade)n=40;if(p.boardComplete)n=70;if(p.querySeen)n=84;if(p.queryAcknowledged)n=91;if(p.complete)n=100;$("#ch4P1ProgressText")&&( $("#ch4P1ProgressText").textContent=n+"%" );$("#ch4P1ProgressFill")&&( $("#ch4P1ProgressFill").style.width=n+"%" )}
+function progress(){const p=ensure();let n=5;if(p.chapterCardSeen)n=10;if(p.locationCardSeen)n=15;if(p.introComplete)n=30;if(p.choiceMade)n=45;if(p.boardComplete)n=75;if(p.querySeen)n=90;if(p.queryAcknowledged)n=95;if(p.complete)n=100;$("#ch4P1ProgressText")&&( $("#ch4P1ProgressText").textContent=n+"%" );$("#ch4P1ProgressFill")&&( $("#ch4P1ProgressFill").style.width=n+"%" )}
 function paint(){const p=ensure(),c=copy(),action=$("#ch4P1Action");progress();if($("#ch4P1Objective"))$("#ch4P1Objective").textContent=objectiveText();if(action){action.hidden=true;if(p.introComplete&&p.choiceMade&&!p.boardComplete&&!dialogue){action.hidden=false;action.textContent=c.openBoard}}syncAudio()}
 function updateLanguage(){
  const c=copy(),map={ch4P1IntroNumber:c.introNumber,ch4P1IntroTitle:c.introTitle,ch4P1Day:c.day,ch4P1Place:c.place,ch4P1Phase:c.phase,ch4P1Location:c.location,ch4P1Scene:c.scene,ch4P1Objective:c.objective,ch4P1Action:c.openBoard,ch4P1ChoiceTitle:c.choiceTitle,ch4P1BoardTitle:c.boardTitle,ch4P1BoardHelp:c.boardHelp,ch4P1BoardConfirm:c.confirm,ch4P1BoardReset:c.reset,ch4P1QueryTitle:c.queryTitle,ch4P1QueryBody:c.queryBody,ch4P1QueryAck:c.acknowledge,ch4P1CompleteEye:c.completeEye,ch4P1CompleteTitle:c.completeTitle,ch4P1CompleteBody:c.completeBody,ch4P1Next:c.next,ch4P1ReturnTitle:c.returnTitle};
@@ -203,7 +203,7 @@ function rollbackChoice(){
  if(p.choiceKey==="fear"){profile.northSafety=Math.max(0,Number(profile.northSafety||0)-1);north.trust=clamp(Number(north.trust||0)-2,0,100);delete s.flags.ch4_follow_attribution_fear}
  p.choiceApplied=false
 }
-function chooseDirection(key){const p=ensure();if(p.choiceMade||!CHOICE_BRANCHES[key])return;p.choiceMade=true;p.choiceKey=key;p.stage="choice-dialogue";gs().checkpoint="ch4_phase1_choice";applyChoice(key);closeChoice();save();talk([...CHOICE_BRANCHES[key],...D.choiceCommon],()=>{p.stage="board";gs().checkpoint="ch4_phase1_board";save();openBoard()})}
+function chooseDirection(key){const p=ensure();if(p.choiceMade||!CHOICE_BRANCHES[key])return;p.choiceMade=true;p.choiceKey=key;p.stage="choice-dialogue";gs().checkpoint="ch4_phase1_choice";applyChoice(key);closeChoice();paint();save();talk([...CHOICE_BRANCHES[key],...D.choiceCommon],()=>{p.stage="board";gs().checkpoint="ch4_phase1_board";save();openBoard()})}
 
 function boardStatus(text="",kind=""){const node=$("#ch4P1BoardStatus");if(!node)return;node.textContent=text;node.className="ch4-p1-status"+(kind?" "+kind:"")}
 function renderBoard(){
@@ -217,12 +217,12 @@ function resetBoard(){const p=ensure();p.boardAssignments={};renderBoard();save(
 function confirmBoard(){
  const p=ensure();if(BOARD_IDS.some(id=>!p.boardAssignments[id])){boardStatus(tr("Assign all five findings before confirming.","จัดข้อค้นพบทั้งห้ารายการให้ครบก่อนยืนยัน"),"error");return}
  const wrong=BOARD_IDS.filter(id=>p.boardAssignments[id]!==BOARD_CORRECT[id]);if(wrong.length){p.boardAttempts++;const identityWrong=p.boardAssignments.decision_owner!=="unresolved";boardStatus(identityWrong?tr("A route or credential cannot resolve the human decision owner.","เส้นทางหรือ Credential ไม่สามารถระบุตัวเจ้าของการตัดสินใจที่เป็นมนุษย์ได้"):tr("At least one finding confuses tool route with local deployment.","มีอย่างน้อยหนึ่งข้อที่สับสนเส้นทางเครื่องมือกับการ Deploy ในพื้นที่"),"error");save();return}
- p.boardComplete=true;p.workingTheoryAdded=true;p.stage="board-debrief";gs().checkpoint="ch4_phase1_board_complete";try{window.LastWitnessAudioCue?.playPuzzleSuccess?.()}catch(_){}closeBoard(false);save();talk(D.boardDebrief,()=>{p.boardDebriefSeen=true;showQuery()})
+ p.boardComplete=true;p.workingTheoryAdded=true;p.stage="board-debrief";gs().checkpoint="ch4_phase1_board_complete";try{window.LastWitnessAudioCue?.playPuzzleSuccess?.()}catch(_){}closeBoard(false);paint();save();talk(D.boardDebrief,()=>{p.boardDebriefSeen=true;showQuery()})
 }
-function showQuery(){const p=ensure();p.querySeen=true;p.stage="query";gs().checkpoint="ch4_phase1_query";queryOpen=true;const modal=$("#ch4P1Query");modal?.classList.add("open");modal?.setAttribute("aria-hidden","false");if(!p.queryCuePlayed){p.queryCuePlayed=true;playQueryCue()}save();syncAudio()}
-function acknowledgeQuery(){const p=ensure();if(p.queryAcknowledged)return;p.queryAcknowledged=true;p.stage="closing";gs().checkpoint="ch4_phase1_closing";queryOpen=false;const modal=$("#ch4P1Query");modal?.classList.remove("open");modal?.setAttribute("aria-hidden","true");save();talk(D.query,completePhase)}
-function completePhase(){const p=ensure();p.closingDialogueComplete=true;p.complete=true;p.stage="complete";gs().chapter=4;gs().progress=100;gs().checkpoint="ch4_phase1_complete";save();showComplete()}
-function showComplete(){inject();const p=ensure();p.complete=true;p.stage="complete";gs().chapter=4;gs().screen=COMPLETE;safeShow(COMPLETE);updateLanguage();save()}
+function showQuery(){const p=ensure();p.querySeen=true;p.stage="query";gs().checkpoint="ch4_phase1_query";queryOpen=true;paint();const modal=$("#ch4P1Query");modal?.classList.add("open");modal?.setAttribute("aria-hidden","false");if(!p.queryCuePlayed){p.queryCuePlayed=true;playQueryCue()}save();syncAudio()}
+function acknowledgeQuery(){const p=ensure();if(p.queryAcknowledged)return;p.queryAcknowledged=true;p.stage="closing";gs().checkpoint="ch4_phase1_closing";queryOpen=false;paint();const modal=$("#ch4P1Query");modal?.classList.remove("open");modal?.setAttribute("aria-hidden","true");save();talk(D.query,completePhase)}
+function completePhase(){const p=ensure();p.closingDialogueComplete=true;p.complete=true;p.stage="complete";gs().chapter=4;gs().progress=100;gs().checkpoint="ch4_phase1_complete";paint();save();clearTimeout(completeTimer);completeTimer=setTimeout(showComplete,480)}
+function showComplete(){clearTimeout(completeTimer);completeTimer=0;inject();const p=ensure();p.complete=true;p.stage="complete";gs().chapter=4;gs().screen=COMPLETE;safeShow(COMPLETE);updateLanguage();save()}
 
 function startOpeningDialogue(){const p=ensure();if(p.introComplete||dialogue)return;p.stage="intro";gs().checkpoint="ch4_phase1_intro";talk(D.intro,()=>{p.introComplete=true;p.stage="choice";gs().checkpoint="ch4_phase1_choice";paint();save();openChoice()})}
 function enterScene(){

@@ -1,4 +1,4 @@
-/* LAST WITNESS — Chapter IV / Phase I: AFTERIMAGE 0.13.1 */
+/* LAST WITNESS — Chapter IV / Phase I: AFTERIMAGE 0.13.2 */
 .ch4-p1-intro,.ch4-p1-card,.ch4-p1-complete{background:#05070b;color:#f4eee5;display:none;align-items:center;justify-content:center;padding:calc(24px + env(safe-area-inset-top)) 22px calc(28px + env(safe-area-inset-bottom));text-align:center}
 .ch4-p1-intro.active,.ch4-p1-card.active,.ch4-p1-complete.active{display:flex}
 .ch4-p1-intro:before,.ch4-p1-card:before,.ch4-p1-complete:before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 50% 38%,rgba(91,117,130,.16),transparent 42%),linear-gradient(145deg,rgba(199,161,94,.055),transparent 42%),repeating-linear-gradient(90deg,rgba(255,255,255,.012) 0 1px,transparent 1px 7px);pointer-events:none}
@@ -15,8 +15,8 @@
 .ch4-p1-label{position:absolute;top:calc(64px + env(safe-area-inset-top));left:16px;color:#c7a15e;font-size:11px;font-weight:800;letter-spacing:.19em;text-shadow:0 2px 9px #000}
 .ch4-p1-objective{position:absolute;top:calc(88px + env(safe-area-inset-top));left:16px;right:16px;max-width:520px;padding:10px 12px;border-left:2px solid rgba(199,161,94,.78);background:linear-gradient(90deg,rgba(5,8,12,.82),rgba(5,8,12,.34));color:#e4ddd3;font-size:12px;line-height:1.45;box-shadow:0 10px 30px rgba(0,0,0,.22)}
 .ch4-p1-action{position:absolute;left:50%;bottom:calc(96px + env(safe-area-inset-bottom));z-index:8;transform:translateX(-50%);width:min(84vw,360px);letter-spacing:.055em}
-.ch4-p1-progress{position:absolute;z-index:20;right:12px;left:auto;bottom:calc(12px + var(--bottom,14px));display:block;min-width:132px;width:min(44vw,172px);padding:9px 12px;border-radius:24px;background:rgba(5,6,9,.84);border:1px solid rgba(255,255,255,.16);color:#d7c7ac;font-size:11px;font-weight:800;letter-spacing:.08em;box-shadow:0 10px 28px rgba(0,0,0,.34)}
-.ch4-p1-progress>div{width:100%;height:4px;margin-top:6px;background:rgba(255,255,255,.13);overflow:hidden;border-radius:3px}.ch4-p1-progress i{display:block;height:100%;width:0;background:linear-gradient(90deg,#6c8791,#c7a15e);transition:width .32s ease}
+.ch4-p1-progress{position:absolute;z-index:20;right:12px;left:auto;bottom:calc(12px + var(--bottom,14px));display:block;min-width:132px;width:min(44vw,172px);padding:9px 12px;border-radius:24px;background:rgba(5,6,9,.84);border:1px solid rgba(221,181,109,.30);color:#f0dfbd;font-size:11px;font-weight:800;letter-spacing:.08em;box-shadow:0 10px 28px rgba(0,0,0,.34)}
+.ch4-p1-progress>div{width:100%;height:4px;margin-top:6px;background:rgba(255,255,255,.13);overflow:hidden;border-radius:3px}.ch4-p1-progress i{display:block;height:100%;width:0;background:var(--gold,#ddb56d);transition:width .32s ease}
 .ch4-p1-dialogue{z-index:16;bottom:calc(68px + var(--bottom,14px))}
 .ch4-p1-dialogue .portrait-wrap:empty{display:none}
 .ch4-p1-choice,.ch4-p1-board,.ch4-p1-query{z-index:330;background:rgba(2,4,7,.88);backdrop-filter:blur(7px)}
