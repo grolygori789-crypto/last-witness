@@ -1,9 +1,9 @@
-/* LAST WITNESS — Chapter IV / Phase II: JAKARTA ARRIVAL 0.14.6 */
+/* LAST WITNESS — Chapter IV / Phase II: JAKARTA ARRIVAL 0.14.7 */
 (function(){
 "use strict";
-if(window.LastWitnessChapter4Phase2?.version==="0.14.6")return;
+if(window.LastWitnessChapter4Phase2?.version==="0.14.7")return;
 
-const BUILD="0.14.6";
+const BUILD="0.14.7";
 const FLIGHT="jakartaFlight";
 const AIRPORT="jakartaAirport";
 const OFFICE="jakartaCybercrimeOffice";
