@@ -1,7 +1,8 @@
-/* LAST WITNESS — Legacy Compatibility Shim + Chapter IV Bootstrap 0.14.7
+/* LAST WITNESS — Legacy Compatibility Shim + Chapter IV Bootstrap 0.14.8
  * Historical repair logic remains consolidated elsewhere. This file installs no
  * repair listeners or polling loops. It only loads the approved Chapter IV
- * modules once, in deterministic narrative order.
+ * modules once, in deterministic narrative order, then refreshes the three
+ * owner-approved Jakarta Phase II backgrounds.
  */
 (function(){
 "use strict";
@@ -16,8 +17,22 @@ function script(src,id,ready){
  node.__lwPromise=new Promise((resolve,reject)=>{node.addEventListener("load",()=>{node.dataset.loaded="1";resolve()},{once:true});node.addEventListener("error",reject,{once:true})});
  if(!existing)document.body.appendChild(node);return node.__lwPromise
 }
+function refreshJakartaScenes(){
+ const apply=()=>{
+  const base="assets/images/chapter-04/phase-02/";
+  const scenes={
+   jakartaAirport:base+"jakarta-airport-operations-corridor.png?v=0148",
+   jakartaCybercrimeOffice:base+"jakarta-cybercrime-office.png?v=0148",
+   jakartaVerificationLab:base+"jakarta-verification-lab.png?v=0148"
+  };
+  Object.entries(scenes).forEach(([id,src])=>{const image=document.querySelector("#"+id+">img.scene");if(image&&image.getAttribute("src")!==src)image.setAttribute("src",src)});
+  window.LastWitnessJakartaVisualRefresh={version:"0.14.8",applied:true}
+ };
+ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",apply,{once:true});else apply()
+}
 
 script("js/chapters/chapter-04/01-afterimage.js?v=0132","lwChapter04Phase01Script",()=>Boolean(window.LastWitnessChapter4Phase1))
- .then(()=>{stylesheet("css/chapter-04-phase-02.css?v=0147","lwChapter04Phase02Style");return script("js/chapters/chapter-04/02-jakarta-arrival.js?v=0147","lwChapter04Phase02Script",()=>Boolean(window.LastWitnessChapter4Phase2))})
+ .then(()=>{stylesheet("css/chapter-04-phase-02.css?v=0148","lwChapter04Phase02Style");return script("js/chapters/chapter-04/02-jakarta-arrival.js?v=0147","lwChapter04Phase02Script",()=>Boolean(window.LastWitnessChapter4Phase2))})
+ .then(refreshJakartaScenes)
  .catch(error=>console.error("LAST WITNESS Chapter IV bootstrap failed",error));
 })();
