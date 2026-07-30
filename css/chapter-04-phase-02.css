@@ -1,4 +1,4 @@
-/* LAST WITNESS — Chapter IV / Phase II: JAKARTA ARRIVAL 0.14.2 */
+/* LAST WITNESS — Chapter IV / Phase II: JAKARTA ARRIVAL 0.14.3 */
 .ch4-p2-screen{display:none;background:#05070a;color:#f5efe6;overflow:hidden}
 .ch4-p2-screen.active{display:block}
 .ch4-p2-screen>.scene{object-position:center center;filter:saturate(.82) contrast(1.045) brightness(.72)}
@@ -71,14 +71,11 @@ html[lang="th"] .ch4-p2-choice button,html[lang="th"] .ch4-p2-console-actions bu
 @media(prefers-reduced-motion:reduce){.ch4-p2-progress i,.ch4-p2-flight-route{transition:none}.ch4-p2-complete:before{background:linear-gradient(145deg,rgba(221,181,109,.055),transparent 42%)}}
 
 
-/* 0.14.2 Maya visibility and metadata fixes */
-.ch4-p2-dialogue .portrait-wrap{background:linear-gradient(160deg,#202733,#0f141b);box-shadow:inset 0 0 0 1px rgba(221,181,109,.08)}
-.ch4-p2-dialogue .portrait.maya-portrait{object-fit:contain;object-position:center bottom;transform:scale(1.17);transform-origin:center 80%;filter:drop-shadow(0 7px 12px rgba(0,0,0,.42))}
-.character-card[data-character="maya"] img,[data-detail-image="maya"]{background:linear-gradient(160deg,#304051,#131922)!important;box-shadow:inset 0 0 0 1px rgba(221,181,109,.10)}
-.character-card[data-character="maya"] img{object-position:center 14%!important;transform:scale(1.18)!important}
-[data-detail-image="maya"]{object-position:center 14%!important;transform:scale(1.16)!important}
-.character-detail-head{align-items:flex-start}
-.character-detail-head>.maya-meta{min-width:0;flex:1 1 auto}
-.character-detail-head .character-status{display:block;max-width:100%;white-space:normal;overflow-wrap:anywhere;line-height:1.32;font-size:clamp(14px,3.7vw,17px)}
-.character-detail-head .character-age{display:inline-block;margin-top:2px;opacity:.88}
-.character-card[data-character="maya"] .character-status{display:block;white-space:normal;overflow-wrap:anywhere;line-height:1.32}
+/* 0.14.3 portrait restoration: preserve existing characters, black backgrounds only */
+.ch4-p2-dialogue .portrait-wrap{background:#030406!important;box-shadow:none!important}
+.ch4-p2-dialogue .portrait{background:transparent!important}
+.ch4-p2-dialogue .portrait.maya-portrait{object-fit:cover!important;object-position:center top!important;transform:scale(1.02)!important;transform-origin:center top!important;filter:none!important}
+.character-card[data-character="maya"] img{object-fit:cover!important;object-position:center top!important;transform:none!important;background:#030406!important;filter:none!important;box-shadow:none!important}
+[data-detail-image="maya"]{object-fit:cover!important;object-position:center top!important;transform:none!important;background:#030406!important;filter:none!important;box-shadow:none!important}
+.character-detail-head>.maya-meta{min-width:0;flex:1 1 auto;max-width:calc(100% - 170px)}
+.character-detail-head .character-status{white-space:normal!important;overflow-wrap:normal!important;word-break:normal!important;line-height:1.35!important}
