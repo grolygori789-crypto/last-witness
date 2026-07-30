@@ -79,3 +79,12 @@ html[lang="th"] .ch4-p2-choice button,html[lang="th"] .ch4-p2-console-actions bu
 [data-detail-image="maya"]{object-fit:cover!important;object-position:center top!important;transform:none!important;background:#030406!important;filter:none!important;box-shadow:none!important}
 .character-detail-head>.maya-meta{min-width:0;flex:1 1 auto;max-width:calc(100% - 170px)}
 .character-detail-head .character-status{white-space:normal!important;overflow-wrap:normal!important;word-break:normal!important;line-height:1.35!important}
+
+
+/* 0.14.5 strict black portrait backgrounds and Maya outline-safe presentation */
+.ch4-p2-dialogue .portrait-wrap{background:#000!important;box-shadow:none!important}
+.ch4-p2-dialogue .portrait{background:transparent!important;filter:none!important}
+.ch4-p2-dialogue .portrait.maya-portrait{object-fit:cover!important;object-position:center top!important;transform:scale(1.02)!important;transform-origin:center top!important;filter:none!important}
+.character-card img,[data-detail-portrait]{background:#000!important;box-shadow:none!important;filter:none!important}
+.character-card[data-character="maya"] img{object-fit:cover!important;object-position:center top!important;transform:none!important;background:#000!important;filter:none!important;box-shadow:none!important}
+[data-detail-image="maya"]{object-fit:cover!important;object-position:center top!important;transform:none!important;background:#000!important;filter:none!important;box-shadow:none!important}
