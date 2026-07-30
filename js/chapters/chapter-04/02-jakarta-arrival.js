@@ -1,9 +1,9 @@
-/* LAST WITNESS — Chapter IV / Phase II: JAKARTA ARRIVAL 0.14.0 */
+/* LAST WITNESS — Chapter IV / Phase II: JAKARTA ARRIVAL 0.14.1 */
 (function(){
 "use strict";
-if(window.LastWitnessChapter4Phase2?.version==="0.14.0")return;
+if(window.LastWitnessChapter4Phase2?.version==="0.14.1")return;
 
-const BUILD="0.14.0";
+const BUILD="0.14.1";
 const FLIGHT="jakartaFlight";
 const AIRPORT="jakartaAirport";
 const OFFICE="jakartaCybercrimeOffice";
@@ -77,10 +77,10 @@ function syncAudio(){
  [arrival,verify,airport,airportBase,office,officeBase].forEach(a=>{if(a)a.loop=true});
  fade(arrival,enabled&&(inFlight||inAirport||inOffice)?music*.34*dialogueDuck*overlayDuck:0,screen===FLIGHT?700:400);
  fade(verify,enabled&&(inLab||inComplete)?music*.31*dialogueDuck*overlayDuck*(inComplete?.58:1):0,460);
- fade(airport,enabled&&inAirport?music*.68*dialogueDuck:0,430);
- fade(airportBase,enabled&&inAirport?music*.12*dialogueDuck:0,430);
- fade(office,enabled&&(inOffice||inLab)?music*(inLab?.60:.72)*dialogueDuck*overlayDuck:0,430);
- fade(officeBase,enabled&&(inOffice||inLab)?music*(inLab?.08:.10)*dialogueDuck*overlayDuck:0,430)
+ fade(airport,enabled&&inAirport?music*.40*dialogueDuck:0,430);
+ fade(airportBase,enabled&&inAirport?music*.05*dialogueDuck:0,430);
+ fade(office,enabled&&(inOffice||inLab)?music*(inLab?.28:.42)*dialogueDuck*overlayDuck:0,430);
+ fade(officeBase,enabled&&(inOffice||inLab)?music*(inLab?.04:.06)*dialogueDuck*overlayDuck:0,430)
 }
 function stopAudio(reset=false){
  clearTimeout(flightTimer);clearTimeout(transitionTimer);flightTimer=transitionTimer=0;
@@ -185,7 +185,7 @@ function labObjective(){const p=ensure();if(!p?.verificationStarted)return tr("V
 
 function installPortraits(){
  const maya={
-  neutral:MAYA_BASE+"neutral.png?v=0140",focused:MAYA_BASE+"focused.png?v=0140",skeptical:MAYA_BASE+"skeptical.png?v=0140",analytical:MAYA_BASE+"analytical.png?v=0140",authoritative:MAYA_BASE+"authoritative.png?v=0140",questioning:MAYA_BASE+"questioning.png?v=0140",restrained_approval:MAYA_BASE+"restrained-approval.png?v=0140",calm_professional:MAYA_BASE+"calm-professional.png?v=0140",alert:MAYA_BASE+"alert.png?v=0140",decisive:MAYA_BASE+"decisive.png?v=0140",guarded:MAYA_BASE+"guarded.png?v=0140",softened_respect:MAYA_BASE+"softened-respect.png?v=0140",serious:MAYA_BASE+"focused.png?v=0140"
+  neutral:MAYA_BASE+"neutral.png?v=0141",focused:MAYA_BASE+"focused.png?v=0141",skeptical:MAYA_BASE+"skeptical.png?v=0141",analytical:MAYA_BASE+"analytical.png?v=0141",authoritative:MAYA_BASE+"authoritative.png?v=0141",questioning:MAYA_BASE+"questioning.png?v=0141",restrained_approval:MAYA_BASE+"restrained-approval.png?v=0141",calm_professional:MAYA_BASE+"calm-professional.png?v=0141",alert:MAYA_BASE+"alert.png?v=0141",decisive:MAYA_BASE+"decisive.png?v=0141",guarded:MAYA_BASE+"guarded.png?v=0141",softened_respect:MAYA_BASE+"softened-respect.png?v=0141",serious:MAYA_BASE+"focused.png?v=0141"
  };
  try{PORTRAITS["Inspector Maya Pranoto"]=maya;PORTRAITS["สารวัตร Maya Pranoto"]=maya;PORTRAITS["Maya Pranoto"]=maya}catch(_){}
 }
@@ -194,7 +194,7 @@ function mayaData(){return{
  role:{en:"Indonesian National Police Cybercrime Liaison",th:"ผู้ประสานงานตำรวจไซเบอร์อินโดนีเซีย"},
  status:{en:"Jurisdictional Partner",th:"พันธมิตรด้านเขตอำนาจ"},
  bio:{en:"A disciplined Indonesian cybercrime liaison who understands local infrastructure and refuses to collapse route, tool, operator and decision ownership into one conclusion.",th:"ผู้ประสานงานตำรวจไซเบอร์อินโดนีเซียผู้มีวินัย เข้าใจโครงสร้างพื้นฐานในพื้นที่ และไม่ยอมรวมเส้นทาง เครื่องมือ ผู้ใช้งาน และเจ้าของการตัดสินใจให้เป็นข้อสรุปเดียว"},
- src:MAYA_BASE+"profile.png?v=0140",relation:{value:61},metrics:[
+ src:MAYA_BASE+"profile.png?v=0141",relation:{value:61},metrics:[
   {key:"trust",label:{en:"Trust",th:"ความไว้วางใจ"},value:48},{key:"respect",label:{en:"Professional Respect",th:"ความนับถือทางวิชาชีพ"},value:66},{key:"rapport",label:{en:"Rapport",th:"ความคุ้นเคย"},value:8},{key:"suspicion",label:{en:"Suspicion",th:"ความสงสัย"},value:20}
  ]
 }}
@@ -233,20 +233,20 @@ function installJournalExtension(){
  grid?.addEventListener("click",event=>{const card=event.target.closest?.('[data-character="maya"]');if(!card)return;event.preventDefault();event.stopPropagation();showMayaDetail()});
  if(journalObserver)journalObserver.disconnect();journalObserver=new MutationObserver(()=>{renderMayaCard();if(modal?.classList.contains("open")){markMayaRead();renderMayaCard()}});
  if(modal)journalObserver.observe(modal,{attributes:true,attributeFilter:["class"],subtree:true,childList:true});
- if(screenObserver)screenObserver.disconnect();screenObserver=new MutationObserver(()=>setTimeout(syncMayaDot,0));$$('.screen').forEach(screen=>screenObserver.observe(screen,{attributes:true,attributeFilter:["class"]}));
+ if(screenObserver)screenObserver.disconnect();screenObserver=new MutationObserver(()=>setTimeout(()=>{syncMayaDot();if(!SCREENS.has(active()))stopAudio(true);else syncAudio()},0));$$('.screen').forEach(screen=>screenObserver.observe(screen,{attributes:true,attributeFilter:["class"]}));
  renderMayaCard();syncMayaDot()
 }
 
-function injectStyle(){if($("#lwChapter04Phase02Style"))return;const link=document.createElement("link");link.id="lwChapter04Phase02Style";link.rel="stylesheet";link.href="css/chapter-04-phase-02.css?v=0140";document.head.appendChild(link)}
-function audioMarkup(){return `<audio id="ch4P2ArrivalScore" preload="auto" loop><source src="${AUDIO_BASE}jakarta-arrival-loop.webm?v=0140" type="audio/webm"><source src="${AUDIO_BASE}jakarta-arrival-loop.mp3?v=0140" type="audio/mpeg"></audio><audio id="ch4P2VerificationScore" preload="auto" loop><source src="${AUDIO_BASE}token-verification-loop.webm?v=0140" type="audio/webm"><source src="${AUDIO_BASE}token-verification-loop.mp3?v=0140" type="audio/mpeg"></audio><audio id="ch4P2AirportAmbience" preload="auto" loop><source src="${AUDIO_BASE}jakarta-airport-ops-loop.webm?v=0140" type="audio/webm"><source src="${AUDIO_BASE}jakarta-airport-ops-loop.mp3?v=0140" type="audio/mpeg"></audio><audio id="ch4P2AirportFieldBase" preload="auto" loop src="assets/audio/chapter-03/phase-03/changi-airport-ambience.mp3?v=0800"></audio><audio id="ch4P2OfficeAmbience" preload="auto" loop><source src="${AUDIO_BASE}jakarta-cybercrime-office-loop.webm?v=0140" type="audio/webm"><source src="${AUDIO_BASE}jakarta-cybercrime-office-loop.mp3?v=0140" type="audio/mpeg"></audio><audio id="ch4P2OfficeFieldBase" preload="auto" loop src="assets/audio/chapter-03/phase-04/singapore-investigation-office-ambience.mp3?v=0920"></audio>`}
+function injectStyle(){if($("#lwChapter04Phase02Style"))return;const link=document.createElement("link");link.id="lwChapter04Phase02Style";link.rel="stylesheet";link.href="css/chapter-04-phase-02.css?v=0141";document.head.appendChild(link)}
+function audioMarkup(){return `<audio id="ch4P2ArrivalScore" preload="auto" loop><source src="${AUDIO_BASE}jakarta-arrival-loop.webm?v=0141" type="audio/webm"><source src="${AUDIO_BASE}jakarta-arrival-loop.mp3?v=0141" type="audio/mpeg"></audio><audio id="ch4P2VerificationScore" preload="auto" loop><source src="${AUDIO_BASE}token-verification-loop.webm?v=0141" type="audio/webm"><source src="${AUDIO_BASE}token-verification-loop.mp3?v=0141" type="audio/mpeg"></audio><audio id="ch4P2AirportAmbience" preload="auto" loop><source src="${AUDIO_BASE}jakarta-airport-ops-loop.webm?v=0141" type="audio/webm"><source src="${AUDIO_BASE}jakarta-airport-ops-loop.mp3?v=0141" type="audio/mpeg"></audio><audio id="ch4P2AirportFieldBase" preload="auto" loop src="assets/audio/chapter-03/phase-03/changi-airport-ambience.mp3?v=0800"></audio><audio id="ch4P2OfficeAmbience" preload="auto" loop><source src="${AUDIO_BASE}jakarta-cybercrime-office-loop.webm?v=0141" type="audio/webm"><source src="${AUDIO_BASE}jakarta-cybercrime-office-loop.mp3?v=0141" type="audio/mpeg"></audio><audio id="ch4P2OfficeFieldBase" preload="auto" loop src="assets/audio/chapter-03/phase-04/singapore-investigation-office-ambience.mp3?v=0920"></audio>`}
 function sharedScene(id,classes,image,alt){return `<section id="${id}" class="screen ch4-p2-screen ${classes}"><img class="scene" src="${image}" alt="${alt}"><div class="overlay ch4-p2-overlay"></div><div class="topbar"><span id="${id}Location"></span><div class="hud"><button class="icon ch4-p2-save" type="button">💾</button><button class="icon ch4-p2-menu" type="button">☰<i class="journal-alert" aria-hidden="true"></i></button></div></div><div id="${id}Scene" class="ch4-p2-label"></div><div id="${id}Objective" class="ch4-p2-objective"></div><div id="${id}Dialogue" class="dialogue ch4-p2-dialogue hidden"></div><button id="${id}Action" class="primary ch4-p2-action" type="button" hidden></button><div class="ch4-p2-progress"><span class="ch4-p2-progress-text">0%</span><div><i class="ch4-p2-progress-fill"></i></div></div></section>`}
 function inject(){
  if($("#"+FLIGHT))return;const game=$("#game");if(!game)return;
  game.insertAdjacentHTML("beforeend",`
  <section id="${FLIGHT}" class="screen ch4-p2-flight"><video id="ch4P2FlightVideo" poster="${TAKEOFF_POSTER}" preload="auto" playsinline muted><source src="${TAKEOFF_VIDEO}" type="video/mp4"></video><div class="ch4-p2-flight-shade"></div><div class="ch4-p2-flight-head"><span id="ch4P2FlightHead"></span><span id="ch4P2FlightStatus"></span></div><div id="ch4P2FlightRoute" class="ch4-p2-flight-route"><div id="ch4P2RouteEye" class="eyebrow"></div><h2 id="ch4P2RouteTitle"></h2><div class="ch4-p2-route-grid"><div><span id="ch4P2DepartLabel"></span><strong>SINGAPORE<br>23:20 SGT</strong></div><div class="ch4-p2-route-arrow">→</div><div><span id="ch4P2ArriveLabel"></span><strong>JAKARTA<br>00:10 WIB</strong></div></div><p id="ch4P2FlightTime"></p><button id="ch4P2RouteContinue" class="primary" type="button"></button></div><button id="ch4P2Skip" class="ghost ch4-p2-skip" type="button"></button></section>
- ${sharedScene(AIRPORT,"ch4-p2-airport",BASE+"jakarta-airport-operations-corridor.png?v=0140","Jakarta airport operations corridor at night")}
- ${sharedScene(OFFICE,"ch4-p2-office",BASE+"jakarta-cybercrime-office.png?v=0140","Jakarta cybercrime operations office")}
- ${sharedScene(LAB,"ch4-p2-lab",BASE+"jakarta-verification-lab.png?v=0140","Jakarta verification laboratory")}
+ ${sharedScene(AIRPORT,"ch4-p2-airport",BASE+"jakarta-airport-operations-corridor.png?v=0141","Jakarta airport operations corridor at night")}
+ ${sharedScene(OFFICE,"ch4-p2-office",BASE+"jakarta-cybercrime-office.png?v=0141","Jakarta cybercrime operations office")}
+ ${sharedScene(LAB,"ch4-p2-lab",BASE+"jakarta-verification-lab.png?v=0141","Jakarta verification laboratory")}
  <section id="${COMPLETE}" class="screen ch4-p2-complete"><div class="ch4-p2-complete-card"><div id="ch4P2CompleteEye" class="eyebrow"></div><h2 id="ch4P2CompleteTitle"></h2><div class="ch4-p2-rule"></div><p id="ch4P2CompleteBody"></p><div class="ch4-p2-complete-grid"><div><span>TOKEN</span><b>GENUINE · SINGLE USE</b></div><div><span>BROKER ROUTE</span><b>JAKARTA-LINKED</b></div><div><span>ATTRIBUTION ROLE</span><b>NORTH</b></div><div><span>HUMAN IDENTITY</span><b>UNRESOLVED</b></div></div><strong id="ch4P2Next"></strong><button id="ch4P2ReturnTitle" class="primary" type="button"></button></div></section>
  <div id="ch4P2Choice" class="modal ch4-p2-choice" aria-hidden="true"><div class="modal-card"><div class="eyebrow">BENEDICT · OPERATIONAL PRINCIPLE</div><h3 id="ch4P2ChoiceTitle"></h3><button type="button" data-ch4-p2-choice="tool"></button><button type="button" data-ch4-p2-choice="jurisdiction"></button><button type="button" data-ch4-p2-choice="trap"></button></div></div>
  <div id="ch4P2Console" class="modal ch4-p2-console" aria-hidden="true"><div class="modal-card"><header><div><div id="ch4P2ConsoleEye" class="eyebrow"></div><h3 id="ch4P2ConsoleTitle"></h3></div><button id="ch4P2ConsoleClose" class="ghost" type="button">×</button></header><div class="ch4-p2-console-readout"><span>TOKEN STATE</span><strong id="ch4P2TokenState">PRESERVED · SINGLE USE</strong><span>NETWORK</span><b id="ch4P2NetworkState">DISCONNECTED</b><span>ATTRIBUTION</span><b id="ch4P2AttributionState">UNRESOLVED</b></div><div id="ch4P2ConsoleLog" class="ch4-p2-console-log"></div><div id="ch4P2ConsoleActions" class="ch4-p2-console-actions">${["preserve_hash","clone_sandbox","passive_challenge","compare_grammar","open_live","trace_responder"].map(id=>`<button type="button" data-verify-action="${id}"></button>`).join("")}</div><div id="ch4P2ConsoleStatus" class="ch4-p2-console-status" aria-live="polite"></div></div></div>
@@ -349,7 +349,7 @@ function startDebrief(){const p=ensure();if(p.closingDialogueComplete||dialogue)
 function completePhase(){const p=ensure();p.closingDialogueComplete=true;p.complete=true;p.stage="complete";setCheckpoint("ch4_phase2_complete");setProgress(100);paint();save();transitionTimer=setTimeout(showComplete,480)}
 function showComplete(){const p=ensure();p.complete=true;p.stage="complete";gs().chapter=4;gs().screen=COMPLETE;setProgress(100);safeShow(COMPLETE);updateLanguage();save()}
 function closeAll(){choiceOpen=consoleOpen=false;["ch4P2Choice","ch4P2Console"].forEach(id=>{$("#"+id)?.classList.remove("open");$("#"+id)?.setAttribute("aria-hidden","true")});const box=dialogueBox();box?.classList.add("hidden");dialogue=null}
-function returnToTitle(){stopAudio(true);closeAll();try{save()}catch(_){};try{window.LastWitnessChapter2Integration?.returnToTitle?.()}catch(_){$$('.screen').forEach(n=>n.classList.remove('active'));$("#title")?.classList.add('active');if(gs())gs().screen="title"}}
+function returnToTitle(){stopAudio(true);stopForeignAudio();closeAll();try{save()}catch(_){};try{window.LastWitnessChapter2Integration?.returnToTitle?.()}catch(_){$$('.screen').forEach(n=>n.classList.remove('active'));$("#title")?.classList.add('active');if(gs())gs().screen="title"}setTimeout(()=>{if(!SCREENS.has(active()))stopAudio(true)},0)}
 function resetPhase2(){const s=gs();if(!s)return;s.chapter4=s.chapter4||{};s.chapter4.phase2={started:false,flightComplete:false,routeCardSeen:false,airportIntroComplete:false,mayaUnlocked:false,mayaUnread:false,officeIntroComplete:false,choiceMade:false,choiceKey:"",choiceApplied:false,legalBriefComplete:false,verificationStarted:false,verificationSteps:[],consoleWarnings:0,verificationComplete:false,evidenceCollected:[],closingDialogueComplete:false,complete:false,stage:"flight"};["ch4_maya_met","ch4_p2_tool_not_city","ch4_p2_jurisdiction_first","ch4_p2_route_identity_trap","ch4_token_genuine","ch4_token_single_use","ch4_jakarta_broker_route","ch4_north_role_recognised","ch4_human_attribution_unresolved"].forEach(k=>delete s.flags[k]);try{s.found?.delete?.("ch4_verified_rendezvous_token");s.found?.delete?.("ch4_broker_response_capture")}catch(_){} }
 function startFreshForDev(){stopAudio(true);closeAll();primePhase1CompleteForDev();resetPhase2();startFromPhase1()}
 function jumpVerificationForDev(){stopAudio(true);closeAll();primePhase1CompleteForDev();resetPhase2();const p=ensure();p.started=true;p.flightComplete=true;p.routeCardSeen=true;p.airportIntroComplete=true;p.mayaUnlocked=true;p.officeIntroComplete=true;p.choiceMade=true;p.choiceKey="jurisdiction";p.choiceApplied=true;p.legalBriefComplete=true;p.stage="lab";gs().flags.ch4_maya_met=true;unlockMaya();enterLab()}
@@ -364,7 +364,7 @@ function appendCaseEvidence(){
 }
 function setBuild(){const label=$("#settingsVersion");if(label)label.textContent=`LAST WITNESS · BUILD ${BUILD}`;if(window.LastWitnessSaveManager)window.LastWitnessSaveManager.version=BUILD}
 function installSaveBridge(){
- if(window.__lwChapter4Phase2SaveBridge0140)return;window.__lwChapter4Phase2SaveBridge0140=true;
+ if(window.__lwChapter4Phase2SaveBridge0141)return;window.__lwChapter4Phase2SaveBridge0141=true;
  const baseRestore=typeof restore==="function"?restore:window.restore;
  if(typeof baseRestore==="function"){
   const wrapped=function(data){stopAudio(true);const result=baseRestore.apply(this,arguments);if(SCREENS.has(String(data?.screen||""))){const s=gs();if(s)s.chapter4=clone(data?.chapter4||s.chapter4||{});setTimeout(()=>resumeFromState(data.screen),170)}return result};
@@ -387,7 +387,7 @@ function resumeFromState(screen){
 }
 function installDevJumps(){
  const grid=$("#developerModal .dev-grid");if(!grid)return;
- const add=(key,label,handler)=>{let b=grid.querySelector(`[data-dev-jump="${key}"]`);if(!b){b=document.createElement("button");b.className="dev-button";b.type="button";b.dataset.devJump=key;grid.appendChild(b)}b.textContent=label;if(b.dataset.lwBound0140==="1")return;b.dataset.lwBound0140="1";b.addEventListener("click",event=>{event.preventDefault();event.stopPropagation();event.stopImmediatePropagation();$("#developerModal")?.classList.remove("open");handler()},true)};
+ const add=(key,label,handler)=>{let b=grid.querySelector(`[data-dev-jump="${key}"]`);if(!b){b=document.createElement("button");b.className="dev-button";b.type="button";b.dataset.devJump=key;grid.appendChild(b)}b.textContent=label;if(b.dataset.lwBound0141==="1")return;b.dataset.lwBound0141="1";b.addEventListener("click",event=>{event.preventDefault();event.stopPropagation();event.stopImmediatePropagation();$("#developerModal")?.classList.remove("open");handler()},true)};
  add("chapter4Phase2",tr("Chapter IV · Phase II · Jakarta Arrival","บทที่ IV · เฟส II · เดินทางถึง Jakarta"),startFreshForDev);
  add("chapter4Phase2Verification",tr("Chapter IV · Phase II · Token Verification","บทที่ IV · เฟส II · ตรวจสอบ Token"),jumpVerificationForDev)
 }
