@@ -1,5 +1,6 @@
-/* LAST WITNESS — Legacy Compatibility Shim + Runtime Bootstrap 0.15.2
- * Loads the approved native-Thai layer before dynamic Chapter IV modules.
+/* LAST WITNESS — Legacy Compatibility Shim + Runtime Bootstrap 0.15.3
+ * Loads approved localization and targeted QC before dynamic Chapter IV modules.
+ * Targeted QC failure is non-blocking so Chapter IV remains playable.
  * No repair polling, scene mutation or gameplay override is installed here.
  */
 (function(){
@@ -17,6 +18,11 @@ function script(src,id,ready){
 }
 
 script("js/engine/15-thai-localization.js?v=0152","lwThaiLocalizationScript",()=>Boolean(window.LastWitnessThaiLocalization?.version==="0.15.2"&&window.LastWitnessThaiLocalization?.installed))
+ .then(()=>script(
+  "js/engine/16-targeted-qc-fixes.js?v=0153",
+  "lwTargetedQCFixesScript",
+  ()=>Boolean(window.LastWitnessTargetedQCFixes?.version==="0.15.3"&&window.LastWitnessTargetedQCFixes?.installed)
+ ).catch(error=>console.error("LAST WITNESS targeted QC failed to load",error)))
  .then(()=>script("js/chapters/chapter-04/01-afterimage.js?v=0132","lwChapter04Phase01Script",()=>Boolean(window.LastWitnessChapter4Phase1)))
  .then(()=>{
   stylesheet("css/chapter-04-phase-02.css?v=0149","lwChapter04Phase02Style");
