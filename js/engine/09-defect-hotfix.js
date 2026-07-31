@@ -1,7 +1,6 @@
-/* LAST WITNESS — Legacy Compatibility Shim + Chapter IV Bootstrap 0.15.0
- * Historical repair logic remains consolidated elsewhere. This file installs no
- * repair listeners or polling loops. It loads approved Chapter IV modules once
- * in deterministic narrative order.
+/* LAST WITNESS — Legacy Compatibility Shim + Runtime Bootstrap 0.15.2
+ * Loads the approved native-Thai layer before dynamic Chapter IV modules.
+ * No repair polling, scene mutation or gameplay override is installed here.
  */
 (function(){
 "use strict";
@@ -17,15 +16,12 @@ function script(src,id,ready){
  if(!existing)document.body.appendChild(node);return node.__lwPromise
 }
 
-script("js/chapters/chapter-04/01-afterimage.js?v=0132","lwChapter04Phase01Script",()=>Boolean(window.LastWitnessChapter4Phase1))
+script("js/engine/15-thai-localization.js?v=0152","lwThaiLocalizationScript",()=>Boolean(window.LastWitnessThaiLocalization?.version==="0.15.2"&&window.LastWitnessThaiLocalization?.installed))
+ .then(()=>script("js/chapters/chapter-04/01-afterimage.js?v=0132","lwChapter04Phase01Script",()=>Boolean(window.LastWitnessChapter4Phase1)))
  .then(()=>{
   stylesheet("css/chapter-04-phase-02.css?v=0149","lwChapter04Phase02Style");
-  return script(
-   "js/chapters/chapter-04/02a-jakarta-portrait-guard.js?v=0150",
-   "lwChapter04Phase02PortraitGuard",
-   ()=>Boolean(window.LastWitnessJakartaPortraitGuard?.version==="0.15.0"&&window.LastWitnessJakartaPortraitGuard?.installed)
-  )
+  return script("js/chapters/chapter-04/02a-jakarta-portrait-guard.js?v=0150","lwChapter04Phase02PortraitGuard",()=>Boolean(window.LastWitnessJakartaPortraitGuard?.version==="0.15.0"&&window.LastWitnessJakartaPortraitGuard?.installed))
  })
  .then(()=>script("js/chapters/chapter-04/02-jakarta-arrival.js?v=0147","lwChapter04Phase02Script",()=>Boolean(window.LastWitnessChapter4Phase2)))
- .catch(error=>console.error("LAST WITNESS Chapter IV bootstrap failed",error));
+ .catch(error=>console.error("LAST WITNESS runtime bootstrap failed",error));
 })();
