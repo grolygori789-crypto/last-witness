@@ -1,6 +1,7 @@
 /* Last Witness Full Refactor
  * Developer access and testing tools
  * Dev fresh-scene isolation 0.6.7
+ * Developer access-code visibility control 0.15.1
  */
 
 let developerSessionUnlocked=false;
@@ -9,12 +10,74 @@ let devVersionTapTimer=null;
 const DEV_FORENSIC_FRESH_KEY="lw_dev_fresh_forensic_067";
 const DEV_SESSION_UNLOCK_KEY="lw_dev_session_unlocked_067";
 const DEV_FORENSIC_IDS=["sealed_sample","accession_record","audit_trace","batch_record"];
+const DEV_ACCESS_VISIBILITY_ID="devAccessVisibility";
+const DEV_ACCESS_VISIBILITY_TEXT_ID="devAccessVisibilityText";
+
 function developerUnlocked(){return developerSessionUnlocked}
 function syncDeveloperAccess(){
 const unlocked=developerUnlocked();
 if($("#developerMenuButton"))$("#developerMenuButton").style.display=unlocked?"block":"none"
 }
+
+function developerAccessVisibilityText(){
+return state?.language==="th"?"แสดงรหัสที่พิมพ์":"Show access code"
+}
+function syncDeveloperAccessVisibilityText(){
+const text=$("#"+DEV_ACCESS_VISIBILITY_TEXT_ID);
+if(text)text.textContent=developerAccessVisibilityText()
+}
+function installDeveloperAccessVisibility(){
+const input=$("#devAccessCode");
+const status=$("#devAccessStatus");
+if(!input||!status)return null;
+let toggle=$("#"+DEV_ACCESS_VISIBILITY_ID);
+if(toggle){syncDeveloperAccessVisibilityText();return toggle}
+
+const label=document.createElement("label");
+label.className="dev-access-visibility";
+label.style.display="flex";
+label.style.alignItems="center";
+label.style.gap="10px";
+label.style.margin="12px 0 2px";
+label.style.color="#d8d0c4";
+label.style.fontSize="13px";
+label.style.lineHeight="1.35";
+label.style.cursor="pointer";
+label.style.userSelect="none";
+label.style.touchAction="manipulation";
+
+toggle=document.createElement("input");
+toggle.id=DEV_ACCESS_VISIBILITY_ID;
+toggle.type="checkbox";
+toggle.setAttribute("aria-controls","devAccessCode");
+toggle.style.width="18px";
+toggle.style.height="18px";
+toggle.style.margin="0";
+toggle.style.flex="0 0 auto";
+toggle.style.accentColor="var(--gold,#ddb56d)";
+
+const text=document.createElement("span");
+text.id=DEV_ACCESS_VISIBILITY_TEXT_ID;
+text.textContent=developerAccessVisibilityText();
+
+label.append(toggle,text);
+status.parentNode.insertBefore(label,status);
+toggle.addEventListener("change",()=>{
+ input.type=toggle.checked?"text":"password";
+ input.focus({preventScroll:true})
+});
+return toggle
+}
+function resetDeveloperAccessVisibility(){
+const input=$("#devAccessCode");
+const toggle=installDeveloperAccessVisibility();
+if(input)input.type="password";
+if(toggle)toggle.checked=false;
+syncDeveloperAccessVisibilityText()
+}
+
 function openDeveloperAccess(){
+resetDeveloperAccessVisibility();
 $("#devAccessCode").value="";
 $("#devAccessStatus").textContent="";
 $("#devAccessModal").classList.add("open");
