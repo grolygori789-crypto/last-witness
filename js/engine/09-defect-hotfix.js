@@ -23,6 +23,11 @@ script("js/engine/15-thai-localization.js?v=0152","lwThaiLocalizationScript",()=
   "lwTargetedQCFixesScript",
   ()=>Boolean(window.LastWitnessTargetedQCFixes?.version==="0.15.3"&&window.LastWitnessTargetedQCFixes?.installed)
  ).catch(error=>console.error("LAST WITNESS targeted QC failed to load",error)))
+ .then(()=>script(
+  "js/engine/17-police-portrait-alignment.js?v=0154",
+  "lwPolicePortraitAlignmentScript",
+  ()=>Boolean(window.LastWitnessPolicePortraitAlignment?.version==="0.15.4"&&window.LastWitnessPolicePortraitAlignment?.installed)
+ ).catch(error=>console.error("LAST WITNESS police portrait alignment failed to load",error)))
  .then(()=>script("js/chapters/chapter-04/01-afterimage.js?v=0132","lwChapter04Phase01Script",()=>Boolean(window.LastWitnessChapter4Phase1)))
  .then(()=>{
   stylesheet("css/chapter-04-phase-02.css?v=0149","lwChapter04Phase02Style");
