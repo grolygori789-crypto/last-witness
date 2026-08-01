@@ -1,6 +1,6 @@
-/* LAST WITNESS — Legacy Compatibility Shim + Runtime Bootstrap 0.15.3
+/* LAST WITNESS - Legacy Compatibility Shim + Runtime Bootstrap 0.16.0
  * Loads approved localization and targeted QC before dynamic Chapter IV modules.
- * Targeted QC failure is non-blocking so Chapter IV remains playable.
+ * Existing Phase I and Phase II order is preserved. Packet Provenance loads last.
  * No repair polling, scene mutation or gameplay override is installed here.
  */
 (function(){
@@ -34,5 +34,10 @@ script("js/engine/15-thai-localization.js?v=0152","lwThaiLocalizationScript",()=
   return script("js/chapters/chapter-04/02a-jakarta-portrait-guard.js?v=0150","lwChapter04Phase02PortraitGuard",()=>Boolean(window.LastWitnessJakartaPortraitGuard?.version==="0.15.0"&&window.LastWitnessJakartaPortraitGuard?.installed))
  })
  .then(()=>script("js/chapters/chapter-04/02-jakarta-arrival.js?v=0147","lwChapter04Phase02Script",()=>Boolean(window.LastWitnessChapter4Phase2)))
+ .then(()=>{
+  stylesheet("css/chapter-04-phase-03.css?v=0160","lwChapter04Phase03Style");
+  return script("js/chapters/chapter-04/03-packet-provenance.js?v=0160","lwChapter04Phase03Script",()=>Boolean(window.LastWitnessChapter4Phase3?.version==="0.16.0"))
+   .catch(error=>console.error("LAST WITNESS Packet Provenance failed to load",error))
+ })
  .catch(error=>console.error("LAST WITNESS runtime bootstrap failed",error));
 })();
