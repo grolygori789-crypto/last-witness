@@ -1,13 +1,13 @@
-/* LAST WITNESS - Chapter IV / Packet Provenance 0.16.0
+/* LAST WITNESS - Chapter IV / Packet Provenance 0.16.1
  * Seamless continuation inside the existing Jakarta Verification Lab.
  * Script load is story-state neutral. Phase state is created only on entry,
  * resume, or an intentional Developer jump.
  */
 (function(){
 "use strict";
-if(window.LastWitnessChapter4Phase3?.version==="0.16.0")return;
+if(window.LastWitnessChapter4Phase3?.version==="0.16.1")return;
 
-const BUILD="0.16.0";
+const BUILD="0.16.1";
 const LAB="jakartaVerificationLab";
 const LEGACY_COMPLETE="jakartaPhase2Complete";
 const COMPLETE="jakartaPacketProvenanceComplete";
@@ -67,6 +67,8 @@ function defaults(){return{
  provenanceDebriefSeen:false,
  evidenceCollected:[],
  evidenceViewed:[],
+ evidenceDebriefSeen:false,
+ evidenceReturnStage:"evidence",
  activeEvidenceId:"",
  authorshipMatrix:{},
  authorshipAttempts:0,
@@ -96,7 +98,7 @@ function ensureEntryState(){
  Object.keys(p.authorshipMatrix).forEach(id=>{if(!MATRIX_IDS.includes(id)||!MATRIX_LEVELS.includes(p.authorshipMatrix[id]))delete p.authorshipMatrix[id]});
  if(p.complete){
   p.started=true;p.introComplete=true;p.captureAuthorized=true;p.principleChosen=true;p.principleApplied=true;
-  p.provenanceComplete=true;p.provenanceDebriefSeen=true;p.evidenceCollected=[...EVIDENCE_IDS];p.evidenceViewed=[...EVIDENCE_IDS];
+  p.provenanceComplete=true;p.provenanceDebriefSeen=true;p.evidenceCollected=[...EVIDENCE_IDS];p.evidenceViewed=[...EVIDENCE_IDS];p.evidenceDebriefSeen=true;
   p.authorshipComplete=true;p.legalDebriefSeen=true;p.brokerLeadEstablished=true;p.closingDialogueComplete=true;p.stage="complete"
  }
  return p
@@ -216,7 +218,7 @@ function copy(){return{
  provenanceTitle:tr("PACKET PROVENANCE RECONSTRUCTION","สร้างที่มาของ PACKET กลับคืน"),
  provenanceHelp:tr("Assign every fragment to the layer it can actually prove.","จัด Fragment ทุกชิ้นเข้ากับชั้นที่มันพิสูจน์ได้จริง"),
  reset:tr("RESET","เริ่มใหม่"),confirm:tr("CONFIRM MAPPING","ยืนยันการจัดชั้น"),close:tr("CLOSE","ปิด"),
- evidenceEye:tr("EVIDENCE REVIEW","ตรวจสอบหลักฐาน"),addEvidence:tr("ADD TO CASE FILE","เพิ่มในแฟ้มคดี"),reviewed:tr("REVIEWED","ตรวจสอบแล้ว"),nextEvidence:tr("NEXT RECORD","รายการถัดไป"),
+ evidenceEye:tr("EVIDENCE REVIEW","ตรวจสอบหลักฐาน"),addEvidence:tr("ADD TO CASE FILE","เพิ่มในแฟ้มคดี"),reviewed:tr("REVIEWED","ตรวจสอบแล้ว"),previousEvidence:tr("PREVIOUS RECORD","รายการก่อนหน้า"),nextEvidence:tr("NEXT RECORD","รายการถัดไป"),continueMatrix:tr("CONTINUE TO MATRIX","ไปยังตารางวิเคราะห์"),reviewEvidence:tr("REVIEW EVIDENCE","ตรวจสอบหลักฐาน"),
  matrixEye:tr("CONFIDENCE MATRIX","ตารางระดับความเชื่อมั่น"),matrixTitle:tr("AUTHORSHIP / DEPLOYMENT MATRIX","AUTHORSHIP / DEPLOYMENT MATRIX"),matrixHelp:tr("Classify each claim as proven, supported or unresolved.","จัดระดับแต่ละข้ออ้างว่า พิสูจน์แล้ว มีหลักฐานสนับสนุน หรือยังไม่คลี่คลาย"),matrixConfirm:tr("CONFIRM CONFIDENCE LEVELS","ยืนยันระดับความเชื่อมั่น"),
  completeEye:tr("CHAPTER IV · JAKARTA VERIFICATION LAB","บทที่ IV · JAKARTA VERIFICATION LAB"),completeTitle:tr("PACKET PROVENANCE COMPLETE","วิเคราะห์ที่มาของ PACKET เสร็จสิ้น"),
  completeBody:tr("The tool family, broker route and Bangkok-linked deployment conditions are separated. The decision owner remains unresolved.","แยก Tool Family, Broker Route และเงื่อนไขการ Deploy ที่เชื่อมกรุงเทพฯ ออกจากกันแล้ว ส่วนเจ้าของการตัดสินใจยังไม่คลี่คลาย"),
@@ -276,11 +278,15 @@ function setProgress(value){
 function paint(){
  const p=phaseState();if(!p?.started)return;
  const c=copy();$("#jakartaVerificationLabLocation")&&($("#jakartaVerificationLabLocation").textContent=c.location);$("#jakartaVerificationLabScene")&&($("#jakartaVerificationLabScene").textContent=c.scene);$("#jakartaVerificationLabObjective")&&($("#jakartaVerificationLabObjective").textContent=objectiveText());
- const action=$("#jakartaVerificationLabAction");if(action){action.hidden=true;action.textContent=""}
+ const action=$("#jakartaVerificationLabAction");if(action){
+  const overlayOpen=principleOpen||provenanceOpen||evidenceOpen||matrixOpen;
+  const canReview=p.provenanceComplete&&!p.complete&&!dialogue&&!overlayOpen;
+  action.hidden=!canReview;action.textContent=canReview?c.reviewEvidence:"";if(canReview)action.onclick=openEvidence
+ }
  setProgress(progressValue());syncAudio()
 }
 function updateLanguage(){
- const c=copy(),map={ch4P3PrincipleTitle:c.principleTitle,ch4P3ProvenanceEye:c.provenanceEye,ch4P3ProvenanceTitle:c.provenanceTitle,ch4P3ProvenanceHelp:c.provenanceHelp,ch4P3ProvenanceReset:c.reset,ch4P3ProvenanceConfirm:c.confirm,ch4P3EvidenceEye:c.evidenceEye,ch4P3MatrixEye:c.matrixEye,ch4P3MatrixTitle:c.matrixTitle,ch4P3MatrixHelp:c.matrixHelp,ch4P3MatrixReset:c.reset,ch4P3MatrixConfirm:c.matrixConfirm,ch4P3CompleteEye:c.completeEye,ch4P3CompleteTitle:c.completeTitle,ch4P3CompleteBody:c.completeBody,ch4P3Next:c.next,ch4P3ReturnTitle:c.returnTitle};
+ const c=copy(),map={ch4P3PrincipleTitle:c.principleTitle,ch4P3ProvenanceEye:c.provenanceEye,ch4P3ProvenanceTitle:c.provenanceTitle,ch4P3ProvenanceHelp:c.provenanceHelp,ch4P3ProvenanceReset:c.reset,ch4P3ProvenanceConfirm:c.confirm,ch4P3EvidenceEye:c.evidenceEye,ch4P3EvidenceClose:c.close,ch4P3EvidencePrevious:c.previousEvidence,ch4P3EvidenceNext:c.nextEvidence,ch4P3EvidenceContinue:c.continueMatrix,ch4P3MatrixEye:c.matrixEye,ch4P3MatrixTitle:c.matrixTitle,ch4P3MatrixHelp:c.matrixHelp,ch4P3MatrixReset:c.reset,ch4P3MatrixConfirm:c.matrixConfirm,ch4P3CompleteEye:c.completeEye,ch4P3CompleteTitle:c.completeTitle,ch4P3CompleteBody:c.completeBody,ch4P3Next:c.next,ch4P3ReturnTitle:c.returnTitle};
  Object.entries(map).forEach(([id,value])=>{const node=$("#"+id);if(node)node.textContent=value});
  $$('[data-ch4-p3-principle]').forEach(button=>button.textContent=c[button.dataset.ch4P3Principle]);
  if(dialogue)renderDialogue();if(provenanceOpen)renderProvenance();if(evidenceOpen)renderEvidence();if(matrixOpen)renderMatrix();paint();setBuild()
@@ -321,20 +327,35 @@ function renderEvidence(){
  const p=ensureEntryState(),id=EVIDENCE_IDS[evidenceIndex]||EVIDENCE_IDS[0],data=evidenceData(id);if(!p||!data)return;
  p.activeEvidenceId=id;if(!p.evidenceViewed.includes(id))p.evidenceViewed.push(id);
  $("#ch4P3EvidenceTitle")&&($("#ch4P3EvidenceTitle").textContent=data.title);$("#ch4P3EvidenceCode")&&($("#ch4P3EvidenceCode").textContent=data.code);$("#ch4P3EvidenceBody")&&($("#ch4P3EvidenceBody").textContent=data.body);$("#ch4P3EvidenceProof")&&($("#ch4P3EvidenceProof").textContent=data.proof);
- const collected=p.evidenceCollected.includes(id),button=$("#ch4P3EvidenceCollect");if(button){button.textContent=collected?copy().reviewed:copy().addEvidence;button.disabled=collected}
+ const c=copy(),collected=p.evidenceCollected.includes(id),allCollected=p.evidenceCollected.length===EVIDENCE_IDS.length;
+ const collect=$("#ch4P3EvidenceCollect");if(collect){collect.textContent=c.addEvidence;collect.hidden=collected;collect.disabled=false}
+ const reviewed=$("#ch4P3EvidenceReviewed");if(reviewed){reviewed.textContent=c.reviewed;reviewed.hidden=!collected}
+ const proceed=$("#ch4P3EvidenceContinue");if(proceed){proceed.textContent=c.continueMatrix;proceed.hidden=!allCollected}
  $("#ch4P3EvidenceCounter")&&($("#ch4P3EvidenceCounter").textContent=`${evidenceIndex+1} / ${EVIDENCE_IDS.length}`);
- const next=$("#ch4P3EvidenceNext");if(next){next.textContent=copy().nextEvidence;next.hidden=evidenceIndex>=EVIDENCE_IDS.length-1&&!collected}
+ $("#ch4P3EvidencePrevious")&&($("#ch4P3EvidencePrevious").textContent=c.previousEvidence);$("#ch4P3EvidenceNext")&&($("#ch4P3EvidenceNext").textContent=c.nextEvidence);
  paint();save()
 }
-function openEvidence(){if(dialogue)return;evidenceOpen=true;const p=ensureEntryState();evidenceIndex=Math.max(0,EVIDENCE_IDS.indexOf(p?.activeEvidenceId||""));$("#ch4P3Evidence")?.classList.add("open");$("#ch4P3Evidence")?.setAttribute("aria-hidden","false");renderEvidence();playInspection();syncAudio()}
-function closeEvidence(){evidenceOpen=false;$("#ch4P3Evidence")?.classList.remove("open");$("#ch4P3Evidence")?.setAttribute("aria-hidden","true");syncAudio()}
-function collectEvidence(){
- const p=ensureEntryState(),id=EVIDENCE_IDS[evidenceIndex];if(!p||!id)return;
- if(!p.evidenceCollected.includes(id))p.evidenceCollected.push(id);try{gs()?.found?.add?.("ch4_p3_"+id)}catch(_){};paint();save();renderEvidence();
- if(p.evidenceCollected.length===EVIDENCE_IDS.length){closeEvidence();p.stage="evidence-debrief";setCheckpoint("ch4_phase3_evidence_complete");talk(D.evidenceDebrief,()=>{p.stage="matrix";setCheckpoint("ch4_phase3_matrix");openMatrix()});return}
- if(evidenceIndex<EVIDENCE_IDS.length-1){evidenceIndex++;playInspection();renderEvidence()}
+function openEvidence(){
+ if(dialogue)return;const p=ensureEntryState();if(!p)return;
+ if(p.stage!=="evidence-review")p.evidenceReturnStage=p.stage||"evidence";p.stage="evidence-review";evidenceOpen=true;evidenceIndex=Math.max(0,EVIDENCE_IDS.indexOf(p.activeEvidenceId||""));
+ $("#ch4P3Evidence")?.classList.add("open");$("#ch4P3Evidence")?.setAttribute("aria-hidden","false");renderEvidence();playInspection();syncAudio()
 }
-function nextEvidence(){if(evidenceIndex<EVIDENCE_IDS.length-1){evidenceIndex++;playInspection();renderEvidence()}}
+function closeEvidence(){
+ const p=ensureEntryState();evidenceOpen=false;$("#ch4P3Evidence")?.classList.remove("open");$("#ch4P3Evidence")?.setAttribute("aria-hidden","true");
+ if(p?.stage==="evidence-review")p.stage=p.evidenceReturnStage||"evidence";paint();save();syncAudio()
+}
+function collectEvidence(){
+ const p=ensureEntryState(),id=EVIDENCE_IDS[evidenceIndex];if(!p||!id||p.evidenceCollected.includes(id))return;
+ p.evidenceCollected.push(id);try{gs()?.found?.add?.("ch4_p3_"+id)}catch(_){};setCheckpoint("ch4_phase3_evidence_"+id);renderEvidence();paint();save()
+}
+function previousEvidence(){evidenceIndex=(evidenceIndex-1+EVIDENCE_IDS.length)%EVIDENCE_IDS.length;playInspection();renderEvidence()}
+function nextEvidence(){evidenceIndex=(evidenceIndex+1)%EVIDENCE_IDS.length;playInspection();renderEvidence()}
+function continueToMatrix(){
+ let p=ensureEntryState();if(!p||p.evidenceCollected.length!==EVIDENCE_IDS.length)return;
+ closeEvidence();p=ensureEntryState();if(!p)return;p.stage="evidence-debrief";setCheckpoint("ch4_phase3_evidence_complete");
+ const finish=()=>{p.evidenceDebriefSeen=true;p.stage="matrix";setCheckpoint("ch4_phase3_matrix");openMatrix()};
+ if(p.evidenceDebriefSeen){finish();return}talk(D.evidenceDebrief,finish);paint()
+}
 
 function matrixStatus(text="",kind=""){const node=$("#ch4P3MatrixStatus");if(!node)return;node.textContent=text;node.className="ch4-p3-status"+(kind?" "+kind:"")}
 function renderMatrix(){
@@ -380,8 +401,10 @@ function enterLab(){
  p.started=true;p.captureAuthorized=true;s.chapter=4;s.screen=LAB;document.title="Last Witness — Shadow of the Truth";safeShow(LAB);setBuild();updateLanguage();paint();
  if(p.complete){showComplete();return}
  if(p.authorshipComplete){talk(D.legalDebrief,completePhase);return}
- if(Object.keys(p.authorshipMatrix).length||p.evidenceCollected.length===EVIDENCE_IDS.length){openMatrix();return}
- if(p.provenanceComplete){if(p.evidenceCollected.length<EVIDENCE_IDS.length)openEvidence();else openMatrix();return}
+ if(p.stage==="evidence-review"){openEvidence();return}
+ if(p.stage==="evidence-debrief"){const finish=()=>{p.evidenceDebriefSeen=true;p.stage="matrix";setCheckpoint("ch4_phase3_matrix");openMatrix()};if(p.evidenceDebriefSeen)finish();else talk(D.evidenceDebrief,finish);return}
+ if(Object.keys(p.authorshipMatrix).length||p.stage==="matrix"||p.evidenceDebriefSeen){openMatrix();return}
+ if(p.provenanceComplete){openEvidence();return}
  if(p.principleChosen){openProvenance();return}
  if(p.introComplete){openPrinciple();return}
  transitionTimer=setTimeout(startOpening,180)
@@ -415,7 +438,7 @@ function appendCaseEvidence(){
 }
 
 function installHandoffCapture(){
- if(window.__lwCh4P3Handoff0160)return;window.__lwCh4P3Handoff0160=true;
+ if(window.__lwCh4P3Handoff0161)return;window.__lwCh4P3Handoff0161=true;
  document.addEventListener("click",event=>{
   const box=event.target.closest?.("#jakartaVerificationLabDialogue");if(!box)return;
   const s=gs(),p2=s?.chapter4?.phase2;if(!p2?.verificationComplete||p2.closingDialogueComplete||phaseState()?.started)return;
@@ -430,7 +453,7 @@ function installHandoffCapture(){
 function isSavedPhase3(data){return Boolean(data?.chapter4?.phase3?.started||String(data?.checkpoint||"").startsWith("ch4_phase3_")||data?.screen===COMPLETE)}
 function isLegacyHandoff(data){return Boolean(data?.screen===LEGACY_COMPLETE&&data?.chapter4?.phase2?.complete)}
 function installSaveBridge(){
- if(window.__lwChapter4Phase3SaveBridge0160)return;window.__lwChapter4Phase3SaveBridge0160=true;
+ if(window.__lwChapter4Phase3SaveBridge0161)return;window.__lwChapter4Phase3SaveBridge0161=true;
  const baseRestore=typeof restore==="function"?restore:window.restore;
  if(typeof baseRestore==="function"){
   const wrapped=function(data){const owns=isSavedPhase3(data)||isLegacyHandoff(data);if(owns)document.body.classList.add("lw-ch4-p3-restoring");const result=baseRestore.apply(this,arguments);if(owns)setTimeout(()=>{if(isLegacyHandoff(data)&&!data?.chapter4?.phase3?.started)startFromPhase2();else resumeFromState(data.screen)},260);return result};
@@ -443,7 +466,7 @@ function installSaveBridge(){
  }
 }
 function installDevJump(){
- const grid=$("#developerModal .dev-grid");if(!grid)return;let button=grid.querySelector('[data-dev-jump="chapter4PacketProvenance"]');if(!button){button=document.createElement("button");button.className="dev-button";button.type="button";button.dataset.devJump="chapter4PacketProvenance";grid.appendChild(button)}button.textContent=tr("Chapter IV · Packet Provenance","บทที่ IV · ที่มาของ Packet");if(button.dataset.lwBound0160==="1")return;button.dataset.lwBound0160="1";button.addEventListener("click",event=>{event.preventDefault();event.stopPropagation();event.stopImmediatePropagation();$("#developerModal")?.classList.remove("open");startFreshForDev()},true)
+ const grid=$("#developerModal .dev-grid");if(!grid)return;let button=grid.querySelector('[data-dev-jump="chapter4PacketProvenance"]');if(!button){button=document.createElement("button");button.className="dev-button";button.type="button";button.dataset.devJump="chapter4PacketProvenance";grid.appendChild(button)}button.textContent=tr("Chapter IV · Packet Provenance","บทที่ IV · ที่มาของ Packet");if(button.dataset.lwBound0161==="1")return;button.dataset.lwBound0161="1";button.addEventListener("click",event=>{event.preventDefault();event.stopPropagation();event.stopImmediatePropagation();$("#developerModal")?.classList.remove("open");startFreshForDev()},true)
 }
 
 function inject(){
@@ -451,7 +474,7 @@ function inject(){
  game.insertAdjacentHTML("beforeend",`
  <div id="ch4P3Principle" class="modal ch4-p3-modal ch4-p3-principle" aria-hidden="true"><div class="modal-card"><div class="eyebrow">BENEDICT · INVESTIGATIVE LINE</div><h3 id="ch4P3PrincipleTitle"></h3><div class="ch4-p3-principle-options">${["lineage","broker","condition"].map(id=>`<button type="button" data-ch4-p3-principle="${id}"></button>`).join("")}</div></div></div>
  <div id="ch4P3Provenance" class="modal ch4-p3-modal ch4-p3-provenance" aria-hidden="true"><div class="modal-card"><header><div><div id="ch4P3ProvenanceEye" class="eyebrow"></div><h3 id="ch4P3ProvenanceTitle"></h3></div><button id="ch4P3ProvenanceClose" class="ghost" type="button">×</button></header><p id="ch4P3ProvenanceHelp" class="ch4-p3-help"></p><div id="ch4P3ProvenanceBody" class="ch4-p3-scroll"></div><div id="ch4P3ProvenanceStatus" class="ch4-p3-status" aria-live="polite"></div><footer><button id="ch4P3ProvenanceReset" class="ghost" type="button"></button><button id="ch4P3ProvenanceConfirm" class="primary" type="button"></button></footer></div></div>
- <div id="ch4P3Evidence" class="modal ch4-p3-modal ch4-p3-evidence" aria-hidden="true"><div class="modal-card"><header><div><div id="ch4P3EvidenceEye" class="eyebrow"></div><h3 id="ch4P3EvidenceTitle"></h3></div><span id="ch4P3EvidenceCounter"></span></header><div class="ch4-p3-evidence-object"><div class="ch4-p3-code" id="ch4P3EvidenceCode"></div><div class="ch4-p3-signal"><i></i><i></i><i></i><i></i><i></i></div></div><p id="ch4P3EvidenceBody"></p><strong id="ch4P3EvidenceProof"></strong><footer><button id="ch4P3EvidenceNext" class="ghost" type="button"></button><button id="ch4P3EvidenceCollect" class="primary" type="button"></button></footer></div></div>
+ <div id="ch4P3Evidence" class="modal ch4-p3-modal ch4-p3-evidence" aria-hidden="true"><div class="modal-card"><header><div><div id="ch4P3EvidenceEye" class="eyebrow"></div><h3 id="ch4P3EvidenceTitle"></h3></div><div class="ch4-p3-evidence-head-actions"><span id="ch4P3EvidenceReviewed" class="ch4-p3-reviewed" hidden></span><span id="ch4P3EvidenceCounter"></span><button id="ch4P3EvidenceClose" class="ghost" type="button"></button></div></header><div class="ch4-p3-evidence-scroll"><div class="ch4-p3-evidence-object"><div class="ch4-p3-code" id="ch4P3EvidenceCode"></div><div class="ch4-p3-signal"><i></i><i></i><i></i><i></i><i></i></div></div><p id="ch4P3EvidenceBody"></p><strong id="ch4P3EvidenceProof"></strong></div><footer><button id="ch4P3EvidencePrevious" class="ghost" type="button"></button><button id="ch4P3EvidenceNext" class="ghost" type="button"></button><button id="ch4P3EvidenceCollect" class="primary ch4-p3-evidence-primary" type="button"></button><button id="ch4P3EvidenceContinue" class="primary ch4-p3-evidence-primary" type="button" hidden></button></footer></div></div>
  <div id="ch4P3Matrix" class="modal ch4-p3-modal ch4-p3-matrix" aria-hidden="true"><div class="modal-card"><header><div><div id="ch4P3MatrixEye" class="eyebrow"></div><h3 id="ch4P3MatrixTitle"></h3></div><button id="ch4P3MatrixClose" class="ghost" type="button">×</button></header><p id="ch4P3MatrixHelp" class="ch4-p3-help"></p><div id="ch4P3MatrixBody" class="ch4-p3-scroll"></div><div id="ch4P3MatrixStatus" class="ch4-p3-status" aria-live="polite"></div><footer><button id="ch4P3MatrixReset" class="ghost" type="button"></button><button id="ch4P3MatrixConfirm" class="primary" type="button"></button></footer></div></div>
  <section id="${COMPLETE}" class="screen ch4-p3-complete"><div class="ch4-p3-complete-card"><div id="ch4P3CompleteEye" class="eyebrow"></div><h2 id="ch4P3CompleteTitle"></h2><div class="ch4-p3-rule"></div><p id="ch4P3CompleteBody"></p><div class="ch4-p3-complete-grid"><div><span>SOURCE BUILD</span><b>PALIMPSEST FAMILY</b></div><div><span>BROKER HANDLE</span><b>UNVERIFIED</b></div><div><span>DEPLOYMENT CONDITION</span><b>BANGKOK-LINKED</b></div><div><span>DECISION OWNER</span><b>UNRESOLVED</b></div></div><strong id="ch4P3Next"></strong><button id="ch4P3ReturnTitle" class="primary" type="button"></button></div></section>`);
  bindElements();updateLanguage()
@@ -459,7 +482,7 @@ function inject(){
 function bindElements(){
  $$('[data-ch4-p3-principle]').forEach(button=>button.onclick=()=>choosePrinciple(button.dataset.ch4P3Principle));
  $("#ch4P3ProvenanceClose").onclick=()=>closeProvenance(true);$("#ch4P3ProvenanceReset").onclick=resetProvenance;$("#ch4P3ProvenanceConfirm").onclick=confirmProvenance;
- $("#ch4P3EvidenceNext").onclick=nextEvidence;$("#ch4P3EvidenceCollect").onclick=collectEvidence;
+ $("#ch4P3EvidenceClose").onclick=closeEvidence;$("#ch4P3EvidencePrevious").onclick=previousEvidence;$("#ch4P3EvidenceNext").onclick=nextEvidence;$("#ch4P3EvidenceCollect").onclick=collectEvidence;$("#ch4P3EvidenceContinue").onclick=continueToMatrix;$("#ch4P3Evidence").onclick=event=>{if(event.target.id==="ch4P3Evidence")closeEvidence()};
  $("#ch4P3MatrixClose").onclick=()=>closeMatrix(true);$("#ch4P3MatrixReset").onclick=resetMatrix;$("#ch4P3MatrixConfirm").onclick=confirmMatrix;
  $("#ch4P3ReturnTitle").onclick=returnToTitle
 }
