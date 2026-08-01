@@ -2,19 +2,20 @@
 
 > **MASTER REFERENCE / CURRENT SOURCE OF TRUTH**
 >
-> **Document revision:** 2026-07-30 · Canon Addendum 19:22 ICT  
-> **Replaces planning blob:** `9b1942b78736b358c0b9478c8af2ef9075d1cdeb`  
-> **Owner-confirmed playable baseline:** `CHAPTER IV · PHASE II COMPLETE`  
-> **Latest owner-accepted Chapter IV module build:** `0.14.7`  
-> **Production branch:** `restore-game-recovered`  
-> **Current legitimate endpoint:** `CHAPTER IV · PHASE II COMPLETE -> NEXT: PACKET PROVENANCE`  
-> **Immediate next production target:** `CHAPTER IV · PHASE III — PACKET PROVENANCE`  
+> **Document revision:** 2026-08-01 20:13 ICT
+> **Replaces planning blob:** `b399d9d24f0e413f9f7a47737a08d577b327957a`
+> **Repository:** `grolygori789-crypto/last-witness`
+> **Production and Default branch:** `production-rebuild`
+> **Owner-approved runtime baseline commit:** `ffdc94777c5fbaefdc281f1148b59aff3adf8abe`
+> **Owner-confirmed playable baseline:** `CHAPTER IV · PHASE II COMPLETE`
+> **Latest owner-accepted Chapter IV module build:** `0.14.7`
+> **Current legitimate endpoint:** `CHAPTER IV · PHASE II COMPLETE -> NEXT: PACKET PROVENANCE`
+> **Immediate next production target:** `CHAPTER IV · PHASE III - PACKET PROVENANCE`
+> **Baseline status:** `OWNER-TESTED · OWNER-APPROVED · FROZEN UNTIL DIRECT OWNER INSTRUCTION`
 >
-> GitHub runtime on `restore-game-recovered` is the Source of Truth for deployed code, assets, paths and load order.
+> The runtime at commit `ffdc94777c5fbaefdc281f1148b59aff3adf8abe` is the approved code and asset baseline. Uploading this planning document will create a later documentation-only commit. That later commit must not be interpreted as a new runtime build unless code or assets are explicitly changed and separately approved.
 >
-> This file is the Source of Truth for Canon, owner-confirmed status, owner-level secrets, workflow, technical governance, chapter continuity, minigame logic, future plot architecture, ending architecture and the exact continuation point for a new chat.
->
-> **This revision adds owner-confirmed Chapter IV structure and visual-story Canon:** Chapter IV has eight phases; North becomes a direct elimination target because her analysis threatens the decision owner; Phase V contains a natural undercover resort/pool surveillance sequence in which North, Cheryl and Maya use tourist cover and wear distinct bikini styles consistent with their bodies and personalities. This is a story-integrated operation, not disconnected fan service.
+> GitHub runtime on `production-rebuild` is the Source of Truth for code, assets, paths, cache queries and load order. This file is the Source of Truth for Canon, owner-confirmed status, owner-level secrets, workflow, technical governance, future architecture and the exact continuation point for a new chat.
 
 ---
 
@@ -25,7 +26,8 @@
 - Game: **LAST WITNESS**
 - Studio: **BENEDICT INTERACTIVE**
 - Repository: `grolygori789-crypto/last-witness`
-- Production branch: `restore-game-recovered`
+- Production branch: `production-rebuild`
+- Default branch: `production-rebuild`
 - Live game: `https://grolygori789-crypto.github.io/last-witness/`
 - Planning filename: `GAME_MASTER_PLAN.md`
 - Platform: mobile-first browser game
@@ -33,9 +35,13 @@
 - Primary owner test platform: Android Chrome
 - Primary orientation: portrait 9:16
 - Genre: Narrative Detective Adventure / Interactive Crime Investigation
-- Art direction: neo-noir graphic novel, cel-shaded, heavy ink, angular shadows, cinematic crime-adventure, readable on mobile
+- Art direction: neo-noir graphic novel, cel-shaded, heavy ink, angular shadows, cinematic crime-adventure and readable on mobile
 
-## Current playable content
+## Current approved state
+
+The owner has played the live game on Android Chrome from Chapter I through the complete Chapter IV Phase II endpoint and approved the result.
+
+Approved playable content:
 
 1. Chapter I complete
 2. Chapter II complete
@@ -49,16 +55,37 @@ Current endpoint:
 - `JAKARTA ARRIVAL`
 - `NEXT · PHASE III · PACKET PROVENANCE`
 
-There is no playable Chapter IV Phase III yet.
+There is no approved playable Chapter IV Phase III in Production.
+
+## Absolute freeze rule
+
+The approved runtime baseline must not be changed until the owner directly orders a specific change.
+
+Do not:
+
+- restore to another commit
+- move the branch reference
+- create or delete branches
+- merge or rebase
+- edit approved Phase I or Phase II files
+- replace approved assets
+- modify GitHub Pages settings
+- change Default Branch
+- preload Phase III
+- add a repair layer, listener, observer, timer or global state mutation
+- treat an old Phase III implementation as approved Production
+
+A request to inspect, plan, explain or create a local file is not permission to modify GitHub.
 
 ## Immediate production order
 
-1. Implement Chapter IV Phase III from the approved Phase II handoff.
-2. Do not rebuild Phase I or Phase II.
-3. Phase III reuses the Jakarta Verification Lab and existing approved audio/portraits unless a later blueprint proves a new asset is necessary.
-4. The first clearly missing custom asset package begins with **Chapter IV Phase IV — THE MAN BEHIND THE ALIAS**, particularly Arman’s physical reveal and any new location/audio required by the approved Phase IV blueprint.
-5. Phase V requires its own resort/pool/coastal surveillance asset blueprint before image or audio production.
-6. Do not request or generate broad asset batches before the relevant phase blueprint is locked.
+1. Preserve the frozen Chapter I through Chapter IV Phase II baseline.
+2. Audit the Phase II handoff and the proposed Phase III blueprint.
+3. Obtain owner approval of the Phase III implementation blueprint before coding or asset production.
+4. Implement Phase III locally with the smallest safe scope.
+5. Test static structure, runtime flow, Save/Load, Character Journal gates, audio lifecycle and Developer Mode before delivery.
+6. Deliver a ZIP for owner upload. Do not write to GitHub without explicit permission in the current turn.
+7. Owner Android Chrome testing remains the final acceptance gate.
 
 ## Core investigative principle
 
@@ -87,60 +114,74 @@ Never collapse these layers into one person without corroborated evidence.
 - Refer to the assistant as **บิ๊ว**
 - Use a feminine Thai voice
 - Use direct, natural Thai
-- Do not make the owner repeat facts stored in this file
+- Do not make the owner repeat facts already stored here
 - Do not pretend uncertainty is certainty
 - Do not call a static check an Android test
 - Do not claim success until the owner tests the build
 - Do not claim a file exists before it has actually been created
-- Do not say work is complete when only an idea, script or attempted command exists
-- Do not ask the owner to perform quality control that should have been done before delivery
+- Do not call an attempted command or proposed script a completed deliverable
 - Keep the owner informed during long tasks
-- If a tool or filesystem method fails, state the failure and switch to a simpler method
-- Never let the owner wait through repeated failed attempts with no artifact
+- Report permission, filesystem, connector and runtime limitations immediately
+- After a failed method, diagnose the cause before trying again
+- After two failures of the same approach, stop and switch methods
+- Do not leave the owner waiting without a concrete artifact
+- Never tell the owner that Production is safe unless the relevant behavior has been verified
+- Distinguish code evidence, simulated testing, browser testing and owner-device testing
 
 ## Mandatory efficiency discipline
 
 For every task:
 
-1. identify the smallest actual problem
-2. inspect the current in-game file before considering regeneration
-3. treat owner-supplied images as references unless the owner explicitly says to replace the game asset with that image
-4. patch the minimum number of files
-5. do not rebuild an entire character set to solve a CSS or color problem unless inspection proves the source assets are wrong
-6. do not touch working characters while repairing another character
-7. after one failed approach, diagnose why
-8. after two failed attempts, stop repeating the same method and switch to a simpler verified approach
-9. if a filesystem or permission error blocks progress, report it immediately
-10. produce a concrete artifact before claiming completion
-11. include QA evidence, changed-file scope and testing limits
-12. avoid unnecessary web searches, conversion pipelines, asset generation or repackaging when a local edit is sufficient
-13. never use fragile automation when a direct deterministic edit is safer
-14. do not regenerate approved art merely because a reference was supplied for color, scale or composition guidance
-15. do not let “sexy scene” become an excuse to ignore character identity, story function or project tone
+1. identify the smallest real problem
+2. read this entire file
+3. inspect current GitHub Production files
+4. inspect the actual implementation owner
+5. patch the minimum number of files
+6. prefer a direct deterministic fix over fragile automation
+7. treat owner-supplied images as references unless replacement is explicitly requested
+8. solve CSS defects in CSS before regenerating assets
+9. do not touch working characters while repairing another character
+10. do not regenerate approved art without direct instruction
+11. produce the artifact before claiming completion
+12. include QA evidence and exact testing limits
+13. avoid broad searches or rebuilding when a local edit is enough
+14. do not let visual appeal override identity, story function, anatomy or project tone
+15. do not create speculative files before the blueprint is approved
 
 ---
 
 # 2. GITHUB OWNERSHIP AND DELIVERY RULE
 
-For normal code and asset work:
+For normal code, asset and planning work:
 
-- the owner uploads production files personally
+- the owner uploads Production files personally
 - work locally
-- deliver one ZIP
 - preserve repository-relative paths
-- do not create a branch
 - do not push
 - do not commit
+- do not create or delete branches
+- do not move refs
+- do not modify GitHub Pages
+- do not change repository settings
 - do not delete repository files
-- do not modify GitHub Pages directly
 
-A planning file may be written directly to GitHub only when the owner explicitly authorizes that exact write in the current conversation.
+A direct GitHub write is allowed only when the owner explicitly authorizes that exact write in the current conversation.
 
-This document is prepared as a local replacement file. It is not authorization to edit code or assets on GitHub.
+## Planning-document rule
 
-## Required code-package contents
+This file is a local replacement for `GAME_MASTER_PLAN.md`.
 
-Every implementation package must include:
+Uploading this file will create a documentation-only commit after the approved runtime baseline. Record the distinction:
+
+- approved runtime baseline: `ffdc94777c5fbaefdc281f1148b59aff3adf8abe`
+- planning source replaced: blob `b399d9d24f0e413f9f7a47737a08d577b327957a`
+- new upload commit: documentation-only unless other files are included
+
+Do not call the new docs-only commit a new playable build.
+
+## Required implementation package
+
+Every code package must contain:
 
 - one ZIP
 - preserved repository paths
@@ -150,30 +191,35 @@ Every implementation package must include:
 - SHA-256
 - exact statement of what was tested
 - exact statement of what was not tested
+- base branch and base commit
+- changed-file count
+- no unrelated files
 
-## Planning document delivery
+## Planning-document delivery
 
 - filename must remain exactly `GAME_MASTER_PLAN.md`
-- include a local copy
-- include SHA-256
-- preserve Canon, secrets, workflow, proof boundaries and future plans
+- preserve Canon and owner secrets
+- preserve proof boundaries and future plans
 - preserve owner-accepted runtime facts
-- record any new Canon as owner-confirmed, proposed or unresolved
-- do not silently upgrade a proposed blueprint into owner-accepted implementation status
+- record proposed, implemented and owner-approved status separately
+- include local SHA-256
+- never upgrade a proposal into accepted implementation status without owner confirmation
 
 ---
 
 # 3. SOURCE-OF-TRUTH HIERARCHY
 
-1. **Latest GitHub runtime on `restore-game-recovered`**
-   - current code
-   - current assets
-   - paths
-   - cache queries
-   - load order
-   - deployed behavior
+1. **Owner's latest real-device result**
+   - final truth for visible and playable behavior
+   - overrides static assumptions
+   - current result: Chapter I through Chapter IV Phase II passed and was approved
 
-2. **Latest `GAME_MASTER_PLAN.md`**
+2. **Approved GitHub runtime baseline**
+   - branch: `production-rebuild`
+   - runtime commit: `ffdc94777c5fbaefdc281f1148b59aff3adf8abe`
+   - code, assets, paths, cache queries and load order
+
+3. **Latest `GAME_MASTER_PLAN.md`**
    - Canon
    - owner-confirmed acceptance
    - owner-level secrets
@@ -181,117 +227,81 @@ Every implementation package must include:
    - future chapter design
    - workflow
    - ending architecture
-
-3. **Owner’s latest real-device result**
-   - final truth for visible behavior
-   - overrides static assumptions
+   - exact handoff
 
 When sources conflict:
 
-- inspect both
-- determine which is stale
+- inspect all relevant sources
+- identify which source is stale
 - do not rewrite Canon to match a defect
-- do not break accepted runtime to match an obsolete plan
+- do not break accepted runtime to match obsolete planning text
 - ask only when available evidence cannot resolve the conflict
+- never silently choose an older branch or old ZIP
 
 ---
 
-# 4. NON-NEGOTIABLE STARTUP PROCEDURE
+# 4. CURRENT VERIFIED PRODUCTION SNAPSHOT
 
-Before editing any production file:
+Verified and owner-approved on 2026-08-01.
 
-1. fetch the latest `GAME_MASTER_PLAN.md`
-2. fetch the latest `index.html`
-3. confirm branch `restore-game-recovered`
-4. inspect current file SHAs
-5. inspect load order and cache-query versions
-6. fetch every runtime file involved in the task
-7. inspect current assets involved in the task
-8. inspect:
-   - global overrides
-   - direct listeners
-   - capture listeners
-   - bubbling listeners
-   - MutationObservers
-   - timers
-   - state initialization
-   - migration
-   - Save/Load restore
-   - dynamic script loading
-   - audio ownership
-   - compatibility shims
-9. identify the true implementation owner
-10. prove the root cause
-11. patch the fewest files possible
-12. run syntax and static checks
-13. test the actual affected flow where the environment permits
-14. state exact testing limits
-15. deliver locally unless a specific GitHub write is authorized
+## Repository state
 
-Never patch from:
+- Repository: `grolygori789-crypto/last-witness`
+- Production branch: `production-rebuild`
+- Default branch: `production-rebuild`
+- Branch count after cleanup: one Production branch
+- Deleted obsolete branch: `main`
+- Approved runtime commit: `ffdc94777c5fbaefdc281f1148b59aff3adf8abe`
+- Live owner result: playable through Chapter IV Phase II
 
-- memory alone
-- an old ZIP
-- an old chat attachment
-- an older branch
-- a reconstructed imitation of a current runtime file
+## Important file snapshot
 
-A local package may be reused only after verifying its base files match current GitHub or after the owner confirms the package is the accepted production base.
-
----
-
-# 5. CURRENT VERIFIED PRODUCTION SNAPSHOT
-
-Verified on 2026-07-30.
-
-| Path | Blob SHA | Role |
+| Path | Blob SHA | Current role |
 |---|---|---|
-| `GAME_MASTER_PLAN.md` | `9b1942b78736b358c0b9478c8af2ef9075d1cdeb` | planning baseline before this local replacement |
+| `GAME_MASTER_PLAN.md` before this replacement | `b399d9d24f0e413f9f7a47737a08d577b327957a` | previous planning source |
 | `index.html` | `e30f3fb1f20399d51de9aba220802361a5da15d9` | static DOM and static load order |
-| `js/chapters/chapter-02/05-chapter2-integration.js` | `a90af7d17259d54e7525c6d574edc12455c63b23` | Chapter III loader, lifecycle guard, legacy visible build label |
+| `js/chapters/chapter-02/05-chapter2-integration.js` | `a90af7d17259d54e7525c6d574edc12455c63b23` | Chapter III loader, lifecycle and legacy build label |
 | `js/chapters/chapter-04/01-afterimage.js` | `b61d3e8a9e118e9437b8bdf5eb5cb0a9b99c1df2` | Chapter IV Phase I |
-| `js/chapters/chapter-04/02-jakarta-arrival.js` | `763b434cebd1173d4495fbd3d4b0cae97c978ed2` | Chapter IV Phase II, build 0.14.7 |
-| `css/chapter-04-phase-02.css` | `ec692df508267781f76193ca0d33d59e47a5e6d9` | Phase II presentation and accepted Maya final rules |
-| `js/engine/09-defect-hotfix.js` | `b83cf21d7b2451dedf011d668faa016a39d12b94` | deterministic Chapter IV bootstrap, cache query 0147 |
+| `js/chapters/chapter-04/02-jakarta-arrival.js` | `763b434cebd1173d4495fbd3d4b0cae97c978ed2` | Chapter IV Phase II Build 0.14.7 |
+| `js/engine/09-defect-hotfix.js` | `4ca37de72a50ca26e949f7d71c6d56ce1f7f65c8` | current deterministic bootstrap |
+| `js/engine/17-police-portrait-alignment.js` | created in approved commit `ffdc9477...` | scoped Police dialogue portrait alignment |
 
-Latest verified repository commit at time of planning audit:
+## Runtime build distinction
 
-- commit: `545ac486d1021dd662a10c7df5ea43a6040e4009`
-- message: `Add files via upload`
-- timestamp: `2026-07-30T11:54:00Z`
-
-## Important build-label distinction
-
-- Latest owner-accepted playable module build: `0.14.7`
+- Latest accepted playable Chapter IV module: `0.14.7`
 - Chapter IV Phase I module: `0.13.2`
 - Chapter IV Phase II module: `0.14.7`
-- Legacy Chapter II/III integration file still declares global visible `BUILD 0.12.1`
+- Bootstrap header: `0.15.3`
+- Targeted QC: `0.15.3`
+- Police portrait alignment: `0.15.4`
+- Legacy Chapter II/III integration may still show `BUILD 0.12.1`
 
-Do not interpret the legacy global Settings label as the actual playable boundary. Do not casually change it during Phase III work without auditing Save labels, Developer Mode and global build synchronization.
+Do not interpret the legacy visible Settings label as the actual playable boundary. Do not change it casually.
 
-## Current owner-confirmed acceptance
+## Owner-confirmed acceptance
 
-The owner has played and accepted:
+The owner played and accepted:
 
-- Chapter I through Chapter III
+- Chapter I
+- Chapter II
+- Chapter III
 - Chapter IV Phase I
 - Chapter IV Phase II
-- Phase II story and minigame
-- Maya final in-game portrait correction
-- original navy Maya suit color
+- Chapter I has no premature Character mode
+- Phase II story, choices and Token Verification
+- Maya final portrait and Character Journal presentation
+- original dark navy Maya suit
 - pure black portrait background
-- visible bob-hair silhouette line
-- Maya scale and visual weight after final correction
-- takeoff ambience with fade-out before route card / scene transition
-- reduced Jakarta Airport ambience
-- reduced Jakarta Verification Lab ambience
-- Farid remote-from-Singapore label
-- Maya role metadata wrapping
-- corrected Maya line:
-  - “The next phase begins with provenance, not pursuit.”
-- Phase II completion and Return to Title
+- visible bob-hair silhouette
+- accepted Maya scale and visual weight
+- Farid remote-from-Singapore labeling
+- takeoff ambience fade-out
+- reduced airport and lab ambience
+- Phase II completion
+- Return to Title
+- live game access after branch and Pages recovery
 
-## Current playable boundary
+## Frozen playable boundary
 
 > `CHAPTER IV · PHASE II COMPLETE`
 
@@ -299,9 +309,11 @@ Next card:
 
 > `NEXT · PHASE III · PACKET PROVENANCE`
 
+No owner-reported blocking defect remains in this approved baseline.
+
 ---
 
-# 6. CURRENT LOAD ORDER
+# 5. CURRENT LOAD ORDER
 
 ## Static CSS from `index.html`
 
@@ -314,24 +326,24 @@ Next card:
 
 ## Static JavaScript
 
-The legacy static chain is order-sensitive. Do not reorder casually.
-
-It includes:
+The static chain is order-sensitive. It includes:
 
 1. runtime data
 2. audio and Save
-3. Journal/progress
-4. UI/dialogue
+3. Journal and progress
+4. UI and dialogue
 5. Developer tools
 6. Chapter II modules
 7. Chapter I module
-8. regression / continuity layers
+8. regression and continuity layers
 9. Chapter II integration
-10. content registry / Character Canon
+10. content registry and Character Canon
 11. investigation lifecycle
 12. fullscreen owner
-13. production stabilization
+13. Production stabilization
 14. compatibility bootstrap
+
+Do not reorder without a complete audit.
 
 ## Dynamic Chapter III order
 
@@ -344,32 +356,84 @@ It includes:
 7. `js/chapters/chapter-03/07-digital-forensics-lab.js`
 8. `js/chapters/chapter-03/08-callback.js`
 
-## Dynamic Chapter IV order
+## Current dynamic Chapter IV bootstrap
 
-Current bootstrap:
+The approved `js/engine/09-defect-hotfix.js` loads:
 
-1. `js/chapters/chapter-04/01-afterimage.js?v=0132`
-2. `css/chapter-04-phase-02.css?v=0147`
-3. `js/chapters/chapter-04/02-jakarta-arrival.js?v=0147`
+1. `js/engine/15-thai-localization.js?v=0152`
+2. `js/engine/16-targeted-qc-fixes.js?v=0153`
+3. `js/engine/17-police-portrait-alignment.js?v=0154`
+4. `js/chapters/chapter-04/01-afterimage.js?v=0132`
+5. `css/chapter-04-phase-02.css?v=0149`
+6. `js/chapters/chapter-04/02a-jakarta-portrait-guard.js?v=0150`
+7. `js/chapters/chapter-04/02-jakarta-arrival.js?v=0147`
 
-Phase III files do not yet exist in Production.
+The approved bootstrap ends at Phase II.
 
-Recommended future order:
+Phase III is not loaded and is not part of approved Production.
 
-1. Phase I JS
-2. Phase II CSS
-3. Phase II JS
-4. Phase III CSS
-5. Phase III JS
-6. later Chapter IV phases in narrative order
+## Phase III load-safety lock
 
-Do not turn `09-defect-hotfix.js` into a large repair dump. It is a disabled legacy shim plus deterministic Chapter IV bootstrap.
+A future Phase III implementation must not repeat the prior regression where loading a future Chapter IV module changed global chapter state during startup.
+
+Mandatory rule:
+
+- module definition and preload must be side-effect-free
+- loading a script must not set `state.chapter = 4`
+- loading a script must not set an active Phase III screen
+- loading a script must not unlock Character Journal
+- initialization may create isolated defaults only when entering or resuming Chapter IV Phase III
+- global story chapter changes only through a real Chapter IV entry, resume or Developer jump
+- Chapter I must continue to hide Character mode
+- Character Journal gates must use actual story progress and explicit unlock state, not a chapter value polluted by a preloaded future module
+
+Do not add Phase III to the global bootstrap until this behavior is proved safe.
+
+---
+
+# 6. NON-NEGOTIABLE STARTUP PROCEDURE
+
+Before editing any Production file:
+
+1. read this entire file
+2. confirm `production-rebuild`
+3. confirm the approved runtime baseline
+4. fetch latest `index.html`
+5. fetch current file SHAs
+6. inspect static and dynamic load order
+7. fetch every runtime file involved in the task
+8. inspect current assets involved in the task
+9. inspect global overrides
+10. inspect direct, capture and bubbling listeners
+11. inspect MutationObservers and timers
+12. inspect state initialization and migration
+13. inspect Save/Load restore
+14. inspect audio ownership
+15. inspect Character Journal and Case File gates
+16. inspect Developer Mode
+17. identify the true implementation owner
+18. prove the root cause
+19. patch the fewest files possible
+20. run syntax and static checks
+21. test the affected flow where the environment permits
+22. state exact testing limits
+23. deliver locally unless a specific GitHub write is authorized
+
+Never patch from:
+
+- memory alone
+- an old ZIP
+- an old chat attachment
+- an obsolete branch
+- a detached historical commit
+- a reconstructed imitation of a current runtime file
+- an old Phase III package
 
 ---
 
 # 7. RUNTIME OWNERSHIP MAP
 
-## Base/shared systems
+## Base and shared systems
 
 ### `01-runtime-data.js`
 
@@ -391,7 +455,7 @@ Owns:
 - named saves
 - IndexedDB slots
 - localStorage fallback
-- `.lwsave` export/import
+- `.lwsave` export and import
 - delete and restore
 - legacy migration
 - base volume controls
@@ -417,8 +481,6 @@ Active ownership:
 - Case File repair
 - Save-button rebinding
 
-Inspect before changing shared dialogue.
-
 ### `07-dialogue-continuity.js`
 
 Owns normalized:
@@ -426,7 +488,7 @@ Owns normalized:
 - `TAP TO CONTINUE`
 - `แตะเพื่อดำเนินต่อ`
 
-Do not create another prompt observer.
+Do not add another prompt observer.
 
 ### `08-stability-repair.js`
 
@@ -436,11 +498,11 @@ Owns:
 - pointerdown response
 - duplicate touch suppression
 - legacy stability repairs
-- dynamic production-stabilization load
+- dynamic Production-stabilization loading
 
 ### `11-production-stabilization.js`
 
-Primary production owner for:
+Primary shared audio owner for:
 
 - scene-aware ambience
 - early chapter audio
@@ -451,13 +513,13 @@ Primary production owner for:
 - one-shot cleanup
 - stale-state repair
 
-Shared API includes:
+Shared APIs include:
 
 - `LastWitnessAudioCue.playInspection`
 - `LastWitnessAudioCue.playPuzzleSuccess`
 - `LastWitnessProductionAudio.refresh`
 
-Do not create another global audio controller.
+Do not create another global audio manager.
 
 ### `12-investigation-lifecycle.js`
 
@@ -501,7 +563,7 @@ Storage key:
 
 Canonical Character Journal mutation layer.
 
-Do not create parallel character truth.
+Do not create parallel Character truth.
 
 ## Integration owner
 
@@ -518,7 +580,7 @@ Owns:
 - rain boundary
 - Return to Title bridge
 
-It does not currently own Chapter IV runtime loading. Chapter IV is loaded through `09-defect-hotfix.js`.
+It does not own Chapter IV runtime loading.
 
 ## Chapter IV owners
 
@@ -528,7 +590,7 @@ Owns:
 
 - Chapter IV intro
 - Phase I AFTERIMAGE
-- evidence-route board
+- Evidence Route Board
 - Phase I choice
 - Analyst of Record query
 - Phase I state and restore
@@ -539,26 +601,33 @@ Owns:
 Owns:
 
 - Singapore to Jakarta flight
-- Phase II airport, office and lab scenes
+- airport, office and lab scenes
 - Maya introduction and Journal extension
 - Farid remote label
-- Token Verification minigame
+- Token Verification
 - Phase II audio
 - Phase II state and restore
 - completion screen
 - Return to Title
 - Phase II Developer jump
 
+### `02a-jakarta-portrait-guard.js`
+
+Owns approved Phase II portrait containment and must not be casually replaced.
+
 ### `09-defect-hotfix.js`
 
-Current role:
+Current approved role:
 
-- legacy repairs disabled
-- deterministic Phase I/II bootstrap only
+- legacy repair layer disabled
+- deterministic localization and QC loading
+- deterministic Phase I and Phase II bootstrap
+- no Phase III
+- no global repair polling
 
 ---
 
-# 8. STATE MODEL
+# 8. STATE MODEL AND SAVE/LOAD
 
 ## Core fields
 
@@ -607,54 +676,58 @@ state.endingProfile = {
 };
 ```
 
-Do not expose a crude morality bar. Consequences appear through evidence, trust, admissibility, witness safety and official-record control.
+Do not expose a crude morality meter. Consequences appear through evidence, trust, admissibility, safety and public-record control.
 
-## `state.chapter4.phase1`
+## Phase I state
 
-- `started`
-- `chapterCardSeen`
-- `locationCardSeen`
-- `introComplete`
-- `choiceMade`
-- `choiceApplied`
-- `choiceKey`
-- `boardAssignments`
-- `boardAttempts`
-- `boardComplete`
-- `boardDebriefSeen`
-- `workingTheoryAdded`
-- `querySeen`
-- `queryCuePlayed`
-- `queryAcknowledged`
-- `closingDialogueComplete`
-- `complete`
-- `stage`
+`state.chapter4.phase1` owns:
 
-## `state.chapter4.phase2`
+- started
+- chapterCardSeen
+- locationCardSeen
+- introComplete
+- choiceMade
+- choiceApplied
+- choiceKey
+- boardAssignments
+- boardAttempts
+- boardComplete
+- boardDebriefSeen
+- workingTheoryAdded
+- querySeen
+- queryCuePlayed
+- queryAcknowledged
+- closingDialogueComplete
+- complete
+- stage
 
-- `started`
-- `flightComplete`
-- `routeCardSeen`
-- `airportIntroComplete`
-- `mayaUnlocked`
-- `mayaUnread`
-- `officeIntroComplete`
-- `choiceMade`
-- `choiceApplied`
-- `choiceKey`
-- `legalBriefComplete`
-- `verificationStarted`
-- `verificationSteps`
-- `consoleWarnings`
-- `verificationComplete`
-- `evidenceCollected`
-- `closingDialogueComplete`
-- `complete`
-- `stage`
+## Phase II state
 
-## Candidate `state.chapter4.phase3`
+`state.chapter4.phase2` owns:
 
-This schema belongs to the Phase III blueprint and is not owner-accepted implementation until the owner approves the build.
+- started
+- flightComplete
+- routeCardSeen
+- airportIntroComplete
+- mayaUnlocked
+- mayaUnread
+- officeIntroComplete
+- choiceMade
+- choiceApplied
+- choiceKey
+- legalBriefComplete
+- verificationStarted
+- verificationSteps
+- consoleWarnings
+- verificationComplete
+- evidenceCollected
+- closingDialogueComplete
+- complete
+- stage
+
+## Candidate Phase III state
+
+This remains a proposed schema, not accepted implementation:
 
 ```js
 state.chapter4.phase3 = {
@@ -688,20 +761,7 @@ state.chapter4.phase3 = {
 };
 ```
 
-Each Chapter IV phase must own:
-
-- initializer
-- migration
-- restore bridge
-- checkpoint names
-- audio restoration
-- modal restoration
-- Developer jump
-- completed-state resume
-
----
-
-# 9. SAVE / LOAD
+Creating defaults must not mutate global chapter, screen, Journal or active story state during startup.
 
 ## Storage
 
@@ -728,103 +788,84 @@ Fallback:
 
 Before restoring late Chapter III or Chapter IV:
 
-1. load prior dynamic modules in narrative order
-2. initialize state defaults
+1. load prior modules in narrative order
+2. initialize isolated defaults
 3. apply migration
 4. restore snapshot
 5. call the correct phase resume bridge
 6. reconstruct active screen
 7. reconstruct audio
 8. reconstruct dialogue, modal, evidence and puzzle lifecycle
-9. reconstruct Journal/Case File extensions
+9. reconstruct Journal and Case File extensions
 10. preserve completed-state behavior
+11. never let a future module overwrite the restored chapter merely because it loaded
 
-Chapter IV Phase I wraps the base snapshot to include `chapter4` and `endingProfile`. Phase III must not create a competing global snapshot owner.
+Each new phase must own:
 
-## Required Save testing for Phase III
-
-- fresh entry from Phase II
-- Auto Save at location card
-- Continue
-- named save
-- load during opening dialogue
-- load during principle choice
-- load before controlled capture
-- load during Packet Provenance
-- load after wrong answer
-- Reset
-- load after correct answer
-- load during Authorship/Deployment Matrix
-- load before closing dialogue
+- initializer
+- migration
+- restore bridge
+- checkpoint names
+- audio restoration
+- modal restoration
+- Developer jump
 - completed-state resume
-- Return to Title
-- export/import
-- stale-state migration
 
 ---
 
-# 10. CHARACTER CANON
+# 9. CHARACTER CANON
 
 ## Benedict
 
 - Age: 42
-- Role: Detective / Lead Investigator
+- Detective and Lead Investigator
 - protagonist
 - final human decision-maker
 - calm, observant and psychologically sharp
 - reads motive, hesitation, wording, restraint and timing
-- uses language skillfully without becoming theatrical
-- natural restrained humour
-- enjoys danger, movement and active cases
-- dislikes commitment, binding ties and settled life
+- uses language skillfully without theatrics
+- dry, restrained humour
+- enjoys movement and active cases
+- dislikes binding commitment and settled life
 - does not accuse without evidence
-- must never become a passenger while North solves everything
-- strongest scenes combine human inference with technical proof boundaries
+- must not become a passenger while North solves everything
 
-### Benedict’s long-term romantic Canon
+Long-term romantic Canon:
 
-- he may genuinely care for Cheryl
-- he may reciprocate part of her feeling
-- he does not choose a permanent romantic partner at the end
-- he chooses a mobile investigative life
-- he is not a careless womanizer
-- once avoidance becomes impossible, he is honest
-- his final choice is freedom and forward motion, not settling down
+- may genuinely care for Cheryl
+- may reciprocate part of her feeling
+- does not choose a permanent partner
+- chooses a mobile investigative life
+- is honest when avoidance is no longer possible
+- final choice is forward motion, not settling down
 
 ## North
 
 - Age: 32
-- Role: IT Specialist / Technical Investigator
-- Benedict’s trusted long-term partner
-- serious
-- concise
-- highly observant
+- IT Specialist and Technical Investigator
+- Benedict's trusted long-term partner
+- serious, concise and highly observant
 - dry wit
 - leads technical analysis
 - rejects unsupported attribution
 - understands Authentication vs Attribution
 - becomes an active target in Chapter IV
-- never reduced to a passive victim
-- must consent to any fake-success operation
+- never a passive victim
+- must consent to the false-success operation
 - no romance with Farid
 - partnership with Benedict is the emotional spine
-- sees Benedict’s deepest choice as settling versus perpetual forward movement
-- knows he ultimately chooses movement
 
-### North physical and swimwear visual Canon
+Physical and swimwear Canon:
 
 - leanest of North, Cheryl and Maya
-- lean-fit rather than thin or fragile
-- looks like someone who consistently maintains health and mobility
-- flat, naturally athletic midsection
-- toned arms and legs without bodybuilder exaggeration
-- compact, agile silhouette
+- lean-fit, healthy and agile
+- naturally athletic midsection
+- toned arms and legs
+- compact silhouette
 - realistic adult proportions
-- no enlarged anatomy merely to compete visually with Maya or Cheryl
-- bikini direction: minimalist, clean, functional and refined
-- the suit must allow believable movement during surveillance
-- sexiness comes from confidence, fitness, posture and identity rather than extreme exposure
-- no passive pin-up posing that contradicts her alert technical personality
+- minimalist, clean and functional bikini direction
+- no passive pin-up posing
+- no anatomy inflation to compete with Maya or Cheryl
 
 ## Elena
 
@@ -832,97 +873,78 @@ Public role:
 
 - Forensic Analyst
 - credible professional ally
-- calm
-- intelligent
-- useful
+- calm, intelligent and useful
 - gives true information
 - controls timing and sequence
 - appears trustworthy
-- must not be villain-coded before evidence earns suspicion
+- no villain coding before evidence earns suspicion
 
 Owner secret:
 
 - mastermind
-- real killer of Chapter I victim
-- real killer of Daniel Voss
+- killed the Chapter I victim
+- killed Daniel Voss
 - decision owner
 - selected victim, room and minute
 - used legitimate Bangkok evidence access
 - deployed watcher logic through a valid signed package
 - curated true evidence into a false official chronology
-- does not need to falsify the scientific result
+- does not need to falsify scientific results
 
 Forbidden before earned reveal:
 
 - villain lighting
 - suspicious smirk
-- obvious confession lines
+- confession-like dialogue
 - theatrical cruelty
 - villain music
 - fake facts inserted only to make her guilty
-- premature direct accusation
+- premature accusation
 
 ## Inspector Cheryl Goh
 
 - Age: 40
 - SPF liaison
 - measured authority
-- disciplined
-- sharp
-- legally strict without becoming obstructionist
-- protects lawful access and proof boundaries
+- disciplined, sharp and legally strict
+- protects proof boundaries
 - respects North
 - genuine long-term ally
-- develops increasingly serious feelings for Benedict through respect
+- develops serious feelings for Benedict through respect
 - keeps professional control
-- North notices
-- romance must never overpower the case
-- retains dignity when Benedict chooses no permanent partner
-- does not wait forever
-- remains an important ally after accepting reality
-- outward energy can read tomboyish or hard-edged without erasing her femininity
+- romance never overpowers the case
+- remains dignified when Benedict chooses no permanent partner
+- no love triangle with Maya or North
 
-Accepted expressions include:
+Physical and swimwear Canon:
 
-- `restrained_amusement`
-- `professional_fluster`
-- `softened_professional`
-- `focused_command`
-
-### Cheryl physical and swimwear visual Canon
-
-- second most voluptuous of North, Cheryl and Maya
-- athletic-curvy physique
+- athletic-curvy
+- second most voluptuous
 - slightly less full-figured than Maya
-- excellent overall proportions
-- strong shoulders, toned arms and a visibly fit waist
-- shapely but operationally believable hips and legs
-- looks physically capable, not ornamental
-- tomboy confidence remains present even in a bikini
-- bikini direction: sporty, assertive and movement-ready, with a strong silhouette
-- the design may be revealing enough to provide visual appeal but must still look like a real commercially available athletic two-piece
-- her sexiness comes from athletic form, composure and confidence
-- do not feminize her into a different person
-- do not turn her into a shy caricature because Benedict is nearby
+- strong shoulders and toned waist
+- physically capable
+- tomboy confidence
+- sporty, assertive and movement-ready bikini
+- do not feminize her into another person
+- do not make her a shy caricature
 
 ## Farid Rahman
 
 - Age: 31
 - Singaporean Malay
 - Digital Forensics Specialist
-- fast
-- meticulous
-- friendly
-- technically serious
+- fast, meticulous, friendly and technically serious
 - respects North
 - no romance with North
 - not comic relief
 - preserves alternative explanations
-- remains in Singapore during Chapter IV Phase II
-- dialogue label:
-  - English: `Farid Rahman (Remote · Singapore)`
-  - Thai: `Farid Rahman (ต่อสายจากสิงคโปร์)`
-- protects the raw mirror and original capture in Singapore
+- remains in Singapore during Chapter IV Phase II and Phase III support
+- protects the original raw mirror and capture
+
+Labels:
+
+- English: `Farid Rahman (Remote · Singapore)`
+- Thai: `Farid Rahman (ต่อสายจากสิงคโปร์)`
 
 ## Ratchata (Dr. Singh)
 
@@ -934,8 +956,7 @@ Display name exactly:
 - Senior Medical Examiner
 - Thai Sikh forensic pathologist
 - dry humour
-- independent
-- scientifically strict
+- independent and scientifically strict
 - not `R.` unless future evidence proves otherwise
 
 Portrait fallback:
@@ -946,17 +967,13 @@ Portrait fallback:
 ## Adrian Tan Wei Ming
 
 - Singaporean Chinese
-- age 43–47
+- age 43 to 47
 - former System Architect
-- fugitive
-- complicit insider
+- fugitive and complicit insider
 - key witness
-- cautious
-- intelligent
-- exhausted by hiding
-- dry humour
+- cautious, intelligent and exhausted by hiding
 - distrusts police and institutions
-- designed the legitimate reconciliation architecture
+- designed legitimate reconciliation architecture
 - concealed or failed to report misuse
 - may be guilty of enabling, concealment or flight
 - not mastermind
@@ -970,128 +987,105 @@ Portrait fallback:
 - age 39
 - hacker, toolmaker and wrapper specialist
 - connected to PALIMPSEST
-- intelligent
-- dangerous
-- tired
-- dry humour
-- complicit
+- intelligent, dangerous, tired and complicit
 - not mastermind
 - did not select victims, rooms or eleven-minute events
 - may have sold, adapted, brokered or protected the tool
 - real face appears around Chapter IV midpoint
-- Chapter III hood feed is a digital mask and cannot identify him
-- attribution must come from source-build evidence, live behavior and corroborated records
+- Chapter III hood feed is a digital mask
+- attribution requires source evidence, live behavior and corroboration
 
 ## Inspector Maya Pranoto
 
 - Indonesian National Police Cybercrime liaison
 - Age: 37 in implemented runtime
-- disciplined
-- practical
-- intelligent
-- understands Jakarta infrastructure
-- understands local legal procedure
+- disciplined, practical and intelligent
+- understands Jakarta infrastructure and local law
 - professional equal to Cheryl
 - not obstructionist
-- skeptical of foreign investigators turning a relay into a suspect
+- skeptical of turning a relay into a suspect
 - becomes a regional ally
 - no romance with Benedict
-- may notice Cheryl’s feelings but does not enter a love triangle
-- Character Journal unlocks at formal introduction
+- no love triangle
+- Journal unlocks at formal introduction
 
-### Maya accepted Phase II visual Canon
+Accepted Phase II visual lock:
 
-- original dark navy suit color from approved master sheet
-- color remains visibly navy, similar in visual family to Cheryl
-- do not recolor suit black
-- do not apply a dark filter that makes it disappear
+- original dark navy suit
+- suit remains visibly navy
 - pure black portrait background
-- subtle external line preserves black bob silhouette
-- face and upper torso have strong visual weight comparable to Benedict
+- subtle contour preserves black bob silhouette
+- face and upper torso have strong visual weight
 - no tiny distant portrait
-- no CSS scaling trick that damages crop
-- no cyan, blue or transparent connector under neck
+- no damaged crop
+- no colored connector under neck
 - no missing shoulders or blazer
-- accepted asset set frozen unless owner requests change
+- accepted asset set frozen
 - do not touch Cheryl or Farid while changing Maya
 
-### Maya physical and swimwear visual Canon
+Physical and swimwear Canon:
 
-- most voluptuous and visually full-figured of North, Cheryl and Maya
-- deliberately the most “เอ็กซ์” of the three while remaining a believable adult professional
-- full bust, defined waist and fuller hips/thighs
-- strong and healthy rather than soft, helpless or anatomically exaggerated
-- realistic weight distribution, posture and swimsuit support
-- bikini direction: elegant, confident, luxurious and body-emphasizing
-- design should look premium and commercially real, not fantasy lingerie disguised as swimwear
-- she should remain composed and authoritative even while using a tourist cover
-- her visual impact may be strongest, but the framing must not erase her police authority
-- no romance with Benedict and no harem coding
+- most voluptuous and visually full-figured of the three
+- full bust, defined waist and fuller hips and thighs
+- strong and healthy
+- realistic support and weight distribution
+- elegant, confident and luxurious bikini direction
+- commercially believable, not fantasy lingerie
+- remains composed and authoritative
+- no romance with Benedict
+- no harem coding
 
-## Three-woman visual separation rule
+## Body-separation rule
 
-The three bodies must remain unmistakably different:
+- Maya: voluptuous, elegant, strongest curves
+- Cheryl: athletic-curvy, tomboy confidence
+- North: lean-fit, agile and health-conscious
 
-- **Maya:** voluptuous, elegant, strongest curves
-- **Cheryl:** athletic-curvy, tomboy confidence, slightly less voluptuous than Maya
-- **North:** lean-fit, agile, health-conscious
-
-The difference must come from:
-
-- shoulder width
-- torso length
-- waist-to-hip relationship
-- muscle tone
-- limb mass
-- posture
-- movement
-- swimsuit construction
-- personality
-
-Do not create three copies of one body with different breast sizes. Preserve identity, anatomy, biomechanics and realistic commercially available swimwear.
+Difference must come from full anatomy, posture, movement and garment construction, not one shared body with different breast sizes.
 
 ## Kawin Nopparat
 
 Owner-level future Canon:
 
 - Chapter I Room 1807 victim
-- Thai man
-- age 41
-- Regional Access Governance and Compliance Auditor at fictional `Meridian Evidence Systems`
-- discovered repeated use of Temporary Operational Profile 18-07
-- planned to leave and meet a registrar contact at the pier
+- Thai man, age 41
+- Regional Access Governance and Compliance Auditor at Meridian Evidence Systems
+- discovered repeated Temporary Operational Profile 18-07 use
+- planned to meet a registrar contact at the pier
 - killed by Elena
 - body moved and staged in Room 1807
-- identity remains unknown to player until Chapter V
+- identity unknown to player until Chapter V
 
-## Rinrada “Rin” Sornchai
+## Rinrada "Rin" Sornchai
 
 Owner-level future Canon:
 
-- Thai woman
-- age 37
-- former Identity and Access Registrar at Meridian Evidence Systems
+- Thai woman, age 37
+- former Identity and Access Registrar
 - living witness implied by `R.`
-- `R.` fairly refers both to Rin and the Registrar role
+- `R.` refers fairly to Rin and the Registrar role
 - saw the emergency credential path
-- witnessed Elena’s physical presence around the pier meeting with Kawin
+- witnessed Elena's physical presence around the pier exchange
 - went off-grid to survive
-- definitive living **Last Witness**
-- physically introduced in Chapter V
-- testimony alone is not enough for conviction
-- must retain agency
+- definitive living Last Witness
+- introduced in Chapter V
+- testimony requires corroboration
+- retains agency
 
 ---
 
-# 11. CHARACTER JOURNAL
+# 10. CHARACTER JOURNAL
 
 ## Story gates
 
 ### Chapter I
 
-- menu hidden
+- Character menu hidden
 - no Character Cards
+- no Journal unlock toast
 - stale entries filtered
+- future Chapter modules must not expose Character mode
+- this gate is owner-tested and frozen
 
 ### Chapter II
 
@@ -1102,36 +1096,34 @@ Owner-level future Canon:
 
 ### Chapter III
 
-- Cheryl and Farid after formal Phase IV introduction
-- Adrian after Phase VII identity verification
+- Cheryl and Farid after formal Singapore Office introduction
+- Adrian after Hawker Centre identity verification
 - no PALIMPSEST card
-- alias/tool family is not a confirmed person
+- no alias or tool-family card
 
 ### Chapter IV
 
-- Maya after formal Phase II airport introduction
-- Arman only after identity is supported by source evidence and physical encounter
+- Maya after formal airport introduction
+- Arman only after source evidence and physical encounter support identity
 - no hooded UNKNOWN SOURCE card
-- no tool-family alias card
-- no swimwear-specific duplicate Character Cards
-- Phase V visual changes are scene costumes, not new identities
+- no swimwear duplicate cards
+- scene costumes are not new identities
 
 ### Chapter V
 
 - Kawin when identity is established
-- Rinrada after physical introduction and consent to cooperate
+- Rinrada after physical introduction and consent
 
 ## Accepted card layout
 
 - raw portrait `<img>`
 - portrait approximately `78 × 88`
 - name upper-right
-- status beneath name
-- Relationship in original information column
+- status below name
+- Relationship in the original information column
 - no 54×54 wrapper
-- no oversized card redesign
-- no unnatural Relationship column
-- do not globally resize accepted cards
+- no oversized redesign
+- no global resizing
 
 ## Portrait standard
 
@@ -1143,60 +1135,38 @@ Priority:
 4. upper torso
 5. stable framing
 6. clean silhouette
-7. useful hands/props only
+7. useful props only
 
 Standard canvas:
 
 `744 × 1000`
 
-General standard is true transparent alpha. Maya Phase II is an approved exception using a pure black in-image background for reliable dark-UI presentation.
-
-Rules:
-
-- fixed canvas
-- consistent anchor
-- match Benedict/North visual weight
-- no stretching
-- no checkerboard
-- no accidental matte
-- inspect on actual dark dialogue UI
-- inspect in Character Journal and detail view
-- do not assume a good standalone PNG automatically works in the game crop
-- for Phase V swimwear assets, decide whether the scene requires dialogue portraits, full-body scene sprites, cinematic stills or a combination before generating anything
-- never crop or pose the three women identically
+General standard is transparent alpha. Maya Phase II is an approved pure-black-background exception.
 
 ---
 
-# 12. SEASON AND CHAPTER STRUCTURE
+# 11. SEASON AND CHAPTER STRUCTURE
 
 ## Season 1
 
-1. Chapter I — `ROOM 1807`
-2. Chapter II — `THE PERFECT STRANGER`
-3. Chapter III — `THE BORROWED MINUTES`
+1. Chapter I - `ROOM 1807`
+2. Chapter II - `THE PERFECT STRANGER`
+3. Chapter III - `THE BORROWED MINUTES`
 
 Season 1 complete.
 
 ## Season 2
 
-4. Chapter IV — `SHADOW OF THE TRUTH`
-5. Chapter V — `THE MISSING PIECE`
-6. Chapter VI — `THE FINAL MOVE`
-7. Chapter VII — `LAST WITNESS`
+4. Chapter IV - `SHADOW OF THE TRUTH`
+5. Chapter V - `THE MISSING PIECE`
+6. Chapter VI - `THE FINAL MOVE`
+7. Chapter VII - `LAST WITNESS`
 
-Do not rename Chapter IV to PALIMPSEST.
-
-`PALIMPSEST` is:
-
-- alias
-- tool family
-- Jakarta hook
-- not the chapter title
-- not proven human identity in Chapter III
+`PALIMPSEST` is an alias and tool family, not the Chapter IV title.
 
 ## Chapter IV phase-count lock
 
-Chapter IV has exactly **eight phases**.
+Chapter IV has exactly eight phases:
 
 1. AFTERIMAGE
 2. JAKARTA ARRIVAL
@@ -1207,7 +1177,7 @@ Chapter IV has exactly **eight phases**.
 7. RELAY FACILITY CLIMAX
 8. SHADOW OF THE TRUTH
 
-Do not add a ninth phase without owner approval. Internal scenes may exist within a phase.
+Do not add a ninth phase without owner approval.
 
 ## Locked titles
 
@@ -1224,35 +1194,28 @@ Do not add a ninth phase without owner approval. Internal scenes may exist withi
 
 ---
 
-# 13. CORE STORY CANON
+# 12. CORE STORY CANON
 
 ## Scientific truth
 
 - toxicology is genuine
 - samples are genuine
 - biological findings are genuine
-- chronology around the evidence is engineered
+- chronology around evidence is engineered
 - solution is not fake science
 
 ## Daniel lock
 
 Daniel Voss dies in Chapter II.
 
-He must never:
+He never:
 
-- return alive
-- become a living suspect
-- become the Last Witness
-- operate the system after death
+- returns alive
+- becomes a living suspect
+- becomes the Last Witness
+- operates the system after death
 
-He may continue through:
-
-- drafts
-- archived files
-- recordings
-- contacts
-- scheduled signals
-- evidence prepared before death
+He may continue through drafts, recordings, archives, contacts and scheduled signals prepared before death.
 
 ## Room 1807 victim lock
 
@@ -1286,19 +1249,13 @@ It may carry:
 - delayed event
 - route metadata
 
-It does not prove:
-
-- physical entry
-- operator
-- identity
-- motive
-- mastermind
+It does not prove physical entry, operator, identity, motive or mastermind.
 
 ## Architecture layers
 
 1. Adrian designed legitimate offline reconciliation architecture.
-2. Arman/PALIMPSEST built or adapted the outer wrapper/tool family.
-3. a local actor deployed trusted packages and watcher logic.
+2. Arman/PALIMPSEST built or adapted the outer wrapper.
+3. A local actor deployed trusted packages and watcher logic.
 4. Elena owned final decisions:
    - victim
    - room
@@ -1308,37 +1265,34 @@ It does not prove:
 
 Architecture, authorship, brokerage, deployment and decision ownership are separate.
 
-## Chapter IV threat escalation
+## North threat escalation
 
-- By Chapter IV, the decision owner understands that North has moved beyond routine technical analysis.
-- North has separated tool authorship, route, deployment and decision ownership.
-- The `ANALYST OF RECORD` query proves the adversarial system is identifying the role that understood the pattern.
-- North is now a strategic threat because she can expose the attribution gap that protects Elena.
-- Elena therefore initiates or authorizes a plan to remove North from the investigation.
-- The attempt must remain deniable and consistent with Elena’s preference for records, staging and controlled sequence.
-- The attack should resemble accident, operational failure or another actor’s violence rather than an obvious theatrical assassination.
-- North must remain active, intelligent and involved in surviving and analyzing the attempt.
-- Benedict cannot decide to use North’s body as bait without her consent.
-- The attack must produce evidence that advances the case.
+- North separates authorship, route, deployment and decision ownership.
+- `ANALYST OF RECORD` identifies the role that understood the pattern.
+- North threatens the attribution gap protecting Elena.
+- Elena chooses neutralization.
+- The attempt must remain deniable.
+- It should resemble accident, operational failure or another actor's violence.
+- North remains active and analytical.
+- Benedict cannot use her as bait without consent.
+- The attempt produces evidence.
 
 ---
 
-# 14. CANONICAL DANIEL TIMELINE
+# 13. CANONICAL DANIEL TIMELINE
 
 | Time | Canon event |
 |---|---|
-| 05:47 | Daniel’s building accepts Temporary Operational Profile 18-07 with resident-access role |
-| 05:51 | Daniel’s Orchid Café draft is edited |
+| 05:47 | Daniel's building accepts Temporary Operational Profile 18-07 with resident-access role |
+| 05:51 | Daniel's Orchid Café draft is edited |
 | 05:58 | original toxicology sample is collected |
 | 06:09 | `COLLECTION_TIME` revised from 05:58 to 06:09 using accepted Evidence Division permission |
 | 06:17 | Laboratory Accession Record created |
 | 06:20 | Daniel officially reported discovered |
 
-## Locked wording
+Locked wording:
 
 ### 05:47
-
-Say:
 
 - building accepted profile 18-07
 - profile carried resident-access role
@@ -1360,25 +1314,23 @@ Always:
 
 **Laboratory Accession Record created**
 
-Do not casually rename it as delivery, report, custody or case creation.
-
 ### 06:20
 
 Official reported discovery.
 
 ---
 
-# 15. CHAPTER I — ROOM 1807
+# 14. CHAPTER I - ROOM 1807
 
 Status:
 
-`COMPLETE AND OWNER-TESTED`
+`COMPLETE · OWNER-TESTED · OWNER-APPROVED · FROZEN`
 
 Evidence:
 
-- Victim’s Phone
+- Victim's Phone
 - Blood-stained Cloth
-- Victim’s Laptop
+- Victim's Laptop
 - Half-packed Suitcase
 - warning message
 - missed calls from `R.`
@@ -1388,48 +1340,37 @@ Deduction:
 
 - body moved
 - room staged
-- laptop activity selectively cleared
+- laptop selectively cleared
 - intended departure interrupted
 - phone positioned for investigators
 - true objects arranged into false order
 
 Ending:
 
-> “You looked in the wrong room.”
+> "You looked in the wrong room."
 
 Forward truth:
 
 - victim is Kawin
-- Kawin audited credential reuse
-- discovered 18-07 was operational profile
+- Kawin audited 18-07 reuse
 - arranged pier meeting with Rinrada
 - Elena killed him
 - Elena staged Room 1807
-- unknown warning caller is Elena through masked channel
-- Elena wanted Benedict to validate a curated story and flush out the surviving registrar witness
-
-Fair clues:
-
-- 1807 visually echoes 18-07
-- phone is too convenient
-- suitcase points outward
-- `R.` and pier note point outside room
-- “wrong room” is literally true and strategically misleading
+- warning caller is Elena through masked channel
 
 Known technical debt:
 
-- `index.html` still contains static intro title `HOTEL 1807`
+- static intro still says `HOTEL 1807`
 - Canon title is `ROOM 1807`
-- correct only through scoped audited change
-- do not mix into unrelated Phase III work without approval
+- do not mix this correction into Phase III without owner approval
 
 ---
 
-# 16. CHAPTER II — THE PERFECT STRANGER
+# 15. CHAPTER II - THE PERFECT STRANGER
 
 Status:
 
-`COMPLETE AND OWNER-TESTED`
+`COMPLETE · OWNER-TESTED · OWNER-APPROVED · FROZEN`
 
 Victim:
 
@@ -1445,29 +1386,28 @@ Phase order:
 6. Medical Examiner
 7. Chapter ending
 
-Findings:
+Key findings:
 
 - two coffee mugs
 - Temporary Profile 18-07
-- Daniel’s investigation board
+- Daniel's investigation board
 - Room 1807 connection
-- “Ask E. about the corrected time”
+- "Ask E. about the corrected time"
 - Café draft edited at 05:51
 - certified extract
 - sealed custody envelope
-- accepted Evidence Division permission
+- Evidence Division permission
 - FS-12
 - offline local session
 - genuine science
-- 05:58 to 06:09 correction
-- biological window conflicts with corrected time
+- correction from 05:58 to 06:09
 - discovery at 06:20
 
 Elena continuity:
 
 - North reaches `E.` through investigation
 - Elena provides true archived information
-- Elena does not know impossible future details
+- no impossible future knowledge
 - no villain coding
 
 Ending routes:
@@ -1480,33 +1420,28 @@ All converge.
 
 ---
 
-# 17. CHAPTER III — THE BORROWED MINUTES
+# 16. CHAPTER III - THE BORROWED MINUTES
 
 Status:
 
-`COMPLETE AND OWNER-TESTED`
+`COMPLETE · OWNER-TESTED · OWNER-APPROVED · FROZEN`
 
 Purpose:
 
-Explain **how** true evidence can survive inside false chronology without revealing mastermind.
+Explain how true evidence survives inside false chronology without revealing the mastermind.
 
 ## Central mechanism
 
-- delayed/offline devices create Signed Local Events
+- delayed and offline devices create Signed Local Events
 - signed events may arrive later
-- events inside eleven-minute Reconciliation Window remain eligible
+- events inside the eleven-minute Reconciliation Window remain eligible
 - accepted events may display by Device Timestamp
-- conflicting certified views may validate
-- system obeys its rules
-- official story can remain false
+- conflicting certified views may both validate
+- the system obeys rules while the official story remains false
 
-## Phase I — Detective Office
+## Phase I - Detective Office
 
-Scene:
-
-`THE MISSING PASSENGER`
-
-Timeline minigame solution:
+Timeline solution:
 
 1. 05:47 profile accepted
 2. 05:51 draft edited
@@ -1521,70 +1456,40 @@ Conclusion:
 - booking travelled
 - profile travelled through infrastructure
 
-## Phase II — Bangkok to Singapore
+## Phase II - Bangkok to Singapore
 
 - operational travel
 - no tourism montage
-- Benedict/North partnership
-- liaison not introduced before formal scene
+- Benedict and North partnership
 
-## Phase III — Changi Airport
-
-Evidence:
-
-- Confirmed Booking and Travel Record
-- Passenger Movement and CCTV Index
-- Accepted Verification Request
+## Phase III - Changi Airport
 
 Conclusion:
 
 > Travel identity entered systems. Daniel did not complete the journey.
 
-## Phase IV — Singapore Investigation Office
+## Phase IV - Singapore Investigation Office
 
 Introduces Cheryl and Farid.
 
-Evidence:
-
-- Relay Acknowledgement
-- Validation Headers
-- Policy Marker
-
 Limited Header Comparison:
 
-1. 05:58 -> Original Header
-2. 06:09 -> Corrected Header
-3. both validate / corrected claims FS-12 -> Shared
-4. eleven-minute rule -> Policy
+1. 05:58 Original Header
+2. 06:09 Corrected Header
+3. both validate and corrected claims FS-12
+4. eleven-minute rule is Policy
 
-Conclusion:
+## Phase V - Marina Bay
 
-- two versions validate
-- rule exists
-- raw order, device source and operator unresolved
+Confidence Review:
 
-## Phase V — Marina Bay
+- public gateway exit: PROVEN
+- subscriber reacted: SUPPORTED
+- operator physically present: UNPROVEN
+- token reached serviced-apartment network: PROVEN
+- Adrian controlled session: UNPROVEN
 
-Scene:
-
-`THE EXIT IS NOT THE SOURCE`
-
-Correct Confidence Review:
-
-- public gateway exit -> PROVEN
-- subscriber reacted -> SUPPORTED
-- operator physically present -> UNPROVEN
-- token reached serviced-apartment network -> PROVEN
-- Adrian controlled session -> UNPROVEN
-
-## Phase VI — Serviced Apartment
-
-Evidence:
-
-1. Ephemeral Handoff Cache
-2. Reconciliation Architecture Document
-3. Burner Phone Meeting Fragment
-4. Encrypted Architecture Drive
+## Phase VI - Serviced Apartment
 
 Credential solution:
 
@@ -1593,41 +1498,16 @@ Credential solution:
 - device: `FS-12`
 - window: `11 MINUTES`
 
-Proof:
-
-- network reached unit
-- room was handoff
-- occupant unverified
-- Adrian ownership/operator unproven
-
-## Phase VII — Hawker Centre
+## Phase VII - Hawker Centre
 
 Adrian physically introduced.
-
-Claim cross-check:
-
-- window rule -> record
-- room presence -> unverified
-- subscriber human control -> unverified
-- raw-order claim -> consistent
 
 Evidence:
 
 - Revoked Offline Signature Token
 - Secure Reconciliation Mirror Locator
 
-## Phase VIII — Digital Forensics Lab
-
-Title:
-
-`THE MIRROR REMEMBERS`
-
-Evidence:
-
-1. Raw Reconciliation Receipt Record
-2. Subscriber Fork Comparison
-3. PALIMPSEST Tool-Family Fingerprint
-4. Jakarta Relay Fragment
+## Phase VIII - Digital Forensics Lab
 
 Raw Receipt Order:
 
@@ -1639,50 +1519,25 @@ Raw Receipt Order:
 
 Trust Layer:
 
-- signature -> PROVEN
-- permission -> PROVEN
-- device time -> CLAIMED
-- display order -> DERIVED
-- human operator -> UNRESOLVED
-- credential identity -> UNRESOLVED
+- signature: PROVEN
+- permission: PROVEN
+- device time: CLAIMED
+- display order: DERIVED
+- human operator: UNRESOLVED
+- credential identity: UNRESOLVED
 
-Wrapper Trace selects:
-
-- adaptive relay failover
-- operator metadata scrub
-- Jakarta/Indonesian certificate wrapper chain
-
-Does not select:
-
-- digest preservation
-- receipt queue handling
-
-Climax:
-
-1. preserve raw mirror
-2. capture passive route fragment
-3. seal bundle
-
-## Phase IX — Callback
-
-Containment:
-
-1. freeze volatile memory
-2. clone outbound packet
-3. isolate credential handshake
-4. quarantine callback
+## Phase IX - Callback
 
 Revelations:
 
 - watcher entered through signed Bangkok forensic package
 - callback woke after raw-mirror milestone
-- PALIMPSEST built survival across broken clocks
+- PALIMPSEST survives broken clocks
 - someone else taught it to lie
 - PALIMPSEST did not choose body, room or minute
-- cleanup separate
-- Jakarta route and Bangkok decision path separate
-- cleanup deployed before team left Bangkok
-- dead drop has eleven-minute window
+- cleanup is separate
+- Jakarta route and Bangkok decision path are separate
+- cleanup deployed before the team left Bangkok
 
 Key warning:
 
@@ -1694,7 +1549,7 @@ Closing:
 
 ---
 
-# 18. COMPLETE OWNER-LEVEL MYSTERY TRUTH
+# 17. COMPLETE OWNER-LEVEL MYSTERY TRUTH
 
 Secret from player.
 
@@ -1707,7 +1562,7 @@ Legitimate purpose:
 - preserve signed local events
 - support delayed synchronization
 - maintain chain-of-custody continuity
-- operate through offline/network failure
+- operate through offline or network failure
 
 Weakness:
 
@@ -1718,51 +1573,43 @@ Weakness:
 ## Adrian
 
 - created legitimate reconciliation architecture
-- learned it was forked
-- learned audit subscriber logic was abused
-- knew role profiles were reused
+- learned it was forked and abused
 - concealed, delayed and fled
-- guilty of enabling/concealment
+- guilty of enabling or concealment
 - not murder mastermind
 
 ## Arman
 
-PALIMPSEST wrapper can:
+PALIMPSEST can:
 
 - preserve records across broken clocks
 - fail over relays
 - scrub operator metadata
 - protect anonymous delivery
-- survive institutional suppression
+- survive suppression
 
-He sold, brokered or adapted it.
-
-He did not choose Kawin, Daniel, Room 1807 or the eleven-minute events.
+Arman sold, brokered or adapted it. He did not choose Kawin, Daniel, Room 1807 or the eleven-minute events.
 
 ## Elena
-
-Origin belief:
-
-- institutions accept the record that survives procedure
-
-Corruption:
-
-- began choosing which truth remained visible
-- used sequence as authority
-- used credibility to guide investigators
-- moved from curation to murder
 
 Belief:
 
 > Facts do not govern institutions. Records do.
 
-Mistake:
+She:
+
+- chose which truth remained visible
+- used sequence as authority
+- used credibility to guide investigators
+- moved from curation to murder
+
+Her mistake:
 
 - Benedict reads intention
 - North reconstructs attribution gaps
 - Rinrada remembers physical action
 - Cheryl protects proof boundaries
-- Farid preserves alternative explanations
+- Farid preserves alternatives
 
 ## Kawin murder
 
@@ -1770,21 +1617,20 @@ Mistake:
 - planned to meet Rinrada
 - Elena killed him
 - Elena staged Room 1807
-- room number buried operational profile in literal location
 
 ## Daniel murder
 
-- continued Kawin’s work
-- linked Room 1807, 18-07, `E.`, corrected time and Singapore
+- continued Kawin's work
+- connected Room 1807, 18-07, `E.`, corrected time and Singapore
 - Elena killed him
-- attached true science to engineered chronology
+- attached genuine science to engineered chronology
 
 ## Watcher
 
-- deployed via Elena’s legitimate forensic access
+- deployed through Elena's legitimate forensic access
 - signed Bangkok package carried dormant watcher
-- watcher waited for North’s raw-mirror milestone
-- cleanup process attempted to erase callback token while preserving official record
+- watcher waited for North's raw-mirror milestone
+- cleanup tried to erase callback token while preserving official record
 
 ## Why Elena allowed investigation
 
@@ -1792,70 +1638,33 @@ She wanted:
 
 - independent validation of curated narrative
 - North to expose technical actors
-- Adrian and Arman to become plausible targets
+- Adrian and Arman as plausible targets
 - Rinrada to react
 - a public record that survived scrutiny
 
-## Why Elena turns against North in Chapter IV
-
-- North no longer merely retrieves data.
-- North understands the separation between valid credential, human operator and decision owner.
-- North can prevent Arman or Adrian from absorbing all blame.
-- North’s analysis threatens Elena’s ability to leave a perfect official record.
-- The `ANALYST OF RECORD` query confirms North has been classified as the person who understood the architecture.
-- Elena chooses neutralization before North can connect Bangkok deployment conditions to human decision behavior.
-- Elena’s attempt must preserve plausible deniability and ideally produce a record that says North is gone.
-
 ---
 
-# 19. CHAPTER IV — SHADOW OF THE TRUTH
+# 18. CHAPTER IV - SHADOW OF THE TRUTH
 
-## Status
+## Current status
 
 - Phase I: complete and accepted
 - Phase II: complete and accepted
-- Phase III: blueprint proposed, not yet implemented
-- Phase IV–VIII: planned
-- Total phase count: eight
+- Phase III: proposed blueprint only
+- Phase IV to VIII: planned
+- total phases: eight
 
-## Purpose
-
-1. follow Jakarta tool route and Bangkok decision path
-2. reveal Arman without making him mastermind
-3. show why North is dangerous
-4. make observer pattern personal
-5. preserve proof boundaries
-6. create fake-success counter-operation
-7. make antagonist believe North is neutralized
-8. point back to Room 1807 and `R.`
-
-## Phase I — AFTERIMAGE
+## Phase I - AFTERIMAGE
 
 Status:
 
-`COMPLETE · MODULE 0.13.2 · OWNER-ACCEPTED`
+`COMPLETE · MODULE 0.13.2 · OWNER-APPROVED · FROZEN`
 
 Location:
 
 Singapore Investigation Office.
 
-Opening continuity:
-
-- Dead Drop sealed
-- Jakarta agrees to joint token validation
-- Farid retains raw mirror and watcher capture
-- North separates Jakarta wrapper route from Bangkok deployment path
-- Benedict frames two hands
-
-Benedict choice:
-
-- source code
-- authorization
-- person who fears attribution
-
-All converge.
-
-Route Board correct assignments:
+Route Board:
 
 | Item | Lane |
 |---|---|
@@ -1867,11 +1676,10 @@ Route Board correct assignments:
 
 North target beat:
 
-- authenticated subscriber query
-- query term: `ANALYST OF RECORD`
-- it asks who understood evidence
-- North states she is the search term
-- Benedict refuses to use her as bait without consent
+- authenticated query
+- term: `ANALYST OF RECORD`
+- North is the search term
+- Benedict refuses to use her without consent
 - North refuses protection through exclusion
 
 Proof:
@@ -1881,35 +1689,30 @@ Proof:
 - no identity result
 - legal basis for Jakarta cooperation
 
-## Phase II — JAKARTA ARRIVAL
+## Phase II - JAKARTA ARRIVAL
 
 Status:
 
-`COMPLETE · MODULE 0.14.7 · OWNER-ACCEPTED`
+`COMPLETE · MODULE 0.14.7 · OWNER-APPROVED · FROZEN`
 
-### Scene sequence and time
+Scene sequence:
 
 1. Singapore departure: 23:20 SGT
 2. flight: 1 h 50 m
 3. Jakarta arrival: 00:10 WIB
 4. Cybercrime Operations: 01:05 WIB
 5. Verification Lab: 01:18 WIB
-6. Day: Day 5
+6. Day 5
 
-Jakarta is one hour behind Singapore.
-
-### Team arrangement
-
-In Jakarta:
+Team in Jakarta:
 
 - Benedict
 - North
 - Cheryl
 - Maya
 
-In Singapore, remote:
+Farid remains remote in Singapore with:
 
-- Farid
 - original raw mirror
 - original watcher capture
 
@@ -1919,37 +1722,34 @@ North carries:
 - no live credential
 - no callback route
 
-### Maya authority
+Maya authority:
 
 - token validation authority
 - certificate wrapper access
 - one passive response
 - no live trace
 - no intrusion
-- no raid from IP address
+- no raid from an IP address
 - no physical attribution from relay address
 
-### Token Verification minigame
-
-Correct order:
+Token Verification order:
 
 1. `PRESERVE TOKEN HASH`
 2. `CLONE INTO SANDBOX`
 3. `SEND PASSIVE CHALLENGE`
 4. `COMPARE RESPONSE GRAMMAR`
 
-Rejected dangerous actions:
+Rejected:
 
 - `OPEN LIVE RENDEZVOUS`
 - `TRACE RESPONDER`
 
-### Findings
+Findings:
 
 - token genuine
 - single-use
-- preserved dead drop behavior
 - Jakarta broker route real
-- response grammar consistent with PALIMPSEST tool family
+- response grammar supports PALIMPSEST family
 - no face
 - no address
 - no sender identity
@@ -1971,79 +1771,75 @@ North result:
 - recognized role `ATTRIBUTION ANALYST`
 - role is not identity
 
-### Correct transition line
+Correct transition:
 
 Maya:
 
-> “I am authorising a controlled packet capture. The next phase begins with provenance, not pursuit.”
+> "I am authorising a controlled packet capture. The next phase begins with provenance, not pursuit."
 
 Thai:
 
-> “ฉันอนุมัติการเก็บ Packet แบบควบคุม ขั้นต่อไปต้องเริ่มจากการพิสูจน์ที่มา ไม่ใช่การไล่ล่า”
+> "ฉันอนุมัติการเก็บ Packet แบบควบคุม ขั้นต่อไปต้องเริ่มจากการพิสูจน์ที่มา ไม่ใช่การไล่ล่า"
 
 Closing:
 
 Benedict:
 
-> “It was never a meeting place.”
+> "It was never a meeting place."
 
 North:
 
-> “No. It is a receipt.”
+> "No. It is a receipt."
 
 Maya:
 
-> “Then prove who handled it.”
+> "Then prove who handled it."
 
-### Phase II proof boundary
+Proof boundary:
 
 Proven:
 
 - token genuine
 - broker route Jakarta-linked
-- route is receipt/handoff
-- response grammar supports PALIMPSEST family
-- system recognizes analytical role
+- route is receipt or handoff
+- PALIMPSEST-family grammar
+- analytical role recognition
 - human identity unresolved
 
 Not proven:
 
 - Arman is sender
 - Arman is operator
-- Arman personally deployed Bangkok watcher
+- Arman deployed Bangkok watcher
 - Elena involvement
 - decision owner
-- physical Jakarta endpoint occupant
+- physical endpoint occupant
 
-## Phase III — PACKET PROVENANCE
+## Phase III - PACKET PROVENANCE
 
 Status:
 
-`NEXT PRODUCTION TARGET · BLUEPRINT PROPOSED · NOT YET OWNER-TESTED`
+`NEXT PRODUCTION TARGET · BLUEPRINT PROPOSED · NOT IMPLEMENTED · NOT OWNER-TESTED`
 
-### Starting card
+Starting card:
 
 - `DAY 5 · 01:24 WIB`
 - `JAKARTA VERIFICATION LAB`
 - `PHASE III · PACKET PROVENANCE`
 
-### Starting point
+Starting point:
 
-Begin immediately after:
-
-- controlled packet capture authorized
+- controlled capture authorized
 - token response preserved
 - Farid remote in Singapore
-- Maya holds local legal authority
+- Maya owns local legal authority
 - North leads technical interpretation
-- Benedict maintains human inference and final decisions
+- Benedict maintains human inference and decisions
 - Cheryl maintains admissibility and jurisdiction
 
-No repeated long recap.
+Purpose:
 
-### Phase purpose
-
-Prove difference between:
+Separate:
 
 - tool-family authorship
 - relay route
@@ -2051,49 +1847,34 @@ Prove difference between:
 - local deployment
 - decision trigger
 
-Move toward a lawful encounter with Arman without calling him murderer or decision owner.
-
-### Scene flow
+Scene flow:
 
 1. Controlled Capture
-   - capture conditions sealed
-   - joint authority recorded
-   - Singapore original hash verified
-   - sanitised clone matched
-   - five fragments preserved
-   - no second passive challenge
-   - no additional network activity
 2. Benedict principle choice
-   - Follow Build Lineage
-   - Follow Broker’s Habits
-   - Follow Condition That Woke Packet
-   - all converge
 3. Packet Provenance Reconstruction
 4. Evidence review
 5. Authorship / Deployment Confidence Matrix
 6. Legal debrief
 7. controlled broker inquiry lead
-8. completion card leading to Phase IV
+8. completion leading to Phase IV
 
-### Character roles
+Character roles:
 
-- North leads technical reconstruction
+- North leads reconstruction
 - Benedict chooses focus and interprets blame architecture
-- Maya owns local legal authority
-- Cheryl records chain of custody
-- Farid validates original hash from Singapore
-- no Arman portrait or Journal unlock in Phase III
+- Maya owns local authority
+- Cheryl records custody
+- Farid validates original hash
+- no Arman portrait or Journal unlock
 - no Elena or Adrian appearance required
 
-### Benedict choice effects
+Benedict choice effects:
 
 - build lineage: `attributionProof +1`
 - broker habits: `allianceStrength +1`
 - deployment condition: `chainOfCustody +1`
 
-All routes converge.
-
-### Primary minigame
+Primary minigame:
 
 `PACKET PROVENANCE RECONSTRUCTION`
 
@@ -2105,43 +1886,33 @@ All routes converge.
 | Local Deployment Echo | Deployment Conditions |
 | Decision Trigger | Decision Owner · Unresolved |
 
-Lesson:
-
-> Tool authorship, route, brokerage, deployment and decision ownership are different layers.
-
-### Evidence
+Evidence:
 
 1. `PALIMPSEST Source-Build Hash`
 2. `Broker Ledger Fragment`
 3. `Jakarta Authorization Echo`
-4. `Deployment Condition Echo` as DOM/CSS record if needed
+4. `Deployment Condition Echo`
 
-No decorative evidence.
-
-### Secondary minigame
+Secondary minigame:
 
 `AUTHORSHIP / DEPLOYMENT MATRIX`
 
-Use confidence relationships rather than duplicate classification:
+- Source-Build Hash to PALIMPSEST family: PROVEN
+- Jakarta Authorization Echo to local handoff: PROVEN
+- broker handle to distribution: SUPPORTED
+- deployment echo to trusted Bangkok conditions: SUPPORTED
+- decision trigger to target selector: UNRESOLVED
 
-- Source-Build Hash ↔ PALIMPSEST family = PROVEN
-- Jakarta Authorization Echo ↔ local infrastructure handled handoff = PROVEN
-- Broker handle ↔ distributed build = SUPPORTED
-- Deployment echo ↔ trusted Bangkok conditions = SUPPORTED
-- Decision trigger ↔ person selecting victim/room/time = UNRESOLVED
+End proof:
 
-A candidate operational handle may be used only as an account/handle, not identity proof. `BRK-AS-04` is a proposed placeholder and may be changed before implementation.
-
-### Proof boundary
-
-By end, prove:
+Prove:
 
 - source build belongs to PALIMPSEST family
 - Jakarta infrastructure handled or brokered packet
-- distribution and deployment paths differ
+- distribution and deployment differ
 - Bangkok deployment condition exists
 - decision trigger does not identify owner
-- lawful basis exists to contact or observe probable toolmaker/broker
+- lawful basis exists to observe or contact probable toolmaker or broker
 
 Do not prove:
 
@@ -2149,25 +1920,11 @@ Do not prove:
 - Arman is mastermind
 - Arman is murderer
 - Elena involvement
-- final operator of 05:47
-- final operator of 06:09
+- final operator at 05:47
+- final operator at 06:09
 - decision owner
 
-### Suggested dialogue beats
-
-- Maya authorizes provenance capture without reopening endpoint.
-- Cheryl establishes Singapore-original / Indonesia-analysis custody split.
-- Farid confirms original hash and clone match.
-- North: “Five fragments. Five functions. None of them is a name.”
-- North explains that build, route and broker do not know who chose target.
-- Farid preserves an alternative explanation.
-- Maya blocks a warrant leap.
-- Benedict recognizes that leaving craftsman visible and client blank may be an arrangement of blame.
-- Final action authorizes observation or technical interview only.
-- Cheryl states: no arrest, no murder allegation, no hood identification.
-- Benedict frames the next encounter as meeting the person the record points toward, not the villain it invites them to invent.
-
-### Completion card
+Completion:
 
 - SOURCE BUILD: PALIMPSEST FAMILY
 - BROKER HANDLE: UNVERIFIED
@@ -2175,240 +1932,105 @@ Do not prove:
 - DECISION OWNER: UNRESOLVED
 - `NEXT · PHASE IV · THE MAN BEHIND THE ALIAS`
 
-### Minimal implementation scope
+Proposed minimal implementation scope:
 
-Modify:
+Modify only when approved:
 
 - `js/engine/09-defect-hotfix.js`
 
-Add:
+Add only when approved:
 
 - `js/chapters/chapter-04/03-packet-provenance.js`
 - `css/chapter-04-phase-03.css`
 
-Do not change `index.html`, Phase I or Phase II unless inspection proves unavoidable.
+Mandatory implementation safety:
 
-### Phase III assets
+- do not alter Phase I or Phase II owners
+- do not mutate chapter state during module load
+- do not expose Characters in Chapter I
+- do not install global polling
+- do not create another audio manager
+- do not preload Phase III until startup behavior is proven
+- all Phase III initialization must be entry-scoped or resume-scoped
+- test fresh New Game before any Phase III acceptance
 
-Current blueprint requires no new image or audio package:
+Assets:
 
-- reuse Jakarta Verification Lab background
+- reuse Jakarta Verification Lab
 - reuse approved portraits
-- reuse restrained Phase II verification loop through a separate phase-local media element
+- reuse restrained Phase II verification audio with separate phase-local media ownership
 - reuse shared inspection and puzzle cues
-- construct evidence and puzzles in DOM/CSS
-- stop Phase II audio on Phase III entry
-- no global audio manager
-- no new observer or polling system
+- build evidence in DOM/CSS
+- no new custom image or audio package currently required
 
-## Phase IV — THE MAN BEHIND THE ALIAS
+## Phase IV - THE MAN BEHIND THE ALIAS
 
 Purpose:
 
 - physical encounter with Arman
-- real face reveal around chapter midpoint
-- hood feed explicitly excluded as identification evidence
-- North verifies live behavior against source hash
-- Benedict reads Arman’s fear of being framed as sole murder author
-- Arman admits wrapper authorship/adaptation
+- real face reveal
+- hood feed excluded as identification
+- North verifies behavior against source evidence
+- Benedict reads fear of being framed
+- Arman admits authorship or adaptation
 - Arman knew abuse was possible
 - Arman did not choose victims
 - legitimate Bangkok client supplied deployment conditions
-- he lacks direct proof of client identity
+- no direct proof of client identity
 
-Maya does not fall in love with Benedict.
+First likely new asset package:
 
-### Phase IV asset boundary
+- Arman physical portrait and expressions
+- Phase IV locations
+- phase-local ambience if needed
+- evidence art only where DOM/CSS is insufficient
 
-This is the first phase after current Production likely to require a genuinely new custom asset package.
+## Phase V - NORTH IS MARKED
 
-Do not ask the owner to resend broad old folders. Request only the files required by the approved Phase IV blueprint, likely:
+Locked narrative function:
 
-- Arman approved physical portrait/expression set
-- one or more Phase IV location backgrounds
-- phase-local ambience/music if existing tracks do not fit
-- evidence art only where DOM/CSS cannot communicate it cleanly
+- North is a strategic threat
+- adversary attempts to remove her
+- attempt is deniable
+- North remains active
+- attack creates evidence
+- phase feeds into false success
 
-Inspect GitHub first. Existing files must not be resent merely because they were discussed in another room.
+Owner-confirmed setting:
 
-## Phase V — NORTH IS MARKED
+A natural undercover Indonesian hotel, resort, pool, beach club or coastal surveillance sequence selected by Phase IV evidence.
 
-### Locked narrative function
+North, Cheryl and Maya use distinct tourist-cover bikinis.
 
-- North has become a direct strategic threat to the decision owner.
-- The adversary begins an operation intended to remove her from the investigation.
-- The attempt must be deniable, intelligent and consistent with the case’s record-manipulation theme.
-- North remains active and analytical.
-- The attack produces usable telemetry or authorization evidence.
-- Phase V must feed naturally into Phase VI’s false-success counter-operation.
+- Maya: most voluptuous, elegant and strongest curves
+- Cheryl: athletic-curvy, tomboy and movement-ready
+- North: lean-fit, minimalist and agile
 
-### Owner-confirmed setting direction
+Rules:
 
-Phase V contains a **natural undercover resort / hotel pool / coastal surveillance sequence** in Indonesia.
+- adult and story-integrated
+- commercially realistic swimwear
+- no identical poses
+- no impossible anatomy
+- no harem coding
+- no romance between Maya and Benedict
+- no romance between North and Farid
+- surveillance remains primary
+- visual appeal must not erase police or technical competence
 
-Possible location families:
+Threat rhythm:
 
-- upscale coastal hotel
-- private resort
-- beach club
-- pool deck attached to a serviced villa
-- seaside property used by a broker contact
-- luxury hotel with public leisure space and controlled service corridors
+1. Arrival and cover
+2. False calm
+3. Anomaly
+4. North singled out
+5. Attempt or near-attempt
+6. Realization that attacker needs a record of North's removal
+7. transition to false-success plan
 
-The final place must be selected because evidence from Phase IV leads there. It cannot be a random tourist detour.
+Attack method remains unapproved until the Phase V blueprint.
 
-Indonesia offers a plausible environment for this kind of location, but the scene must avoid generic postcard tourism. It remains noir surveillance under bright leisure camouflage.
-
-### Story justification
-
-- a broker, courier, buyer or protected intermediary uses a resort/hotel location
-- the team must blend into the guest population
-- formal police clothing would expose surveillance
-- North, Cheryl and Maya use tourist cover near the pool or beach
-- reclining, sunbathing, swimming or casual movement functions as cover while each watches a different access route
-- Benedict uses a separate plausible guest role or observation position
-- Farid may support remotely
-- the target or attacker begins watching the team back
-- the setting creates a false calm before threat escalation
-
-### Bikini scene Canon
-
-North, Cheryl and Maya wear different bikini styles matching their bodies and personalities.
-
-This scene is intentionally sexy and visually memorable, but must remain:
-
-- story-integrated
-- adult
-- physically believable
-- commercially realistic
-- character-specific
-- consistent with surveillance
-- free of accidental harem coding
-- free of romance between Maya and Benedict
-- free of romance between North and Farid
-- respectful of Cheryl’s controlled feelings for Benedict
-- cinematic without becoming a disconnected pin-up gallery
-
-#### Maya
-
-- most voluptuous
-- elegant and strongest visual impact
-- luxury, confident bikini construction
-- proper support and realistic fit
-- may use a rich, sophisticated color family
-- posture remains composed and authoritative
-
-#### Cheryl
-
-- athletic-curvy
-- second most voluptuous
-- sporty tomboy edge
-- assertive, movement-ready bikini
-- strong shoulders and toned waist remain visible
-- confidence is more important than coy posing
-
-#### North
-
-- lean-fit
-- minimalist and functional
-- sleek clean lines
-- easiest believable movement during surveillance
-- visually sexy through health, precision and self-possession
-- remains alert rather than decorative
-
-### Camera and presentation rules
-
-- establish the three looks clearly enough that the visual payoff is real
-- do not use identical poses
-- do not use impossible anatomy
-- do not exaggerate Maya until she stops looking human
-- do not inflate Cheryl until her athletic identity disappears
-- do not make North underweight
-- use natural surveillance behavior: adjusting sunglasses, checking reflections, tracking service exits, listening through concealed comms, turning on a lounger to maintain line of sight
-- do not center the entire phase on Benedict reacting to their bodies
-- restrained character banter is allowed
-- no juvenile embarrassment routine
-- no voyeuristic hidden-camera framing unless it is narratively the antagonist’s surveillance and clearly treated as threatening evidence
-- mobile framing must preserve faces, identity and body distinction
-
-### Threat progression inside Phase V
-
-Recommended rhythm:
-
-1. **Arrival / Cover**
-   - establish location and surveillance purpose
-   - show three distinct swimwear looks naturally
-   - assign observation zones
-2. **False Calm**
-   - operation appears controlled
-   - character interaction offers breathing room
-   - player receives visual variety after lab-heavy phases
-3. **Anomaly**
-   - repeated watcher
-   - altered guest wristband
-   - suspicious staff route
-   - unauthorized device handshake
-   - swapped drink, towel, locker key or access token
-4. **North singled out**
-   - evidence shows attention is concentrated on North
-   - attacker is interested in the analyst, not the whole team
-5. **Attempt / near-attempt**
-   - method must be selected in the Phase V blueprint
-   - North detects or survives part of it through intelligence and action
-   - Maya and Cheryl contribute professionally
-   - Benedict connects method to human intention
-6. **Cliff into Phase VI**
-   - team realizes the attacker needs a record of North’s removal
-   - North proposes or consents to turning that expectation into a controlled false success
-
-### Candidate attack mechanisms
-
-Not locked until blueprint approval:
-
-- controlled traffic collision after leaving resort
-- hotel service-corridor extraction attempt
-- tampered access wristband routing North into a restricted zone
-- poisoned or sedated device/drink handoff
-- manipulated pool-safety event staged as accident
-- compromised locker or wearable producing false location telemetry
-- room intrusion tied to her laptop or source-build correlation
-
-Avoid cartoon assassin behavior, implausible underwater melodrama or random violence with no evidentiary return.
-
-### Phase V evidence candidates
-
-- Attack Telemetry
-- Decoy Credential Probe
-- Cleanup Authority Echo
-- Resort Access Manipulation Record
-- Watcher Device Handshake
-- Altered Guest Credential
-
-Only include evidence that advances the case.
-
-### Phase V asset plan requirement
-
-Before generating Phase V assets, produce an approved asset blueprint specifying:
-
-- exact location
-- time of day
-- story function of each background
-- whether pool and beach are one location or separate
-- exact North/Cheryl/Maya bikini designs
-- approved body proportions and identity references
-- required expression list
-- dialogue portrait versus full-body requirements
-- any Benedict/Maya/Cheryl/North cover props
-- evidence imagery
-- ambience, music and one-shot cues
-- mobile crop tests
-- file names and GitHub-relative paths
-
-Do not create three large character sets before the scene structure and UI usage are known.
-
-## Phase VI — THE FALSE SUCCESS
-
-Counter-operation:
+## Phase VI - THE FALSE SUCCESS
 
 - attacker believes North removed
 - hidden live channel preserved
@@ -2416,37 +2038,25 @@ Counter-operation:
 - Cheryl and Maya control legal perimeter
 - North consents and designs deception
 - Benedict does not decide over her body
-- official or observable record may say North is missing, gravely injured or dead
-- North secretly remains alive and operational
+- public record may say missing, injured or dead
+- North remains alive and operational
 
-Choices affect:
-
-- North trust
-- Cheryl trust
-- evidence integrity
-- future protection strength
-
-The resort/pool attack from Phase V must provide the believable trigger and telemetry for this counter-operation.
-
-## Phase VII — RELAY FACILITY CLIMAX
+## Phase VII - RELAY FACILITY CLIMAX
 
 - preserve relay authorization echo
 - Arman assists under conditions
 - cleanup triggers
 - North works through hidden channel
-- Benedict confronts behavior and motive
 - capture Registrar reference `R.`
 - prove Bangkok watcher deployment predates Singapore trip
 - Elena sends true useful information slightly too early
-- do not make this an obvious villain reveal
+- no obvious villain reveal
 
-## Phase VIII — SHADOW OF THE TRUTH
+## Phase VIII - SHADOW OF THE TRUTH
 
-Ending:
-
-- public record says North missing, gravely injured or dead according to counter-operation
+- public record says North removed
 - North secretly alive
-- antagonist believes record
+- antagonist believes the record
 - Benedict returns toward Bangkok
 - Jakarta identifies toolmaker, not decision owner
 - `R.` becomes next human lead
@@ -2455,50 +2065,9 @@ Closing direction:
 
 > Let her believe the record.
 
-## Chapter IV evidence set
-
-1. PALIMPSEST Source-Build Hash
-2. Broker Ledger Fragment
-3. Jakarta Authorization Echo
-4. Deployment Condition Echo
-5. Attack Telemetry
-6. Decoy Credential Probe
-7. Cleanup Authority Echo
-8. Registrar Reference `R.`
-9. Bangkok Watcher Deployment Echo
-
-The resort access or watcher record may replace rather than expand this set if it performs the same proof function.
-
-## Chapter IV minigames
-
-1. Packet Provenance Reconstruction
-2. Authorship / Deployment Matrix
-3. Decoy Telemetry Control
-4. Relay Authorization Preservation
-
-A small surveillance mechanic may be added to Phase V only if mechanically distinct and useful. Do not add a shallow “spot the suspect” puzzle merely because the location is visual.
-
-## Chapter IV end proof
-
-Prove:
-
-- Arman strongly linked to tool authorship
-- Arman not proven decision owner
-- North targeted for knowledge
-- Bangkok valid access deployed watcher
-- `R.` linked to registrar layer
-- antagonist monitors official reporting
-
-Do not prove:
-
-- Elena killed Kawin
-- Elena killed Daniel
-- Rinrada identity
-- final legal case
-
 ---
 
-# 20. CHAPTER V — THE MISSING PIECE
+# 19. CHAPTER V - THE MISSING PIECE
 
 Purpose:
 
@@ -2515,7 +2084,7 @@ Reveals:
 
 Public state:
 
-- North missing/injured/presumed dead
+- North missing, injured or presumed dead
 
 Private state:
 
@@ -2526,7 +2095,7 @@ Phases:
 1. Return to Bangkok
 2. Name in Room 1807
 3. Room/Profile Cross-Map
-4. Daniel’s Handoff
+4. Daniel's Handoff
 5. The Registrar
 6. Pier Reconstruction
 7. Witness Extraction
@@ -2544,21 +2113,17 @@ Key reveal:
 
 Key witness:
 
-`Rinrada “Rin” Sornchai`
+`Rinrada "Rin" Sornchai`
 
-Rin saw Elena physically present around the pier exchange but did not witness every murder action.
-
-Testimony requires corroboration.
+Rin saw Elena physically present around the pier exchange but did not witness every murder action. Testimony requires corroboration.
 
 ---
 
-# 21. CHAPTER VI — THE FINAL MOVE
+# 20. CHAPTER VI - THE FINAL MOVE
 
 Purpose:
 
-Strategic war over final official record.
-
-Team likely understands Elena is decision owner but needs sufficient legal case.
+Strategic war over the final official record.
 
 Elena activates Continuity Protocol to:
 
@@ -2586,13 +2151,11 @@ Minigames:
 - Authority Chain Reconstruction
 - parallel priority operation
 
-Elena remains controlled and philosophical, not a cartoon villain.
-
-Benedict rejects the idea that survivable record equals truth.
+Elena remains controlled and philosophical, not cartoonish.
 
 ---
 
-# 22. CHAPTER VII — LAST WITNESS
+# 21. CHAPTER VII - LAST WITNESS
 
 Purpose:
 
@@ -2606,9 +2169,7 @@ Resolve:
 - physical witness
 - legal case
 
-Opening:
-
-Two alerts:
+Opening alerts:
 
 1. Room 1807
 2. pier
@@ -2628,7 +2189,7 @@ Final minigame:
 
 `THE LAST RECORD`
 
-Map each fact into:
+Map facts into:
 
 - physical event
 - record claim
@@ -2642,11 +2203,11 @@ Map each fact into:
 - opportunity
 - chain of custody
 
-Historical truth is fixed even when player’s legal package is incomplete.
+Historical truth remains fixed even when the legal package is incomplete.
 
 ---
 
-# 23. ENDING ARCHITECTURE
+# 22. ENDING ARCHITECTURE
 
 Historical truth is fixed:
 
@@ -2656,7 +2217,7 @@ Historical truth is fixed:
 
 What changes:
 
-- evidence preserved
+- evidence preservation
 - survival
 - proof
 - accusation
@@ -2664,30 +2225,19 @@ What changes:
 - public record
 - character epilogues
 
-## Ending 1 — TRUE CONVICTION
+## Ending 1 - TRUE CONVICTION
 
 Requires:
 
 - Elena accused
 - strong attribution
-- clean chain of custody
-- local decision path preserved
+- clean custody
+- local decision path
 - witness survives
 - North evidence survives
-- physical/digital corroboration
+- physical and digital corroboration
 
-Outcome:
-
-- Elena convicted
-- record corrected
-- Kawin and Daniel restored as victims of one plan
-- Rin survives
-- Adrian/Arman face evidence-supported charges only
-- Benedict and North continue
-- Benedict chooses no permanent romantic partner
-- Cheryl remains significant ally with dignified emotional resolution
-
-## Ending 2 — RIGHT NAME, NO CASE
+## Ending 2 - RIGHT NAME, NO CASE
 
 - team knows truth
 - conviction fails
@@ -2695,9 +2245,7 @@ Outcome:
 - witness may survive
 - North may remain hunted
 
-Bittersweet, not failure through stupidity.
-
-## Ending 3 — FALSE CONVICTION
+## Ending 3 - FALSE CONVICTION
 
 Targets:
 
@@ -2706,14 +2254,12 @@ Targets:
 
 Conditions:
 
-- persuasive architecture/tool evidence
+- persuasive architecture or tool evidence
 - weak decision-owner proof
 - wrong accusation
 - institution accepts easier story
 
-Elena remains free.
-
-## Ending 4 — THE PERFECT RECORD
+## Ending 4 - THE PERFECT RECORD
 
 - witness lost
 - North framed or discredited
@@ -2721,32 +2267,29 @@ Elena remains free.
 - institution accepts false chronology
 - final image echoes Room 1807
 
-Darkest ending.
+Fairness:
 
-## Fairness
-
-- no ending changes historical murderer
+- no ending changes the murderer
 - Adrian never becomes mastermind
 - Arman never becomes decision owner
 - North never becomes mastermind
 - Daniel never returns alive
-- wrong endings must be understandable
-- proof-boundary players have fair path to conviction
-- no single dialogue choice determines ending
+- wrong endings remain understandable
+- no single dialogue choice determines the ending
 
 ---
 
-# 24. RELATIONSHIP AND ALLIANCE DESIGN
+# 23. RELATIONSHIP AND ALLIANCE DESIGN
 
 ## Benedict and North
 
 - central partnership
 - trust through inclusion
-- North consents to fake-success
+- North consents to false success
 - Benedict incorporates technical judgment
 - no romance
-- final partnership continues
-- Phase V must strengthen partnership through operational trust, not romantic jealousy
+- partnership continues
+- Phase V strengthens operational trust
 
 ## Benedict and Cheryl
 
@@ -2762,21 +2305,15 @@ Progression:
 Do not:
 
 - make Cheryl adolescent
-- make Benedict commit suddenly
-- make North romantic rival
-- create love triangle with Maya
-- interrupt urgent evidence work
-- use the bikini scene as a cheap jealousy sketch
-
-A brief reaction or dry exchange in Phase V is allowed if it remains mature and subordinate to surveillance.
+- make North a romantic rival
+- create a Maya love triangle
+- use the resort scene as cheap jealousy
 
 ## Maya and Benedict
 
 - professional chemistry only
 - no romance
 - no harem structure
-- Maya may notice Cheryl’s feelings and remain outside them
-- Maya’s stronger curves do not create romantic Canon
 
 ## North and Farid
 
@@ -2792,14 +2329,14 @@ A brief reaction or dry exchange in Phase V is allowed if it remains mature and 
 
 ## Benedict and Elena
 
-- psychological duel hidden inside cooperation
-- Elena tries to guide narrative
+- psychological duel inside cooperation
+- Elena guides narrative
 - Benedict tests timing and knowledge
-- no direct accusation before proof
+- no accusation before proof
 
 ---
 
-# 25. AUDIO GOVERNANCE
+# 24. AUDIO GOVERNANCE
 
 Owners:
 
@@ -2814,73 +2351,50 @@ Do not create another global audio manager.
 
 - pointerdown
 - immediate
-- one press one sound
+- one press, one sound
 - no duplicate Android playback
-- real click, not synthetic ticking
+- real click
 
-## Evidence cue
+## Evidence and puzzle cues
 
-- one playback
-- separate from puzzle success
-- stop on scene exit
+- evidence cue plays once
+- puzzle success is separate
 - Inspect does not play collection cue
+- stop on scene exit
 
-## Chapter IV Phase II accepted audio
+## Accepted Phase II audio
 
-- takeoff ambience fades before route card/next scene
+- takeoff fades before route card
 - no lingering airplane sound
 - airport ambience subdued
 - lab ambience subdued
-- music and ambience duck under dialogue
-- Farid remote dialogue does not create extra ambience owner
+- dialogue remains dominant
+- Farid remote dialogue does not add an ambience owner
 - Return to Title stops Phase II media
 
-## Phase III
+## Phase III audio
 
-- phase-local audio elements
-- reuse verification source if suitable
+- phase-local elements
 - separate media IDs
 - stop Phase II audio on entry
 - no alarm
 - no villain sting
-- no new global manager
-- no observer/polling audio repair
+- no global manager
+- no observer or polling repair
 
-## Phase IV
+## Phase V audio
 
-Select audio after blueprint. Likely requires new location-specific ambience only if existing Jakarta material does not fit physical encounter.
-
-## Phase V resort/pool surveillance
-
-Audio must sell a credible public leisure space while preserving noir tension.
-
-Possible layers:
-
-- restrained pool or beach ambience
-- distant guests
-- water movement
-- soft hotel service activity
-- subtle coastal wind where appropriate
-- hidden low-tension score
-- comms cue
-- watcher/anomaly cue
-- attack or interruption one-shot
-- transition into false-success planning
-
-Rules:
-
-- no tropical vacation montage music
-- no comedy “sexy reveal” sting
-- no nightclub cliché unless location specifically requires it
+- credible public leisure ambience
+- water, distant guests and hotel activity
+- restrained hidden tension
+- no vacation montage
+- no comedy reveal sting
+- no villain music for Elena
 - dialogue remains dominant
-- ambience must not loop with obvious seams
-- music should gradually turn the leisure setting into a threat space
-- do not use villain music for Elena
-- evidence and puzzle cues remain distinct
 
 ---
 
-# 26. MOBILE, FULLSCREEN AND UI
+# 25. MOBILE, FULLSCREEN AND UI
 
 ## Fullscreen
 
@@ -2889,8 +2403,8 @@ Rules:
 - menu control
 - Save Manager in fullscreen root
 - Exit Game fallback
-- mobile may leave fullscreen when backgrounded
-- no brittle automatic re-entry without gesture
+- backgrounding may exit fullscreen
+- no automatic re-entry without gesture
 
 ## Mobile widths
 
@@ -2905,12 +2419,12 @@ Check:
 Account for:
 
 - browser address bar
-- Android nav bar
+- Android navigation
 - safe-area bottom
 - dialogue height
 - long Thai
 - two-line buttons
-- scrollable modal body only
+- scrollable modal body
 
 ## Background art
 
@@ -2924,39 +2438,24 @@ Style:
 - cel-shaded
 - heavy ink
 - angular shadows
-- mobile-bright
+- bright enough for mobile
 - operational, not tourist postcard
 - no pseudo-text
 - exact text or no text
 
-### Phase V background variation
-
-The resort/pool/coastal location may be brighter than previous scenes, but must remain part of the same visual universe.
-
-- sunlight and leisure color are allowed
-- maintain heavy-ink graphic-novel identity
-- preserve mobile readability
-- use long shadows, reflective glass, service corridors, surveillance sightlines and controlled composition to retain crime tone
-- no generic travel-ad image
-- no embedded fake hotel signage
-- exact text or no text
-- location must support the actual attack and surveillance blocking
-
 ## Portrait compositing
 
-- actual game crop matters
+- actual crop matters
 - black background pure black where specified
 - dark clothing readable
 - hair silhouette readable
-- do not add colored portrait backgrounds without approval
-- do not globally alter working characters
-- use Benedict/North visual weight as proportion reference
-- Phase V swimwear assets require separate crop validation because more torso may be visible
-- do not solve full-body requirements by shrinking faces into unreadable portraits
+- no global character changes
+- use Benedict and North as weight references
+- do not shrink faces to solve full-body needs
 
 ---
 
-# 27. EVIDENCE AND MINIGAME STANDARD
+# 26. EVIDENCE AND MINIGAME STANDARD
 
 Every evidence item must:
 
@@ -2972,14 +2471,14 @@ Every minigame must be:
 
 - mobile-friendly
 - tap-first
-- approximately 30–60 seconds
+- approximately 30 to 60 seconds
 - Reset-capable
 - no softlock
 - no permanent fail
-- wrong answer teaches logic
+- wrong answers teach logic
 - success cue separate from evidence cue
 - derived from collected evidence
-- mechanically distinct from adjacent puzzle
+- mechanically distinct
 
 Implemented minigames include:
 
@@ -3017,7 +2516,7 @@ Avoid renamed duplicates.
 
 ---
 
-# 28. TESTING STANDARD
+# 27. TESTING STANDARD
 
 ## Static
 
@@ -3028,25 +2527,24 @@ Avoid renamed duplicates.
 - paths
 - duplicate IDs
 - cache queries
-- missing portraits
-- image dimensions
-- alpha/background behavior
+- portraits
+- dimensions
+- alpha and background behavior
 - audio decode
-- no pseudo-text
 - changed-file scope
 
-## Flow
+## Runtime flow
 
-- fresh entry
+- fresh New Game from Chapter I
+- Chapter I Character mode remains hidden
 - opening dialogue
 - choices
 - evidence open
 - Inspect
 - collect
-- Close
-- reopen
+- Close and reopen
 - post-evidence dialogue
-- minigame gate
+- puzzle gate
 - wrong answer
 - Reset
 - correct answer
@@ -3062,9 +2560,9 @@ Avoid renamed duplicates.
 - load
 - choice state
 - investigation state
-- before/during/after minigame
+- before, during and after puzzle
 - completed resume
-- export/import
+- export and import
 - stale state
 
 ## Settings
@@ -3076,31 +2574,19 @@ Avoid renamed duplicates.
 - fullscreen
 - Exit Game
 
-## Mobile audio
+## Character regression gate
 
-- background app
-- lock screen
-- return to same scene
-- sound disabled
-- music zero
-- transition after return
-- one-shots do not replay
+Before any Phase III delivery:
 
-## Phase V visual QA
-
-- North, Cheryl and Maya identities remain stable
-- body differences match Canon
-- anatomy and hands remain correct
-- swimwear looks commercially real
-- no accidental transparency
-- no clipping through bodies or furniture
-- pool/beach reflections and shadows coherent
-- posture physically plausible
-- all three remain readable on mobile
-- scene remains surveillance-first
-- camera does not reduce faces to tiny details
-- no pseudo-text in resort assets
-- attack blocking makes spatial sense
+1. hard reload with clean state
+2. start Chapter I
+3. confirm no Character mode
+4. confirm no Character toast
+5. confirm no future characters
+6. confirm Chapter II unlock timing
+7. confirm Dev Unlock All still works
+8. confirm Phase III entry works only through intended route
+9. confirm Save/Load does not promote early chapters to Chapter IV
 
 ## Honesty
 
@@ -3115,79 +2601,50 @@ Never claim:
 
 unless actually performed.
 
-Owner device result is final.
+Owner-device result is final.
 
 ---
 
-# 29. CURRENT ACCEPTED LIMITATIONS AND TECHNICAL DEBT
+# 28. CURRENT ACCEPTED LIMITATIONS AND TECHNICAL DEBT
 
-Accepted / known:
+Accepted and known:
 
 - iPhone Safari not owner-tested
 - iOS Add to Home Screen not owner-tested
 - fullscreen may exit after backgrounding
-- legacy global build label still `0.12.1`
-- `index.html` static Chapter I intro still says `HOTEL 1807`
+- legacy global build label may remain `0.12.1`
+- static Chapter I intro says `HOTEL 1807`
 - Canon title is `ROOM 1807`
-- Phase II CSS header comment still says `0.14.3` although accepted final rules are appended as `0.14.7`
-- some Phase II internal asset queries remain `0146` while bootstrap is `0147`
-- do not clean accepted runtime without scoped reason
-- do not clear Site Data by default because it may erase saves
-- Phase III files do not exist yet
-- Phase IV asset requirements are not locked until its blueprint is approved
-- Phase V location, exact attack method, bikini colors and asset list are not yet locked
-- owner-confirmed body hierarchy and scene purpose are locked
+- Phase II CSS header may retain an older comment while accepted final rules are appended
+- some Phase II internal asset queries may remain older than bootstrap query
+- do not clean accepted runtime without a scoped reason
+- do not clear Site Data by default because it can erase saves
+- Phase III files are not part of approved Production
+- Phase IV assets are not locked until blueprint approval
+- Phase V exact location, attack method, colors and asset list remain unresolved
+- body hierarchy and scene function are locked
 
-No owner-reported blocking defect after accepted Build 0.14.7.
+No owner-reported blocking defect remains after the accepted live test.
 
 ---
 
-# 30. BUILD HISTORY
+# 29. BUILD AND BASELINE HISTORY
 
-## 0.7.x
+## 0.7.x to 0.12.1
 
 - Canon separation
 - Save Manager
 - Journal gates
-- timeline
-- Chapter III route foundation
-
-## 0.8.x
-
+- Chapter III routes
 - Changi
-- Passenger Trail
-- lifecycle
-- fullscreen
-
-## 0.9.x
-
 - Singapore Office
-- Cheryl/Farid
-- Header Comparison
-- portrait rebuild
-
-## 0.10.x
-
 - Marina Bay
-- managed handoff
-- accepted Journal layout
-- mobile audio lifecycle
-
-## 0.11.x
-
 - Serviced Apartment
 - Hawker Centre
 - Adrian
-- Credential Header
-- Claim Cross-Check
-
-## 0.12.0–0.12.1
-
 - Digital Forensics Lab
 - Callback
-- Chapter III completion
-- corrected laptop/feed/audio presentation
-- owner accepted Season 1
+- Season 1 accepted
 
 ## 0.13.2
 
@@ -3196,288 +2653,224 @@ No owner-reported blocking defect after accepted Build 0.14.7.
 - North becomes Analyst of Record target
 - two-hands split
 
-## 0.14.0–0.14.6
+## 0.14.0 to 0.14.6
 
 - Phase II implementation
-- audio balance fixes
+- audio balance
 - takeoff ambience
 - Farid remote label
 - Maya role wrapping
-- phrase correction
-- iterative portrait defects and repairs
+- portrait iteration
 
 ## 0.14.7
 
 Owner-accepted Phase II final:
 
-- Maya original navy suit
+- Maya dark navy suit
 - black portrait background
 - visible hair contour
 - accepted proportions
-- deterministic cache query 0147
 - Phase II dialogue correction
 - takeoff fade-out
-- airport/lab ambience balance
+- airport and lab balance
 - current playable endpoint
 
-## Planning addendum 2026-07-30 19:22 ICT
+## 0.15.2 to 0.15.4 support layers
 
-Owner-confirmed future Canon added:
+- Thai localization
+- targeted QC
+- Police dialogue portrait alignment
+- no new Chapter IV phase
+- no change to current playable boundary
 
-- Chapter IV locked to eight phases
-- decision owner recognizes North as a threat
-- plan to eliminate North escalates in Chapter IV
-- Phase V uses an undercover Indonesian resort/hotel pool/coastal setting
-- North, Cheryl and Maya wear distinct bikini styles as natural tourist cover
-- Maya is most voluptuous
-- Cheryl is athletic-curvy and slightly less voluptuous than Maya
-- North is lean-fit
-- scene remains investigative and transitions into North’s attack and Phase VI false success
-- Phase III can reuse current assets
-- first expected missing custom asset package begins with Phase IV
-- Phase V assets require a dedicated approved blueprint
+## Approved runtime recovery 2026-08-01
+
+- created `production-rebuild` from `ffdc94777c5fbaefdc281f1148b59aff3adf8abe`
+- set `production-rebuild` as Default Branch
+- removed obsolete `main`
+- restored live playability
+- owner played from Chapter I through Chapter IV Phase II
+- owner approved the full baseline
+- baseline frozen
 
 ---
 
-# 31. TECHNICAL RISKS
+# 30. TECHNICAL RISKS
 
-## Global overrides
+## Future-module state pollution
 
-Search full chain before editing.
+Highest-priority risk:
 
-## Dynamic DOM
-
-Chapter III and IV inject DOM at runtime.
-
-Bind only after injection.
-
-## Observer proliferation
-
-Do not add observer when direct binding, CSS, explicit resume or existing lifecycle can solve it.
-
-## Audio overlap
-
-Trace:
-
-- base audio
-- stabilization
-- scene-local audio
-- lifecycle guard
-
-before adding playback.
-
-## Save compatibility
-
-Every Phase III screen must be added to:
-
-- labels
-- restore preparation
-- resume
-- audio reconstruction
-- menu/save controls
-- state defaults
-- Developer jump
+- a future Chapter module loaded during startup must not change global chapter state
+- a module definition must not unlock Character mode
+- a preload must not claim active ownership of screen or checkpoint
 
 ## Character regression
 
 Do not:
 
-- add global portrait wrapper
+- expose Characters in Chapter I
+- gate solely on a chapter value that a future module can mutate
+- add global portrait wrappers
 - move Relationship
 - resize all cards
-- add colored backgrounds
 - duplicate red dots
 - unlock aliases
-- touch Cheryl/Farid for Maya work
-- overwrite approved professional portraits with Phase V swimwear art
-- use one character’s bikini asset as a reskin template for another
+- overwrite professional portraits with swimwear art
+
+## Global overrides
+
+Search the full chain before editing.
+
+## Dynamic DOM
+
+Chapter III and IV inject DOM at runtime. Bind only after injection.
+
+## Observer proliferation
+
+Do not add observers when direct binding, CSS or explicit resume can solve the problem.
+
+## Audio overlap
+
+Trace base audio, stabilization, scene-local audio and lifecycle before adding playback.
+
+## Save compatibility
+
+Every future screen must be added to:
+
+- labels
+- restore preparation
+- resume
+- audio reconstruction
+- menu and Save controls
+- state defaults
+- Developer jump
 
 ## Proof regression
 
 Do not equate:
 
-- Jakarta = Arman
-- Arman = PALIMPSEST from hood
-- Adrian = mastermind
-- 18-07 = person
-- valid credential = Elena
-- witness statement = complete legal case
-- resort watcher = decision owner without corroboration
-- attack on North = direct proof of Elena before evidence earns it
+- Jakarta with Arman
+- hood feed with Arman identity
+- Adrian with mastermind
+- 18-07 with a person
+- valid credential with Elena
+- witness statement with a complete legal case
+- attack on North with direct proof of Elena before corroboration
 
 ---
 
-# 32. EXACT NEXT-CHAT OPERATING INSTRUCTION
+# 31. EXACT NEXT-CHAT OPERATING INSTRUCTION
 
 A new assistant must behave as though the owner has said:
 
-> Continue LAST WITNESS from owner-confirmed Build 0.14.7.  
-> Repository: `grolygori789-crypto/last-witness`.  
-> Branch: `restore-game-recovered`.  
-> Read this entire file first.  
-> Fetch latest GitHub runtime, `index.html`, Chapter IV bootstrap, Phase I, Phase II, CSS, current assets and relevant shared owners.  
-> GitHub is code/asset truth. This plan is Canon/future truth.  
-> Do not patch from memory or old ZIP.  
-> Do not push, commit, branch or delete unless specifically authorized.  
-> Work locally and deliver ZIP.  
-> Chapter I through Chapter IV Phase II passed owner Android Chrome testing.  
-> Current endpoint is `NEXT · PHASE III · PACKET PROVENANCE`.  
-> Do not recreate Phase I or Phase II.  
-> Preserve final accepted Maya assets.  
-> Phase III currently reuses approved Jakarta lab, portraits and audio unless inspection proves otherwise.  
-> First expected new custom asset package begins with Phase IV after blueprint approval.  
-> Chapter IV has eight phases.  
-> Phase V contains an undercover resort/pool/coastal surveillance sequence with North, Cheryl and Maya in distinct character-specific bikinis.  
-> Maya is most voluptuous, Cheryl athletic-curvy and slightly less voluptuous, North lean-fit.  
-> The scene must naturally support surveillance and the attempt to eliminate North.  
-> Start by auditing current Phase II handoff and the approved/proposed Phase III blueprint.  
-> Work efficiently. Patch the smallest scope.
+> Continue LAST WITNESS from the owner-approved Production baseline.
+> Repository: `grolygori789-crypto/last-witness`.
+> Production and Default branch: `production-rebuild`.
+> Approved runtime baseline commit: `ffdc94777c5fbaefdc281f1148b59aff3adf8abe`.
+> Read `GAME_MASTER_PLAN.md` from beginning to end before proposing anything.
+> The branch may contain a later documentation-only commit after this plan is uploaded. Do not mistake that for a new runtime build.
+> Chapter I through Chapter IV Phase II passed owner Android Chrome testing.
+> Current endpoint is `NEXT · PHASE III · PACKET PROVENANCE`.
+> Phase III is not implemented in approved Production.
+> Do not touch, restore, merge, rebase or rebuild Chapter I, Chapter II, Chapter III, Chapter IV Phase I or Phase II.
+> Do not write to GitHub without exact current-turn authorization.
+> Work locally and deliver a ZIP.
+> Before any Phase III implementation, audit startup load order, global state mutation, Save/Load, Character Journal gates, Case File, audio and Developer Mode.
+> Chapter I must remain free of Character mode.
+> Loading a future module must not set `state.chapter = 4`.
+> Phase III initialization must be entry-scoped or resume-scoped.
+> Preserve Maya's approved Phase II assets.
+> Phase III currently reuses the Jakarta lab, approved portraits and existing audio unless inspection proves otherwise.
+> Chapter IV has eight phases.
+> Phase V contains a story-integrated undercover resort or pool surveillance sequence with North, Cheryl and Maya in distinct character-specific bikinis.
+> Maya is most voluptuous, Cheryl athletic-curvy and North lean-fit.
+> The scene supports surveillance and the attempted elimination of North.
+> Work efficiently and patch the smallest scope.
 
 ---
 
-# 33. COPY-PASTE PROMPT FOR NEW CHAT
+# 32. COPY-PASTE PROMPT FOR NEW CHAT
 
 ```text
-บิ๊ว เราจะทำโปรเจกต์ LAST WITNESS ต่อจาก Production ล่าสุดครับ
+บิ๊ว เราจะทำโปรเจกต์ LAST WITNESS ต่อจาก Production ที่อนุมัติล่าสุดครับ
 
-ก่อนตอบหรือเสนอการแก้ไขใดๆ ให้เปิดและอ่านไฟล์ GAME_MASTER_PLAN.md ล่าสุดจาก GitHub ตั้งแต่ต้นจนจบ แล้วตรวจ GitHub Production ล่าสุดจริง ห้ามใช้ความจำหรือ ZIP เก่าแทนไฟล์บนสาขาปัจจุบัน
+ก่อนตอบหรือเสนอการแก้ไข ให้เปิดและอ่าน GAME_MASTER_PLAN.md ล่าสุดจาก GitHub ตั้งแต่ต้นจนจบ แล้วตรวจ Runtime ปัจจุบันจริง ห้ามใช้ความจำ ZIP เก่า Branch เก่า หรือ Phase III เก่าแทนไฟล์บน Production
 
 ข้อมูลหลัก
 - Repository: grolygori789-crypto/last-witness
-- Production branch: restore-game-recovered
+- Production และ Default Branch: production-rebuild
+- Owner-approved Runtime Baseline: ffdc94777c5fbaefdc281f1148b59aff3adf8abe
+- หลังอัปโหลด Master Plan อาจมี Commit ใหม่ที่แก้เฉพาะเอกสาร ห้ามตีความว่าเป็น Runtime Build ใหม่
 - Live game: https://grolygori789-crypto.github.io/last-witness/
-- Source of Truth ของโค้ด Asset Path Load Order และพฤติกรรมที่ Deploy คือ GitHub ล่าสุด
-- Source of Truth ของ Canon Owner Secrets พล็อตระยะยาว Workflow Proof Boundaries และ Alternate Endings คือ GAME_MASTER_PLAN.md ล่าสุด
-- Owner-confirmed latest playable module build: 0.14.7
-- Chapter I, Chapter II, Chapter III และ Chapter IV Phase I-II ผ่านการทดสอบจริงของพี่บน Android Chrome แล้ว
-- จุดจบปัจจุบันคือ PHASE II COMPLETE / JAKARTA ARRIVAL / NEXT: PHASE III — PACKET PROVENANCE
-- งานถัดไปคือ CHAPTER IV PHASE III — PACKET PROVENANCE
-- ห้ามย้อนกลับไปออกแบบ Phase I หรือ Phase II ใหม่
-- ห้ามถามให้พี่เล่า Canon หรือสถานะซ้ำ
+- Chapter I, II, III และ Chapter IV Phase I-II ผ่านการเล่นจริงของพี่บน Android Chrome แล้ว
+- จุดจบปัจจุบัน: PHASE II COMPLETE / JAKARTA ARRIVAL / NEXT: PHASE III - PACKET PROVENANCE
+- Phase III ยังไม่มีใน Production ที่อนุมัติ
+- Runtime ตั้งแต่ Chapter I ถึง Phase II ถูก Freeze ห้ามแตะจนกว่าพี่จะสั่งตรงๆ
 
-กฎการสื่อสาร
-1. เรียกพี่ว่า “พี่เบนซ์”
-2. เรียกตัวเองว่า “บิ๊ว”
-3. ตอบภาษาไทย น้ำเสียงผู้หญิง ตรงไปตรงมา
-4. อย่าอ้างว่าเสร็จก่อนมีไฟล์จริง
-5. อย่าอ้าง Android test หรือ 100% ผ่าน ถ้ายังไม่ได้ทดสอบจริง
-6. ถ้าเจอ Tool Error หรือ Permission Error ให้แจ้งทันที เปลี่ยนวิธีที่ง่ายกว่า และห้ามปล่อยให้พี่รอนานโดยไม่มี Deliverable
+กฎเด็ดขาด
+1. เรียกพี่ว่า “พี่เบนซ์” และเรียกตัวเองว่า “บิ๊ว”
+2. ห้าม Push Commit Branch Merge Rebase Delete Restore หรือแก้ GitHub โดยไม่มีคำสั่งชัดเจนในข้อความปัจจุบัน
+3. ทำงานในเครื่องและส่ง ZIP ให้พี่อัปโหลด
+4. ห้ามอ้าง Android Test หรือ Live Test ถ้าไม่ได้ทำจริง
+5. ทุกคำว่าเสร็จต้องมี Artifact เปิดได้จริง
+6. ตรวจ index.html, load order, cache query, dynamic injection, Save/Load, audio owner, Character Journal, Case File และ Developer Mode
+7. แก้ไฟล์ให้น้อยที่สุด
+8. ห้ามสร้าง observer polling global audio manager หรือ state repair ซ้อนโดยไม่มีหลักฐาน
+9. ห้ามขอให้พี่เล่า Canon หรือส่ง Asset เดิมซ้ำก่อนตรวจ GitHub
 
-กฎ GitHub และไฟล์
-1. ตรวจ latest GAME_MASTER_PLAN.md
-2. ตรวจ index.html
-3. ตรวจไฟล์และ SHA ปัจจุบันของงานที่เกี่ยวข้อง
-4. ตรวจ load order, cache query, dynamic injection, Save/Load, audio owner, Character Journal, Case File และ Developer Mode
-5. ห้ามสร้าง Branch, Push, Commit, Delete หรือแก้ GitHub โดยตรง เว้นแต่พี่อนุญาตการเขียนรายการนั้นอย่างชัดเจนในข้อความปัจจุบัน
-6. ทำงานในเครื่องและส่ง ZIP ให้พี่อัปโหลดเอง
-7. ส่ง Manifest, Install Instructions, Test Report และ SHA-256
-8. แก้ไฟล์ให้น้อยที่สุด
-9. ห้ามเพิ่ม listener, observer, polling, global audio manager หรือ state repair ซ้อนโดยไม่มีหลักฐานว่าจำเป็น
+Regression Gate สำคัญที่สุด
+- Chapter I ต้องไม่มี Character mode
+- ห้ามมี Character unlock toast ใน Chapter I
+- ห้ามมีตัวละครอนาคตโผล่ก่อนเวลา
+- Future module ที่ถูกโหลดห้ามเขียน state.chapter = 4
+- Future module ห้ามเปลี่ยน screen checkpoint Journal หรือ unlock ตอน startup
+- Phase III initialization ต้องเกิดเฉพาะตอนเข้า Phase III, Resume Phase III หรือ Developer Jump ที่ตั้งใจ
+- ก่อนส่ง Phase III ต้องทดสอบ New Game Chapter I, Chapter II unlock, Dev Unlock All, Save/Load และ Phase III entry
 
-กฎความฉลาดและประสิทธิภาพ
-1. แยกให้ออกว่าภาพที่พี่ส่งเป็น “ตัวอย่างอ้างอิง” หรือ “ไฟล์ที่ต้องแทนในเกม”
-2. ตรวจไฟล์ในเกมที่มีอยู่ก่อนสร้างหรือ Generate ใหม่
-3. ปัญหา CSS ให้แก้ CSS ก่อน อย่าสร้าง Asset ใหม่โดยไม่จำเป็น
-4. ปัญหาสีหรือสัดส่วนของตัวละครหนึ่งคน ห้ามไปแตะตัวละครอื่น
-5. หลังวิธีแรกพลาด ให้หาสาเหตุ
-6. หลังวิธีเดิมพลาดสองครั้ง ให้หยุดและเปลี่ยนแนวทาง
-7. ห้ามประมวลผลยาวโดยไม่มีผลลัพธ์
-8. ห้ามให้พี่รอแล้วสุดท้ายไม่มีไฟล์
-9. ทุกคำว่า “เสร็จแล้ว” ต้องมี Artifact ที่เปิดได้จริง
-10. QA ต้องทำก่อนส่ง ไม่ใช่โยนให้พี่เป็นคนตรวจแทนทั้งหมด
-
-Canon สำคัญ
+Canon หลัก
 - A valid credential proves access, not identity.
-- Benedict อายุ 42 เป็น protagonist และผู้ตัดสินใจมนุษย์คนสุดท้าย อ่านคนและใช้คำพูดเก่ง ไม่กล่าวหาเกินหลักฐาน
-- North อายุ 32 เป็น Technical Lead คู่หูหลัก ไม่ใช่ผู้ช่วยรอคำสั่ง ไม่ใช่เหยื่อแบบ passive และไม่มี romance กับ Farid
-- Elena คือ Mastermind และฆาตกรจริง แต่ยังต้องดูน่าเชื่อถือ ให้ข้อมูลจริง และห้าม Villain Coding ก่อนหลักฐานพอ
-- Adrian เป็นอดีต System Architect ที่มีส่วนผิด แต่ไม่ใช่ Mastermind
-- Arman/PALIMPSEST เป็น Toolmaker/Wrapper Specialist ที่อันตรายและมีส่วนผิด แต่ไม่ใช่ผู้เลือกศพ ห้อง หรือเวลา
-- ภาพฮู้ด Chapter III เป็น Digital Mask ไม่ใช่หลักฐานตัวตน
-- Maya เป็นตำรวจไซเบอร์อินโดนีเซีย เป็น Professional Equal ของ Cheryl ไม่มี romance กับ Benedict
-- Cheryl มีความรู้สึกจริงจังต่อ Benedict แต่ควบคุมตัวเองและคดีต้องมาก่อน
-- Benedict สุดท้ายไม่เลือกคู่รักถาวร เขาเลือกชีวิตนักสืบที่เคลื่อนไปข้างหน้า
-- Farid อยู่สิงคโปร์ใน Phase II และต้องแสดงว่าเป็น Remote · Singapore
-- Chapter I victim ไม่ใช่ Daniel และจะเปิดเผยเป็น Kawin Nopparat ใน Chapter V
-- R. เชื่อมกับ Rinrada “Rin” Sornchai และ Registrar role
-- Elena เป็น Decision Owner
+- Benedict อายุ 42 เป็น protagonist และผู้ตัดสินใจมนุษย์
+- North อายุ 32 เป็น Technical Lead และคู่หูหลัก ไม่ใช่เหยื่อ passive
+- Elena คือ Mastermind และฆาตกรจริง แต่ห้าม Villain Coding ก่อนหลักฐานพอ
+- Adrian มีส่วนผิดแต่ไม่ใช่ Mastermind
+- Arman/PALIMPSEST เป็น Toolmaker/Wrapper Specialist แต่ไม่ใช่ Decision Owner
+- Chapter III hood feed เป็น Digital Mask ไม่ใช่หลักฐานตัวตน
+- Maya เป็นตำรวจไซเบอร์อินโดนีเซีย ไม่มี romance กับ Benedict
+- Cheryl มีความรู้สึกต่อ Benedict แต่คดีมาก่อน
+- Benedict สุดท้ายไม่เลือกคู่รักถาวร
+- Farid สนับสนุนระยะไกลจาก Singapore
+- Chapter I victim คือ Kawin แต่ผู้เล่นยังไม่รู้จน Chapter V
+- R. เชื่อมกับ Rinrada และ Registrar role
 - Historical truth คงที่ทุก Ending
 
 สถานะ Chapter IV
-- Chapter IV มีทั้งหมด 8 Phase
-- Phase I AFTERIMAGE ผ่านแล้ว
-- Phase II JAKARTA ARRIVAL ผ่านแล้ว
-- Phase III PACKET PROVENANCE คืองานถัดไป
-- Phase IV THE MAN BEHIND THE ALIAS เป็นจุดเผยตัวจริงของ Arman
-- Phase V NORTH IS MARKED มีฉากแฝงตัวสืบสวนที่โรงแรม/รีสอร์ต/สระว่ายน้ำหรือสถานที่ริมทะเลในอินโดนีเซีย
-- North, Cheryl และ Maya ใช้ภาพลักษณ์นักท่องเที่ยวและใส่บิกินี่คนละสไตล์อย่างเป็นธรรมชาติ
-- Maya หุ่นสะบึมและเอ็กซ์ที่สุด
-- Cheryl เป็น athletic-curvy ห้าวแบบ tomboy และสะบึมน้อยกว่า Maya เล็กน้อย
-- North ลีนที่สุดแต่เป็นหุ่นคนดูแลสุขภาพดี
-- ฉากนี้เป็นส่วนของภารกิจ Surveillance ไม่ใช่ Fan Service ที่ลอยจากเนื้อเรื่อง
-- ช่วงนี้คนร้ายรู้แล้วว่า North เป็นภัยและเริ่มวางแผนกำจัด
-- Phase V ต้องนำไปสู่ Phase VI THE FALSE SUCCESS ซึ่งทำให้คนร้ายเชื่อว่า North ถูกกำจัดแล้ว
-- ห้ามทำ North เป็นเหยื่อ passive
-- ห้ามทำฉากเป็นฮาเร็ม
-- Maya ไม่มี romance กับ Benedict
-- ภาพและเสียงถึง Phase II อยู่ใน GitHub แล้ว
-- Phase III ตาม Blueprint ปัจจุบันใช้ฉาก Verification Lab และเสียงเดิมได้ ไม่ต้องขอ Asset ใหม่
-- ชุด Asset ใหม่ที่คาดว่าจะต้องขอเริ่มที่ Phase IV หลัง Blueprint ผ่าน
-- Phase V ต้องทำ Asset Blueprint แยกก่อนสร้างภาพบิกินี่ ฉากรีสอร์ต และเสียง
-
-สถานะ Phase II
-- ออก Singapore 23:20 SGT
-- ถึง Jakarta 00:10 WIB
-- Office 01:05 WIB
-- Verification Lab 01:18 WIB
-- Farid เก็บ Raw Mirror ใน Singapore
-- North พก Sanitised Clone
-- Maya จำกัดสิทธิ์เป็น Read Only / Passive Response
-- Minigame order:
-  1. Preserve Token Hash
-  2. Clone Into Sandbox
-  3. Send Passive Challenge
-  4. Compare Response Grammar
-- ห้าม Open Live Rendezvous หรือ Trace Responder
-- Token genuine, single-use, Jakarta broker route real
-- Human identity unresolved
-- Packet แยกเป็น Source-Build Fingerprint, Jakarta Relay Exit, Broker Handoff, Local Deployment Echo, Decision Trigger
-- Maya พูดว่า:
-  “I am authorising a controlled packet capture. The next phase begins with provenance, not pursuit.”
-- Benedict: “It was never a meeting place.”
-- North: “No. It is a receipt.”
-- Maya: “Then prove who handled it.”
-
-Maya Visual Lock
-- ใช้ชุดสีกรมท่าเดิมตาม Master Sheet
-- ห้ามทำชุดกลืนเป็นดำ
-- พื้นหลัง Portrait เป็นดำ
-- มีเส้นขอบบางๆ ให้เห็นทรงผมบ๊อบ
-- สัดส่วนหน้าและช่วงตัวมีน้ำหนักระดับเดียวกับ Benedict
-- Final 0.14.7 ผ่านแล้ว ห้ามแก้ซ้ำโดยไม่มีคำสั่ง
-- ห้ามแตะ Cheryl หรือ Farid เมื่อแก้ Maya
+1. AFTERIMAGE ผ่านและ Freeze
+2. JAKARTA ARRIVAL ผ่านและ Freeze
+3. PACKET PROVENANCE คือ Target ถัดไป แต่ยังเป็น Blueprint Proposed
+4. THE MAN BEHIND THE ALIAS เผยตัวจริง Arman
+5. NORTH IS MARKED มีภารกิจแฝงตัวในรีสอร์ต โรงแรม สระว่ายน้ำหรือชายฝั่งอินโดนีเซีย
+6. THE FALSE SUCCESS ทำให้คนร้ายเชื่อว่า North ถูกกำจัด
+7. RELAY FACILITY CLIMAX
+8. SHADOW OF THE TRUTH
 
 งานแรกของห้องใหม่
-1. สรุปผลการตรวจ GitHub ล่าสุดแบบสั้นแต่ชัด
-2. ตรวจจุดส่งต่อจาก Phase II
-3. ใช้ Blueprint ของ CHAPTER IV PHASE III — PACKET PROVENANCE ที่บันทึกใน Master Plan
+1. ยืนยัน Branch และ Runtime Baseline
+2. อ่าน Phase II handoff และ Phase III blueprint
+3. ตรวจจุดเสี่ยง Character regression ก่อนเสนอ Implementation
 4. ห้ามสร้าง Asset หรือเขียนโค้ดจน Blueprint ได้รับอนุมัติ
-5. Phase III ต้องนำไปสู่ THE MAN BEHIND THE ALIAS โดยยังไม่เรียก Arman ว่า Mastermind หรือ Killer
-6. North นำ Technical Analysis
-7. Benedict ยังเป็นผู้ตัดสินใจและอ่านพฤติกรรมมนุษย์
-8. Maya และ Cheryl รักษาเขตอำนาจกับหลักฐาน
-9. Farid สนับสนุนระยะไกลจาก Singapore
-
-ทำงานฉลาด กระชับ และต้องมีผลลัพธ์จริง อย่าปล่อยให้พี่รอนานแล้วไม่ได้อะไร
+5. สรุปผลตรวจแบบชัดเจนและไม่ให้พี่รอโดยไม่มี Deliverable
 ```
 
 ---
 
-# 34. MASTER PLAN UPDATE PROTOCOL
+# 33. MASTER PLAN UPDATE PROTOCOL
 
-Update whenever any change occurs to:
+Update this file whenever any change occurs to:
 
-- production baseline
+- Production branch
+- Default Branch
+- approved runtime baseline
 - owner acceptance
 - playable boundary
 - Canon
@@ -3491,18 +2884,15 @@ Update whenever any change occurs to:
 - audio owner
 - asset path
 - new phase
-- known defect
-- resolved defect
+- known or resolved defect
 - next target
-- chapter structure
 - ending architecture
-- visual/body Canon
-- significant costume or undercover-scene Canon
-- North threat/false-success operation
+- visual and body Canon
+- North threat or false-success operation
 
-Before replacing:
+Before replacement:
 
-1. fetch latest file
+1. fetch the latest file
 2. preserve Canon
 3. preserve unresolved mysteries
 4. preserve owner secrets
@@ -3510,20 +2900,21 @@ Before replacing:
 6. preserve technical ownership
 7. record owner result
 8. keep exact filename
-9. record base blob SHA
-10. include SHA-256 of delivered local file
+9. record replaced blob SHA
+10. include local SHA-256
+11. distinguish runtime changes from documentation-only changes
 
 ---
 
-# 35. CURRENT CANON SUMMARY
+# 34. CURRENT CANON SUMMARY
 
 ## Confirmed to player
 
 - Room 1807 staged
 - Room 1807 victim not Daniel
-- Daniel investigated pattern
+- Daniel investigated the pattern
 - Daniel dead
-- 18-07 profile, not person
+- 18-07 is a profile, not a person
 - science genuine
 - chronology engineered
 - Daniel did not travel
@@ -3539,7 +2930,7 @@ Before replacing:
 - watcher entered through trusted Bangkok chain
 - cleanup separate
 - route points Jakarta
-- deployment/decision path points Bangkok
+- deployment and decision path point Bangkok
 - North recognized as analytical role
 - token genuine and single-use
 - Jakarta broker route real
@@ -3557,16 +2948,16 @@ Before replacing:
 - Adrian not mastermind
 - Arman not decision owner
 - North targeted
-- Elena decides North must be removed because she threatens attribution secrecy
-- fixed historical truth
-- four major ending architecture
-- Benedict chooses no permanent romantic partner
+- Elena decides North must be removed
+- historical truth fixed
+- four major endings
+- Benedict chooses no permanent partner
 - Chapter IV has eight phases
-- Phase V contains undercover resort/pool/coastal surveillance
+- Phase V contains resort or pool surveillance
 - Maya most voluptuous
-- Cheryl athletic-curvy and slightly less voluptuous
+- Cheryl athletic-curvy
 - North lean-fit
-- Phase V attack enables Phase VI false-success operation
+- Phase V attack enables Phase VI false success
 
 ## Unresolved to player after Phase II
 
@@ -3583,83 +2974,116 @@ Before replacing:
 - Elena path
 - living Last Witness
 - final admissible case
-- exact form of future attack on North
+- exact attack on North
 - exact resort contact and location
 
 ---
 
-# 36. OWNER-CONFIRMED CHAPTER IV VISUAL-STORY ADDENDUM
+# 35. OWNER-CONFIRMED VISUAL-STORY ADDENDUM
 
-This section has authority over older planning text that omits or contradicts it.
+This section overrides older planning text that contradicts it.
 
-## Locked facts
+Locked facts:
 
-1. Chapter IV contains exactly eight phases.
-2. North becomes a direct threat to the murderer/decision owner because her technical analysis reaches the attribution layer.
-3. The adversary plans to eliminate North during Chapter IV.
-4. Phase V is the natural placement for the sexy undercover sequence.
-5. The scene takes place at an Indonesian hotel, resort, pool, beach club or coastal property selected by evidence from Phase IV.
-6. North, Cheryl and Maya use tourist cover and wear distinct bikinis.
-7. Maya is the most voluptuous and overtly sexy.
-8. Cheryl is athletic-curvy, tomboyish and nearly as voluptuous as Maya, but slightly less full-figured.
-9. North is the leanest, with a healthy, fit and agile body.
-10. The scene must preserve each woman’s identity and professional competence.
-11. The scene must serve surveillance, threat escalation and the attempted elimination of North.
-12. It must lead into Phase VI, where the team makes the attacker believe North has been successfully removed.
-13. It is not optional disposable fan service.
+1. Chapter IV has exactly eight phases.
+2. North becomes a direct threat because her analysis reaches attribution.
+3. The adversary plans to eliminate North.
+4. Phase V is the natural placement for the undercover resort sequence.
+5. Location is selected by Phase IV evidence.
+6. North, Cheryl and Maya use tourist cover and distinct bikinis.
+7. Maya is most voluptuous.
+8. Cheryl is athletic-curvy and slightly less full-figured than Maya.
+9. North is leanest, healthy, fit and agile.
+10. Identity and competence remain intact.
+11. The scene serves surveillance and threat escalation.
+12. It leads to Phase VI false success.
+13. It is not disposable fan service.
 14. It is not a romance route.
-15. It must be planned with realistic anatomy, real swimwear construction and mobile-safe composition.
+15. Anatomy, clothing and mobile framing must remain realistic.
 
-## Asset timing lock
+Asset timing:
 
-- Assets already used through owner-accepted Phase II are stored in GitHub and do not need to be resent merely because an old chat is deleted.
-- Phase III currently requires no new custom images or audio under the proposed blueprint.
-- The first likely new custom asset request begins with Phase IV after the Phase IV blueprint is approved.
-- Phase V requires a dedicated asset blueprint before the owner is asked to provide or approve:
-  - resort/pool/coastal backgrounds
-  - North bikini design
-  - Cheryl bikini design
-  - Maya bikini design
-  - full-body or dialogue portraits
-  - expressions
-  - props
-  - evidence images
-  - ambience and score
-- Do not request all previous images and sounds again.
-- Inspect GitHub paths before asking the owner to resend anything.
+- assets through Phase II already exist in GitHub
+- do not request old folders again before inspecting paths
+- Phase III currently requires no new custom image or audio package
+- first likely new asset request begins with Phase IV
+- Phase V requires an approved asset blueprint before creation
 
 ---
 
-# END OF MASTER PLAN
+# 36. APPROVED BASELINE PRESERVATION LOCK
+
+The following is the authoritative frozen record:
+
+```text
+Repository:
+grolygori789-crypto/last-witness
+
+Production and Default Branch:
+production-rebuild
+
+Approved Runtime Baseline Commit:
+ffdc94777c5fbaefdc281f1148b59aff3adf8abe
+
+Latest Accepted Chapter IV Module:
+0.14.7
+
+Approved Playable Scope:
+Chapter I
+Chapter II
+Chapter III
+Chapter IV Phase I
+Chapter IV Phase II
+
+Current Endpoint:
+CHAPTER IV · PHASE II COMPLETE
+NEXT · PHASE III · PACKET PROVENANCE
+
+Phase III:
+NOT IMPLEMENTED IN APPROVED PRODUCTION
+
+Owner Result:
+PLAYED ON ANDROID CHROME
+PASSED THROUGH PHASE II
+OWNER-APPROVED
+
+Runtime Status:
+FROZEN UNTIL DIRECT OWNER INSTRUCTION
+```
 
 Do not replace this file without preserving:
 
-- Build 0.14.7 owner pass
-- Chapter IV Phase I-II accepted state
-- Maya final Phase II visual lock
-- current GitHub workflow
-- current load order
+- branch and baseline distinction
+- owner approval
+- Chapter I Character gate
+- Build 0.14.7 pass
+- Phase I and Phase II frozen state
+- Maya visual lock
+- current bootstrap order
 - Save/Load continuity
-- fullscreen/audio lifecycle
+- fullscreen and audio lifecycle
 - Character Journal layout
-- Chapter I-III Canon
+- Chapter I to III Canon
 - Daniel death lock
 - Room 1807 victim separation
 - Daniel timeline
 - Chapter III puzzle solutions
-- Chapter IV Phase I/II solutions and proof boundaries
-- Phase III proposed blueprint and implementation boundary
+- Chapter IV Phase I and II proof boundaries
+- Phase III proposed blueprint
+- Phase III startup side-effect prohibition
 - Elena secret
-- Adrian/Arman boundaries
-- Kawin/Rinrada forward Canon
-- Benedict/Cheryl/North ending Canon
-- Chapter IV-VII plan
-- Alternate Ending architecture
+- Adrian and Arman boundaries
+- Kawin and Rinrada forward Canon
+- relationship and ending Canon
+- Chapter IV to VII plan
+- alternate ending architecture
 - Chapter IV eight-phase lock
 - North elimination threat
-- Phase V resort/pool/coastal undercover scene
-- North/Cheryl/Maya body and bikini differentiation
-- Phase V to Phase VI false-success continuity
+- Phase V undercover scene
+- body and swimwear differentiation
+- Phase V to VI false-success continuity
 - asset timing and no-resend rule
-- new-chat zero-explanation handoff
-- intelligent, minimal, time-efficient working discipline
+- new-chat handoff
+- efficient minimal working discipline
+
+# END OF MASTER PLAN
