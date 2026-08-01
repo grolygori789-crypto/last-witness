@@ -2,20 +2,23 @@
 
 > **MASTER REFERENCE / CURRENT SOURCE OF TRUTH**
 >
-> **Document revision:** 2026-08-01 20:13 ICT
-> **Replaces planning blob:** `b399d9d24f0e413f9f7a47737a08d577b327957a`
+> **Document revision:** 2026-08-02 01:57 ICT
+> **Replaces planning blob:** `8b9ee62eb8ba0f2d193c14c6592f5756a4390ed3`
 > **Repository:** `grolygori789-crypto/last-witness`
 > **Production and Default branch:** `production-rebuild`
-> **Owner-approved runtime baseline commit:** `ffdc94777c5fbaefdc281f1148b59aff3adf8abe`
-> **Owner-confirmed playable baseline:** `CHAPTER IV · PHASE II COMPLETE`
-> **Latest owner-accepted Chapter IV module build:** `0.14.7`
-> **Current legitimate endpoint:** `CHAPTER IV · PHASE II COMPLETE -> NEXT: PACKET PROVENANCE`
-> **Immediate next production target:** `CHAPTER IV · PHASE III - PACKET PROVENANCE`
+> **Owner-approved runtime baseline commit:** `61dfaec35cb8990ac9ea3fafa28d39bee8e4698f`
+> **Owner-confirmed playable baseline:** `CHAPTER IV · PHASE III COMPLETE`
+> **Latest owner-approved runtime build:** `0.16.4`
+> **Latest owner-approved narrative module:** `CHAPTER IV · PHASE III · 0.16.3`
+> **Current legitimate endpoint:** `CHAPTER IV · PHASE III COMPLETE -> NEXT: THE MAN BEHIND THE ALIAS`
+> **Immediate next production target:** `CHAPTER IV · PHASE IV - THE MAN BEHIND THE ALIAS`
 > **Baseline status:** `OWNER-TESTED · OWNER-APPROVED · FROZEN UNTIL DIRECT OWNER INSTRUCTION`
 >
-> The runtime at commit `ffdc94777c5fbaefdc281f1148b59aff3adf8abe` is the approved code and asset baseline. Uploading this planning document will create a later documentation-only commit. That later commit must not be interpreted as a new runtime build unless code or assets are explicitly changed and separately approved.
+> Runtime commit `61dfaec35cb8990ac9ea3fafa28d39bee8e4698f` is the current owner-approved code and asset baseline. The previous frozen runtime commit `ffdc94777c5fbaefdc281f1148b59aff3adf8abe` remains historical evidence of the approved Phase II boundary but is no longer the current playable baseline.
 >
-> GitHub runtime on `production-rebuild` is the Source of Truth for code, assets, paths, cache queries and load order. This file is the Source of Truth for Canon, owner-confirmed status, owner-level secrets, workflow, technical governance, future architecture and the exact continuation point for a new chat.
+> Uploading this planning document will create a later documentation-only commit. That later commit must not be interpreted as a new runtime build unless code or assets are included and separately approved.
+>
+> GitHub runtime on `production-rebuild` is the Source of Truth for code, assets, paths, cache queries and load order. This file is the Source of Truth for Canon, owner-confirmed acceptance, owner-level secrets, workflow, technical governance, future architecture and the exact continuation point for a new chat.
 
 ---
 
@@ -39,7 +42,7 @@
 
 ## Current approved state
 
-The owner has played the live game on Android Chrome from Chapter I through the complete Chapter IV Phase II endpoint and approved the result.
+The owner has played the live game on Android Chrome through the complete Chapter IV Phase III endpoint and approved the result.
 
 Approved playable content:
 
@@ -48,18 +51,68 @@ Approved playable content:
 3. Chapter III complete
 4. Chapter IV Phase I complete
 5. Chapter IV Phase II complete
+6. Chapter IV Phase III complete
 
 Current endpoint:
 
-- `PHASE II COMPLETE`
-- `JAKARTA ARRIVAL`
-- `NEXT · PHASE III · PACKET PROVENANCE`
+- `CHAPTER IV · PHASE III COMPLETE`
+- `PACKET TRAIL RECONSTRUCTED`
+- `NEXT · THE MAN BEHIND THE ALIAS`
 
-There is no approved playable Chapter IV Phase III in Production.
+Immediate next target:
+
+- `CHAPTER IV · PHASE IV`
+- `THE MAN BEHIND THE ALIAS`
+
+## Current accepted build chain
+
+- Chapter IV Phase I module: `0.13.2`
+- Chapter IV Phase II module: `0.14.9`
+- Chapter IV Phase II portrait guard: `0.15.0`
+- Chapter IV Phase III module: `0.16.3`
+- Chapter IV Phase III CSS content header: `0.16.2`, loaded with cache query `v=0163`
+- Runtime bootstrap: `0.16.4`
+- Production commit: `61dfaec35cb8990ac9ea3fafa28d39bee8e4698f`
+
+## Owner-confirmed resolved defect
+
+The Jakarta Character Journal profile-switching failure is resolved.
+
+Exact former failure:
+
+1. Use Developer Mode to unlock all characters.
+2. Enter Chapter IV Phase II or the Jakarta runtime.
+3. Open Maya's profile.
+4. Return to the Character grid.
+5. Attempt to open another character.
+6. The other profile failed because Maya's custom detail DOM did not preserve the base Character Journal detail contract.
+
+Root cause:
+
+- Maya's custom detail shell lacked:
+  - `data-detail-name`
+  - `data-detail-status`
+  - `data-detail-metrics`
+  - `data-detail-notes`
+- The base Character Journal reused the shell and then received null targets.
+- The resulting JavaScript failure prevented later character profiles from opening.
+
+Approved fix:
+
+- Added the four required detail markers to Maya's custom profile shell.
+- Bumped Phase II module from `0.14.8` to `0.14.9`.
+- Bumped bootstrap from `0.16.3` to `0.16.4`.
+- Did not modify the central Character registry, Chapter I gate, Chapter II unlock timing or Dev Unlock semantics.
+
+Owner result:
+
+- Profile switching after Maya now works.
+- Chapter IV Phase III completes.
+- The project is ready to proceed to Phase IV.
 
 ## Absolute freeze rule
 
-The approved runtime baseline must not be changed until the owner directly orders a specific change.
+The owner-approved runtime through Chapter IV Phase III must not be changed without direct owner instruction.
 
 Do not:
 
@@ -67,25 +120,29 @@ Do not:
 - move the branch reference
 - create or delete branches
 - merge or rebase
-- edit approved Phase I or Phase II files
+- edit approved Chapter I, II or III runtime
+- edit approved Chapter IV Phase I, II or III without a scoped owner request
 - replace approved assets
 - modify GitHub Pages settings
 - change Default Branch
-- preload Phase III
-- add a repair layer, listener, observer, timer or global state mutation
-- treat an old Phase III implementation as approved Production
+- add a repair layer, listener, observer, timer or global state mutation without proof
+- rewrite Character gates while repairing a scene-local defect
+- infer approval for Phase IV code or assets before its blueprint is approved
 
 A request to inspect, plan, explain or create a local file is not permission to modify GitHub.
 
 ## Immediate production order
 
-1. Preserve the frozen Chapter I through Chapter IV Phase II baseline.
-2. Audit the Phase II handoff and the proposed Phase III blueprint.
-3. Obtain owner approval of the Phase III implementation blueprint before coding or asset production.
-4. Implement Phase III locally with the smallest safe scope.
-5. Test static structure, runtime flow, Save/Load, Character Journal gates, audio lifecycle and Developer Mode before delivery.
-6. Deliver a ZIP for owner upload. Do not write to GitHub without explicit permission in the current turn.
-7. Owner Android Chrome testing remains the final acceptance gate.
+1. Preserve the approved Chapter I through Chapter IV Phase III runtime.
+2. Read this file from beginning to end.
+3. Inspect current Production files and load order.
+4. Design Phase IV around the broker handle and the physical Arman encounter.
+5. Obtain owner approval of the Phase IV implementation and asset blueprint.
+6. Implement Phase IV locally with the smallest safe scope.
+7. Test Save/Load, Character Journal, Case File, audio, Developer Mode and Phase III to IV handoff.
+8. Deliver a ZIP for owner upload.
+9. Do not write to GitHub without explicit current-turn authorization.
+10. Owner Android Chrome testing remains the final acceptance gate.
 
 ## Core investigative principle
 
@@ -110,23 +167,25 @@ Never collapse these layers into one person without corroborated evidence.
 
 # 1. OWNER COMMUNICATION AND WORKING STYLE
 
-- Address the owner as **พี่เบนซ์**
-- Refer to the assistant as **บิ๊ว**
-- Use a feminine Thai voice
-- Use direct, natural Thai
-- Do not make the owner repeat facts already stored here
-- Do not pretend uncertainty is certainty
-- Do not call a static check an Android test
-- Do not claim success until the owner tests the build
-- Do not claim a file exists before it has actually been created
-- Do not call an attempted command or proposed script a completed deliverable
-- Keep the owner informed during long tasks
-- Report permission, filesystem, connector and runtime limitations immediately
-- After a failed method, diagnose the cause before trying again
-- After two failures of the same approach, stop and switch methods
-- Do not leave the owner waiting without a concrete artifact
-- Never tell the owner that Production is safe unless the relevant behavior has been verified
-- Distinguish code evidence, simulated testing, browser testing and owner-device testing
+- Address the owner as **พี่เบนซ์**.
+- Refer to the assistant as **บิ๊ว**.
+- Use a feminine Thai voice.
+- Use direct, natural Thai.
+- Do not make the owner repeat facts already stored here.
+- Do not pretend uncertainty is certainty.
+- Do not call a static check an Android test.
+- Do not claim success until the owner tests the build.
+- Do not claim a file exists before it has actually been created.
+- Do not call an attempted command or proposed script a completed deliverable.
+- Keep the owner informed during long tasks.
+- Report permission, filesystem, connector and runtime limitations immediately.
+- After a failed method, diagnose the cause before trying again.
+- After two failures of the same approach, stop and switch methods.
+- Do not leave the owner waiting without a concrete artifact.
+- Never say Production is safe unless the relevant behavior has been verified.
+- Distinguish code evidence, simulated testing, browser testing and owner-device testing.
+- Do not repeatedly promise that a defect is fixed without reproducing the exact owner sequence.
+- When a bug is sequence-dependent, test the same sequence in the same order.
 
 ## Mandatory efficiency discipline
 
@@ -147,6 +206,9 @@ For every task:
 13. avoid broad searches or rebuilding when a local edit is enough
 14. do not let visual appeal override identity, story function, anatomy or project tone
 15. do not create speculative files before the blueprint is approved
+16. reproduce the reported defect before modifying code whenever the environment permits
+17. verify the defect is absent after the patch using the same route
+18. verify nearby frozen behavior did not change
 
 ---
 
@@ -171,13 +233,12 @@ A direct GitHub write is allowed only when the owner explicitly authorizes that 
 
 This file is a local replacement for `GAME_MASTER_PLAN.md`.
 
-Uploading this file will create a documentation-only commit after the approved runtime baseline. Record the distinction:
+Current replacement facts:
 
-- approved runtime baseline: `ffdc94777c5fbaefdc281f1148b59aff3adf8abe`
-- planning source replaced: blob `b399d9d24f0e413f9f7a47737a08d577b327957a`
-- new upload commit: documentation-only unless other files are included
-
-Do not call the new docs-only commit a new playable build.
+- previous planning blob: `8b9ee62eb8ba0f2d193c14c6592f5756a4390ed3`
+- current owner-approved runtime commit: `61dfaec35cb8990ac9ea3fafa28d39bee8e4698f`
+- this upload should be documentation-only
+- the docs-only commit must not be treated as a runtime change
 
 ## Required implementation package
 
@@ -194,6 +255,9 @@ Every code package must contain:
 - base branch and base commit
 - changed-file count
 - no unrelated files
+- a clearly displayed **Suggested Commit Name**
+- the same Suggested Commit Name inside the installation document
+- a commit name of no more than 50 characters when the owner platform enforces that limit
 
 ## Planning-document delivery
 
@@ -212,11 +276,12 @@ Every code package must contain:
 1. **Owner's latest real-device result**
    - final truth for visible and playable behavior
    - overrides static assumptions
-   - current result: Chapter I through Chapter IV Phase II passed and was approved
+   - current result: Chapter I through Chapter IV Phase III passed and was approved
+   - current profile-switching result: passed after opening Maya and then other characters
 
 2. **Approved GitHub runtime baseline**
    - branch: `production-rebuild`
-   - runtime commit: `ffdc94777c5fbaefdc281f1148b59aff3adf8abe`
+   - runtime commit: `61dfaec35cb8990ac9ea3fafa28d39bee8e4698f`
    - code, assets, paths, cache queries and load order
 
 3. **Latest `GAME_MASTER_PLAN.md`**
@@ -237,12 +302,13 @@ When sources conflict:
 - do not break accepted runtime to match obsolete planning text
 - ask only when available evidence cannot resolve the conflict
 - never silently choose an older branch or old ZIP
+- owner real-device behavior wins over a harness assumption
 
 ---
 
 # 4. CURRENT VERIFIED PRODUCTION SNAPSHOT
 
-Verified and owner-approved on 2026-08-01.
+Verified and owner-approved on 2026-08-02.
 
 ## Repository state
 
@@ -251,30 +317,53 @@ Verified and owner-approved on 2026-08-01.
 - Default branch: `production-rebuild`
 - Branch count after cleanup: one Production branch
 - Deleted obsolete branch: `main`
-- Approved runtime commit: `ffdc94777c5fbaefdc281f1148b59aff3adf8abe`
-- Live owner result: playable through Chapter IV Phase II
+- Current owner-approved runtime commit: `61dfaec35cb8990ac9ea3fafa28d39bee8e4698f`
+- Historical Phase II baseline: `ffdc94777c5fbaefdc281f1148b59aff3adf8abe`
+- Live owner result: playable through Chapter IV Phase III
+
+## Acceptance commit chain
+
+1. `9d2219b306ae939c4f15468aab90ff787cc01e88`
+   - `Redesign Phase III packet trail and localization`
+   - introduced the approved Phase III reconstruction flow
+
+2. `1407e22ff436fe90ed11ace9062ce3cc37781707`
+   - `Fix Jakarta Journal and remote speaker labels`
+   - added scene-local Farid remote labeling and Jakarta Journal work
+
+3. `61dfaec35cb8990ac9ea3fafa28d39bee8e4698f`
+   - `Fix Maya profile switching in Jakarta`
+   - fixed the Maya-to-other-profile switching defect
+   - current approved runtime baseline
 
 ## Important file snapshot
 
 | Path | Blob SHA | Current role |
 |---|---|---|
-| `GAME_MASTER_PLAN.md` before this replacement | `b399d9d24f0e413f9f7a47737a08d577b327957a` | previous planning source |
+| `GAME_MASTER_PLAN.md` before this replacement | `8b9ee62eb8ba0f2d193c14c6592f5756a4390ed3` | previous planning source |
 | `index.html` | `e30f3fb1f20399d51de9aba220802361a5da15d9` | static DOM and static load order |
-| `js/chapters/chapter-02/05-chapter2-integration.js` | `a90af7d17259d54e7525c6d574edc12455c63b23` | Chapter III loader, lifecycle and legacy build label |
+| `js/engine/06-content-registry-dev.js` | `e404cc2c2c47dac9bca12e54874c4e6ee1e1d4f2` | authoritative Journal/Case File/Dev registry |
+| `js/engine/14-character-canon.js` | `b05c41572c7c4f2d27a4d180dc3225dc72c50c95` | canonical Character Journal mutation |
+| `js/chapters/chapter-02/05-chapter2-integration.js` | `a90af7d17259d54e7525c6d574edc12455c63b23` | Chapter III loader and legacy integration |
 | `js/chapters/chapter-04/01-afterimage.js` | `b61d3e8a9e118e9437b8bdf5eb5cb0a9b99c1df2` | Chapter IV Phase I |
-| `js/chapters/chapter-04/02-jakarta-arrival.js` | `763b434cebd1173d4495fbd3d4b0cae97c978ed2` | Chapter IV Phase II Build 0.14.7 |
-| `js/engine/09-defect-hotfix.js` | `4ca37de72a50ca26e949f7d71c6d56ce1f7f65c8` | current deterministic bootstrap |
-| `js/engine/17-police-portrait-alignment.js` | created in approved commit `ffdc9477...` | scoped Police dialogue portrait alignment |
+| `css/chapter-04-phase-02.css` | `16d08f45f1a2b336c96cc70d03086f7b6f379062` | accepted Jakarta layout and Maya visual rules |
+| `js/chapters/chapter-04/02a-jakarta-portrait-guard.js` | `218a2abaa0dcab60c2f3764877e910959f74285c` | deterministic Cheryl/Farid portrait fill |
+| `js/chapters/chapter-04/02-jakarta-arrival.js` | `fcced27af919a1e5b352a5b25281ed4b98a6b8f2` | Phase II module 0.14.9 and Maya Journal extension |
+| `css/chapter-04-phase-03.css` | `bd58144584ddd961bcc0d29c690c9b2e10559f51` | Phase III mobile-first UI |
+| `js/chapters/chapter-04/03-packet-provenance.js` | `83b9d2e123e212e48e063859de93881edbb1fd5a` | Phase III module 0.16.3 |
+| `js/engine/09-defect-hotfix.js` | `3beb573b4201846ddc8594ec02a4b6dc33221e8e` | runtime bootstrap 0.16.4 |
 
 ## Runtime build distinction
 
-- Latest accepted playable Chapter IV module: `0.14.7`
-- Chapter IV Phase I module: `0.13.2`
-- Chapter IV Phase II module: `0.14.7`
-- Bootstrap header: `0.15.3`
+- Chapter IV Phase I: `0.13.2`
+- Chapter IV Phase II: `0.14.9`
+- Phase II portrait guard: `0.15.0`
+- Thai localization: `0.15.2`
 - Targeted QC: `0.15.3`
 - Police portrait alignment: `0.15.4`
-- Legacy Chapter II/III integration may still show `BUILD 0.12.1`
+- Chapter IV Phase III: `0.16.3`
+- Runtime bootstrap: `0.16.4`
+- Legacy Chapter II/III integration may still display `0.12.1`
 
 Do not interpret the legacy visible Settings label as the actual playable boundary. Do not change it casually.
 
@@ -287,29 +376,35 @@ The owner played and accepted:
 - Chapter III
 - Chapter IV Phase I
 - Chapter IV Phase II
+- Chapter IV Phase III
 - Chapter I has no premature Character mode
+- Character Mode begins in Chapter II according to the original accepted gate
+- Developer Unlock All does not replace the Chapter I/II visibility rules
 - Phase II story, choices and Token Verification
 - Maya final portrait and Character Journal presentation
 - original dark navy Maya suit
-- pure black portrait background
-- visible bob-hair silhouette
+- pure black Maya portrait background
+- visible Maya bob-hair silhouette
 - accepted Maya scale and visual weight
 - Farid remote-from-Singapore labeling
-- takeoff ambience fade-out
-- reduced airport and lab ambience
-- Phase II completion
+- Farid remote suffix shown in blue while the name remains in normal speaker color
+- Phase III Evidence Review
+- Phase III step-by-step Packet Trail reconstruction
+- Phase III lawful next-lead selection
+- Phase III completion and handoff to `THE MAN BEHIND THE ALIAS`
+- Maya-to-other-character profile switching after the 0.16.4 fix
 - Return to Title
 - live game access after branch and Pages recovery
 
 ## Frozen playable boundary
 
-> `CHAPTER IV · PHASE II COMPLETE`
+> `CHAPTER IV · PHASE III COMPLETE`
 
-Next card:
+Next narrative card:
 
-> `NEXT · PHASE III · PACKET PROVENANCE`
+> `NEXT · THE MAN BEHIND THE ALIAS`
 
-No owner-reported blocking defect remains in this approved baseline.
+No owner-reported blocking defect remains at the approved endpoint.
 
 ---
 
@@ -358,7 +453,7 @@ Do not reorder without a complete audit.
 
 ## Current dynamic Chapter IV bootstrap
 
-The approved `js/engine/09-defect-hotfix.js` loads:
+`js/engine/09-defect-hotfix.js` Build `0.16.4` loads:
 
 1. `js/engine/15-thai-localization.js?v=0152`
 2. `js/engine/16-targeted-qc-fixes.js?v=0153`
@@ -366,28 +461,31 @@ The approved `js/engine/09-defect-hotfix.js` loads:
 4. `js/chapters/chapter-04/01-afterimage.js?v=0132`
 5. `css/chapter-04-phase-02.css?v=0149`
 6. `js/chapters/chapter-04/02a-jakarta-portrait-guard.js?v=0150`
-7. `js/chapters/chapter-04/02-jakarta-arrival.js?v=0147`
+7. `js/chapters/chapter-04/02-jakarta-arrival.js?v=0164`
+8. `css/chapter-04-phase-03.css?v=0163`
+9. `js/chapters/chapter-04/03-packet-provenance.js?v=0163`
 
-The approved bootstrap ends at Phase II.
+The bootstrap currently ends at Phase III.
 
-Phase III is not loaded and is not part of approved Production.
+## Future Phase IV load-safety lock
 
-## Phase III load-safety lock
+A future Phase IV module must not repeat any prior startup-state regression.
 
-A future Phase III implementation must not repeat the prior regression where loading a future Chapter IV module changed global chapter state during startup.
-
-Mandatory rule:
+Mandatory rules:
 
 - module definition and preload must be side-effect-free
 - loading a script must not set `state.chapter = 4`
-- loading a script must not set an active Phase III screen
-- loading a script must not unlock Character Journal
-- initialization may create isolated defaults only when entering or resuming Chapter IV Phase III
-- global story chapter changes only through a real Chapter IV entry, resume or Developer jump
+- loading a script must not set an active Phase IV screen
+- loading a script must not unlock Arman
+- loading a script must not unlock Character mode
+- initialization may create isolated defaults only when entering or resuming Phase IV
+- global story chapter changes only through real entry, resume or Developer jump
 - Chapter I must continue to hide Character mode
-- Character Journal gates must use actual story progress and explicit unlock state, not a chapter value polluted by a preloaded future module
+- Chapter II must continue to reveal Character mode at its original accepted timing
+- Character Journal gates must use actual story progress and explicit unlock state
+- the Phase III completion screen must not be hidden or rerouted merely because Phase IV code loaded
 
-Do not add Phase III to the global bootstrap until this behavior is proved safe.
+Do not add Phase IV to the global bootstrap until startup behavior is proved safe.
 
 ---
 
@@ -397,7 +495,7 @@ Before editing any Production file:
 
 1. read this entire file
 2. confirm `production-rebuild`
-3. confirm the approved runtime baseline
+3. confirm runtime baseline `61dfaec35cb8990ac9ea3fafa28d39bee8e4698f`
 4. fetch latest `index.html`
 5. fetch current file SHAs
 6. inspect static and dynamic load order
@@ -412,12 +510,14 @@ Before editing any Production file:
 15. inspect Character Journal and Case File gates
 16. inspect Developer Mode
 17. identify the true implementation owner
-18. prove the root cause
-19. patch the fewest files possible
-20. run syntax and static checks
-21. test the affected flow where the environment permits
-22. state exact testing limits
-23. deliver locally unless a specific GitHub write is authorized
+18. reproduce the reported defect where possible
+19. prove the root cause
+20. patch the fewest files possible
+21. run syntax and static checks
+22. test the affected flow where the environment permits
+23. test the exact owner sequence for sequence-dependent defects
+24. state exact testing limits
+25. deliver locally unless a specific GitHub write is authorized
 
 Never patch from:
 
@@ -575,7 +675,7 @@ Owns:
 - Chapter III dynamic loading
 - Chapter III Save/Resume preparation
 - legacy visible build label
-- Developer jumps through Phase IX
+- Developer jumps through Chapter III
 - mobile background lifecycle guard
 - rain boundary
 - Return to Title bridge
@@ -598,32 +698,74 @@ Owns:
 
 ### `02-jakarta-arrival.js`
 
+Current module: `0.14.9`.
+
 Owns:
 
 - Singapore to Jakarta flight
 - airport, office and lab scenes
 - Maya introduction and Journal extension
-- Farid remote label
+- Farid remote label in Phase II
 - Token Verification
 - Phase II audio
 - Phase II state and restore
-- completion screen
+- Phase II completion bridge
 - Return to Title
-- Phase II Developer jump
+- Phase II Developer jumps
+- Maya custom Character detail markup
+- accepted 0.16.4 profile-contract fix
+
+The Maya Journal extension must preserve the base detail contract:
+
+- `data-detail-shell`
+- `data-detail-portrait`
+- `data-detail-name`
+- `data-detail-status`
+- `data-detail-metrics`
+- `data-detail-notes`
 
 ### `02a-jakarta-portrait-guard.js`
 
-Owns approved Phase II portrait containment and must not be casually replaced.
+Owns deterministic one-time missing portrait fills for Cheryl and Farid.
+
+Rules:
+
+- no observer
+- no timer
+- no polling
+- existing approved mappings win
+- no dialogue mutation
+
+### `03-packet-provenance.js`
+
+Current module: `0.16.3`.
+
+Owns:
+
+- Phase III seamless continuation in the existing Jakarta Verification Lab
+- phase-local state initialization and legacy migration
+- four-record Evidence Review
+- one-time Case File collection per evidence item
+- circular Previous/Next review navigation
+- step-by-step Packet Trail reconstruction
+- lawful next-lead selection
+- Phase III dialogue and localization
+- Farid remote label in Phase III
+- Phase III Save/Resume
+- Phase III Developer jump
+- Phase III completion card
+- handoff to `THE MAN BEHIND THE ALIAS`
 
 ### `09-defect-hotfix.js`
 
-Current approved role:
+Current role:
 
 - legacy repair layer disabled
 - deterministic localization and QC loading
-- deterministic Phase I and Phase II bootstrap
-- no Phase III
+- deterministic Phase I, II and III bootstrap
 - no global repair polling
+- no gameplay override
+- current runtime build `0.16.4`
 
 ---
 
@@ -725,31 +867,27 @@ Do not expose a crude morality meter. Consequences appear through evidence, trus
 - complete
 - stage
 
-## Candidate Phase III state
+## Implemented Phase III state
 
-This remains a proposed schema, not accepted implementation:
+`state.chapter4.phase3` owns:
 
 ```js
-state.chapter4.phase3 = {
+{
   started: false,
-  locationCardSeen: false,
   introComplete: false,
   captureAuthorized: false,
-  captureChecks: [],
-  captureComplete: false,
-  packetFragments: [],
-  principleChosen: false,
-  principleKey: "",
-  principleApplied: false,
-  provenanceAssignments: {},
-  provenanceAttempts: 0,
-  provenanceComplete: false,
-  provenanceDebriefSeen: false,
   evidenceCollected: [],
   evidenceViewed: [],
   activeEvidenceId: "",
-  authorshipMatrix: {},
-  authorshipAttempts: 0,
+  evidenceDebriefSeen: false,
+  trailDebriefSeen: false,
+  provenanceAssignments: {},
+  provenanceAttempts: 0,
+  provenanceComplete: false,
+  activeTrailIndex: 0,
+  leadChoice: "",
+  leadAttempts: 0,
+  leadComplete: false,
   authorshipComplete: false,
   legalDebriefSeen: false,
   brokerLeadEstablished: false,
@@ -757,11 +895,31 @@ state.chapter4.phase3 = {
   armanLeadStatus: "unresolved",
   closingDialogueComplete: false,
   complete: false,
-  stage: "location-card"
-};
+  stage: "capture"
+}
 ```
 
-Creating defaults must not mutate global chapter, screen, Journal or active story state during startup.
+Phase III migration supports older prototype fields and values, including:
+
+- old provenance category names
+- old Matrix state
+- old `authorshipComplete`
+- old `provenanceDebriefSeen`
+- old stages such as `matrix`, `provenance` and `evidence-review`
+
+Loading the Phase III script remains story-state neutral. Entry initialization is scoped to Phase III entry, resume or Developer jump.
+
+## Phase III completion flags
+
+Exact runtime fields:
+
+- `ch4_p3_palimsest_build_proven`
+- `ch4_p3_jakarta_handoff_proven`
+- `ch4_p3_bangkok_deployment_supported`
+- `ch4_p3_decision_owner_unresolved`
+- `ch4_p3_broker_inquiry_authorised`
+
+The runtime field `palimsest` contains a legacy spelling in the key. Do not casually rename it without Save migration. Canon spelling remains `PALIMPSEST`.
 
 ## Storage
 
@@ -939,12 +1097,19 @@ Physical and swimwear Canon:
 - not comic relief
 - preserves alternative explanations
 - remains in Singapore during Chapter IV Phase II and Phase III support
-- protects the original raw mirror and capture
+- holds the original raw mirror and original watcher capture
 
-Labels:
+Accepted remote labels:
 
 - English: `Farid Rahman (Remote · Singapore)`
 - Thai: `Farid Rahman (ต่อสายจากสิงคโปร์)`
+
+Accepted visual treatment in Jakarta:
+
+- `Farid Rahman` remains in the normal speaker-name color.
+- The remote-presence suffix appears in blue.
+- The blue treatment communicates that Farid is not physically in Jakarta.
+- Use the same remote-presence logic for later Jakarta scenes while Farid remains in Singapore.
 
 ## Ratchata (Dr. Singh)
 
@@ -991,9 +1156,10 @@ Portrait fallback:
 - not mastermind
 - did not select victims, rooms or eleven-minute events
 - may have sold, adapted, brokered or protected the tool
-- real face appears around Chapter IV midpoint
+- real face appears in Chapter IV Phase IV
 - Chapter III hood feed is a digital mask
 - attribution requires source evidence, live behavior and corroboration
+- Phase III establishes a lawful broker/toolmaker lead but does not establish his identity
 
 ## Inspector Maya Pranoto
 
@@ -1009,7 +1175,7 @@ Portrait fallback:
 - no love triangle
 - Journal unlocks at formal introduction
 
-Accepted Phase II visual lock:
+Accepted visual lock:
 
 - original dark navy suit
 - suit remains visibly navy
@@ -1022,6 +1188,13 @@ Accepted Phase II visual lock:
 - no missing shoulders or blazer
 - accepted asset set frozen
 - do not touch Cheryl or Farid while changing Maya
+
+Accepted Character Journal contract:
+
+- Maya may use a custom profile renderer.
+- The custom renderer must retain the base detail data attributes.
+- Opening Maya must not break any other character profile.
+- The owner approved the 0.16.4 fix.
 
 Physical and swimwear Canon:
 
@@ -1085,14 +1258,27 @@ Owner-level future Canon:
 - no Journal unlock toast
 - stale entries filtered
 - future Chapter modules must not expose Character mode
+- Developer Unlock must not force the menu into Chapter I
 - this gate is owner-tested and frozen
 
 ### Chapter II
 
-- Benedict and North after office opening
+Character Mode appears normally according to the original accepted Chapter II flow.
+
+Unlock order:
+
+- Benedict and North after the office opening
 - Elena after Café introduction
 - Somchai and Kittisak after Police introduction
 - Ratchata at Medical Examiner
+
+Absolute preservation rule:
+
+- do not move Character Mode earlier
+- do not delay it
+- do not replace the gate while fixing Jakarta
+- do not change the Chapter II toast timing
+- do not change the original Chapter II cards unless directly requested
 
 ### Chapter III
 
@@ -1104,15 +1290,25 @@ Owner-level future Canon:
 ### Chapter IV
 
 - Maya after formal airport introduction
-- Arman only after source evidence and physical encounter support identity
+- Arman only after source evidence and physical encounter support identity in Phase IV
 - no hooded UNKNOWN SOURCE card
 - no swimwear duplicate cards
 - scene costumes are not new identities
+- Farid remains the same Character card while supporting remotely
 
 ### Chapter V
 
 - Kawin when identity is established
 - Rinrada after physical introduction and consent
+
+## Developer Unlock rules
+
+- Dev Unlock All unlocks known registered Character entries for testing.
+- It must not rewrite Chapter I visibility rules.
+- It must not change Chapter II's normal feature-unlock timing.
+- It must not mutate story Canon.
+- It must not create an Arman card before the runtime registry contains an approved Arman entry.
+- It must not make aliases into Characters.
 
 ## Accepted card layout
 
@@ -1124,6 +1320,19 @@ Owner-level future Canon:
 - no 54×54 wrapper
 - no oversized redesign
 - no global resizing
+
+## Accepted detail contract
+
+The base Character detail shell expects:
+
+- `[data-detail-shell]`
+- `[data-detail-portrait]`
+- `[data-detail-name]`
+- `[data-detail-status]`
+- `[data-detail-metrics]`
+- `[data-detail-notes]`
+
+Any custom detail view must preserve these targets or fully own every subsequent switch. Prefer preserving the contract.
 
 ## Portrait standard
 
@@ -1162,6 +1371,8 @@ Season 1 complete.
 6. Chapter VI - `THE FINAL MOVE`
 7. Chapter VII - `LAST WITNESS`
 
+Season 2 is active.
+
 `PALIMPSEST` is an alias and tool family, not the Chapter IV title.
 
 ## Chapter IV phase-count lock
@@ -1170,7 +1381,7 @@ Chapter IV has exactly eight phases:
 
 1. AFTERIMAGE
 2. JAKARTA ARRIVAL
-3. PACKET PROVENANCE
+3. PACKET PROVENANCE / implemented player-facing `PACKET TRAIL`
 4. THE MAN BEHIND THE ALIAS
 5. NORTH IS MARKED
 6. THE FALSE SUCCESS
@@ -1178,6 +1389,13 @@ Chapter IV has exactly eight phases:
 8. SHADOW OF THE TRUTH
 
 Do not add a ninth phase without owner approval.
+
+## Internal phase-language rule
+
+- Phase numbers may be used in file names, state, Developer Mode, Save labels and planning documents.
+- Characters must not speak as though they know they are inside a game phase.
+- Avoid dialogue such as `Phase IV starts...` or `the next phase begins...`.
+- Player-facing handoffs should name the story objective or title, for example `NEXT · THE MAN BEHIND THE ALIAS`.
 
 ## Locked titles
 
@@ -1264,6 +1482,30 @@ It does not prove physical entry, operator, identity, motive or mastermind.
    - cleanup priority
 
 Architecture, authorship, brokerage, deployment and decision ownership are separate.
+
+## Phase III proof boundary now locked
+
+Phase III proves or supports:
+
+- source build belongs to the PALIMPSEST family
+- Jakarta-linked infrastructure handled the route or handoff
+- the broker layer differs from deployment
+- trusted Bangkok conditions supported local deployment
+- a decision-trigger structure exists
+- the decision owner remains unknown
+- an unverified broker handle may be observed under controlled authority
+
+Phase III does not prove:
+
+- Arman is the sender
+- Arman is the operator
+- Arman deployed the Bangkok watcher
+- Arman selected victims
+- Arman is mastermind
+- Elena involvement
+- final operator at 05:47
+- final operator at 06:09
+- decision owner
 
 ## North threat escalation
 
@@ -1362,7 +1604,7 @@ Known technical debt:
 
 - static intro still says `HOTEL 1807`
 - Canon title is `ROOM 1807`
-- do not mix this correction into Phase III without owner approval
+- do not mix this correction into Phase IV without owner approval
 
 ---
 
@@ -1392,7 +1634,7 @@ Key findings:
 - Temporary Profile 18-07
 - Daniel's investigation board
 - Room 1807 connection
-- "Ask E. about the corrected time"
+- `Ask E. about the corrected time`
 - Café draft edited at 05:51
 - certified extract
 - sealed custody envelope
@@ -1417,6 +1659,12 @@ Ending routes:
 - `chapter3_access`
 
 All converge.
+
+Character Mode rule:
+
+- Character Mode begins during Chapter II according to the accepted original implementation.
+- This behavior is frozen.
+- Jakarta repairs must not alter it.
 
 ---
 
@@ -1648,10 +1896,11 @@ She wanted:
 
 ## Current status
 
-- Phase I: complete and accepted
-- Phase II: complete and accepted
-- Phase III: proposed blueprint only
-- Phase IV to VIII: planned
+- Phase I: complete and owner-approved
+- Phase II: complete and owner-approved
+- Phase III: complete and owner-approved
+- Phase IV: immediate next production target
+- Phase V to VIII: planned
 - total phases: eight
 
 ## Phase I - AFTERIMAGE
@@ -1693,7 +1942,7 @@ Proof:
 
 Status:
 
-`COMPLETE · MODULE 0.14.7 · OWNER-APPROVED · FROZEN`
+`COMPLETE · MODULE 0.14.9 · OWNER-APPROVED · FROZEN`
 
 Scene sequence:
 
@@ -1704,7 +1953,7 @@ Scene sequence:
 5. Verification Lab: 01:18 WIB
 6. Day 5
 
-Team in Jakarta:
+Team physically in Jakarta:
 
 - Benedict
 - North
@@ -1771,61 +2020,31 @@ North result:
 - recognized role `ATTRIBUTION ANALYST`
 - role is not identity
 
-Correct transition:
+Accepted transition principle:
 
-Maya:
+- do not use development terms such as `Phase IV` inside character dialogue
+- Phase III continues seamlessly inside the lab
+- player-facing transition is the investigative act, not a game-phase announcement
 
-> "I am authorising a controlled packet capture. The next phase begins with provenance, not pursuit."
+Character Journal resolution:
 
-Thai:
+- Maya profile uses the accepted custom renderer
+- opening Maya no longer breaks other profiles
+- owner approved Build 0.16.4 behavior
 
-> "ฉันอนุมัติการเก็บ Packet แบบควบคุม ขั้นต่อไปต้องเริ่มจากการพิสูจน์ที่มา ไม่ใช่การไล่ล่า"
-
-Closing:
-
-Benedict:
-
-> "It was never a meeting place."
-
-North:
-
-> "No. It is a receipt."
-
-Maya:
-
-> "Then prove who handled it."
-
-Proof boundary:
-
-Proven:
-
-- token genuine
-- broker route Jakarta-linked
-- route is receipt or handoff
-- PALIMPSEST-family grammar
-- analytical role recognition
-- human identity unresolved
-
-Not proven:
-
-- Arman is sender
-- Arman is operator
-- Arman deployed Bangkok watcher
-- Elena involvement
-- decision owner
-- physical endpoint occupant
-
-## Phase III - PACKET PROVENANCE
+## Phase III - PACKET PROVENANCE / PACKET TRAIL
 
 Status:
 
-`NEXT PRODUCTION TARGET · BLUEPRINT PROPOSED · NOT IMPLEMENTED · NOT OWNER-TESTED`
+`COMPLETE · MODULE 0.16.3 · OWNER-TESTED · OWNER-APPROVED · FROZEN`
 
-Starting card:
+Runtime presentation:
 
-- `DAY 5 · 01:24 WIB`
-- `JAKARTA VERIFICATION LAB`
-- `PHASE III · PACKET PROVENANCE`
+- seamless continuation inside Jakarta Verification Lab
+- local time: 01:24 WIB
+- player-facing scene label: `PACKET TRAIL` / `เส้นทางข้อมูล`
+- no redundant Phase card in character dialogue
+- no character says `Phase IV`
 
 Starting point:
 
@@ -1841,129 +2060,172 @@ Purpose:
 
 Separate:
 
-- tool-family authorship
-- relay route
-- broker distribution
+- tool origin
+- network route
+- broker handoff
 - local deployment
-- decision trigger
+- decision owner
 
-Scene flow:
+### Phase III flow
 
-1. Controlled Capture
-2. Benedict principle choice
-3. Packet Provenance Reconstruction
-4. Evidence review
-5. Authorship / Deployment Confidence Matrix
-6. Legal debrief
-7. controlled broker inquiry lead
-8. completion leading to Phase IV
+1. Introductory legal and technical boundary dialogue
+2. Review four captured records
+3. Add each evidence item to the Case File once
+4. Reconstruct five packet-trail records one at a time
+5. Receive targeted feedback on incorrect assignments
+6. Select the next lawful lead
+7. Authorize controlled observation of the broker handle
+8. Complete Phase III
 
-Character roles:
+### Evidence Review
+
+Evidence IDs and player-facing records:
+
+1. `source_build_hash`
+   - PALIMPSEST Build Signature
+   - proves tool origin
+
+2. `broker_ledger_fragment`
+   - Broker Ledger Fragment
+   - supports broker handoff
+
+3. `jakarta_authorization_echo`
+   - Jakarta Relay Authorisation
+   - proves network route
+
+4. `deployment_condition_echo`
+   - Bangkok Deployment Conditions
+   - supports local deployment
+
+Behavior:
+
+- review is repeatable
+- Previous and Next are circular
+- Close remains available
+- each item may be added once
+- collected items show an in-case-file state
+- last active evidence is restored
+- reconstruction opens after all four are collected
+
+### Primary minigame
+
+Player-facing title:
+
+- English: `RECONSTRUCT THE PACKET TRAIL`
+- Thai: `ต่อเส้นทางของข้อมูล`
+
+Display model:
+
+- one record at a time
+- `1 / 5` through `5 / 5`
+- five category choices per record
+- Back and Next
+- Start Over
+- final Confirm
+- selection persists
+- close and resume preserve progress
+- no permanent failure
+- wrong answers return to the first incorrect record with explanatory feedback
+
+Correct map:
+
+| Record | Correct layer |
+|---|---|
+| PALIMPSEST Build Signature | Tool Origin |
+| Jakarta Relay Exit | Network Route |
+| Broker Ledger Handoff | Broker Handoff |
+| Bangkok Activation Conditions | Local Deployment |
+| Decision Trigger | Still Unknown |
+
+### Lawful next-lead decision
+
+Question:
+
+- English: `What can we pursue without outrunning the evidence?`
+- Thai: `เราตามเบาะแสใดต่อได้โดยไม่ล้ำเกินหลักฐาน?`
+
+Options:
+
+1. accuse the relay operator as toolmaker
+2. trace the unverified broker handle under controlled observation
+3. treat the Bangkok deployment record as the decision owner
+
+Correct lead:
+
+- trace the unverified broker handle under controlled observation
+
+Wrong choices teach:
+
+- a route does not identify a toolmaker
+- deployment does not identify target selection or decision ownership
+
+### Character roles
 
 - North leads reconstruction
-- Benedict chooses focus and interprets blame architecture
-- Maya owns local authority
-- Cheryl records custody
-- Farid validates original hash
+- Benedict frames the human inference and rejects convenient blame
+- Maya authorizes controlled observation
+- Cheryl maintains evidentiary limits
+- Farid validates the sealed Singapore copy remotely
 - no Arman portrait or Journal unlock
 - no Elena or Adrian appearance required
 
-Benedict choice effects:
+### Approved closing dialogue function
 
-- build lineage: `attributionProof +1`
-- broker habits: `allianceStrength +1`
-- deployment condition: `chainOfCustody +1`
+Maya authorizes tracing the handle under controlled observation and forbids contact without authorization.
 
-Primary minigame:
+North states that the team must find the man behind the alias before others define him.
 
-`PACKET PROVENANCE RECONSTRUCTION`
+Benedict closes with restrained humour about introductions before indictments.
 
-| Fragment | Correct layer |
-|---|---|
-| Source-Build Fingerprint | Tool Authorship / Build Lineage |
-| Jakarta Relay Exit | Network Route |
-| Broker Handoff | Distribution / Broker Layer |
-| Local Deployment Echo | Deployment Conditions |
-| Decision Trigger | Decision Owner · Unresolved |
+No character says `Phase IV`.
 
-Evidence:
+### Completion
 
-1. `PALIMPSEST Source-Build Hash`
-2. `Broker Ledger Fragment`
-3. `Jakarta Authorization Echo`
-4. `Deployment Condition Echo`
+Player-facing completion:
 
-Secondary minigame:
+- `PACKET TRAIL RECONSTRUCTED`
+- `ต่อเส้นทางข้อมูลสำเร็จ`
 
-`AUTHORSHIP / DEPLOYMENT MATRIX`
+Results:
 
-- Source-Build Hash to PALIMPSEST family: PROVEN
-- Jakarta Authorization Echo to local handoff: PROVEN
-- broker handle to distribution: SUPPORTED
-- deployment echo to trusted Bangkok conditions: SUPPORTED
-- decision trigger to target selector: UNRESOLVED
+- TOOL ORIGIN: PALIMPSEST FAMILY
+- DELIVERY ROUTE: JAKARTA-LINKED
+- LOCAL DEPLOYMENT: BANGKOK-LINKED
+- DECISION MAKER: UNKNOWN
 
-End proof:
+Next:
 
-Prove:
+- `NEXT · THE MAN BEHIND THE ALIAS`
+- `ถัดไป · คนหลังนามแฝง`
 
-- source build belongs to PALIMPSEST family
-- Jakarta infrastructure handled or brokered packet
-- distribution and deployment differ
+### End proof
+
+Proven or supported:
+
+- PALIMPSEST-family source build
+- Jakarta handoff route
+- broker layer exists
 - Bangkok deployment condition exists
-- decision trigger does not identify owner
-- lawful basis exists to observe or contact probable toolmaker or broker
+- decision maker remains unknown
+- lawful basis exists to observe the probable toolmaker or broker handle
 
-Do not prove:
+Not proven:
 
 - Arman selected victims
 - Arman is mastermind
 - Arman is murderer
+- Arman is the sender
+- Arman is the operator
 - Elena involvement
 - final operator at 05:47
 - final operator at 06:09
 - decision owner
 
-Completion:
-
-- SOURCE BUILD: PALIMPSEST FAMILY
-- BROKER HANDLE: UNVERIFIED
-- DEPLOYMENT CONDITION: BANGKOK-LINKED
-- DECISION OWNER: UNRESOLVED
-- `NEXT · PHASE IV · THE MAN BEHIND THE ALIAS`
-
-Proposed minimal implementation scope:
-
-Modify only when approved:
-
-- `js/engine/09-defect-hotfix.js`
-
-Add only when approved:
-
-- `js/chapters/chapter-04/03-packet-provenance.js`
-- `css/chapter-04-phase-03.css`
-
-Mandatory implementation safety:
-
-- do not alter Phase I or Phase II owners
-- do not mutate chapter state during module load
-- do not expose Characters in Chapter I
-- do not install global polling
-- do not create another audio manager
-- do not preload Phase III until startup behavior is proven
-- all Phase III initialization must be entry-scoped or resume-scoped
-- test fresh New Game before any Phase III acceptance
-
-Assets:
-
-- reuse Jakarta Verification Lab
-- reuse approved portraits
-- reuse restrained Phase II verification audio with separate phase-local media ownership
-- reuse shared inspection and puzzle cues
-- build evidence in DOM/CSS
-- no new custom image or audio package currently required
-
 ## Phase IV - THE MAN BEHIND THE ALIAS
+
+Status:
+
+`IMMEDIATE NEXT PRODUCTION TARGET · BLUEPRINT REQUIRED · NOT IMPLEMENTED`
 
 Purpose:
 
@@ -1972,18 +2234,39 @@ Purpose:
 - hood feed excluded as identification
 - North verifies behavior against source evidence
 - Benedict reads fear of being framed
-- Arman admits authorship or adaptation
+- Arman admits authorship, adaptation, brokerage or protection at the correct proof level
 - Arman knew abuse was possible
 - Arman did not choose victims
 - legitimate Bangkok client supplied deployment conditions
 - no direct proof of client identity
 
+Entry condition from Phase III:
+
+- broker inquiry authorized
+- broker handle remains unverified
+- Arman status is probable toolmaker or broker, not confirmed identity
+- team must remain within Indonesian legal authority
+- no uncontrolled contact
+
+Required design questions before coding:
+
+1. exact broker-handle value and whether it remains partially masked
+2. exact physical location selected through Phase III evidence
+3. how Maya authorizes observation and contact
+4. how the team verifies that the physical man corresponds to the source behavior
+5. how the scene avoids turning technical skill into proof of murder
+6. when Arman's real portrait and Character Journal entry unlock
+7. which new backgrounds and expressions are genuinely required
+8. how Phase IV leads naturally to `NORTH IS MARKED`
+
 First likely new asset package:
 
-- Arman physical portrait and expressions
-- Phase IV locations
-- phase-local ambience if needed
+- Arman physical portrait and expression set
+- Phase IV location backgrounds
+- phase-local ambience if existing audio is insufficient
 - evidence art only where DOM/CSS is insufficient
+
+Do not create Phase IV assets before the owner approves the blueprint.
 
 ## Phase V - NORTH IS MARKED
 
@@ -2320,6 +2603,7 @@ Do not:
 - technical respect
 - dry banter
 - no romance
+- remote-support status must remain clear while Farid is in Singapore
 
 ## North and Arman
 
@@ -2372,15 +2656,27 @@ Do not create another global audio manager.
 - Farid remote dialogue does not add an ambience owner
 - Return to Title stops Phase II media
 
-## Phase III audio
+## Accepted Phase III audio
 
-- phase-local elements
-- separate media IDs
-- stop Phase II audio on entry
+- reuses the verification score under Phase III ownership
+- phase-local ducking for dialogue and overlays
+- inspection cue for evidence and navigation
+- puzzle-success cue for reconstruction and lawful-lead success
 - no alarm
 - no villain sting
 - no global manager
-- no observer or polling repair
+- no polling repair
+- completion stops the phase-local score
+
+## Phase IV audio
+
+Before implementation:
+
+- decide whether the physical Arman location needs new ambience
+- preserve dialogue dominance
+- do not signal guilt through villain music
+- no identity-reveal sting that implies murder guilt
+- stop Phase III audio cleanly at entry
 
 ## Phase V audio
 
@@ -2425,6 +2721,20 @@ Account for:
 - long Thai
 - two-line buttons
 - scrollable modal body
+
+## Phase III accepted UI logic
+
+- modal cards center in the actual runtime
+- Close is visible and consistent
+- Evidence Previous/Next are separate from collection
+- reconstruction shows one record at a time
+- Back preserves selection
+- Next requires a choice
+- Start Over is secondary
+- final Confirm appears only after all assignments
+- resume actions return to the active task
+- no disabled button should visually resemble a dead end without explanation
+- Thai and English labels remain legible on mobile
 
 ## Background art
 
@@ -2497,20 +2807,28 @@ Implemented minigames include:
 13. Dead Drop Preservation
 14. Phase I Evidence Route Board
 15. Rendezvous Token Verification
+16. Packet Trail Reconstruction
+17. Lawful Next-Lead Selection
+
+Phase III design correction now locked:
+
+- do not return to the rejected 25-button all-at-once provenance form
+- do not restore the redundant five-row Confidence Matrix
+- preserve the step-by-step reconstruction
+- preserve the final lawful-lead decision
 
 Planned:
 
-1. Packet Provenance Reconstruction
-2. Authorship / Deployment Matrix
-3. Decoy Telemetry Control
-4. Relay Authorization Preservation
-5. Victim Identity Reconstruction
-6. Room/Profile Cross-Map
-7. Pier Event Reconstruction
-8. Controlled Leak Correlation
-9. Authority Chain Reconstruction
-10. Parallel Scene Prioritization
-11. The Last Record
+1. Phase IV identity/source-behavior verification
+2. Decoy Telemetry Control
+3. Relay Authorization Preservation
+4. Victim Identity Reconstruction
+5. Room/Profile Cross-Map
+6. Pier Event Reconstruction
+7. Controlled Leak Correlation
+8. Authority Chain Reconstruction
+9. Parallel Scene Prioritization
+10. The Last Record
 
 Avoid renamed duplicates.
 
@@ -2537,6 +2855,7 @@ Avoid renamed duplicates.
 
 - fresh New Game from Chapter I
 - Chapter I Character mode remains hidden
+- Chapter II Character Mode appears at the accepted point
 - opening dialogue
 - choices
 - evidence open
@@ -2552,6 +2871,53 @@ Avoid renamed duplicates.
 - transition
 - Return to Title
 
+## Character regression gate
+
+Before every future Chapter IV delivery:
+
+1. hard reload with clean state
+2. start Chapter I
+3. confirm no Character mode
+4. confirm no Character toast
+5. confirm no future characters
+6. enter Chapter II and confirm Character Mode appears normally
+7. confirm Chapter II unlock timing
+8. confirm Dev Unlock All still works
+9. confirm Chapter III Character cards open
+10. enter Jakarta
+11. open Maya profile
+12. return to grid
+13. open every other available profile
+14. switch repeatedly between Maya and other characters
+15. close and reopen the Journal
+16. test Thai and English
+17. confirm Save/Load does not promote early chapters to Chapter IV
+18. confirm future module loading does not expose Character mode early
+
+The exact Maya-first sequence is mandatory because the former defect was sequence-dependent.
+
+## Phase III regression gate
+
+- Phase II to III handoff
+- intro dialogue
+- Evidence Review all four items
+- Previous/Next circular behavior
+- Add each once
+- close and resume
+- reconstruction forward and back
+- selection persistence
+- wrong answer feedback
+- Start Over
+- correct completion
+- lawful-lead wrong answers
+- correct lawful lead
+- completion card
+- checkpoint `ch4_phase3_complete`
+- progress 100%
+- Return to Title
+- Save/Load before, during and after each modal
+- completed-state resume
+
 ## Save
 
 - Auto Save
@@ -2564,6 +2930,7 @@ Avoid renamed duplicates.
 - completed resume
 - export and import
 - stale state
+- legacy Phase III migration
 
 ## Settings
 
@@ -2573,20 +2940,6 @@ Avoid renamed duplicates.
 - SFX
 - fullscreen
 - Exit Game
-
-## Character regression gate
-
-Before any Phase III delivery:
-
-1. hard reload with clean state
-2. start Chapter I
-3. confirm no Character mode
-4. confirm no Character toast
-5. confirm no future characters
-6. confirm Chapter II unlock timing
-7. confirm Dev Unlock All still works
-8. confirm Phase III entry works only through intended route
-9. confirm Save/Load does not promote early chapters to Chapter IV
 
 ## Honesty
 
@@ -2603,6 +2956,12 @@ unless actually performed.
 
 Owner-device result is final.
 
+Current owner-device truth:
+
+- Android Chrome passed through Phase III
+- Maya profile switching passed
+- Phase III approved
+
 ---
 
 # 28. CURRENT ACCEPTED LIMITATIONS AND TECHNICAL DEBT
@@ -2616,15 +2975,34 @@ Accepted and known:
 - static Chapter I intro says `HOTEL 1807`
 - Canon title is `ROOM 1807`
 - Phase II CSS header may retain an older comment while accepted final rules are appended
-- some Phase II internal asset queries may remain older than bootstrap query
+- Phase III CSS header says `0.16.2` while Production cache query is `v=0163`
+- some internal asset queries may remain older than bootstrap query
 - do not clean accepted runtime without a scoped reason
 - do not clear Site Data by default because it can erase saves
-- Phase III files are not part of approved Production
 - Phase IV assets are not locked until blueprint approval
 - Phase V exact location, attack method, colors and asset list remain unresolved
 - body hierarchy and scene function are locked
 
-No owner-reported blocking defect remains after the accepted live test.
+## Editorial localization debt
+
+Phase III localization and UI language were redesigned and approved.
+
+A broader Chapter IV Phase I and Phase II subtitle-quality language audit was previously requested but has not been implemented as a complete separate pass.
+
+Known concerns may include:
+
+- mixed Thai and English technical terminology
+- literal technical phrasing
+- some stiff dialogue or UI labels
+
+Rules:
+
+- do not silently rewrite frozen Phase I or II while building Phase IV
+- preserve necessary immutable technical terms
+- schedule the broad language audit only under direct owner instruction
+- do not mistake Phase III language approval for a full Phase I/II rewrite
+
+No owner-reported blocking runtime defect remains at the Phase III endpoint.
 
 ---
 
@@ -2653,7 +3031,7 @@ No owner-reported blocking defect remains after the accepted live test.
 - North becomes Analyst of Record target
 - two-hands split
 
-## 0.14.0 to 0.14.6
+## 0.14.0 to 0.14.7
 
 - Phase II implementation
 - audio balance
@@ -2661,27 +3039,34 @@ No owner-reported blocking defect remains after the accepted live test.
 - Farid remote label
 - Maya role wrapping
 - portrait iteration
+- owner-approved initial Phase II boundary
 
-## 0.14.7
+## 0.14.8 / Bootstrap 0.16.3
 
-Owner-accepted Phase II final:
+- Jakarta Journal and remote-speaker-label patch
+- Farid remote suffix styling
+- first attempt to stabilize Character profile handling
+- did not fully resolve Maya-first profile switching
 
-- Maya dark navy suit
-- black portrait background
-- visible hair contour
-- accepted proportions
-- Phase II dialogue correction
-- takeoff fade-out
-- airport and lab balance
-- current playable endpoint
+## 0.14.9 / Bootstrap 0.16.4
 
-## 0.15.2 to 0.15.4 support layers
+- exact Maya detail DOM contract repair
+- added required detail data attributes
+- preserved central Journal gate and registry
+- owner tested and approved
 
-- Thai localization
-- targeted QC
-- Police dialogue portrait alignment
-- no new Chapter IV phase
-- no change to current playable boundary
+## Phase III 0.16.2 to 0.16.3
+
+- replaced the dense all-at-once provenance form
+- removed redundant Confidence Matrix
+- introduced repeatable Evidence Review
+- introduced step-by-step Packet Trail reconstruction
+- introduced lawful next-lead decision
+- rewrote Phase III player-facing language
+- removed game-development phase language from closing dialogue
+- added centered mobile modal and completion presentation
+- added Farid remote-presence styling in Phase III
+- owner completed and approved Phase III
 
 ## Approved runtime recovery 2026-08-01
 
@@ -2690,8 +3075,17 @@ Owner-accepted Phase II final:
 - removed obsolete `main`
 - restored live playability
 - owner played from Chapter I through Chapter IV Phase II
-- owner approved the full baseline
-- baseline frozen
+- Phase II baseline approved
+
+## Current baseline promotion 2026-08-02
+
+- Phase III implementation committed at `9d2219b...`
+- Jakarta Journal/remote patch committed at `1407e22...`
+- Maya profile-switching fix committed at `61dfaec...`
+- owner played through Phase III
+- owner approved the profile fix
+- current runtime baseline promoted to `61dfaec35cb8990ac9ea3fafa28d39bee8e4698f`
+- playable boundary promoted to Chapter IV Phase III complete
 
 ---
 
@@ -2710,6 +3104,7 @@ Highest-priority risk:
 Do not:
 
 - expose Characters in Chapter I
+- remove Character Mode from its normal Chapter II appearance
 - gate solely on a chapter value that a future module can mutate
 - add global portrait wrappers
 - move Relationship
@@ -2717,6 +3112,12 @@ Do not:
 - duplicate red dots
 - unlock aliases
 - overwrite professional portraits with swimwear art
+- replace the base detail DOM contract
+- assume a card opens merely because Maya opens
+
+Mandatory sequence:
+
+- Maya first, then every other Character.
 
 ## Global overrides
 
@@ -2751,6 +3152,7 @@ Every future screen must be added to:
 Do not equate:
 
 - Jakarta with Arman
+- broker handle with Arman identity
 - hood feed with Arman identity
 - Adrian with mastermind
 - 18-07 with a person
@@ -2767,26 +3169,26 @@ A new assistant must behave as though the owner has said:
 > Continue LAST WITNESS from the owner-approved Production baseline.
 > Repository: `grolygori789-crypto/last-witness`.
 > Production and Default branch: `production-rebuild`.
-> Approved runtime baseline commit: `ffdc94777c5fbaefdc281f1148b59aff3adf8abe`.
+> Owner-approved runtime baseline commit: `61dfaec35cb8990ac9ea3fafa28d39bee8e4698f`.
 > Read `GAME_MASTER_PLAN.md` from beginning to end before proposing anything.
-> The branch may contain a later documentation-only commit after this plan is uploaded. Do not mistake that for a new runtime build.
-> Chapter I through Chapter IV Phase II passed owner Android Chrome testing.
-> Current endpoint is `NEXT · PHASE III · PACKET PROVENANCE`.
-> Phase III is not implemented in approved Production.
-> Do not touch, restore, merge, rebase or rebuild Chapter I, Chapter II, Chapter III, Chapter IV Phase I or Phase II.
+> A later commit containing only this plan is documentation-only and must not be mistaken for a new runtime build.
+> Chapter I through Chapter IV Phase III passed owner Android Chrome testing.
+> Current endpoint is `NEXT · THE MAN BEHIND THE ALIAS`.
+> Phase IV is the next production target and is not implemented.
+> Do not touch, restore, merge, rebase or rebuild approved Chapter I, II, III or Chapter IV Phase I to III.
 > Do not write to GitHub without exact current-turn authorization.
 > Work locally and deliver a ZIP.
-> Before any Phase III implementation, audit startup load order, global state mutation, Save/Load, Character Journal gates, Case File, audio and Developer Mode.
+> Before Phase IV implementation, audit startup load order, global state mutation, Save/Load, Character Journal gates, Case File, audio and Developer Mode.
 > Chapter I must remain free of Character mode.
-> Loading a future module must not set `state.chapter = 4`.
-> Phase III initialization must be entry-scoped or resume-scoped.
-> Preserve Maya's approved Phase II assets.
-> Phase III currently reuses the Jakarta lab, approved portraits and existing audio unless inspection proves otherwise.
-> Chapter IV has eight phases.
-> Phase V contains a story-integrated undercover resort or pool surveillance sequence with North, Cheryl and Maya in distinct character-specific bikinis.
-> Maya is most voluptuous, Cheryl athletic-curvy and North lean-fit.
-> The scene supports surveillance and the attempted elimination of North.
-> Work efficiently and patch the smallest scope.
+> Character Mode must continue to appear normally in Chapter II.
+> Loading a future module must not set `state.chapter = 4` or unlock Arman.
+> Phase IV initialization must occur only on Phase IV entry, resume or intentional Developer jump.
+> Preserve Maya's approved assets and profile contract.
+> Test Developer Unlock, open Maya first, then open every other profile.
+> Farid remains remote in Singapore and his remote suffix uses blue styling.
+> Phase IV reveals Arman's physical identity only after source behavior and physical corroboration.
+> Arman is not mastermind and not decision owner.
+> Obtain owner approval of the Phase IV implementation and asset blueprint before coding or asset production.
 
 ---
 
@@ -2800,13 +3202,13 @@ A new assistant must behave as though the owner has said:
 ข้อมูลหลัก
 - Repository: grolygori789-crypto/last-witness
 - Production และ Default Branch: production-rebuild
-- Owner-approved Runtime Baseline: ffdc94777c5fbaefdc281f1148b59aff3adf8abe
+- Owner-approved Runtime Baseline: 61dfaec35cb8990ac9ea3fafa28d39bee8e4698f
 - หลังอัปโหลด Master Plan อาจมี Commit ใหม่ที่แก้เฉพาะเอกสาร ห้ามตีความว่าเป็น Runtime Build ใหม่
 - Live game: https://grolygori789-crypto.github.io/last-witness/
-- Chapter I, II, III และ Chapter IV Phase I-II ผ่านการเล่นจริงของพี่บน Android Chrome แล้ว
-- จุดจบปัจจุบัน: PHASE II COMPLETE / JAKARTA ARRIVAL / NEXT: PHASE III - PACKET PROVENANCE
-- Phase III ยังไม่มีใน Production ที่อนุมัติ
-- Runtime ตั้งแต่ Chapter I ถึง Phase II ถูก Freeze ห้ามแตะจนกว่าพี่จะสั่งตรงๆ
+- Chapter I, II, III และ Chapter IV Phase I-III ผ่านการเล่นจริงของพี่บน Android Chrome แล้ว
+- จุดจบปัจจุบัน: CHAPTER IV PHASE III COMPLETE / PACKET TRAIL RECONSTRUCTED / NEXT: THE MAN BEHIND THE ALIAS
+- Phase IV ยังไม่ Implement
+- Runtime ตั้งแต่ Chapter I ถึง Phase III ถูก Freeze ห้ามแตะจนกว่าพี่จะสั่งตรงๆ
 
 กฎเด็ดขาด
 1. เรียกพี่ว่า “พี่เบนซ์” และเรียกตัวเองว่า “บิ๊ว”
@@ -2818,15 +3220,19 @@ A new assistant must behave as though the owner has said:
 7. แก้ไฟล์ให้น้อยที่สุด
 8. ห้ามสร้าง observer polling global audio manager หรือ state repair ซ้อนโดยไม่มีหลักฐาน
 9. ห้ามขอให้พี่เล่า Canon หรือส่ง Asset เดิมซ้ำก่อนตรวจ GitHub
+10. Suggested Commit Name ต้องแสดงชัดเจน ไม่เกิน 50 ตัวอักษร และใส่ในเอกสารติดตั้งด้วย
 
 Regression Gate สำคัญที่สุด
 - Chapter I ต้องไม่มี Character mode
 - ห้ามมี Character unlock toast ใน Chapter I
+- Character Mode ต้องปรากฏตามปกติใน Chapter II
+- ห้ามแก้ Gate เดิมของ Chapter II เพื่อซ่อม Jakarta
 - ห้ามมีตัวละครอนาคตโผล่ก่อนเวลา
 - Future module ที่ถูกโหลดห้ามเขียน state.chapter = 4
 - Future module ห้ามเปลี่ยน screen checkpoint Journal หรือ unlock ตอน startup
-- Phase III initialization ต้องเกิดเฉพาะตอนเข้า Phase III, Resume Phase III หรือ Developer Jump ที่ตั้งใจ
-- ก่อนส่ง Phase III ต้องทดสอบ New Game Chapter I, Chapter II unlock, Dev Unlock All, Save/Load และ Phase III entry
+- Phase IV initialization ต้องเกิดเฉพาะตอนเข้า Phase IV, Resume Phase IV หรือ Developer Jump ที่ตั้งใจ
+- ก่อนส่ง Phase IV ต้องทดสอบ New Game Chapter I, Chapter II unlock, Dev Unlock All, Save/Load และ Phase III entry
+- ใน Jakarta ต้องทดสอบลำดับ Dev Unlock → เปิด Maya → กลับ → เปิดตัวละครอื่นทุกคน
 
 Canon หลัก
 - A valid credential proves access, not identity.
@@ -2836,10 +3242,11 @@ Canon หลัก
 - Adrian มีส่วนผิดแต่ไม่ใช่ Mastermind
 - Arman/PALIMPSEST เป็น Toolmaker/Wrapper Specialist แต่ไม่ใช่ Decision Owner
 - Chapter III hood feed เป็น Digital Mask ไม่ใช่หลักฐานตัวตน
+- Phase III พิสูจน์ Tool Origin, Jakarta Handoff และ Bangkok Deployment แต่ Decision Owner ยังไม่ทราบ
 - Maya เป็นตำรวจไซเบอร์อินโดนีเซีย ไม่มี romance กับ Benedict
 - Cheryl มีความรู้สึกต่อ Benedict แต่คดีมาก่อน
 - Benedict สุดท้ายไม่เลือกคู่รักถาวร
-- Farid สนับสนุนระยะไกลจาก Singapore
+- Farid สนับสนุนระยะไกลจาก Singapore และคำสถานะ Remote ใช้สีฟ้า
 - Chapter I victim คือ Kawin แต่ผู้เล่นยังไม่รู้จน Chapter V
 - R. เชื่อมกับ Rinrada และ Registrar role
 - Historical truth คงที่ทุก Ending
@@ -2847,8 +3254,8 @@ Canon หลัก
 สถานะ Chapter IV
 1. AFTERIMAGE ผ่านและ Freeze
 2. JAKARTA ARRIVAL ผ่านและ Freeze
-3. PACKET PROVENANCE คือ Target ถัดไป แต่ยังเป็น Blueprint Proposed
-4. THE MAN BEHIND THE ALIAS เผยตัวจริง Arman
+3. PACKET PROVENANCE / PACKET TRAIL ผ่านและ Freeze
+4. THE MAN BEHIND THE ALIAS คือ Target ถัดไป
 5. NORTH IS MARKED มีภารกิจแฝงตัวในรีสอร์ต โรงแรม สระว่ายน้ำหรือชายฝั่งอินโดนีเซีย
 6. THE FALSE SUCCESS ทำให้คนร้ายเชื่อว่า North ถูกกำจัด
 7. RELAY FACILITY CLIMAX
@@ -2856,10 +3263,11 @@ Canon หลัก
 
 งานแรกของห้องใหม่
 1. ยืนยัน Branch และ Runtime Baseline
-2. อ่าน Phase II handoff และ Phase III blueprint
-3. ตรวจจุดเสี่ยง Character regression ก่อนเสนอ Implementation
-4. ห้ามสร้าง Asset หรือเขียนโค้ดจน Blueprint ได้รับอนุมัติ
-5. สรุปผลตรวจแบบชัดเจนและไม่ให้พี่รอโดยไม่มี Deliverable
+2. อ่าน Phase III endpoint และ Phase IV plan
+3. ตรวจ Character Journal regression ก่อนเสนอ Implementation
+4. ออกแบบ Phase IV blueprint และ asset list ที่จำเป็นจริง
+5. ห้ามสร้าง Asset หรือเขียนโค้ดจน Blueprint ได้รับอนุมัติ
+6. สรุปผลตรวจแบบชัดเจนและไม่ให้พี่รอโดยไม่มี Deliverable
 ```
 
 ---
@@ -2877,6 +3285,7 @@ Update this file whenever any change occurs to:
 - owner secret
 - character role
 - Character Journal gate
+- Character Journal DOM contract
 - Save schema
 - storage key
 - runtime path
@@ -2903,12 +3312,14 @@ Before replacement:
 9. record replaced blob SHA
 10. include local SHA-256
 11. distinguish runtime changes from documentation-only changes
+12. remove stale endpoint claims
+13. preserve unresolved editorial debt instead of silently declaring it complete
 
 ---
 
 # 34. CURRENT CANON SUMMARY
 
-## Confirmed to player
+## Confirmed to player after Phase III
 
 - Room 1807 staged
 - Room 1807 victim not Daniel
@@ -2934,7 +3345,13 @@ Before replacement:
 - North recognized as analytical role
 - token genuine and single-use
 - Jakarta broker route real
-- Phase II complete
+- PALIMPSEST build origin established
+- broker handoff layer established or supported
+- Bangkok deployment condition supported
+- decision owner unresolved
+- controlled observation of broker handle authorized
+- next lead is the man behind the alias
+- Phase III complete
 
 ## Secret owner truth
 
@@ -2959,7 +3376,7 @@ Before replacement:
 - North lean-fit
 - Phase V attack enables Phase VI false success
 
-## Unresolved to player after Phase II
+## Unresolved to player after Phase III
 
 - Room 1807 victim identity
 - identity of `R.`
@@ -2970,6 +3387,7 @@ Before replacement:
 - watcher deployment controller
 - PALIMPSEST human identity
 - Arman identity
+- exact broker-handle owner
 - decision owner
 - Elena path
 - living Last Witness
@@ -2986,28 +3404,32 @@ This section overrides older planning text that contradicts it.
 Locked facts:
 
 1. Chapter IV has exactly eight phases.
-2. North becomes a direct threat because her analysis reaches attribution.
-3. The adversary plans to eliminate North.
-4. Phase V is the natural placement for the undercover resort sequence.
-5. Location is selected by Phase IV evidence.
-6. North, Cheryl and Maya use tourist cover and distinct bikinis.
-7. Maya is most voluptuous.
-8. Cheryl is athletic-curvy and slightly less full-figured than Maya.
-9. North is leanest, healthy, fit and agile.
-10. Identity and competence remain intact.
-11. The scene serves surveillance and threat escalation.
-12. It leads to Phase VI false success.
-13. It is not disposable fan service.
-14. It is not a romance route.
-15. Anatomy, clothing and mobile framing must remain realistic.
+2. Phase III is complete and owner-approved.
+3. Phase IV is `THE MAN BEHIND THE ALIAS`.
+4. North becomes a direct threat because her analysis reaches attribution.
+5. The adversary plans to eliminate North.
+6. Phase V is the natural placement for the undercover resort sequence.
+7. Location is selected by Phase IV evidence.
+8. North, Cheryl and Maya use tourist cover and distinct bikinis.
+9. Maya is most voluptuous.
+10. Cheryl is athletic-curvy and slightly less full-figured than Maya.
+11. North is leanest, healthy, fit and agile.
+12. Identity and competence remain intact.
+13. The scene serves surveillance and threat escalation.
+14. It leads to Phase VI false success.
+15. It is not disposable fan service.
+16. It is not a romance route.
+17. Anatomy, clothing and mobile framing must remain realistic.
+18. Farid remains visibly remote while in Singapore.
+19. Arman's physical reveal must not imply mastermind guilt.
 
 Asset timing:
 
-- assets through Phase II already exist in GitHub
+- assets through Phase III already exist in GitHub
 - do not request old folders again before inspecting paths
-- Phase III currently requires no new custom image or audio package
-- first likely new asset request begins with Phase IV
-- Phase V requires an approved asset blueprint before creation
+- Phase IV is the first current target likely to require a new character asset package
+- Phase IV assets require an approved blueprint
+- Phase V requires a separate approved asset blueprint before creation
 
 ---
 
@@ -3022,11 +3444,17 @@ grolygori789-crypto/last-witness
 Production and Default Branch:
 production-rebuild
 
-Approved Runtime Baseline Commit:
+Owner-Approved Runtime Baseline Commit:
+61dfaec35cb8990ac9ea3fafa28d39bee8e4698f
+
+Historical Phase II Baseline Commit:
 ffdc94777c5fbaefdc281f1148b59aff3adf8abe
 
-Latest Accepted Chapter IV Module:
-0.14.7
+Latest Approved Runtime Build:
+0.16.4
+
+Latest Approved Narrative Module:
+Chapter IV Phase III 0.16.3
 
 Approved Playable Scope:
 Chapter I
@@ -3034,17 +3462,21 @@ Chapter II
 Chapter III
 Chapter IV Phase I
 Chapter IV Phase II
+Chapter IV Phase III
 
 Current Endpoint:
-CHAPTER IV · PHASE II COMPLETE
-NEXT · PHASE III · PACKET PROVENANCE
+CHAPTER IV · PHASE III COMPLETE
+PACKET TRAIL RECONSTRUCTED
+NEXT · THE MAN BEHIND THE ALIAS
 
-Phase III:
-NOT IMPLEMENTED IN APPROVED PRODUCTION
+Phase IV:
+NOT IMPLEMENTED
+IMMEDIATE NEXT PRODUCTION TARGET
 
 Owner Result:
 PLAYED ON ANDROID CHROME
-PASSED THROUGH PHASE II
+PASSED THROUGH PHASE III
+MAYA PROFILE SWITCHING PASSED
 OWNER-APPROVED
 
 Runtime Status:
@@ -3054,23 +3486,29 @@ FROZEN UNTIL DIRECT OWNER INSTRUCTION
 Do not replace this file without preserving:
 
 - branch and baseline distinction
-- owner approval
+- current approved commit `61dfaec...`
+- owner approval through Phase III
 - Chapter I Character gate
-- Build 0.14.7 pass
-- Phase I and Phase II frozen state
+- normal Chapter II Character Mode appearance
+- Dev Unlock behavior
+- Maya profile-switching fix and DOM contract
+- Farid remote label and blue remote suffix
+- Phase I, II and III frozen status
 - Maya visual lock
 - current bootstrap order
 - Save/Load continuity
 - fullscreen and audio lifecycle
 - Character Journal layout
+- Character Journal detail contract
 - Chapter I to III Canon
 - Daniel death lock
 - Room 1807 victim separation
 - Daniel timeline
 - Chapter III puzzle solutions
-- Chapter IV Phase I and II proof boundaries
-- Phase III proposed blueprint
-- Phase III startup side-effect prohibition
+- Chapter IV Phase I, II and III proof boundaries
+- Phase III implemented flow and solutions
+- Phase IV next-target status
+- startup side-effect prohibition
 - Elena secret
 - Adrian and Arman boundaries
 - Kawin and Rinrada forward Canon
@@ -3083,6 +3521,7 @@ Do not replace this file without preserving:
 - body and swimwear differentiation
 - Phase V to VI false-success continuity
 - asset timing and no-resend rule
+- unresolved Phase I/II localization audit
 - new-chat handoff
 - efficient minimal working discipline
 
