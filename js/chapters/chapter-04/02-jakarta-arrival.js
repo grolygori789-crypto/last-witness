@@ -1,9 +1,9 @@
-/* LAST WITNESS — Chapter IV / Phase II: JAKARTA ARRIVAL 0.14.7 */
+/* LAST WITNESS — Chapter IV / Phase II: JAKARTA ARRIVAL 0.14.8 */
 (function(){
 "use strict";
-if(window.LastWitnessChapter4Phase2?.version==="0.14.7")return;
+if(window.LastWitnessChapter4Phase2?.version==="0.14.8")return;
 
-const BUILD="0.14.7";
+const BUILD="0.14.8";
 const FLIGHT="jakartaFlight";
 const AIRPORT="jakartaAirport";
 const OFFICE="jakartaCybercrimeOffice";
@@ -28,7 +28,7 @@ const active=()=>$(".screen.active")?.id||gs()?.screen||"";
 let dialogue=null,choiceOpen=false,consoleOpen=false,internalRouting=false;
 let flightTimer=0,transitionTimer=0;
 const fadeFrames=new Map();
-let journalObserver=null,screenObserver=null;
+let journalObserver=null,screenObserver=null,journalCardsPreparedForOpen=false;
 
 function endingDefaults(){return{
  evidenceIntegrity:0,attributionProof:0,chainOfCustody:0,witnessProtection:0,northSafety:0,allianceStrength:0,publicRecordControl:0,elenaSuspicion:0,
@@ -106,7 +106,8 @@ function safeShow(id){
  internalRouting=true;try{show(id)}catch(_){$$('.screen').forEach(n=>n.classList.remove('active'));$("#"+id)?.classList.add('active');if(gs())gs().screen=id}finally{internalRouting=false}
  syncMayaDot();syncAudio()
 }
-function speakerLabel(name){if(name==="Farid Rahman")return thai()?"Farid Rahman (ต่อสายจากสิงคโปร์)":"Farid Rahman (Remote · Singapore)";if(!thai())return name;const map={"Inspector Cheryl Goh":"สารวัตร Cheryl Goh","Inspector Maya Pranoto":"สารวัตร Maya Pranoto","Farid Rahman":"Farid Rahman (ต่อสายจากสิงคโปร์)"};return map[name]||name}
+function speakerLabel(name){if(name==="Farid Rahman")return thai()?"Farid Rahman (ต่อสายจากสิงคโปร์)":"Farid Rahman (Remote · Singapore)";if(!thai())return name;const map={"Inspector Cheryl Goh":"สารวัตร Cheryl Goh","Inspector Maya Pranoto":"สารวัตร Maya Pranoto"};return map[name]||name}
+function speakerMarkup(name){if(name!=="Farid Rahman")return speakerLabel(name);return `Farid Rahman <span class="ch4-remote-presence">${thai()?"(ต่อสายจากสิงคโปร์)":"(Remote · Singapore)"}</span>`}
 function portraitSource(name,emotion){try{return typeof portrait==="function"?portrait(name,emotion||"neutral"):""}catch(_){return""}}
 function recordHistory(line){try{const s=gs();s.history=s.history||[];s.history.push({speaker:speakerLabel(line[0]),text:thai()?line[3]:line[2],chapter:4,phase:2})}catch(_){} }
 function dialogueBox(){const id=active();return SCREENS.has(id)?$("#"+id+"Dialogue"):null}
@@ -114,7 +115,7 @@ function renderDialogue(){
  const box=dialogueBox();if(!box||!dialogue)return;const line=dialogue.lines[dialogue.i],speaker=line[0],right=["North","Inspector Cheryl Goh","Inspector Maya Pranoto","Farid Rahman"].includes(speaker),src=portraitSource(speaker,line[1]),maya=speaker==="Inspector Maya Pranoto";
  if(maya)unlockMaya();
  box.className="dialogue ch4-p2-dialogue"+(right?" right":"");
- box.innerHTML=`<div class="portrait-wrap">${src?`<img class="portrait${maya?" maya-portrait":""}" src="${src}" alt="">`:""}</div><div class="dialogue-copy"><div class="speaker">${speakerLabel(speaker)}</div><div class="line">${thai()?line[3]:line[2]}</div></div><div class="next">${tr("TAP TO CONTINUE","แตะเพื่อดำเนินต่อ")}</div>`;
+ box.innerHTML=`<div class="portrait-wrap">${src?`<img class="portrait${maya?" maya-portrait":""}" src="${src}" alt="">`:""}</div><div class="dialogue-copy"><div class="speaker">${speakerMarkup(speaker)}</div><div class="line">${thai()?line[3]:line[2]}</div></div><div class="next">${tr("TAP TO CONTINUE","แตะเพื่อดำเนินต่อ")}</div>`;
  syncAudio()
 }
 function talk(lines,done){
@@ -236,16 +237,45 @@ function showMayaDetail(){
 }
 function syncMayaDot(){const s=gs(),p=ensure(),mayaUnread=Boolean(mayaVisible()&&p?.mayaUnread),baseUnread=Boolean((s?.lwCharactersUnread||[]).length&&s?.journal?.seen===false);$$('.journal-alert').forEach(node=>node.classList.toggle('show',mayaUnread||baseUnread))}
 function markMayaRead(){const p=ensure();if(!p?.mayaUnread)return;p.mayaUnread=false;syncMayaDot();save()}
+function isJakartaJournalContext(){const screen=active();return SCREENS.has(screen)||screen==="jakartaPacketProvenanceComplete"}
+function prepareJakartaJournalCards(modal){
+ if(!modal?.classList.contains("open")||!isJakartaJournalContext())return;
+ if(!journalCardsPreparedForOpen){
+  journalCardsPreparedForOpen=true;
+  try{window.LastWitnessContentRegistry?.renderCharacters?.(true)}catch(error){console.error("LAST WITNESS Jakarta Journal refresh failed",error)}
+ }
+ renderMayaCard();markMayaRead()
+}
 function installJournalExtension(){
  installCanonExtension();const modal=$("#charactersModal"),grid=$("#characterGrid");
- grid?.addEventListener("click",event=>{const card=event.target.closest?.('[data-character="maya"]');if(!card)return;event.preventDefault();event.stopPropagation();showMayaDetail()});
- if(journalObserver)journalObserver.disconnect();journalObserver=new MutationObserver(()=>{renderMayaCard();if(modal?.classList.contains("open")){markMayaRead();renderMayaCard()}});
+ if(grid&&grid.dataset.lwMayaJournalBound!=="1"){
+  grid.dataset.lwMayaJournalBound="1";
+  grid.addEventListener("click",event=>{const card=event.target.closest?.('[data-character="maya"]');if(!card)return;event.preventDefault();event.stopPropagation();showMayaDetail()})
+ }
+ if(journalObserver)journalObserver.disconnect();journalObserver=new MutationObserver(()=>{
+  const open=Boolean(modal?.classList.contains("open"));
+  if(!open){journalCardsPreparedForOpen=false;renderMayaCard();return}
+  prepareJakartaJournalCards(modal)
+ });
  if(modal)journalObserver.observe(modal,{attributes:true,attributeFilter:["class"],subtree:true,childList:true});
  if(screenObserver)screenObserver.disconnect();screenObserver=new MutationObserver(()=>setTimeout(()=>{syncMayaDot();if(!SCREENS.has(active()))stopAudio(true);else syncAudio()},0));$$('.screen').forEach(screen=>screenObserver.observe(screen,{attributes:true,attributeFilter:["class"]}));
- renderMayaCard();syncMayaDot()
+ renderMayaCard();prepareJakartaJournalCards(modal);syncMayaDot()
 }
 
-function injectStyle(){if($("#lwChapter04Phase02Style"))return;const link=document.createElement("link");link.id="lwChapter04Phase02Style";link.rel="stylesheet";link.href="css/chapter-04-phase-02.css?v=0146";document.head.appendChild(link)}
+function installRemotePresenceStyle(){
+ if($("#lwJakartaRemotePresenceStyle"))return;
+ const style=document.createElement("style");style.id="lwJakartaRemotePresenceStyle";
+ style.textContent=`
+ .ch4-p2-dialogue .speaker .ch4-remote-presence,
+ .ch4-p3-dialogue .speaker .ch4-remote-presence{margin-left:.38em;color:#92c3d5;font-size:.78em;letter-spacing:.075em;text-shadow:0 0 10px rgba(94,174,205,.42)}
+ .ch4-p2-dialogue .speaker .ch4-remote-presence::before,
+ .ch4-p3-dialogue .speaker .ch4-remote-presence::before{content:"";display:inline-block;width:6px;height:6px;margin:0 5px 1px 0;border-radius:50%;background:#6faac0;box-shadow:0 0 9px rgba(94,174,205,.72)}
+ html[lang="th"] .ch4-p2-dialogue .speaker .ch4-remote-presence,
+ html[lang="th"] .ch4-p3-dialogue .speaker .ch4-remote-presence{letter-spacing:.015em}
+ `;
+ document.head.appendChild(style)
+}
+function injectStyle(){if(!$("#lwChapter04Phase02Style")){const link=document.createElement("link");link.id="lwChapter04Phase02Style";link.rel="stylesheet";link.href="css/chapter-04-phase-02.css?v=0146";document.head.appendChild(link)}installRemotePresenceStyle()}
 function audioMarkup(){return `<audio id="ch4P2ArrivalScore" preload="auto" loop><source src="${AUDIO_BASE}jakarta-arrival-loop.webm?v=0146" type="audio/webm"><source src="${AUDIO_BASE}jakarta-arrival-loop.mp3?v=0146" type="audio/mpeg"></audio><audio id="ch4P2VerificationScore" preload="auto" loop><source src="${AUDIO_BASE}token-verification-loop.webm?v=0146" type="audio/webm"><source src="${AUDIO_BASE}token-verification-loop.mp3?v=0146" type="audio/mpeg"></audio><audio id="ch4P2TakeoffAmbience" preload="auto"><source src="${AUDIO_BASE}airplane-takeoff-ambience.webm?v=0146" type="audio/webm"><source src="${AUDIO_BASE}airplane-takeoff-ambience.mp3?v=0146" type="audio/mpeg"></audio><audio id="ch4P2AirportAmbience" preload="auto" loop><source src="${AUDIO_BASE}jakarta-airport-ops-loop.webm?v=0146" type="audio/webm"><source src="${AUDIO_BASE}jakarta-airport-ops-loop.mp3?v=0146" type="audio/mpeg"></audio><audio id="ch4P2AirportFieldBase" preload="auto" loop src="assets/audio/chapter-03/phase-03/changi-airport-ambience.mp3?v=0800"></audio><audio id="ch4P2OfficeAmbience" preload="auto" loop><source src="${AUDIO_BASE}jakarta-cybercrime-office-loop.webm?v=0146" type="audio/webm"><source src="${AUDIO_BASE}jakarta-cybercrime-office-loop.mp3?v=0146" type="audio/mpeg"></audio><audio id="ch4P2OfficeFieldBase" preload="auto" loop src="assets/audio/chapter-03/phase-04/singapore-investigation-office-ambience.mp3?v=0920"></audio>`}
 function sharedScene(id,classes,image,alt){return `<section id="${id}" class="screen ch4-p2-screen ${classes}"><img class="scene" src="${image}" alt="${alt}"><div class="overlay ch4-p2-overlay"></div><div class="topbar"><span id="${id}Location"></span><div class="hud"><button class="icon ch4-p2-save" type="button">💾</button><button class="icon ch4-p2-menu" type="button">☰<i class="journal-alert" aria-hidden="true"></i></button></div></div><div id="${id}Scene" class="ch4-p2-label"></div><div id="${id}Objective" class="ch4-p2-objective"></div><div id="${id}Dialogue" class="dialogue ch4-p2-dialogue hidden"></div><button id="${id}Action" class="primary ch4-p2-action" type="button" hidden></button><div class="ch4-p2-progress"><span class="ch4-p2-progress-text">0%</span><div><i class="ch4-p2-progress-fill"></i></div></div></section>`}
 function inject(){

@@ -1,4 +1,4 @@
-/* LAST WITNESS - Chapter IV / Packet Trail 0.16.2
+/* LAST WITNESS - Chapter IV / Packet Trail 0.16.3
  * Seamless continuation inside the existing Jakarta Verification Lab.
  * Evidence review remains repeatable, case-file collection remains one-time,
  * and the investigation advances through a single mobile-first reconstruction.
@@ -6,9 +6,9 @@
  */
 (function(){
 "use strict";
-if(window.LastWitnessChapter4Phase3?.version==="0.16.2")return;
+if(window.LastWitnessChapter4Phase3?.version==="0.16.3")return;
 
-const BUILD="0.16.2";
+const BUILD="0.16.3";
 const LAB="jakartaVerificationLab";
 const LEGACY_COMPLETE="jakartaPhase2Complete";
 const COMPLETE="jakartaPacketProvenanceComplete";
@@ -151,6 +151,7 @@ function speakerLabel(name){
  if(!thai())return name;
  const map={"Inspector Cheryl Goh":"สารวัตร Cheryl Goh","Inspector Maya Pranoto":"สารวัตร Maya Pranoto"};return map[name]||name
 }
+function speakerMarkup(name){if(name!=="Farid Rahman")return speakerLabel(name);return `Farid Rahman <span class="ch4-remote-presence">${thai()?"(ต่อสายจากสิงคโปร์)":"(Remote · Singapore)"}</span>`}
 function portraitSource(name,emotion){try{return typeof portrait==="function"?portrait(name,emotion||"neutral"):""}catch(_){return""}}
 function recordHistory(line){try{const s=gs();s.history=s.history||[];s.history.push({speaker:speakerLabel(line[0]),text:thai()?line[3]:line[2],chapter:4,phase:3})}catch(_){} }
 function dialogueBox(){return $("#jakartaVerificationLabDialogue")}
@@ -158,7 +159,7 @@ function renderDialogue(){
  const box=dialogueBox();if(!box||!dialogue)return;
  const line=dialogue.lines[dialogue.i],speaker=line[0],right=["North","Inspector Cheryl Goh","Inspector Maya Pranoto","Farid Rahman"].includes(speaker),src=portraitSource(speaker,line[1]),maya=speaker==="Inspector Maya Pranoto";
  box.className="dialogue ch4-p2-dialogue ch4-p3-dialogue"+(right?" right":"");
- box.innerHTML=`<div class="portrait-wrap">${src?`<img class="portrait${maya?" maya-portrait":""}" src="${src}" alt="">`:""}</div><div class="dialogue-copy"><div class="speaker">${speakerLabel(speaker)}</div><div class="line">${thai()?line[3]:line[2]}</div></div><div class="next">${tr("TAP TO CONTINUE","แตะเพื่อดำเนินต่อ")}</div>`;
+ box.innerHTML=`<div class="portrait-wrap">${src?`<img class="portrait${maya?" maya-portrait":""}" src="${src}" alt="">`:""}</div><div class="dialogue-copy"><div class="speaker">${speakerMarkup(speaker)}</div><div class="line">${thai()?line[3]:line[2]}</div></div><div class="next">${tr("TAP TO CONTINUE","แตะเพื่อดำเนินต่อ")}</div>`;
  syncAudio()
 }
 function talk(lines,done){
@@ -403,7 +404,7 @@ function appendCaseEvidence(){
 }
 
 function installHandoffCapture(){
- if(window.__lwCh4P3Handoff0162)return;window.__lwCh4P3Handoff0162=true;
+ if(window.__lwCh4P3Handoff0163)return;window.__lwCh4P3Handoff0163=true;
  document.addEventListener("click",event=>{
   const box=event.target.closest?.("#jakartaVerificationLabDialogue");if(!box)return;
   const s=gs(),p2=s?.chapter4?.phase2;if(!p2?.verificationComplete||p2.closingDialogueComplete||phaseState()?.started)return;
@@ -418,7 +419,7 @@ function installHandoffCapture(){
 function isSavedPhase3(data){return Boolean(data?.chapter4?.phase3?.started||String(data?.checkpoint||"").startsWith("ch4_phase3_")||data?.screen===COMPLETE)}
 function isLegacyHandoff(data){return Boolean(data?.screen===LEGACY_COMPLETE&&data?.chapter4?.phase2?.complete)}
 function installSaveBridge(){
- if(window.__lwChapter4Phase3SaveBridge0162)return;window.__lwChapter4Phase3SaveBridge0162=true;
+ if(window.__lwChapter4Phase3SaveBridge0163)return;window.__lwChapter4Phase3SaveBridge0163=true;
  const baseRestore=typeof restore==="function"?restore:window.restore;
  if(typeof baseRestore==="function"){
   const wrapped=function(data){const owns=isSavedPhase3(data)||isLegacyHandoff(data);if(owns)document.body.classList.add("lw-ch4-p3-restoring");const result=baseRestore.apply(this,arguments);if(owns)setTimeout(()=>{if(isLegacyHandoff(data)&&!data?.chapter4?.phase3?.started)startFromPhase2();else resumeFromState(data.screen)},260);return result};
@@ -431,7 +432,7 @@ function installSaveBridge(){
  }
 }
 function installDevJump(){
- const grid=$("#developerModal .dev-grid");if(!grid)return;let button=grid.querySelector('[data-dev-jump="chapter4PacketProvenance"]');if(!button){button=document.createElement("button");button.className="dev-button";button.type="button";button.dataset.devJump="chapter4PacketProvenance";grid.appendChild(button)}button.textContent=tr("Chapter IV · Packet Trail","บทที่ IV · เส้นทางข้อมูล");if(button.dataset.lwBound0162==="1")return;button.dataset.lwBound0162="1";button.addEventListener("click",event=>{event.preventDefault();event.stopPropagation();event.stopImmediatePropagation();$("#developerModal")?.classList.remove("open");startFreshForDev()},true)
+ const grid=$("#developerModal .dev-grid");if(!grid)return;let button=grid.querySelector('[data-dev-jump="chapter4PacketProvenance"]');if(!button){button=document.createElement("button");button.className="dev-button";button.type="button";button.dataset.devJump="chapter4PacketProvenance";grid.appendChild(button)}button.textContent=tr("Chapter IV · Packet Trail","บทที่ IV · เส้นทางข้อมูล");if(button.dataset.lwBound0163==="1")return;button.dataset.lwBound0163="1";button.addEventListener("click",event=>{event.preventDefault();event.stopPropagation();event.stopImmediatePropagation();$("#developerModal")?.classList.remove("open");startFreshForDev()},true)
 }
 
 function inject(){
