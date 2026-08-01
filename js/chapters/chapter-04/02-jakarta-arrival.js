@@ -1,9 +1,9 @@
-/* LAST WITNESS — Chapter IV / Phase II: JAKARTA ARRIVAL 0.14.8 */
+/* LAST WITNESS — Chapter IV / Phase II: JAKARTA ARRIVAL 0.14.9 */
 (function(){
 "use strict";
-if(window.LastWitnessChapter4Phase2?.version==="0.14.8")return;
+if(window.LastWitnessChapter4Phase2?.version==="0.14.9")return;
 
-const BUILD="0.14.8";
+const BUILD="0.14.9";
 const FLIGHT="jakartaFlight";
 const AIRPORT="jakartaAirport";
 const OFFICE="jakartaCybercrimeOffice";
@@ -232,7 +232,7 @@ function showMayaDetail(){
  const metrics=[
   [tr("Trust","ความไว้วางใจ"),r.trust,false],[tr("Professional Respect","ความนับถือทางวิชาชีพ"),r.respect,false],[tr("Rapport","ความคุ้นเคย"),r.attachment,false],[tr("Suspicion","ความสงสัย"),r.suspicion,true]
  ];
- detail.innerHTML=`<div data-detail-shell><div class="character-detail-head"><img data-detail-portrait data-detail-image="maya" src="${d.src}" alt="" width="512" height="640" loading="eager" decoding="async"><div class="maya-meta"><div class="character-name">${d.name[thai()?"th":"en"]}</div><div class="character-status">${thai()?"ผู้ประสานงานตำรวจไซเบอร์<br>อินโดนีเซีย":"Indonesian National Police<br>Cybercrime Liaison"}<br><span class="character-age">37</span></div></div></div><div class="relation-metrics">${metrics.map(m=>`<div class="relation-metric${m[2]?" suspicion":""}"><div class="relation-metric-head"><span>${m[0]}</span><strong>${Math.round(Number(m[1])||0)}%</strong></div><div class="relation-bar"><div class="relation-fill" style="width:${Math.round(Number(m[1])||0)}%"></div></div></div>`).join("")}</div><div class="character-notes">${d.bio[thai()?"th":"en"]}</div></div>`;
+ detail.innerHTML=`<div data-detail-shell><div class="character-detail-head"><img data-detail-portrait data-detail-image="maya" src="${d.src}" alt="" width="512" height="640" loading="eager" decoding="async"><div class="maya-meta"><div class="character-name" data-detail-name>${d.name[thai()?"th":"en"]}</div><div class="character-status" data-detail-status>${thai()?"ผู้ประสานงานตำรวจไซเบอร์<br>อินโดนีเซีย":"Indonesian National Police<br>Cybercrime Liaison"}<br><span class="character-age">37</span></div></div></div><div class="relation-metrics" data-detail-metrics>${metrics.map(m=>`<div class="relation-metric${m[2]?" suspicion":""}"><div class="relation-metric-head"><span>${m[0]}</span><strong>${Math.round(Number(m[1])||0)}%</strong></div><div class="relation-bar"><div class="relation-fill" style="width:${Math.round(Number(m[1])||0)}%"></div></div></div>`).join("")}</div><div class="character-notes" data-detail-notes>${d.bio[thai()?"th":"en"]}</div></div>`;
  if(grid)grid.style.display="none";detail.style.display="block";if(back)back.style.display="block"
 }
 function syncMayaDot(){const s=gs(),p=ensure(),mayaUnread=Boolean(mayaVisible()&&p?.mayaUnread),baseUnread=Boolean((s?.lwCharactersUnread||[]).length&&s?.journal?.seen===false);$$('.journal-alert').forEach(node=>node.classList.toggle('show',mayaUnread||baseUnread))}
