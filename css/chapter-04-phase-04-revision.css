@@ -1,4 +1,4 @@
-/* LAST WITNESS — Chapter IV / Phase IV Consistency Repair 0.17.3 */
+/* LAST WITNESS — Chapter IV / Phase IV Scoped Defect Repair 0.17.4 */
 
 /* Owner-graded scenes and both videos render at source luminance. */
 .ch4-p4-video-screen video,
@@ -19,6 +19,7 @@
 .ch4-p4-location.phase-title-mode .ch4-p4-phase-title-card{display:block}
 .ch4-p4-location.phase-title-mode .ch4-p4-location-card{display:none}
 .ch4-p4-location.location-card-mode .ch4-p4-phase-title-card{display:none}
+#ch4P4LocationContinue{display:none!important}
 .ch4-p4-phase-title-card .eyebrow{color:#ddb56d;font-size:11px;font-weight:800;letter-spacing:.24em}
 .ch4-p4-phase-title-card h2{margin:12px 0 0;color:#f7f0e6;font:500 clamp(32px,9vw,58px)/.98 Georgia,serif;letter-spacing:.055em;text-wrap:balance}
 .ch4-p4-phase-rule{width:min(190px,48vw);height:1px;margin:24px auto 0;background:linear-gradient(90deg,transparent,#ddb56d,transparent)}
@@ -52,6 +53,7 @@
 .ch4-p4-dialogue .portrait.dimas-portrait{object-position:center top!important}
 .ch4-p4-dialogue .portrait.arman-portrait{object-position:center top!important}
 .ch4-p4-dialogue .portrait.north-portrait{object-position:center 12%!important}
+.ch4-p4-dialogue .portrait.maya-portrait{object-fit:cover!important;object-position:center top!important;transform:scale(1.035)!important;transform-origin:center top!important;clip-path:inset(0 0 3px 0)!important}
 .ch4-p4-dialogue .portrait-wrap:empty{display:none}
 
 /* Premium surfaces remain in the established gold/noir family, with restrained cool technical accents. */
@@ -85,3 +87,9 @@ html[lang="th"] .ch4-p4-phase-title-card h2{letter-spacing:.01em;line-height:1.0
  .ch4-p4-cinematic-fade,.phase-title-enter .ch4-p4-phase-title-card,.phase-title-exit .ch4-p4-phase-title-card{animation:none!important}
  .ch4-p4-progress-fill{transition:none}
 }
+
+
+/* Arman Journal portrait uses a Benedict-referenced head-and-upper-torso scale. */
+#characterGrid [data-character="arman"]{overflow:hidden}
+#characterGrid [data-character="arman"] img[data-character-image="arman"]{object-fit:cover!important;object-position:center 12%!important;transform:scale(1.06);transform-origin:center 20%}
+#characterDetail img[data-detail-image="arman"]{object-fit:cover!important;object-position:center 10%!important}

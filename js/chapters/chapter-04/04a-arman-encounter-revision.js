@@ -1,11 +1,11 @@
-/* LAST WITNESS - Chapter IV / Phase IV Consistency Repair 0.17.3
+/* LAST WITNESS - Chapter IV / Phase IV Scoped Defect Repair 0.17.4
  * Repairs Phase IV presentation against the established Chapter IV contract.
  * Story, evidence, choices, ending-profile effects and Phase III handoff remain owned
  * by 04-arman-encounter.js 0.17.0.
  */
 (function(){
 "use strict";
-const BUILD="0.17.3";
+const BUILD="0.17.4";
 if(window.LastWitnessChapter4Phase4Revision?.version===BUILD&&window.LastWitnessChapter4Phase4Revision?.installed)return;
 
 const APPROACH="armanVehicleApproach";
@@ -17,7 +17,7 @@ const COMPLETE="armanPhase4Complete";
 const SCREENS=new Set([APPROACH,LOCATION,STAIRWELL,WORKSHOP,REVEAL,COMPLETE]);
 const HUD_SCREENS=[STAIRWELL,WORKSHOP];
 const PORTRAIT_BASE="assets/images/chapter-04/phase-04/";
-const PORTRAIT_VERSION="0173";
+const PORTRAIT_VERSION="0174";
 const $=(selector,root=document)=>root.querySelector(selector);
 const $$=(selector,root=document)=>Array.from(root.querySelectorAll(selector));
 const gs=()=>{try{return state}catch(_){return window.state||null}};
@@ -27,6 +27,8 @@ const clamp=(value,min=0,max=1)=>Math.max(min,Math.min(max,Number(value)||0));
 const active=()=>$(".screen.active")?.id||gs()?.screen||"";
 
 let titleTimer=0;
+let locationTimer=0;
+let locationTimerDue=0;
 let titleTransitioning=false;
 let audioFrame=0;
 let audioTimer=0;
@@ -61,16 +63,40 @@ function updateTitleLanguage(){
  if(eye)eye.textContent=tr("CHAPTER IV · PHASE IV","บทที่ IV · เฟส IV");
  if(title)title.textContent=tr("THE MAN BEHIND THE ALIAS","ชายผู้อยู่หลังนามแฝง")
 }
+function clearLocationTimer(){clearTimeout(locationTimer);locationTimer=0;locationTimerDue=0}
+function locationButton(){return $("#ch4P4LocationContinue")}
+function enterBuildingAutomatically(){
+ clearLocationTimer();
+ const p=ensurePhaseTitleState(),screen=$("#"+LOCATION);
+ if(!p||active()!==LOCATION||!screen?.classList.contains("location-card-mode")||p.locationCardSeen||String(p.stage)!=="location")return;
+ p.locationAutoDue=0;save();
+ const button=locationButton();
+ if(button){button.click();return}
+ console.error("LAST WITNESS Phase IV automatic building entry is unavailable")
+}
+function scheduleLocationAdvance(restoring=false){
+ const p=ensurePhaseTitleState(),screen=$("#"+LOCATION);
+ if(!p||active()!==LOCATION||!screen?.classList.contains("location-card-mode")||p.locationCardSeen||String(p.stage)!=="location"){clearLocationTimer();return}
+ const now=Date.now(),existing=Number(p.locationAutoDue)||0;
+ if(!existing||existing<now-1000||existing>now+6000)p.locationAutoDue=now+(restoring?2400:2800);
+ const remaining=Math.max(180,Math.min(3000,p.locationAutoDue-now));
+ if(locationTimer&&locationTimerDue===p.locationAutoDue)return;
+ clearTimeout(locationTimer);locationTimerDue=p.locationAutoDue;
+ locationTimer=setTimeout(enterBuildingAutomatically,remaining);
+ save()
+}
 function locationMode(){
- clearTimeout(titleTimer);titleTimer=0;titleTransitioning=false;
+ clearTimeout(titleTimer);titleTimer=0;clearLocationTimer();titleTransitioning=false;
  const p=ensurePhaseTitleState();if(!p)return;
  p.phaseTitleSeen=true;p.stage="location";
  const screen=$("#"+LOCATION);screen?.classList.remove("phase-title-mode","phase-title-enter","phase-title-exit");screen?.classList.add("location-card-mode");
- setCheckpoint("ch4_phase4_location");syncProgress();scheduleAudioSync();save()
+ const button=locationButton();if(button){button.hidden=true;button.setAttribute("aria-hidden","true");button.tabIndex=-1}
+ p.locationAutoDue=Date.now()+2800;
+ setCheckpoint("ch4_phase4_location");syncProgress();scheduleAudioSync();scheduleLocationAdvance(false);save()
 }
 function presentPhaseTitle(fromRestore=false){
  const p=ensurePhaseTitleState();if(!p||p.phaseTitleSeen||titleTransitioning)return;
- titleTransitioning=true;p.approachComplete=true;p.stage="location";
+ titleTransitioning=true;clearLocationTimer();p.approachComplete=true;p.locationAutoDue=0;p.stage="location";
  if(gs()){gs().chapter=4;gs().screen=LOCATION}
  showScreen(LOCATION);
  const screen=$("#"+LOCATION);screen?.classList.remove("location-card-mode","phase-title-exit");screen?.classList.add("phase-title-mode","phase-title-enter");
@@ -80,14 +106,14 @@ function presentPhaseTitle(fromRestore=false){
 function finishVehicle(event){
  if(event){event.preventDefault?.();event.stopPropagation?.();event.stopImmediatePropagation?.()}
  const p=ensurePhaseTitleState();if(!p||(p.approachComplete&&p.phaseTitleSeen))return;
- clearTimeout(titleTimer);titleTimer=0;titleTransitioning=false;
+ clearTimeout(titleTimer);titleTimer=0;clearLocationTimer();titleTransitioning=false;
  stopMedia($("#ch4P4ApproachVideo"),true);$("#ch4P4ApproachSkip")?.setAttribute("hidden","");$("#ch4P4VideoPlay")?.setAttribute("hidden","");
  p.approachComplete=true;p.phaseTitleSeen=false;p.stage="location";
  const approach=$("#"+APPROACH);approach?.classList.add("ch4-p4-cinematic-fade");
  setCheckpoint("ch4_phase4_location");syncProgress();
  setTimeout(()=>{approach?.classList.remove("ch4-p4-cinematic-fade");presentPhaseTitle(false)},520)
 }
-function recoverTitleOnRestore(){const p=ensurePhaseTitleState();if(active()===LOCATION&&p?.approachComplete&&!p.phaseTitleSeen&&!titleTransitioning)presentPhaseTitle(true)}
+function recoverTitleOnRestore(){const p=ensurePhaseTitleState();if(active()!==LOCATION||!p?.approachComplete)return;if(!p.phaseTitleSeen){if(!titleTransitioning)presentPhaseTitle(true);return}const screen=$("#"+LOCATION);screen?.classList.remove("phase-title-mode","phase-title-enter","phase-title-exit");screen?.classList.add("location-card-mode");const button=locationButton();if(button){button.hidden=true;button.setAttribute("aria-hidden","true");button.tabIndex=-1}scheduleLocationAdvance(true)}
 
 /* Established Save/Menu HUD. Cards and videos intentionally remain cinematic. */
 function hudMarkup(labelId){return `<div class="topbar ch4-p4-topbar"><span id="${labelId}"></span><div class="hud"><button class="icon saveButton ch4-p4-save" type="button" aria-label="Save game">💾</button><button class="icon menuButton ch4-p4-menu" type="button" aria-label="Open game menu">☰<i class="journal-alert" aria-hidden="true"></i></button></div></div>`}
@@ -210,6 +236,7 @@ function normalizePortraits(){
   const img=$("img.portrait",box);if(!img)return;
   const speaker=String($(".speaker",box)?.textContent||"").toLowerCase();let desired="";
   if(speaker.startsWith("north")||speaker.includes("นอร์ธ")){desired=acceptedNorthPortrait();img.classList.add("north-portrait")}
+  else if(speaker.includes("maya")){img.classList.add("maya-portrait")}
   else if(speaker.includes("dimas")){desired=versionedPortrait("dimas",img.getAttribute("src"));img.classList.add("dimas-portrait")}
   else if(speaker.includes("arman")){desired=versionedPortrait("arman",img.getAttribute("src"));img.classList.add("arman-portrait")}
   if(desired&&absoluteURL(img.getAttribute("src"))!==absoluteURL(desired))img.setAttribute("src",desired);
@@ -222,13 +249,14 @@ function upgradeMarkup(){
  const approach=$("#"+APPROACH),location=$("#"+LOCATION),reveal=$("#"+REVEAL);
  $(".ch4-p4-video-title",approach)?.remove();$$(".ch4-p4-video-shade",approach).forEach(node=>node.remove());$$(".ch4-p4-video-shade",reveal).forEach(node=>node.remove());
  if(location&&!$(".ch4-p4-phase-title-card",location))location.insertAdjacentHTML("afterbegin",'<div class="ch4-p4-phase-title-card" aria-live="polite"><div id="ch4P4PhaseTitleEye" class="eyebrow"></div><h2 id="ch4P4PhaseTitleText"></h2><div class="ch4-p4-phase-rule"></div></div>');
+ const locationContinue=locationButton();if(locationContinue){locationContinue.hidden=true;locationContinue.setAttribute("aria-hidden","true");locationContinue.tabIndex=-1}
  installHUD();installProgress();updateLanguage();bindCinematicControls();normalizePortraits();syncProgress();scheduleAudioSync()
 }
 function bindCinematicControls(){
  const skip=$("#ch4P4ApproachSkip"),video=$("#ch4P4ApproachVideo"),returnButton=$("#ch4P4ReturnTitle");
  if(skip&&skip.dataset.lwP4RevisionBound!==BUILD){skip.dataset.lwP4RevisionBound=BUILD;skip.addEventListener("click",finishVehicle,true)}
  if(video&&video.dataset.lwP4RevisionBound!==BUILD){video.dataset.lwP4RevisionBound=BUILD;video.addEventListener("ended",finishVehicle,true);video.addEventListener("error",finishVehicle,true)}
- if(returnButton&&returnButton.dataset.lwP4RevisionBound!==BUILD){returnButton.dataset.lwP4RevisionBound=BUILD;returnButton.addEventListener("click",()=>{clearTimeout(titleTimer);stopMedia($("#ch4P4Score"),true)},true)}
+ if(returnButton&&returnButton.dataset.lwP4RevisionBound!==BUILD){returnButton.dataset.lwP4RevisionBound=BUILD;returnButton.addEventListener("click",()=>{clearTimeout(titleTimer);clearLocationTimer();stopMedia($("#ch4P4Score"),true)},true)}
 }
 function setBuild(){const node=$("#settingsVersion");if(node&&SCREENS.has(active()))node.textContent="LAST WITNESS · BUILD "+BUILD}
 function contractStatus(){
@@ -241,7 +269,9 @@ function contractStatus(){
   settingsAvailable:Boolean($("#settingsButton")&&!$("#settingsButton").disabled),
   saveAvailable:Boolean(typeof manualSave==="function"||window.LastWitnessSaveManager?.open),
   portraitsVerified:$$('.ch4-p4-dialogue img.portrait').every(img=>img.classList.contains('ch4-p4-portrait-verified')||!img.closest('.ch4-p4-dialogue:not(.hidden)')),
-  devPhases:Array.isArray(window.LastWitnessDeveloperPhaseNavigation?.phases)?window.LastWitnessDeveloperPhaseNavigation.phases.map(item=>item.phase):[]
+  devPhases:Array.isArray(window.LastWitnessDeveloperPhaseNavigation?.phases)?window.LastWitnessDeveloperPhaseNavigation.phases.map(item=>item.phase):[],
+  locationAutoAdvance:Boolean(locationButton()?.hidden&&phase()?.phaseTitleSeen),
+  mayaPortraitClean:$$('.ch4-p4-dialogue img.maya-portrait').every(img=>getComputedStyle(img).clipPath!=="none")
  }
 }
 function syncRuntime(){upgradeMarkup();recoverTitleOnRestore();releaseDeferredArman();normalizePortraits();syncProgress();scheduleAudioSync();if(active()==="title")stopMedia($("#ch4P4Score"),true);if(SCREENS.has(active()))setBuild()}
@@ -250,7 +280,7 @@ function installObservers(){
  for(const id of SCREENS){const screen=$("#"+id);if(screen)new MutationObserver(queue).observe(screen,{attributes:true,attributeFilter:["class"]})}
  const dialogue=$("#"+WORKSHOP+"Dialogue");if(dialogue)new MutationObserver(queue).observe(dialogue,{attributes:true,attributeFilter:["class"],childList:true,subtree:true});
  document.addEventListener("click",()=>{setTimeout(syncRuntime,20);setTimeout(syncRuntime,380)},true);
- document.addEventListener("visibilitychange",()=>{if(document.hidden)stopMedia($("#ch4P4Score"),false);else scheduleAudioSync()});
+ document.addEventListener("visibilitychange",()=>{if(document.hidden){clearLocationTimer();stopMedia($("#ch4P4Score"),false)}else{recoverTitleOnRestore();scheduleLocationAdvance(true);scheduleAudioSync()}});
  document.addEventListener("click",event=>{if(event.target.closest?.("[data-lang]"))setTimeout(updateLanguage,0);if(event.target.closest?.("#developerMenuButton,#settingsVersion"))setTimeout(()=>window.LastWitnessDeveloperPhaseNavigation?.install?.(),0)},true);
  $("#musicRange")?.addEventListener("input",scheduleAudioSync,true);$("#soundToggle")?.addEventListener("change",scheduleAudioSync,true)
 }

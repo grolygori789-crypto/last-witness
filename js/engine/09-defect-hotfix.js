@@ -1,7 +1,7 @@
-/* LAST WITNESS - Legacy Compatibility Shim + Runtime Bootstrap 0.17.3
+/* LAST WITNESS - Legacy Compatibility Shim + Runtime Bootstrap 0.17.4
  * Loads approved localization and targeted QC before dynamic Chapter IV modules.
  * Existing Phase I through Phase III order is preserved. Phase IV 0.17.0 loads first,
- * followed by the owner-approved consistency repair 0.17.3,
+ * followed by the owner-approved scoped defect repair 0.17.4,
  * then the direct Phase III handoff and Developer Phase Navigation patches.
  */
 (function(){
@@ -29,6 +29,11 @@ script("js/engine/15-thai-localization.js?v=0152","lwThaiLocalizationScript",()=
   "lwPolicePortraitAlignmentScript",
   ()=>Boolean(window.LastWitnessPolicePortraitAlignment?.version==="0.15.4"&&window.LastWitnessPolicePortraitAlignment?.installed)
  ).catch(error=>console.error("LAST WITNESS police portrait alignment failed to load",error)))
+ .then(()=>script(
+  "js/engine/20-character-journal-story-gate.js?v=0174",
+  "lwCharacterJournalStoryGateScript",
+  ()=>Boolean(window.LastWitnessCharacterJournalStoryGate?.version==="0.17.4"&&window.LastWitnessCharacterJournalStoryGate?.installed)
+ ).catch(error=>console.error("LAST WITNESS Character Journal story gate failed to load",error)))
  .then(()=>script("js/chapters/chapter-04/01-afterimage.js?v=0132","lwChapter04Phase01Script",()=>Boolean(window.LastWitnessChapter4Phase1)))
  .then(()=>{
   stylesheet("css/chapter-04-phase-02.css?v=0149","lwChapter04Phase02Style");
@@ -46,11 +51,11 @@ script("js/engine/15-thai-localization.js?v=0152","lwThaiLocalizationScript",()=
    .catch(error=>console.error("LAST WITNESS The Man Behind the Alias failed to load",error))
  })
  .then(()=>{
-  stylesheet("css/chapter-04-phase-04-revision.css?v=0173","lwChapter04Phase04RevisionStyle");
+  stylesheet("css/chapter-04-phase-04-revision.css?v=0174","lwChapter04Phase04RevisionStyle");
   return script(
-   "js/chapters/chapter-04/04a-arman-encounter-revision.js?v=0173",
+   "js/chapters/chapter-04/04a-arman-encounter-revision.js?v=0174",
    "lwChapter04Phase04RevisionScript",
-   ()=>Boolean(window.LastWitnessChapter4Phase4Revision?.version==="0.17.3"&&window.LastWitnessChapter4Phase4Revision?.installed)
+   ()=>Boolean(window.LastWitnessChapter4Phase4Revision?.version==="0.17.4"&&window.LastWitnessChapter4Phase4Revision?.installed)
   ).catch(error=>console.error("LAST WITNESS Phase IV consistency repair failed to load",error))
  })
  .then(()=>script(
