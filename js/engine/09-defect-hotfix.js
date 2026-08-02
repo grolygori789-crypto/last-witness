@@ -1,6 +1,6 @@
-/* LAST WITNESS - Legacy Compatibility Shim + Runtime Bootstrap 0.17.0
+/* LAST WITNESS - Legacy Compatibility Shim + Runtime Bootstrap 0.17.0-d1
  * Loads approved localization and targeted QC before dynamic Chapter IV modules.
- * Existing Phase I through Phase III order is preserved. The Man Behind the Alias loads last.
+ * Existing Phase I through Phase III order is preserved. The Man Behind the Alias loads before the isolated Developer Phase Navigation patch.
  * No repair polling, scene mutation or gameplay override is installed here.
  */
 (function(){
@@ -44,5 +44,10 @@ script("js/engine/15-thai-localization.js?v=0152","lwThaiLocalizationScript",()=
   return script("js/chapters/chapter-04/04-arman-encounter.js?v=0170","lwChapter04Phase04Script",()=>Boolean(window.LastWitnessChapter4Phase4?.version==="0.17.0"))
    .catch(error=>console.error("LAST WITNESS The Man Behind the Alias failed to load",error))
  })
+ .then(()=>script(
+  "js/engine/18-developer-phase-navigation.js?v=0170d1",
+  "lwDeveloperPhaseNavigationScript",
+  ()=>Boolean(window.LastWitnessDeveloperPhaseNavigation?.version==="0.17.0-d1"&&window.LastWitnessDeveloperPhaseNavigation?.installed)
+ ).catch(error=>console.error("LAST WITNESS Developer Phase Navigation failed to load",error)))
  .catch(error=>console.error("LAST WITNESS runtime bootstrap failed",error));
 })();
