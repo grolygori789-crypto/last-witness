@@ -1,6 +1,6 @@
-/* LAST WITNESS - Legacy Compatibility Shim + Runtime Bootstrap 0.16.4
+/* LAST WITNESS - Legacy Compatibility Shim + Runtime Bootstrap 0.17.0
  * Loads approved localization and targeted QC before dynamic Chapter IV modules.
- * Existing Phase I and Phase II order is preserved. Packet Provenance loads last.
+ * Existing Phase I through Phase III order is preserved. The Man Behind the Alias loads last.
  * No repair polling, scene mutation or gameplay override is installed here.
  */
 (function(){
@@ -38,6 +38,11 @@ script("js/engine/15-thai-localization.js?v=0152","lwThaiLocalizationScript",()=
   stylesheet("css/chapter-04-phase-03.css?v=0163","lwChapter04Phase03Style");
   return script("js/chapters/chapter-04/03-packet-provenance.js?v=0163","lwChapter04Phase03Script",()=>Boolean(window.LastWitnessChapter4Phase3?.version==="0.16.3"))
    .catch(error=>console.error("LAST WITNESS Packet Provenance failed to load",error))
+ })
+ .then(()=>{
+  stylesheet("css/chapter-04-phase-04.css?v=0170","lwChapter04Phase04Style");
+  return script("js/chapters/chapter-04/04-arman-encounter.js?v=0170","lwChapter04Phase04Script",()=>Boolean(window.LastWitnessChapter4Phase4?.version==="0.17.0"))
+   .catch(error=>console.error("LAST WITNESS The Man Behind the Alias failed to load",error))
  })
  .catch(error=>console.error("LAST WITNESS runtime bootstrap failed",error));
 })();
