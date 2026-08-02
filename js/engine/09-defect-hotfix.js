@@ -1,6 +1,6 @@
-/* LAST WITNESS - Legacy Compatibility Shim + Runtime Bootstrap 0.17.0-d1
+/* LAST WITNESS - Legacy Compatibility Shim + Runtime Bootstrap 0.17.0-d2
  * Loads approved localization and targeted QC before dynamic Chapter IV modules.
- * Existing Phase I through Phase III order is preserved. The Man Behind the Alias loads before the isolated Developer Phase Navigation patch.
+ * Existing Phase I through Phase III order is preserved. The Man Behind the Alias loads before the direct Phase III handoff and Developer Phase Navigation patches.
  * No repair polling, scene mutation or gameplay override is installed here.
  */
 (function(){
@@ -36,7 +36,7 @@ script("js/engine/15-thai-localization.js?v=0152","lwThaiLocalizationScript",()=
  .then(()=>script("js/chapters/chapter-04/02-jakarta-arrival.js?v=0164","lwChapter04Phase02Script",()=>Boolean(window.LastWitnessChapter4Phase2?.version==="0.14.9")))
  .then(()=>{
   stylesheet("css/chapter-04-phase-03.css?v=0163","lwChapter04Phase03Style");
-  return script("js/chapters/chapter-04/03-packet-provenance.js?v=0163","lwChapter04Phase03Script",()=>Boolean(window.LastWitnessChapter4Phase3?.version==="0.16.3"))
+  return script("js/chapters/chapter-04/03-packet-provenance.js?v=0163d2","lwChapter04Phase03Script",()=>Boolean(window.LastWitnessChapter4Phase3?.version==="0.16.3"))
    .catch(error=>console.error("LAST WITNESS Packet Provenance failed to load",error))
  })
  .then(()=>{
@@ -45,9 +45,14 @@ script("js/engine/15-thai-localization.js?v=0152","lwThaiLocalizationScript",()=
    .catch(error=>console.error("LAST WITNESS The Man Behind the Alias failed to load",error))
  })
  .then(()=>script(
-  "js/engine/18-developer-phase-navigation.js?v=0170d1",
+  "js/engine/19-ch4-phase3-direct-handoff.js?v=0170d2",
+  "lwChapter4Phase3DirectHandoffScript",
+  ()=>Boolean(window.LastWitnessPhase3DirectHandoff?.version==="0.17.0-d2"&&window.LastWitnessPhase3DirectHandoff?.installed)
+ ).catch(error=>console.error("LAST WITNESS Phase III direct handoff failed to load",error)))
+ .then(()=>script(
+  "js/engine/18-developer-phase-navigation.js?v=0170d2",
   "lwDeveloperPhaseNavigationScript",
-  ()=>Boolean(window.LastWitnessDeveloperPhaseNavigation?.version==="0.17.0-d1"&&window.LastWitnessDeveloperPhaseNavigation?.installed)
+  ()=>Boolean(window.LastWitnessDeveloperPhaseNavigation?.version==="0.17.0-d2"&&window.LastWitnessDeveloperPhaseNavigation?.installed)
  ).catch(error=>console.error("LAST WITNESS Developer Phase Navigation failed to load",error)))
  .catch(error=>console.error("LAST WITNESS runtime bootstrap failed",error));
 })();
