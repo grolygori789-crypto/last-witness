@@ -1,0 +1,97 @@
+/* LAST WITNESS — Chapter IV / Phase IV Professional Revision 0.17.1 */
+
+/* Exact owner-graded image and video luminance. */
+.ch4-p4-video-screen video,
+.ch4-p4-scene>.scene,
+.ch4-p4-stair>.scene,
+.ch4-p4-workshop>.scene{filter:none!important}
+.ch4-p4-overlay,.ch4-p4-video-shade{background:none!important}
+.ch4-p4-cinematic-fade{animation:ch4P4CinematicFade .52s ease both}
+@keyframes ch4P4CinematicFade{to{opacity:0;background:#020407}}
+
+/* Vehicle and reveal footage remain unobstructed apart from Skip / fallback Play. */
+.ch4-p4-video-title{display:none!important}
+.ch4-p4-video-screen .ch4-p4-progress{opacity:.86}
+.ch4-p4-skip{border-color:rgba(255,255,255,.28);background:rgba(3,6,10,.63);box-shadow:0 7px 24px rgba(0,0,0,.36);text-shadow:0 1px 8px #000}
+
+/* Dedicated title card, then the existing professional location card. */
+.ch4-p4-location{isolation:isolate;transition:opacity .42s ease}
+.ch4-p4-phase-title-card{position:relative;z-index:2;display:none;width:min(91vw,620px);padding:clamp(34px,9vw,70px) clamp(24px,7vw,58px);text-align:center}
+.ch4-p4-location.phase-title-mode .ch4-p4-phase-title-card{display:block}
+.ch4-p4-location.phase-title-mode .ch4-p4-location-card{display:none}
+.ch4-p4-location.location-card-mode .ch4-p4-phase-title-card{display:none}
+.ch4-p4-phase-title-card .eyebrow{color:#dcb778;font-size:10px;font-weight:850;letter-spacing:.25em}
+.ch4-p4-phase-title-card h2{max-width:15ch;margin:18px auto 0;color:#f7f0e6;font:500 clamp(38px,11vw,68px)/.96 Georgia,serif;letter-spacing:.055em;text-wrap:balance;text-shadow:0 8px 32px rgba(0,0,0,.72)}
+.ch4-p4-phase-rule{width:min(250px,58vw);height:1px;margin:26px auto 0;background:linear-gradient(90deg,transparent,rgba(221,181,109,.94),transparent);box-shadow:0 0 15px rgba(221,181,109,.32)}
+.ch4-p4-phase-mark{position:relative;width:76px;height:54px;margin:0 auto 25px}
+.ch4-p4-phase-mark i{position:absolute;inset:0;margin:auto;width:48px;height:48px;border:1px solid rgba(221,181,109,.48);transform:rotate(45deg)}
+.ch4-p4-phase-mark i:nth-child(2){width:34px;height:34px;border-color:rgba(102,165,193,.48)}
+.ch4-p4-phase-mark i:nth-child(3){width:18px;height:18px;background:rgba(221,181,109,.14)}
+.phase-title-enter .ch4-p4-phase-title-card{animation:ch4P4TitleIn .72s cubic-bezier(.2,.75,.25,1) both}
+.phase-title-exit .ch4-p4-phase-title-card{animation:ch4P4TitleOut .42s ease both}
+@keyframes ch4P4TitleIn{from{opacity:0;transform:translateY(16px) scale(.985)}to{opacity:1;transform:none}}
+@keyframes ch4P4TitleOut{to{opacity:0;transform:translateY(-10px) scale(1.01)}}
+
+/* Preserve source brightness while keeping text readable through local UI plates only. */
+.ch4-p4-label{text-shadow:0 2px 9px #000,0 0 15px #000}
+.ch4-p4-objective{background:linear-gradient(90deg,rgba(4,8,12,.88),rgba(4,8,12,.34) 78%,transparent);box-shadow:0 9px 26px rgba(0,0,0,.28)}
+
+/* Phase-local progress, preserving the established lower-right identity. */
+.ch4-p4-progress{position:absolute;z-index:25;right:16px;bottom:calc(17px + env(safe-area-inset-bottom));display:flex;align-items:center;gap:9px;min-width:132px;color:#e7ded1;font:800 10px/1 ui-monospace,monospace;letter-spacing:.08em;text-shadow:0 2px 9px #000;pointer-events:none}
+.ch4-p4-progress>div{position:relative;width:92px;height:4px;overflow:hidden;border-radius:999px;background:rgba(255,255,255,.18);box-shadow:0 1px 8px rgba(0,0,0,.5)}
+.ch4-p4-progress-fill{display:block;width:0;height:100%;border-radius:inherit;background:linear-gradient(90deg,#779eb1,#ddb56d);box-shadow:0 0 8px rgba(221,181,109,.42);transition:width .42s cubic-bezier(.2,.7,.2,1)}
+.ch4-p4-video-screen .ch4-p4-progress{right:auto;left:15px;bottom:calc(28px + env(safe-area-inset-bottom))}
+.ch4-p4-complete .ch4-p4-progress{right:18px;bottom:calc(16px + env(safe-area-inset-bottom))}
+
+/* Professional dialogue portrait framing and cool edge separation. */
+.ch4-p4-dialogue{grid-template-columns:116px 1fr;min-height:164px}
+.ch4-p4-dialogue.right{grid-template-columns:1fr 116px}
+.ch4-p4-dialogue .portrait-wrap{overflow:hidden;background:radial-gradient(circle at 50% 24%,rgba(70,105,121,.20),transparent 48%),linear-gradient(160deg,#121921,#04070b 82%);box-shadow:inset 0 0 0 1px rgba(132,184,207,.10)}
+.ch4-p4-dialogue img.portrait.ch4-p4-professional-cut,
+.ch4-p4-dialogue img.portrait.dimas-portrait,
+.ch4-p4-dialogue img.portrait.arman-portrait,
+.ch4-p4-dialogue img.portrait.north-portrait{width:100%;height:100%;object-fit:contain!important;object-position:center top!important;transform:scale(1.07)!important;transform-origin:center top!important;filter:drop-shadow(0 0 1.3px rgba(133,201,229,.68)) drop-shadow(0 0 4px rgba(65,124,151,.28)) drop-shadow(0 9px 13px rgba(0,0,0,.66))!important}
+.ch4-p4-dialogue img.portrait.arman-portrait{transform:scale(1.09)!important}
+.ch4-p4-dialogue img.portrait.north-portrait{transform:scale(1.055)!important}
+
+/* Persona Triangulation and decision surfaces: premium noir-tech pass. */
+.ch4-p4-modal{background:radial-gradient(circle at 50% 16%,rgba(40,79,97,.18),transparent 38%),rgba(1,3,6,.90)}
+.ch4-p4-modal .modal-card{border-color:rgba(221,181,109,.46);background:linear-gradient(155deg,rgba(22,29,37,.99),rgba(5,8,13,.995) 78%);box-shadow:0 34px 100px rgba(0,0,0,.82),inset 0 1px rgba(255,255,255,.045)}
+.ch4-p4-modal header{background:linear-gradient(90deg,rgba(221,181,109,.055),transparent 58%)}
+.ch4-p4-record{position:relative;overflow:hidden;border-color:rgba(121,174,197,.22);background:linear-gradient(145deg,rgba(75,119,139,.09),rgba(255,255,255,.025))}
+.ch4-p4-record:before{content:"";position:absolute;top:0;left:0;width:3px;height:100%;background:linear-gradient(#77a4b7,#ddb56d)}
+.ch4-p4-triad-options{gap:9px}
+.ch4-p4-triad-options button,.ch4-p4-choice-options button{position:relative;overflow:hidden;transition:border-color .18s ease,background .18s ease,transform .14s ease,box-shadow .18s ease}
+.ch4-p4-triad-options button:active,.ch4-p4-choice-options button:active{transform:scale(.985)}
+.ch4-p4-triad-options button.selected,.ch4-p4-choice-options button.selected{border-color:rgba(221,181,109,.76);background:linear-gradient(135deg,rgba(221,181,109,.15),rgba(87,143,168,.08));box-shadow:inset 0 0 0 1px rgba(221,181,109,.11),0 8px 24px rgba(0,0,0,.24)}
+.ch4-p4-triad-options button.selected:after,.ch4-p4-choice-options button.selected:after{content:"";position:absolute;right:8px;top:8px;width:6px;height:6px;border-radius:50%;background:#dfbd80;box-shadow:0 0 9px rgba(223,189,128,.72)}
+.ch4-p4-cache-code{border-color:rgba(111,169,194,.34);background:radial-gradient(circle at 50% 45%,rgba(56,117,143,.19),transparent 54%),linear-gradient(160deg,#071018,#030609);box-shadow:inset 0 0 44px rgba(0,0,0,.62),0 13px 30px rgba(0,0,0,.24)}
+
+/* Distinct Phase IV completion card with music retained by the revision runtime. */
+.ch4-p4-complete:before{background:radial-gradient(circle at 50% 27%,rgba(72,129,153,.23),transparent 39%),radial-gradient(circle at 50% 62%,rgba(221,181,109,.08),transparent 48%),repeating-linear-gradient(90deg,rgba(255,255,255,.012) 0 1px,transparent 1px 8px)}
+.ch4-p4-complete-card{overflow:hidden;border-color:rgba(221,181,109,.52);background:linear-gradient(156deg,rgba(22,31,40,.98),rgba(5,8,13,.995) 76%);box-shadow:0 38px 110px rgba(0,0,0,.82),inset 0 1px rgba(255,255,255,.055)}
+.ch4-p4-complete-card:before,.ch4-p4-complete-card:after{content:"";position:absolute;pointer-events:none}
+.ch4-p4-complete-card:before{inset:0;border:1px solid rgba(112,170,196,.10);transform:translate(7px,7px)}
+.ch4-p4-complete-card:after{left:10%;right:10%;bottom:0;height:2px;background:linear-gradient(90deg,transparent,#729db0,#ddb56d,transparent)}
+.ch4-p4-complete-sigil{position:relative;width:72px;height:72px;margin:0 auto 18px}
+.ch4-p4-complete-sigil i{position:absolute;inset:0;margin:auto;border:1px solid rgba(221,181,109,.55);border-radius:50%}
+.ch4-p4-complete-sigil i:nth-child(2){width:48px;height:48px;border-color:rgba(110,167,192,.55)}
+.ch4-p4-complete-sigil i:nth-child(3){width:17px;height:17px;background:rgba(221,181,109,.18);box-shadow:0 0 18px rgba(221,181,109,.22)}
+.ch4-p4-complete-grid div{border-color:rgba(116,163,184,.18);background:linear-gradient(145deg,rgba(79,125,145,.08),rgba(255,255,255,.025))}
+.ch4-p4-complete-card>button{box-shadow:0 10px 28px rgba(0,0,0,.32)}
+
+html[lang="th"] .ch4-p4-phase-title-card h2{letter-spacing:.012em;line-height:1.08}
+@media(max-width:430px){
+ .ch4-p4-dialogue{grid-template-columns:108px 1fr}.ch4-p4-dialogue.right{grid-template-columns:1fr 108px}
+ .ch4-p4-progress{right:12px;min-width:116px}.ch4-p4-progress>div{width:78px}
+ .ch4-p4-phase-title-card{padding-left:18px;padding-right:18px}
+}
+@media(max-width:360px){
+ .ch4-p4-dialogue{grid-template-columns:99px 1fr}.ch4-p4-dialogue.right{grid-template-columns:1fr 99px}
+ .ch4-p4-progress{font-size:9px;gap:7px;min-width:104px}.ch4-p4-progress>div{width:67px}
+ .ch4-p4-video-screen .ch4-p4-progress{bottom:calc(25px + env(safe-area-inset-bottom))}
+}
+@media(prefers-reduced-motion:reduce){
+ .ch4-p4-cinematic-fade,.phase-title-enter .ch4-p4-phase-title-card,.phase-title-exit .ch4-p4-phase-title-card{animation:none!important}
+ .ch4-p4-progress-fill{transition:none}
+}
