@@ -2,7 +2,7 @@
 
 > **MASTER REFERENCE / CURRENT SOURCE OF TRUTH**
 >
-> **Document revision:** 2026-08-02 10:30 ICT
+> **Document revision:** 2026-08-02 14:44 ICT
 >
 > **Replaces planning blob:** `888c2815e36174b31cd506fffbb9f3db03d1ee75`
 >
@@ -18,15 +18,23 @@
 >
 > **Latest owner-approved narrative module:** `CHAPTER IV · PHASE III · 0.16.3`
 >
-> **Current legitimate endpoint:** `CHAPTER IV · PHASE III COMPLETE -> NEXT: THE MAN BEHIND THE ALIAS`
+> **Current deployed runtime candidate commit:** `ea3b30d617b347ed04df02f4d3e5fff8a321540c`
 >
-> **Immediate next production target:** `CHAPTER IV · PHASE IV - THE MAN BEHIND THE ALIAS`
+> **Current runtime candidate:** `CHAPTER IV · PHASE IV · 0.17.0 + 0.17.0-d2 navigation / handoff patch`
 >
-> **Document status:** `OWNER-DELEGATED CHARACTER RESPONSIBILITY CANON LOCK · DOCUMENTATION ONLY`
+> **Owner-device verification status:** `PRELIMINARY SMOKE PASS · DETAILED REGRESSION PENDING`
 >
-> This revision updates Canon, investigative authority, suspect architecture, cross-chapter continuity, choice consequences and Chapter VII alternate-ending logic. It does not change Production code or assets.
+> **Owner-approved endpoint:** `CHAPTER IV · PHASE III COMPLETE`
 >
-> Runtime commit `61dfaec35cb8990ac9ea3fafa28d39bee8e4698f` remains the frozen owner-approved code and asset baseline. A later commit containing only this file is documentation-only and must not be interpreted as a new runtime build.
+> **Current deployed candidate route:** `CHAPTER IV · PHASE III -> DIRECT HANDOFF -> CHAPTER IV · PHASE IV`
+>
+> **Immediate production objective:** `REPAIR AND VERIFY CHAPTER IV · PHASE IV`
+>
+> **Document status:** `CHARACTER RESPONSIBILITY CANON LOCK · PHASE IV CANDIDATE VERIFICATION LOG`
+>
+> This revision preserves all locked Canon and records the present Phase IV implementation-candidate status, preliminary owner-device observations, known defects and verification limits. It does not change Production code or assets.
+>
+> Runtime commit `61dfaec35cb8990ac9ea3fafa28d39bee8e4698f` remains the frozen owner-approved code and asset baseline. Candidate commit `ea3b30d617b347ed04df02f4d3e5fff8a321540c` is deployed for repair and verification but is not owner-approved or frozen.
 
 ---
 
@@ -51,16 +59,22 @@
 5. Chapter IV Phase II complete
 6. Chapter IV Phase III complete
 
-Current endpoint:
+Owner-approved endpoint:
 
 - `CHAPTER IV · PHASE III COMPLETE`
-- `PACKET TRAIL RECONSTRUCTED`
-- `NEXT · THE MAN BEHIND THE ALIAS`
+
+Current deployed candidate:
+
+- Phase IV implementation module `0.17.0` is present.
+- Developer Mode Phase III and Phase IV entry received a preliminary owner-device smoke pass.
+- The candidate route moves directly from Phase III completion into the Phase IV vehicle approach.
+- Phase IV is not approved, complete or frozen.
 
 Immediate target:
 
-- `CHAPTER IV · PHASE IV`
-- `THE MAN BEHIND THE ALIAS`
+- repair the Phase IV vehicle-opening presentation
+- replace and revalidate Dimas and Arman portraits
+- complete detailed Android Chrome regression before any approval
 
 ## Absolute freeze rule
 
@@ -171,6 +185,10 @@ Before any future implementation:
 - Owner-approved runtime commit: `61dfaec35cb8990ac9ea3fafa28d39bee8e4698f`
 - Historical Phase II baseline: `ffdc94777c5fbaefdc281f1148b59aff3adf8abe`
 - Playable and owner-approved through Chapter IV Phase III
+- Current deployed candidate commit: `ea3b30d617b347ed04df02f4d3e5fff8a321540c`
+- Candidate Phase IV module: `0.17.0`
+- Candidate navigation and direct-handoff patch: `0.17.0-d2`
+- Candidate status: preliminary owner-device smoke pass only
 
 ## Accepted build chain
 
@@ -182,6 +200,12 @@ Before any future implementation:
 - police portrait alignment: `0.15.4`
 - Chapter IV Phase III: `0.16.3`
 - runtime bootstrap: `0.16.4`
+
+Candidate chain, not approved:
+
+- Chapter IV Phase IV: `0.17.0`
+- Chapter IV Developer Phase Navigation: `0.17.0-d2`
+- Chapter IV Phase III Direct Handoff: `0.17.0-d2`
 
 ## Owner-confirmed resolved defect
 
@@ -217,7 +241,9 @@ Next:
 
 > `THE MAN BEHIND THE ALIAS`
 
-No owner-reported blocking runtime defect remains at this endpoint.
+No owner-reported blocking runtime defect remains at the frozen Phase III endpoint.
+
+The deployed Phase IV candidate remains under repair. Initial owner-device observation indicates that Developer Mode can now enter Phase III and Phase IV, but detailed regression is still pending.
 
 ---
 
@@ -266,7 +292,13 @@ Do not reorder without full audit.
 
 ## Current Chapter IV bootstrap
 
-`js/engine/09-defect-hotfix.js` Build `0.16.4` loads:
+### Owner-approved frozen chain
+
+`js/engine/09-defect-hotfix.js` Build `0.16.4` ended at Phase III.
+
+### Current deployed candidate chain
+
+`js/engine/09-defect-hotfix.js` candidate Build `0.17.0-d2` loads:
 
 1. `js/engine/15-thai-localization.js?v=0152`
 2. `js/engine/16-targeted-qc-fixes.js?v=0153`
@@ -276,9 +308,13 @@ Do not reorder without full audit.
 6. `js/chapters/chapter-04/02a-jakarta-portrait-guard.js?v=0150`
 7. `js/chapters/chapter-04/02-jakarta-arrival.js?v=0164`
 8. `css/chapter-04-phase-03.css?v=0163`
-9. `js/chapters/chapter-04/03-packet-provenance.js?v=0163`
+9. `js/chapters/chapter-04/03-packet-provenance.js?v=0163d2`
+10. `css/chapter-04-phase-04.css?v=0170`
+11. `js/chapters/chapter-04/04-arman-encounter.js?v=0170`
+12. `js/engine/19-ch4-phase3-direct-handoff.js?v=0170d2`
+13. `js/engine/18-developer-phase-navigation.js?v=0170d2`
 
-The current bootstrap ends at Phase III.
+This candidate chain is deployed for repair and verification. It is not the owner-approved frozen runtime.
 
 ## Future-module safety lock
 
@@ -290,12 +326,13 @@ Loading Phase IV must not:
 - set an active Phase IV screen
 - unlock Arman
 - unlock Character mode
-- hide the Phase III completion screen
+- enter Phase IV before true Phase III completion, completed-state restore or an intentional Developer jump
 - overwrite a restored checkpoint
 
 Initialization occurs only on:
 
-- true Phase IV entry
+- direct handoff after true Phase III completion
+- completed Phase III restore that legitimately advances to Phase IV
 - Phase IV resume
 - intentional Developer jump
 
@@ -2910,7 +2947,7 @@ Use:
 - reveal video as physical entrance
 - main score as one-phase score
 
-Do not upload, rename or generate Production assets until blueprint approval.
+The blueprint has been approved and an implementation candidate exists. From this point, asset changes must be narrowly scoped to owner-reported defects and must not replace approved earlier-Chapter assets.
 
 ---
 
@@ -2965,12 +3002,14 @@ Mandatory sequence:
 13. Save/Load
 14. ensure future characters remain hidden
 
-## Phase IV future gate
+## Phase IV verification gate
 
 Must test:
 
-- Phase III completion remains visible when Phase IV module loads
-- genuine entry only
+- no `PACKET TRAIL RECONSTRUCTED` completion card between Phase III and the Phase IV vehicle approach
+- Developer Mode enters Phase III and Phase IV from a clean or stale state
+- repeated Developer jumps do not leave stale Phase state
+- genuine story entry only
 - decoy never unlocks Character card
 - Arman unlock timing
 - vehicle clip
@@ -3008,13 +3047,15 @@ Owner-device result remains final.
 - some CSS headers and cache queries differ
 - do not clean accepted runtime without a scoped reason
 - do not clear Site Data by default
-- Phase IV not implemented
-- Phase V attack method not approved
-- Local Deployer exact identity not approved
-- Field Watcher exact identity not approved
+- Phase IV implementation candidate `0.17.0` is deployed but is not approved or frozen
+- Phase IV vehicle-opening lower-left title treatment is rejected and remains to be removed
+- Dimas and Arman portrait alpha / edge quality is rejected and requires complete replacement and visual QC
+- detailed owner-device regression for Phase IV remains pending
+- Phase V attack method is not yet implemented
+- Narin Theerachai and Ika Prameswari are Canon-locked identities but are not yet implemented in Runtime
 - Somchai’s current Journal role remains generic; Kittisak already has his full name and Police Captain rank in the Character Canon override, but his Inspector function is not fully displayed
 - broader Phase I–II language audit remains unresolved
-- future ending-profile fields are planned, not implemented
+- the Phase IV candidate introduces additional ending-profile fields, but full migration, cross-Chapter use and final-ending behavior remain unapproved
 
 ---
 
@@ -3061,7 +3102,7 @@ A new assistant must behave as though the owner has said:
 >
 > Current endpoint is `NEXT · THE MAN BEHIND THE ALIAS`.
 >
-> Phase IV is not implemented.
+> Phase IV has a deployed implementation candidate. It is not owner-approved, complete or frozen.
 >
 > Do not write to GitHub without exact current-turn authorization.
 >
@@ -3898,7 +3939,7 @@ Correct lawful lead:
 - do not clear Site Data by default
 - broad Chapter IV Phase I–II language audit not complete
 - Somchai’s Journal role is generic; Kittisak’s Canon override contains his full name and Police Captain rank but not the complete Inspector function
-- no Phase IV Production asset paths assigned
+- Phase IV Production-candidate asset paths are assigned, but portrait assets are rejected and must be replaced
 - Phase V exact attack method unresolved
 
 ---
@@ -3935,7 +3976,7 @@ Planning-document delivery:
 
 # 43. PHASE IV IMPLEMENTATION BLUEPRINT ACCEPTANCE CHECKLIST
 
-Before coding Phase IV, the approved blueprint must specify:
+Before approving or extending Phase IV, the implementation and approved blueprint must continue to specify:
 
 ## Narrative
 
@@ -6382,5 +6423,148 @@ This update is Canon and planning only.
 
 It does not claim that future Runtime, art, Journal entries, state fields or endings are implemented.
 
+
+
+# 56. PHASE IV IMPLEMENTATION CANDIDATE AND OWNER-DEVICE VERIFICATION LOG
+
+## Status vocabulary
+
+Use these terms exactly:
+
+- `DEPLOYED CANDIDATE` means files are present on Production for repair and testing.
+- `PRELIMINARY SMOKE PASS` means the owner observed the requested route working in a limited check.
+- `DETAILED REGRESSION PENDING` means the full phase, repeated routes and connected systems have not been approved.
+- `OWNER-APPROVED` requires explicit owner confirmation after meaningful device testing.
+- `FROZEN` requires owner approval plus a documented stable baseline.
+
+A preliminary smoke pass must never be rewritten as full approval.
+
+## Deployed candidate history
+
+### Phase IV implementation
+
+- Commit: `0cbece8853e8049d5a7af1b2bfa4b954d1bc8586`
+- Message: `Add Chapter IV Arman encounter`
+- Module: `js/chapters/chapter-04/04-arman-encounter.js`
+- Module build: `0.17.0`
+- Status: deployed candidate, rejected for visual defects, not approved
+
+### First Developer jump repair
+
+- Commit: `5ea29ca53feaeb3ce8e38f8dc580cd9a0fa02eb8`
+- Message: `Fix Chapter IV developer jumps`
+- Result: insufficient
+- Defect: Phase III could still fail when stale Phase II or Phase III false values overrode Dev defaults
+- Status: superseded by `0.17.0-d2`
+
+### Phase III jump and direct-handoff repair
+
+- Commit: `ea3b30d617b347ed04df02f4d3e5fff8a321540c`
+- Message: `Fix Phase III jump and direct handoff`
+- Patch build: `0.17.0-d2`
+- Scope:
+  - reset stale prerequisite Phase containers before Developer jumps
+  - wait for Runtime API availability
+  - verify requested screen and Phase state before treating a jump as successful
+  - route completed Phase III directly into the Phase IV vehicle approach
+  - suppress the obsolete Phase III completion-card interruption
+
+## Preliminary owner-device smoke test
+
+- Date: `2026-08-02 14:44 ICT`
+- Platform: Android Chrome
+- Tester: owner
+- Depth: limited preliminary check
+
+Observed:
+
+- Developer Mode now appears able to enter Chapter IV Phase III.
+- Developer Mode now appears able to enter Chapter IV Phase IV.
+- The latest navigation repair appears materially improved over the prior failed build.
+- No detailed full-flow approval has been given.
+
+Current status:
+
+`PRELIMINARY OWNER-DEVICE SMOKE PASS · DETAILED REGRESSION PENDING`
+
+This observation does not approve:
+
+- repeated jumps across every Chapter IV Phase
+- stale-save and clean-save permutations
+- complete Phase III direct handoff under every restore path
+- Phase IV full narrative flow
+- Persona Triangulation
+- choices and ending-profile persistence
+- Save/Load
+- Character Journal
+- Case File
+- audio balance, fades or loop quality
+- Thai and English dialogue
+- Phase IV completion and Phase V handoff
+
+## Known outstanding Phase IV defects
+
+### Vehicle-opening presentation
+
+Rejected:
+
+- lower-left black title treatment over the moving vehicle footage
+- large `THE MAN BEHIND THE ALIAS` overlay during the vehicle approach
+
+Required final sequence:
+
+1. unobstructed full-screen vehicle approach
+2. vehicle stops
+3. soft fade
+4. dedicated Phase title card
+5. professional Day / Location / Time card
+6. entry into the Arman location
+
+### Dimas and Arman portraits
+
+Rejected:
+
+- severe white edge contamination
+- visible white matte / fringe
+- unattractive extraction
+- insufficient separation of dark hair and clothing from the dialogue background
+
+Required:
+
+- restart extraction from the original sheets
+- true transparent alpha
+- edge-colour decontamination
+- no white outline
+- stable Benedict-referenced head scale and anchor
+- full QC on black, game navy, mid-grey, white and checkerboard backgrounds
+- owner visual approval before reintegration
+
+## Next repair order
+
+1. preserve the now-working Phase III and Phase IV Developer entry
+2. verify the direct Phase III-to-Phase IV handoff in more detail
+3. remove the vehicle-footage title overlay and restore the approved cinematic card sequence
+4. rebuild Dimas and Arman portraits as a separate asset-only repair
+5. test the complete Phase IV flow
+6. tune audio only after the scene flow is stable
+7. request owner approval
+8. freeze only after approval
+
+## No-regression lock
+
+Future repair packages must not disturb:
+
+- Chapter I–III approved gameplay
+- Chapter IV Phase I–III content
+- Maya profile switching
+- Chapter II Character Journal timing
+- Phase III and Phase IV Developer entry that received the preliminary smoke pass
+- Save schema outside the exact repair requirement
+- existing approved audio owners
+- previous Character and Case File gates
+
+Each repair should address one defect family at a time and stop for owner verification before the next family is changed.
+
+---
 
 # END OF MASTER PLAN
