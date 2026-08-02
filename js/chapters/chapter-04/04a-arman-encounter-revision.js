@@ -1,12 +1,13 @@
-/* LAST WITNESS - Chapter IV / Phase IV Professional Revision 0.17.1
- * Presentation-only repair layered after 04-arman-encounter.js 0.17.0.
- * Preserves narrative, evidence, choices, ending-profile effects and handoff logic.
+/* LAST WITNESS - Chapter IV / Phase IV Consistency Repair 0.17.3
+ * Repairs Phase IV presentation against the established Chapter IV contract.
+ * Story, evidence, choices, ending-profile effects and Phase III handoff remain owned
+ * by 04-arman-encounter.js 0.17.0.
  */
 (function(){
 "use strict";
-if(window.LastWitnessChapter4Phase4Revision?.installed)return;
+const BUILD="0.17.3";
+if(window.LastWitnessChapter4Phase4Revision?.version===BUILD&&window.LastWitnessChapter4Phase4Revision?.installed)return;
 
-const BUILD="0.17.1";
 const APPROACH="armanVehicleApproach";
 const LOCATION="armanLocationCard";
 const STAIRWELL="armanStairwell";
@@ -14,6 +15,9 @@ const WORKSHOP="armanWorkshop";
 const REVEAL="armanReveal";
 const COMPLETE="armanPhase4Complete";
 const SCREENS=new Set([APPROACH,LOCATION,STAIRWELL,WORKSHOP,REVEAL,COMPLETE]);
+const HUD_SCREENS=[STAIRWELL,WORKSHOP];
+const PORTRAIT_BASE="assets/images/chapter-04/phase-04/";
+const PORTRAIT_VERSION="0173";
 const $=(selector,root=document)=>root.querySelector(selector);
 const $$=(selector,root=document)=>Array.from(root.querySelectorAll(selector));
 const gs=()=>{try{return state}catch(_){return window.state||null}};
@@ -26,12 +30,13 @@ let titleTimer=0;
 let titleTransitioning=false;
 let audioFrame=0;
 let audioTimer=0;
-const portraitCache=new Map();
-const portraitJobs=new WeakSet();
+let registryUnlockOriginal=null;
+let armanUnlockDeferred=false;
 
 function phase(){return gs()?.chapter4?.phase4||null}
 function save(){try{if(typeof autoSave==="function")autoSave()}catch(_){} }
 function stopMedia(media,reset=false){if(!media)return;try{media.pause();if(reset)media.currentTime=0}catch(_){} }
+function setCheckpoint(value){const s=gs();if(!s)return;s.checkpoint=value;save()}
 function showScreen(id){
  try{if(typeof show==="function")show(id)}catch(_){}
  if(!$("#"+id)?.classList.contains("active")){
@@ -41,8 +46,8 @@ function showScreen(id){
  }
  syncProgress();scheduleAudioSync()
 }
-function setCheckpoint(value){const s=gs();if(!s)return;s.checkpoint=value;save()}
 
+/* Vehicle -> established Phase card -> existing Day/Location/Time card. */
 function ensurePhaseTitleState(){
  const p=phase();if(!p)return null;
  if(typeof p.phaseTitleSeen!=="boolean"){
@@ -52,16 +57,15 @@ function ensurePhaseTitleState(){
  return p
 }
 function updateTitleLanguage(){
- const eye=$("#ch4P4PhaseTitleEye"),title=$("#ch4P4PhaseTitleText"),eyeText=tr("CHAPTER IV · PHASE IV","บทที่ IV · เฟส IV"),titleText=tr("THE MAN BEHIND THE ALIAS","ชายผู้อยู่หลังนามแฝง");
- if(eye&&eye.textContent!==eyeText)eye.textContent=eyeText;
- if(title&&title.textContent!==titleText)title.textContent=titleText
+ const eye=$("#ch4P4PhaseTitleEye"),title=$("#ch4P4PhaseTitleText");
+ if(eye)eye.textContent=tr("CHAPTER IV · PHASE IV","บทที่ IV · เฟส IV");
+ if(title)title.textContent=tr("THE MAN BEHIND THE ALIAS","ชายผู้อยู่หลังนามแฝง")
 }
 function locationMode(){
  clearTimeout(titleTimer);titleTimer=0;titleTransitioning=false;
  const p=ensurePhaseTitleState();if(!p)return;
  p.phaseTitleSeen=true;p.stage="location";
- const screen=$("#"+LOCATION);screen?.classList.remove("phase-title-mode","phase-title-enter","phase-title-exit");
- screen?.classList.add("location-card-mode");
+ const screen=$("#"+LOCATION);screen?.classList.remove("phase-title-mode","phase-title-enter","phase-title-exit");screen?.classList.add("location-card-mode");
  setCheckpoint("ch4_phase4_location");syncProgress();scheduleAudioSync();save()
 }
 function presentPhaseTitle(fromRestore=false){
@@ -69,27 +73,46 @@ function presentPhaseTitle(fromRestore=false){
  titleTransitioning=true;p.approachComplete=true;p.stage="location";
  if(gs()){gs().chapter=4;gs().screen=LOCATION}
  showScreen(LOCATION);
- const screen=$("#"+LOCATION);screen?.classList.remove("location-card-mode","phase-title-exit");
- screen?.classList.add("phase-title-mode","phase-title-enter");
+ const screen=$("#"+LOCATION);screen?.classList.remove("location-card-mode","phase-title-exit");screen?.classList.add("phase-title-mode","phase-title-enter");
  updateTitleLanguage();setCheckpoint("ch4_phase4_location");syncProgress();scheduleAudioSync();
- titleTimer=setTimeout(()=>{
-  screen?.classList.remove("phase-title-enter");screen?.classList.add("phase-title-exit");
-  titleTimer=setTimeout(locationMode,420)
- },fromRestore?2100:2400)
+ titleTimer=setTimeout(()=>{screen?.classList.remove("phase-title-enter");screen?.classList.add("phase-title-exit");titleTimer=setTimeout(locationMode,420)},fromRestore?2100:2400)
 }
 function finishVehicle(event){
  if(event){event.preventDefault?.();event.stopPropagation?.();event.stopImmediatePropagation?.()}
- const p=ensurePhaseTitleState();if(!p||p.approachComplete&&p.phaseTitleSeen)return;
+ const p=ensurePhaseTitleState();if(!p||(p.approachComplete&&p.phaseTitleSeen))return;
  clearTimeout(titleTimer);titleTimer=0;titleTransitioning=false;
- stopMedia($("#ch4P4ApproachVideo"),true);
- $("#ch4P4ApproachSkip")?.setAttribute("hidden","");
- $("#ch4P4VideoPlay")?.setAttribute("hidden","");
+ stopMedia($("#ch4P4ApproachVideo"),true);$("#ch4P4ApproachSkip")?.setAttribute("hidden","");$("#ch4P4VideoPlay")?.setAttribute("hidden","");
  p.approachComplete=true;p.phaseTitleSeen=false;p.stage="location";
  const approach=$("#"+APPROACH);approach?.classList.add("ch4-p4-cinematic-fade");
  setCheckpoint("ch4_phase4_location");syncProgress();
  setTimeout(()=>{approach?.classList.remove("ch4-p4-cinematic-fade");presentPhaseTitle(false)},520)
 }
+function recoverTitleOnRestore(){const p=ensurePhaseTitleState();if(active()===LOCATION&&p?.approachComplete&&!p.phaseTitleSeen&&!titleTransitioning)presentPhaseTitle(true)}
 
+/* Established Save/Menu HUD. Cards and videos intentionally remain cinematic. */
+function hudMarkup(labelId){return `<div class="topbar ch4-p4-topbar"><span id="${labelId}"></span><div class="hud"><button class="icon saveButton ch4-p4-save" type="button" aria-label="Save game">💾</button><button class="icon menuButton ch4-p4-menu" type="button" aria-label="Open game menu">☰<i class="journal-alert" aria-hidden="true"></i></button></div></div>`}
+function updateHUDLanguage(){
+ const stair=$("#ch4P4StairTopbar"),workshop=$("#ch4P4WorkshopTopbar");
+ if(stair)stair.textContent=tr("EAST JAKARTA · SURYA ELEKTRONIK","จาการ์ตาตะวันออก · SURYA ELEKTRONIK");
+ if(workshop)workshop.textContent=tr("EAST JAKARTA · SURYA ELEKTRONIK","จาการ์ตาตะวันออก · SURYA ELEKTRONIK");
+ $$(".ch4-p4-save").forEach(button=>button.setAttribute("aria-label",tr("Save game","บันทึกเกม")));
+ $$(".ch4-p4-menu").forEach(button=>button.setAttribute("aria-label",tr("Open game menu","เปิดเมนูเกม")))
+}
+function openManualSave(){try{if(typeof manualSave==="function"){manualSave();return}window.LastWitnessSaveManager?.open?.("save")}catch(error){console.error("LAST WITNESS Phase IV save open failed",error)}}
+function openMenu(){try{window.LastWitnessContentRegistry?.updateVisibility?.();window.LastWitnessContentRegistry?.updateDots?.();$("#drawer")?.classList.add("open")}catch(error){console.error("LAST WITNESS Phase IV menu open failed",error)}}
+function bindHUD(){
+ $$(".ch4-p4-save").forEach(button=>{if(button.dataset.lwP4HudBound==="1")return;button.dataset.lwP4HudBound="1";button.addEventListener("click",event=>{event.preventDefault();event.stopPropagation();openManualSave()},true)});
+ $$(".ch4-p4-menu").forEach(button=>{if(button.dataset.lwP4HudBound==="1")return;button.dataset.lwP4HudBound="1";button.addEventListener("click",event=>{event.preventDefault();event.stopPropagation();openMenu()},true)});
+ try{window.LastWitnessContentRegistry?.updateDots?.()}catch(_){}
+}
+function installHUD(){
+ const stair=$("#"+STAIRWELL),workshop=$("#"+WORKSHOP);
+ if(stair&&!$(".ch4-p4-topbar",stair))stair.insertAdjacentHTML("afterbegin",hudMarkup("ch4P4StairTopbar"));
+ if(workshop&&!$(".ch4-p4-topbar",workshop))workshop.insertAdjacentHTML("afterbegin",hudMarkup("ch4P4WorkshopTopbar"));
+ updateHUDLanguage();bindHUD()
+}
+
+/* Progress keeps the established lower-right pill and pure-gold fill. */
 function progressValue(){
  const p=phase();if(!p?.started)return 0;if(p.complete)return 100;
  const stage=String(p.stage||"approach");
@@ -120,20 +143,14 @@ function setProgress(value){
 }
 function syncProgress(){setProgress(progressValue())}
 function progressMarkup(){return '<div class="ch4-p4-progress" aria-label="Phase progress"><span class="ch4-p4-progress-text">0%</span><div><i class="ch4-p4-progress-fill"></i></div></div>'}
-function installProgress(){
- for(const id of SCREENS){const screen=$("#"+id);if(screen&&!$(".ch4-p4-progress",screen))screen.insertAdjacentHTML("beforeend",progressMarkup())}
- syncProgress()
-}
+function installProgress(){for(const id of SCREENS){const screen=$("#"+id);if(screen&&!$(".ch4-p4-progress",screen))screen.insertAdjacentHTML("beforeend",progressMarkup())}syncProgress()}
 
+/* Phase IV score raised toward Phase II-III while preserving dialogue/video priority. */
 function dialogueVisible(){return Boolean($(".ch4-p4-dialogue:not(.hidden)"))}
 function overlayVisible(){return Boolean($("#ch4P4Triad.open,#ch4P4Choice.open,#ch4P4Cache.open"))}
 function scoreTarget(){
  const s=gs(),screen=active();if(!s||s.sound===false||!SCREENS.has(screen)||Number(s.music??.33)<=0)return 0;
- const music=clamp(Number(s.music??.33));
- const dialogueDuck=dialogueVisible()?.58:1;
- const overlayDuck=overlayVisible()?.66:1;
- const videoDuck=screen===REVEAL?.19:(screen===APPROACH?.78:1);
- const completeLift=screen===COMPLETE?.88:1;
+ const music=clamp(Number(s.music??.33)),dialogueDuck=dialogueVisible()?.58:1,overlayDuck=overlayVisible()?.66:1,videoDuck=screen===REVEAL?.19:(screen===APPROACH?.78:1),completeLift=screen===COMPLETE?.88:1;
  return clamp(music*.43*dialogueDuck*overlayDuck*videoDuck*completeLift,0,.44)
 }
 function fadeScore(target,duration=320){
@@ -143,108 +160,103 @@ function fadeScore(target,duration=320){
  const step=now=>{const q=Math.max(0,Math.min(1,(now-began)/duration)),smooth=q*q*(3-2*q);media.volume=start+(end-start)*smooth;if(q<1)audioFrame=requestAnimationFrame(step);else{audioFrame=0;if(end===0)media.pause()}};
  audioFrame=requestAnimationFrame(step)
 }
-function syncAudio(){
- if(!SCREENS.has(active())){stopMedia($("#ch4P4Score"),active()==="title");return}
- fadeScore(scoreTarget(),active()===COMPLETE?460:320)
+function syncAudio(){if(!SCREENS.has(active())){stopMedia($("#ch4P4Score"),active()==="title");return}fadeScore(scoreTarget(),active()===COMPLETE?460:320)}
+function scheduleAudioSync(){clearTimeout(audioTimer);audioTimer=setTimeout(syncAudio,540);setTimeout(syncAudio,80);setTimeout(syncAudio,820);setTimeout(syncAudio,1360)}
+
+/* Match the existing Journal contract: unlock after Arman's first verified dialogue ends. */
+function armanStoryUnlockReady(){
+ const p=phase(),stage=String(p?.stage||"");
+ return Boolean(p?.revealComplete&&!['proxy-reveal','reveal','arman-intro'].includes(stage))
 }
-function scheduleAudioSync(){
- clearTimeout(audioTimer);audioTimer=setTimeout(syncAudio,540);
- setTimeout(syncAudio,80);setTimeout(syncAudio,820);setTimeout(syncAudio,1360)
+function installArmanUnlockGate(){
+ const api=window.LastWitnessContentRegistry;if(!api?.unlockCharacter)return false;
+ if(api.unlockCharacter.__lwP4ArmanGate===BUILD)return true;
+ registryUnlockOriginal=api.unlockCharacter.bind(api);
+ const wrapped=function(id,opt={}){
+  if(id==="arman"&&opt?.source==="story"&&!armanStoryUnlockReady()){
+   armanUnlockDeferred=true;
+   return false
+  }
+  return registryUnlockOriginal(id,opt)
+ };
+ wrapped.__lwP4ArmanGate=BUILD;api.unlockCharacter=wrapped;return true
+}
+function releaseDeferredArman(){
+ const s=gs(),p=phase(),api=window.LastWitnessContentRegistry;if(!s||!p||!api?.characters?.arman||!armanStoryUnlockReady())return false;
+ if(Array.isArray(s.lwCharactersUnlocked)&&s.lwCharactersUnlocked.includes("arman")){armanUnlockDeferred=false;try{api.updateDots?.()}catch(_){};return false}
+ if(!registryUnlockOriginal&&!installArmanUnlockGate())return false;
+ const fresh=registryUnlockOriginal("arman",{unread:true,source:"story"});
+ armanUnlockDeferred=false;
+ if(fresh===false)try{api.renderCharacters?.(true)}catch(_){}
+ try{api.updateDots?.()}catch(_){};save();return Boolean(fresh)
 }
 
-function edgePixel(data,w,h,x,y,radius=2){
- for(let oy=-radius;oy<=radius;oy++)for(let ox=-radius;ox<=radius;ox++){
-  if(!ox&&!oy)continue;const nx=x+ox,ny=y+oy;if(nx<0||ny<0||nx>=w||ny>=h)return true;
-  if(data[(ny*w+nx)*4+3]<18)return true
- }
- return false
+
+
+/* Dialogue portraits use curated alpha assets and an accepted North fallback. */
+function absoluteURL(value){try{return new URL(value,document.baseURI).href}catch(_){return String(value||"")}}
+function acceptedNorthPortrait(){try{return typeof portrait==="function"?portrait("North","neutral"):""}catch(_){return""}}
+function versionedPortrait(kind,current){
+ const match=String(current||"").match(/\/phase-04\/(dimas|arman)\/([^?]+\.png)/i);if(!match)return"";
+ return PORTRAIT_BASE+match[1].toLowerCase()+"/"+match[2]+"?v="+PORTRAIT_VERSION
 }
-function nearestInterior(data,w,h,x,y,radius=7){
- let best=null,bestDistance=Infinity;
- for(let oy=-radius;oy<=radius;oy++)for(let ox=-radius;ox<=radius;ox++){
-  const nx=x+ox,ny=y+oy;if(nx<0||ny<0||nx>=w||ny>=h)continue;
-  const distance=ox*ox+oy*oy;if(distance===0||distance>=bestDistance)continue;
-  const i=(ny*w+nx)*4,a=data[i+3],sum=data[i]+data[i+1]+data[i+2];
-  if(a>205&&sum<690){bestDistance=distance;best=[data[i],data[i+1],data[i+2]]}
+function normalizePortraits(){
+ const api=window.LastWitnessContentRegistry;
+ if(api?.characters?.arman){
+  const journalSrc=PORTRAIT_BASE+"arman/profile.png?v="+PORTRAIT_VERSION;
+  if(api.characters.arman.src!==journalSrc){api.characters.arman.src=journalSrc;try{api.renderCharacters?.(true)}catch(_){}}
  }
- return best
-}
-function decontaminatePortrait(image){
- const key=image.currentSrc||image.src;if(!key)return Promise.resolve("");if(portraitCache.has(key))return Promise.resolve(portraitCache.get(key));
- return new Promise(resolve=>{
-  try{
-   const w=image.naturalWidth,h=image.naturalHeight;if(!w||!h){resolve("");return}
-   const canvas=document.createElement("canvas");canvas.width=w;canvas.height=h;const ctx=canvas.getContext("2d",{willReadFrequently:true});ctx.drawImage(image,0,0,w,h);
-   const frame=ctx.getImageData(0,0,w,h),source=new Uint8ClampedArray(frame.data),out=frame.data;
-   for(let y=0;y<h;y++)for(let x=0;x<w;x++){
-    const i=(y*w+x)*4,a=source[i+3];if(a===0||!edgePixel(source,w,h,x,y,2))continue;
-    const r=source[i],g=source[i+1],b=source[i+2],white=Math.min(r,g,b),range=Math.max(r,g,b)-white;
-    if(white<150&&a>235)continue;
-    const interior=nearestInterior(source,w,h,x,y,8);
-    if(interior){
-     const strength=clamp(((white-135)/105)+((255-a)/155),.28,1);
-     out[i]=Math.round(r+(interior[0]-r)*strength);out[i+1]=Math.round(g+(interior[1]-g)*strength);out[i+2]=Math.round(b+(interior[2]-b)*strength)
-    }else if(white>220&&range<34){out[i+3]=Math.round(a*.42)}
-   }
-   ctx.putImageData(frame,0,0);const finish=url=>{portraitCache.set(key,url);resolve(url)};if(canvas.toBlob)canvas.toBlob(blob=>finish(blob?URL.createObjectURL(blob):canvas.toDataURL("image/png")),"image/png");else finish(canvas.toDataURL("image/png"))
-  }catch(error){console.warn("LAST WITNESS portrait edge cleanup skipped",error);resolve("")}
+ $$(".ch4-p4-dialogue").forEach(box=>{
+  const img=$("img.portrait",box);if(!img)return;
+  const speaker=String($(".speaker",box)?.textContent||"").toLowerCase();let desired="";
+  if(speaker.startsWith("north")||speaker.includes("นอร์ธ")){desired=acceptedNorthPortrait();img.classList.add("north-portrait")}
+  else if(speaker.includes("dimas")){desired=versionedPortrait("dimas",img.getAttribute("src"));img.classList.add("dimas-portrait")}
+  else if(speaker.includes("arman")){desired=versionedPortrait("arman",img.getAttribute("src"));img.classList.add("arman-portrait")}
+  if(desired&&absoluteURL(img.getAttribute("src"))!==absoluteURL(desired))img.setAttribute("src",desired);
+  if(desired){img.classList.add("ch4-p4-portrait-verified");img.onerror=()=>{if(img.dataset.lwP4Fallback==="1")return;img.dataset.lwP4Fallback="1";if(speaker.includes("dimas"))img.src=PORTRAIT_BASE+"dimas/neutral.png?v="+PORTRAIT_VERSION;else if(speaker.includes("arman"))img.src=PORTRAIT_BASE+"arman/neutral.png?v="+PORTRAIT_VERSION}}
  })
 }
-function portraitSpeaker(image){return image.closest(".ch4-p4-dialogue")?.querySelector(".speaker")?.textContent||""}
-function processPortrait(image){
- if(!image||portraitJobs.has(image)||image.dataset.lwP4PortraitClean==="1")return;
- const speaker=portraitSpeaker(image);if(!/Dimas Wibowo|Arman Suryadi|North/.test(speaker))return;
- portraitJobs.add(image);image.classList.add("ch4-p4-professional-cut");
- if(speaker.includes("North"))image.classList.add("north-portrait");
- const run=async()=>{const url=await decontaminatePortrait(image);if(url){image.dataset.lwP4OriginalSrc=image.currentSrc||image.src;image.src=url}image.dataset.lwP4PortraitClean="1"};
- if(image.complete&&image.naturalWidth)run();else image.addEventListener("load",run,{once:true})
-}
-function scanPortraits(){$$('.ch4-p4-dialogue img.portrait').forEach(processPortrait)}
 
+function updateLanguage(){updateTitleLanguage();updateHUDLanguage();bindHUD();normalizePortraits();try{window.LastWitnessContentRegistry?.updateDots?.()}catch(_){} }
 function upgradeMarkup(){
- const approach=$("#"+APPROACH),location=$("#"+LOCATION),reveal=$("#"+REVEAL),complete=$("#"+COMPLETE);
- $(".ch4-p4-video-title",approach)?.remove();
- $$(".ch4-p4-video-shade",approach).forEach(node=>node.remove());
- $$(".ch4-p4-video-shade",reveal).forEach(node=>node.remove());
- if(location&&!$(".ch4-p4-phase-title-card",location)){
-  location.insertAdjacentHTML("afterbegin",'<div class="ch4-p4-phase-title-card" aria-live="polite"><div class="ch4-p4-phase-mark"><i></i><i></i><i></i></div><div id="ch4P4PhaseTitleEye" class="eyebrow"></div><h2 id="ch4P4PhaseTitleText"></h2><div class="ch4-p4-phase-rule"></div></div>')
- }
- if(complete&&!$(".ch4-p4-complete-sigil",complete)){
-  $(".ch4-p4-complete-card",complete)?.insertAdjacentHTML("afterbegin",'<div class="ch4-p4-complete-sigil" aria-hidden="true"><i></i><i></i><i></i></div>')
- }
- updateTitleLanguage();installProgress();bindCinematicControls();scanPortraits();syncProgress();scheduleAudioSync()
+ const approach=$("#"+APPROACH),location=$("#"+LOCATION),reveal=$("#"+REVEAL);
+ $(".ch4-p4-video-title",approach)?.remove();$$(".ch4-p4-video-shade",approach).forEach(node=>node.remove());$$(".ch4-p4-video-shade",reveal).forEach(node=>node.remove());
+ if(location&&!$(".ch4-p4-phase-title-card",location))location.insertAdjacentHTML("afterbegin",'<div class="ch4-p4-phase-title-card" aria-live="polite"><div id="ch4P4PhaseTitleEye" class="eyebrow"></div><h2 id="ch4P4PhaseTitleText"></h2><div class="ch4-p4-phase-rule"></div></div>');
+ installHUD();installProgress();updateLanguage();bindCinematicControls();normalizePortraits();syncProgress();scheduleAudioSync()
 }
 function bindCinematicControls(){
  const skip=$("#ch4P4ApproachSkip"),video=$("#ch4P4ApproachVideo"),returnButton=$("#ch4P4ReturnTitle");
- if(skip&&skip.dataset.lwP4RevisionBound!=="1"){
-  skip.dataset.lwP4RevisionBound="1";skip.addEventListener("click",finishVehicle,true)
- }
- if(video&&video.dataset.lwP4RevisionBound!=="1"){
-  video.dataset.lwP4RevisionBound="1";video.addEventListener("ended",finishVehicle,true);video.addEventListener("error",finishVehicle,true)
- }
- if(returnButton&&returnButton.dataset.lwP4RevisionBound!=="1"){
-  returnButton.dataset.lwP4RevisionBound="1";returnButton.addEventListener("click",()=>{clearTimeout(titleTimer);stopMedia($("#ch4P4Score"),true)},true)
+ if(skip&&skip.dataset.lwP4RevisionBound!==BUILD){skip.dataset.lwP4RevisionBound=BUILD;skip.addEventListener("click",finishVehicle,true)}
+ if(video&&video.dataset.lwP4RevisionBound!==BUILD){video.dataset.lwP4RevisionBound=BUILD;video.addEventListener("ended",finishVehicle,true);video.addEventListener("error",finishVehicle,true)}
+ if(returnButton&&returnButton.dataset.lwP4RevisionBound!==BUILD){returnButton.dataset.lwP4RevisionBound=BUILD;returnButton.addEventListener("click",()=>{clearTimeout(titleTimer);stopMedia($("#ch4P4Score"),true)},true)}
+}
+function setBuild(){const node=$("#settingsVersion");if(node&&SCREENS.has(active()))node.textContent="LAST WITNESS · BUILD "+BUILD}
+function contractStatus(){
+ const s=gs();return{
+  hud:HUD_SCREENS.every(id=>Boolean($("#"+id+" .ch4-p4-topbar .ch4-p4-save")&&$("#"+id+" .ch4-p4-topbar .ch4-p4-menu"))),
+  progress:[...SCREENS].every(id=>Boolean($("#"+id+" .ch4-p4-progress"))),
+  armanRegistered:Boolean(window.LastWitnessContentRegistry?.characters?.arman),
+  armanUnlocked:Boolean(s?.lwCharactersUnlocked?.includes?.("arman")),
+  armanUnread:Boolean(s?.lwCharactersUnread?.includes?.("arman")),
+  settingsAvailable:Boolean($("#settingsButton")&&!$("#settingsButton").disabled),
+  saveAvailable:Boolean(typeof manualSave==="function"||window.LastWitnessSaveManager?.open),
+  portraitsVerified:$$('.ch4-p4-dialogue img.portrait').every(img=>img.classList.contains('ch4-p4-portrait-verified')||!img.closest('.ch4-p4-dialogue:not(.hidden)')),
+  devPhases:Array.isArray(window.LastWitnessDeveloperPhaseNavigation?.phases)?window.LastWitnessDeveloperPhaseNavigation.phases.map(item=>item.phase):[]
  }
 }
-function recoverTitleOnRestore(){
- const p=ensurePhaseTitleState();if(active()===LOCATION&&p?.approachComplete&&!p.phaseTitleSeen&&!titleTransitioning)presentPhaseTitle(true)
-}
+function syncRuntime(){upgradeMarkup();recoverTitleOnRestore();releaseDeferredArman();normalizePortraits();syncProgress();scheduleAudioSync();if(active()==="title")stopMedia($("#ch4P4Score"),true);if(SCREENS.has(active()))setBuild()}
 function installObservers(){
- const game=$("#game");if(game){
-  let queued=false;const observer=new MutationObserver(()=>{if(queued)return;queued=true;requestAnimationFrame(()=>{queued=false;upgradeMarkup();recoverTitleOnRestore();scanPortraits();syncProgress();scheduleAudioSync();if(active()==="title")stopMedia($("#ch4P4Score"),true)})});
-  observer.observe(game,{subtree:true,childList:true,attributes:true,attributeFilter:["class","hidden"]})
- }
- document.addEventListener("click",()=>{setTimeout(()=>{scanPortraits();syncProgress();scheduleAudioSync();recoverTitleOnRestore()},20);setTimeout(()=>{scanPortraits();syncProgress()},380)},true);
+ const queue=()=>{requestAnimationFrame(syncRuntime)};
+ for(const id of SCREENS){const screen=$("#"+id);if(screen)new MutationObserver(queue).observe(screen,{attributes:true,attributeFilter:["class"]})}
+ const dialogue=$("#"+WORKSHOP+"Dialogue");if(dialogue)new MutationObserver(queue).observe(dialogue,{attributes:true,attributeFilter:["class"],childList:true,subtree:true});
+ document.addEventListener("click",()=>{setTimeout(syncRuntime,20);setTimeout(syncRuntime,380)},true);
  document.addEventListener("visibilitychange",()=>{if(document.hidden)stopMedia($("#ch4P4Score"),false);else scheduleAudioSync()});
- document.addEventListener("click",event=>{if(event.target.closest?.("[data-lang]"))setTimeout(()=>{updateTitleLanguage();upgradeMarkup()},0)},true);
+ document.addEventListener("click",event=>{if(event.target.closest?.("[data-lang]"))setTimeout(updateLanguage,0);if(event.target.closest?.("#developerMenuButton,#settingsVersion"))setTimeout(()=>window.LastWitnessDeveloperPhaseNavigation?.install?.(),0)},true);
  $("#musicRange")?.addEventListener("input",scheduleAudioSync,true);$("#soundToggle")?.addEventListener("change",scheduleAudioSync,true)
 }
-function setBuild(){const node=$("#settingsVersion");if(node&&SCREENS.has(active()))node.textContent="Build "+BUILD}
 function bind(){
- upgradeMarkup();installObservers();recoverTitleOnRestore();setBuild();
- document.addEventListener("click",()=>{if(SCREENS.has(active()))setBuild()},true);
- window.addEventListener("pagehide",()=>{for(const url of portraitCache.values())if(String(url).startsWith("blob:"))try{URL.revokeObjectURL(url)}catch(_){}},{once:true});
- window.LastWitnessChapter4Phase4Revision={installed:true,version:BUILD,syncProgress,syncAudio,processPortraits:scanPortraits}
+ installArmanUnlockGate();upgradeMarkup();installObservers();recoverTitleOnRestore();releaseDeferredArman();setBuild();
+ window.LastWitnessChapter4Phase4Revision={installed:true,version:BUILD,syncProgress,syncAudio,releaseDeferredArman,normalizePortraits,audioTarget:scoreTarget,contractStatus}
 }
 
 if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",bind,{once:true});else bind();

@@ -1,7 +1,7 @@
-/* LAST WITNESS - Legacy Compatibility Shim + Runtime Bootstrap 0.17.1
+/* LAST WITNESS - Legacy Compatibility Shim + Runtime Bootstrap 0.17.3
  * Loads approved localization and targeted QC before dynamic Chapter IV modules.
  * Existing Phase I through Phase III order is preserved. Phase IV 0.17.0 loads first,
- * followed by the owner-approved professional presentation revision 0.17.1,
+ * followed by the owner-approved consistency repair 0.17.3,
  * then the direct Phase III handoff and Developer Phase Navigation patches.
  */
 (function(){
@@ -46,12 +46,12 @@ script("js/engine/15-thai-localization.js?v=0152","lwThaiLocalizationScript",()=
    .catch(error=>console.error("LAST WITNESS The Man Behind the Alias failed to load",error))
  })
  .then(()=>{
-  stylesheet("css/chapter-04-phase-04-revision.css?v=0171","lwChapter04Phase04RevisionStyle");
+  stylesheet("css/chapter-04-phase-04-revision.css?v=0173","lwChapter04Phase04RevisionStyle");
   return script(
-   "js/chapters/chapter-04/04a-arman-encounter-revision.js?v=0171",
+   "js/chapters/chapter-04/04a-arman-encounter-revision.js?v=0173",
    "lwChapter04Phase04RevisionScript",
-   ()=>Boolean(window.LastWitnessChapter4Phase4Revision?.version==="0.17.1"&&window.LastWitnessChapter4Phase4Revision?.installed)
-  ).catch(error=>console.error("LAST WITNESS Phase IV professional revision failed to load",error))
+   ()=>Boolean(window.LastWitnessChapter4Phase4Revision?.version==="0.17.3"&&window.LastWitnessChapter4Phase4Revision?.installed)
+  ).catch(error=>console.error("LAST WITNESS Phase IV consistency repair failed to load",error))
  })
  .then(()=>script(
   "js/engine/19-ch4-phase3-direct-handoff.js?v=0170d2",
