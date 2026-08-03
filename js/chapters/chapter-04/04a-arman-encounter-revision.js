@@ -1,11 +1,11 @@
-/* LAST WITNESS - Chapter IV / Phase IV Scoped Defect Repair 0.17.4
+/* LAST WITNESS - Chapter IV / Phase IV Character Contract Repair 0.17.5
  * Repairs Phase IV presentation against the established Chapter IV contract.
  * Story, evidence, choices, ending-profile effects and Phase III handoff remain owned
  * by 04-arman-encounter.js 0.17.0.
  */
 (function(){
 "use strict";
-const BUILD="0.17.4";
+const BUILD="0.17.5";
 if(window.LastWitnessChapter4Phase4Revision?.version===BUILD&&window.LastWitnessChapter4Phase4Revision?.installed)return;
 
 const APPROACH="armanVehicleApproach";
@@ -191,8 +191,12 @@ function scheduleAudioSync(){clearTimeout(audioTimer);audioTimer=setTimeout(sync
 
 /* Match the existing Journal contract: unlock after Arman's first verified dialogue ends. */
 function armanStoryUnlockReady(){
- const p=phase(),stage=String(p?.stage||"");
- return Boolean(p?.revealComplete&&!['proxy-reveal','reveal','arman-intro'].includes(stage))
+ const p=phase(),stage=String(p?.stage||""),box=$("#"+WORKSHOP+"Dialogue");
+ const dialogueOpen=Boolean(box&&!box.classList.contains("hidden")&&!box.hidden&&getComputedStyle(box).display!=="none");
+ return Boolean(
+  active()===WORKSHOP&&p?.started===true&&p?.revealComplete===true&&!dialogueOpen&&
+  !['proxy-reveal','reveal','arman-intro'].includes(stage)
+ )
 }
 function installArmanUnlockGate(){
  const api=window.LastWitnessContentRegistry;if(!api?.unlockCharacter)return false;
@@ -208,7 +212,8 @@ function installArmanUnlockGate(){
  wrapped.__lwP4ArmanGate=BUILD;api.unlockCharacter=wrapped;return true
 }
 function releaseDeferredArman(){
- const s=gs(),p=phase(),api=window.LastWitnessContentRegistry;if(!s||!p||!api?.characters?.arman||!armanStoryUnlockReady())return false;
+ const s=gs(),p=phase(),api=window.LastWitnessContentRegistry;
+ if(active()!==WORKSHOP||!s||!p||!api?.characters?.arman||!armanStoryUnlockReady())return false;
  if(Array.isArray(s.lwCharactersUnlocked)&&s.lwCharactersUnlocked.includes("arman")){armanUnlockDeferred=false;try{api.updateDots?.()}catch(_){};return false}
  if(!registryUnlockOriginal&&!installArmanUnlockGate())return false;
  const fresh=registryUnlockOriginal("arman",{unread:true,source:"story"});
