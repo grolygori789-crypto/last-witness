@@ -1,18 +1,18 @@
-/* LAST WITNESS — Scoped Character Notification Contract 0.17.11
+/* LAST WITNESS — Scoped Character Notification Contract 0.17.12
  * Repairs owner-reported Character Journal notification gaps without replacing
  * the Character Registry, show(), showBadge(), Save Manager or chapter owners.
  *
  * Scope:
  * - Somchai + Kittisak: perform the existing Registry story unlock immediately
  *   after the first Police Station introduction dialogue finishes.
- * - Adrian: repair the Phase VII recovery race and the missing Phase VII HUD
- *   journal-alert target so the one-time toast and unread dot appear together.
+ * - Adrian: keep the Phase VII HUD marker hidden until Adrian is verified
+ *   and specifically unread, then show it with the one-time Character Added toast.
  * - Arman: keep the existing one-time notification visible above the Phase IV
  *   choice modal while preserving the existing unread-dot and Save/Load state.
  */
 (function(){
 "use strict";
-const VERSION="0.17.11";
+const VERSION="0.17.12";
 if(window.LastWitnessCharacterNotificationContract?.version===VERSION&&window.LastWitnessCharacterNotificationContract?.installed)return;
 
 const $=(selector,root=document)=>root.querySelector(selector);
@@ -118,10 +118,24 @@ function ensureAdrianHudDot(){
  }
  return dot
 }
+function adrianUnread(){
+ const s=gs();
+ return Boolean(Array.isArray(s?.lwCharactersUnread)&&s.lwCharactersUnread.includes(ADRIAN_ID))
+}
 function syncAdrianHudDot(){
  const dot=ensureAdrianHudDot();if(!dot)return false;
- try{window.LastWitnessContentRegistry?.updateDots?.()}catch(error){console.error("LAST WITNESS Adrian HUD unread-dot sync failed",error)}
- return dot.classList.contains("show")
+ /* Keep the global drawer/menu markers under the Registry owner, then override
+  * only the dynamically-created Hawker HUD marker. That marker must represent
+  * Adrian's verified unread state, not an unrelated stale unread entry carried
+  * into the scene by a Developer jump or an older save. */
+ try{window.LastWitnessContentRegistry?.updateDots?.()}catch(error){console.error("LAST WITNESS Character unread-dot sync failed",error)}
+ const s=gs();
+ const shouldShow=Boolean(
+  activeScreen()===ADRIAN_SCREEN&&adrianVerified()&&adrianUnread()&&
+  s?.journal?.seen===false&&!devCharacterUnlockActive()
+ );
+ dot.classList.toggle("show",shouldShow);
+ return shouldShow
 }
 function ensureAdrianState(){
  const s=gs();if(!s)return false;
@@ -275,11 +289,12 @@ function contractStatus(){
   adrianVerified:adrianVerified(),
   adrianDialogueClosed:adrianDialogueClosed(),
   adrianUnlocked:Boolean(s?.lwCharactersUnlocked?.includes?.(ADRIAN_ID)),
-  adrianUnread:Boolean(s?.lwCharactersUnread?.includes?.(ADRIAN_ID)),
+  adrianUnread:adrianUnread(),
   adrianNotified:adrianNotified(),
   adrianRepairCount,
   adrianHudDotExists:Boolean($("#"+ADRIAN_SCREEN+" .ch3-p7-menu .journal-alert")),
   adrianHudDotVisible:Boolean($("#"+ADRIAN_SCREEN+" .ch3-p7-menu .journal-alert.show")),
+  adrianHudDotEligible:Boolean(activeScreen()===ADRIAN_SCREEN&&adrianVerified()&&adrianUnread()&&s?.journal?.seen===false&&!devCharacterUnlockActive()),
   adrianHudDotRepairCount,
   devCharacterUnlockActive:devCharacterUnlockActive(),
   armanToastVisible:Boolean(badge?.classList.contains(ARMAN_TOAST_CLASS)&&badge.classList.contains("show")),
