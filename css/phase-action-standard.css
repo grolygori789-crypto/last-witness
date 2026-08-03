@@ -1,0 +1,135 @@
+/* LAST WITNESS — Free-standing Phase Action Standard 0.17.16
+ *
+ * Scope:
+ * - Free-standing investigation CTA buttons on scene screens only.
+ * - Horizontal geometry and mobile text fit.
+ * - Forensic Science bottom-stack correction for CHAIN OF CUSTODY.
+ *
+ * Explicitly out of scope:
+ * - Modal, evidence-panel, choice, completion-card, title, save/menu and
+ *   transition-specific controls.
+ * - Visibility, pointer events, state, progress, handlers, audio and routing.
+ */
+
+:root{
+  --lw-phase-action-max-width:590px;
+  --lw-phase-action-gutter:24px;
+  --lw-phase-action-min-height:56px;
+  --lw-phase-action-padding-block:12px;
+  --lw-phase-action-padding-inline:20px;
+}
+
+/* Owner-audited free-standing scene actions through Chapter IV Phase IV.
+ * .lw-phase-action is the opt-in contract for future phases.
+ */
+.lw-phase-action,
+#reviewEvidence,
+#reviewApartment,
+#reviewForensic,
+#reviewMedical,
+#openCh3Timeline,
+#ch3ChangiReview,
+#ch3OfficeReview,
+#ch3P5ReviewButton,
+#ch3P6PuzzleButton,
+#ch3P7CrossButton,
+#ch3P8Open,
+#ch3P9Action,
+#ch4P1Action,
+.ch4-p2-screen > .ch4-p2-action{
+  left:50%!important;
+  right:auto!important;
+  width:min(
+    calc(100% - (var(--lw-phase-action-gutter) * 2)),
+    var(--lw-phase-action-max-width)
+  )!important;
+  max-width:var(--lw-phase-action-max-width)!important;
+  min-width:0!important;
+  min-height:var(--lw-phase-action-min-height)!important;
+  margin-left:0!important;
+  margin-right:0!important;
+  padding:
+    var(--lw-phase-action-padding-block)
+    var(--lw-phase-action-padding-inline)!important;
+  box-sizing:border-box!important;
+  transform:translateX(-50%)!important;
+  transform-origin:center!important;
+  text-align:center!important;
+  white-space:normal!important;
+  overflow-wrap:anywhere;
+  line-height:1.28!important;
+}
+
+/* Preserve centring if a phase stylesheet adds a pressed-scale transform. */
+.lw-phase-action:active,
+#reviewEvidence:active,
+#reviewApartment:active,
+#reviewForensic:active,
+#reviewMedical:active,
+#openCh3Timeline:active,
+#ch3ChangiReview:active,
+#ch3OfficeReview:active,
+#ch3P5ReviewButton:active,
+#ch3P6PuzzleButton:active,
+#ch3P7CrossButton:active,
+#ch3P8Open:active,
+#ch3P9Action:active,
+#ch4P1Action:active,
+.ch4-p2-screen > .ch4-p2-action:active{
+  transform:translateX(-50%) scale(.99)!important;
+}
+
+/*
+ * Chapter II · Forensic Science
+ *
+ * Existing layout placed the scene label only six pixels below the action
+ * anchor. Because the label has its own line box, it entered the button area.
+ * This establishes a real bottom stack:
+ *
+ *   scene label
+ *   14px breathing space
+ *   56px action button
+ *   18px+ breathing space
+ *   progress / device safe area
+ */
+#forensic2{
+  --lw-forensic-action-bottom:82px;
+  --lw-forensic-label-gap:14px;
+}
+
+#forensic2 > #reviewForensic{
+  bottom:calc(var(--lw-forensic-action-bottom) + var(--bottom,14px))!important;
+}
+
+#forensic2 > #forensicSceneLabel{
+  z-index:12!important;
+  left:max(
+    var(--lw-phase-action-gutter),
+    calc((100% - var(--lw-phase-action-max-width)) / 2)
+  )!important;
+  right:auto!important;
+  bottom:calc(
+    var(--lw-forensic-action-bottom)
+    + var(--lw-phase-action-min-height)
+    + var(--lw-forensic-label-gap)
+    + var(--bottom)
+  )!important;
+  max-width:calc(100% - (var(--lw-phase-action-gutter) * 2))!important;
+  pointer-events:none;
+}
+
+/* Give very narrow phones more text room without losing visual balance. */
+@media (max-width:340px){
+  :root{
+    --lw-phase-action-gutter:16px;
+    --lw-phase-action-padding-inline:14px;
+  }
+}
+
+/* Low-height portrait devices keep the stack compact but non-overlapping. */
+@media (max-height:720px){
+  #forensic2{
+    --lw-forensic-action-bottom:76px;
+    --lw-forensic-label-gap:10px;
+  }
+}
