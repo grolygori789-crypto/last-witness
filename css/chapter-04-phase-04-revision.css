@@ -1,4 +1,4 @@
-/* LAST WITNESS — Chapter IV / Phase IV Scoped Defect Repair 0.17.4 */
+/* LAST WITNESS — Chapter IV / Phase IV Full-Game Recovery 0.17.6 */
 
 /* Owner-graded scenes and both videos render at source luminance. */
 .ch4-p4-video-screen video,
@@ -93,3 +93,6 @@ html[lang="th"] .ch4-p4-phase-title-card h2{letter-spacing:.01em;line-height:1.0
 #characterGrid [data-character="arman"]{overflow:hidden}
 #characterGrid [data-character="arman"] img[data-character-image="arman"]{object-fit:cover!important;object-position:center 12%!important;transform:scale(1.06);transform-origin:center 20%}
 #characterDetail img[data-detail-image="arman"]{object-fit:cover!important;object-position:center 10%!important}
+
+/* Dialogue-specific Arman scale: full head retained, upper torso prominent, stable canvas anchor. */
+.ch4-p4-dialogue .portrait.arman-portrait{transform:scale(1.07)!important;transform-origin:center top!important}

@@ -1,11 +1,11 @@
-/* LAST WITNESS - Chapter IV / Phase IV Character Contract Repair 0.17.5
+/* LAST WITNESS - Chapter IV / Phase IV Full-Game Recovery 0.17.6
  * Repairs Phase IV presentation against the established Chapter IV contract.
  * Story, evidence, choices, ending-profile effects and Phase III handoff remain owned
  * by 04-arman-encounter.js 0.17.0.
  */
 (function(){
 "use strict";
-const BUILD="0.17.5";
+const BUILD="0.17.6";
 if(window.LastWitnessChapter4Phase4Revision?.version===BUILD&&window.LastWitnessChapter4Phase4Revision?.installed)return;
 
 const APPROACH="armanVehicleApproach";

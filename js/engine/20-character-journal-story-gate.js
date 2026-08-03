@@ -1,94 +1,45 @@
-/* LAST WITNESS — Character Discovery Contract 0.17.5
- * Authoritative Journal timing guard for every implemented story character.
- *
- * Contract:
- * 1. Chapter I never exposes Character Journal or unread dots.
- * 2. Chapter II exposes the Journal only after North's first conversation ends.
- * 3. A new character is unlocked after their first introduction dialogue ends.
- * 4. A first story unlock produces one notification and one unread red dot.
- * 5. Opening Character Journal clears the unread dot.
- * 6. Developer unlocks are silent and never create unread dots.
- *
- * This layer uses the active screen as story authority. state.chapter is only a
- * fallback because restored or partially-reset saves can carry a stale chapter.
+/* LAST WITNESS — Safe Character Journal Progression Gate 0.17.6
+ * Recovery goals:
+ * - preserve the authoritative 06-content-registry-dev.js character truth
+ * - keep Character Journal hidden throughout Chapter I
+ * - reveal it after North's first Chapter II conversation completes
+ * - keep Developer Unlock data silent behind the normal early-story gate
+ * - defer Maya's existing early notification until her first conversation ends
+ * - never poll and never observe document.body
  */
 (function(){
 "use strict";
-const VERSION="0.17.5";
+const VERSION="0.17.6";
 if(window.LastWitnessCharacterJournalStoryGate?.version===VERSION&&window.LastWitnessCharacterJournalStoryGate?.installed)return;
 
 const $=(selector,root=document)=>root.querySelector(selector);
 const $$=(selector,root=document)=>Array.from(root.querySelectorAll(selector));
 const gs=()=>{try{return state}catch(_){return window.state||null}};
 const active=()=>$(".screen.active")?.id||gs()?.screen||"";
-const normal=value=>String(value||"").trim().toLowerCase();
-
-const CHAPTER_ONE=new Set(["office","crime","phone","summary","deduction"]);
-const CHAPTER_TWO=new Set(["office2","apartment2","cafe2","police2","forensic2","medical2","chapter2Complete"]);
-const NON_STORY=new Set(["","splash","title","chapterIntro"]);
-
-const CONTRACTS={
- north:{screens:new Set(["office2"]),aliases:["north","นอร์ธ"],kind:"north"},
- elena:{screens:new Set(["cafe2"]),aliases:["elena","เอเลนา"]},
- somchai:{screens:new Set(["police2"]),aliases:["somchai","สมชาย"],kind:"police"},
- kittisak:{screens:new Set(["police2"]),aliases:["kittisak","kittisak siriwat","กิตติศักดิ์","กิตติศักดิ์ ศิริวัฒน์"],kind:"police"},
- ratchata:{screens:new Set(["medical2"]),aliases:["ratchata","ratchata (dr. singh)","รัชตะ","ดร. ซิงห์"]},
- cheryl:{screens:new Set(["chapter3SingaporeOffice"]),aliases:["inspector cheryl goh","cheryl goh","สารวัตร cheryl goh"]},
- farid:{screens:new Set(["chapter3SingaporeOffice"]),aliases:["farid rahman","farid rahman (spf)","ฟาริด ราห์มาน"]},
- adrian:{screens:new Set(["chapter3HawkerCentre"]),aliases:["adrian tan","adrian tan wei ming"]},
- maya:{screens:new Set(["jakartaAirport"]),aliases:["inspector maya pranoto","maya pranoto","สารวัตร maya pranoto"]},
- arman:{screens:new Set(["armanWorkshop"]),aliases:["arman suryadi"]}
-};
-const CONTRACT_IDS=Object.keys(CONTRACTS);
-
-let devUnlockSession=false;
-let apiWrapped=false;
-let showBadgeWrapped=false;
-let syncQueued=false;
-let bodyObserver=null;
-let dialogueObserver=null;
-let originalUnlockCharacter=null;
-let originalUpdateVisibility=null;
-let originalUpdateDots=null;
-let originalUnlockChapter2North=null;
-let originalUnlockPoliceCast=null;
+const CHAPTER_ONE=new Set(["office","crime","phone","summary","deduction","chapter"]);
+const EARLY_CHAPTER_TWO=new Set(["office2"]);
+const MAYA_DIALOGUE="#jakartaAirportDialogue";
+const RATCHATA_DIALOGUE="#medicalDialogue";
+let originalShow=null;
 let originalShowBadge=null;
-let internalFinalizeDepth=0;
-let lastEarlySanitizeKey="";
-const dialogueSessions=new WeakMap();
-const pendingIntroductions=new Set();
-const confirmedDiscoveries=new Set();
-const notificationLog=[];
+let mayaPending=null;
+let ratchataPending=null;
+let syncQueued=false;
 
-function screenChapter(screen=active()){
- if(NON_STORY.has(screen))return 0;
- if(CHAPTER_ONE.has(screen))return 1;
- if(CHAPTER_TWO.has(screen))return 2;
- if(screen.startsWith("chapter3"))return 3;
- if(screen.startsWith("chapter4")||screen.startsWith("jakarta")||screen.startsWith("arman"))return 4;
- const fallback=Number(gs()?.chapter||0);
- return Number.isFinite(fallback)?fallback:0
+function language(){return gs()?.language==="th"?"th":"en"}
+function chapterOneScreen(screen=active()){return CHAPTER_ONE.has(screen)}
+function earlyChapterTwoScreen(screen=active()){
+ return EARLY_CHAPTER_TWO.has(screen)&&gs()?.flags?.chapter2_character_feature_unlocked!==true
 }
-function northJournalUnlocked(){return gs()?.flags?.chapter2_character_feature_unlocked===true}
-function isDevModeState(){return gs()?.flags?.developer_character_unlock_all===true}
-function storyAllowsJournal(){
- const chapter=screenChapter();
- if(devUnlockSession)return true;
- if(chapter>=3)return true;
- return chapter===2&&northJournalUnlocked()
+function storyAllowsJournal(screen=active()){
+ if(chapterOneScreen(screen)||earlyChapterTwoScreen(screen))return false;
+ if(screen==="splash"||screen==="title"||screen==="chapterIntro"||!screen)return false;
+ const s=gs();
+ if(Number(s?.chapter)>=3)return true;
+ return Boolean(Number(s?.chapter)===2&&s?.flags?.chapter2_character_feature_unlocked===true)
 }
-function earlyStoryGate(){
- if(devUnlockSession)return false;
- const chapter=screenChapter();
- return chapter===1||(chapter===2&&!northJournalUnlocked())
-}
-function shouldHideOutsideStory(){return screenChapter()===0&&!devUnlockSession}
-function setButtonVisible(button,visible){
- if(!button)return;
- const mode=visible?"1":"0";
- const actual=Boolean(!button.hidden&&button.style.display!=="none"&&button.style.visibility!=="hidden");
- if(button.dataset.lwCharacterContractVisible===mode&&actual===visible)return;
- button.dataset.lwCharacterContractVisible=mode;
+function setMenuButtonVisible(visible){
+ const button=$("#charactersButton");if(!button)return;
  button.hidden=!visible;button.disabled=!visible;button.toggleAttribute("aria-hidden",!visible);
  if(visible){
   button.removeAttribute("hidden");
@@ -102,269 +53,198 @@ function setButtonVisible(button,visible){
   button.style.setProperty("visibility","hidden","important");
   button.style.setProperty("opacity","0","important");
   button.style.setProperty("pointer-events","none","important");
-  button.style.setProperty("margin-top","0","important");
-  button.style.setProperty("min-height","0","important");
   button.style.setProperty("height","0","important");
+  button.style.setProperty("min-height","0","important");
+  button.style.setProperty("margin-top","0","important");
   button.style.setProperty("padding","0","important");
   button.style.setProperty("border","0","important");
   button.style.setProperty("overflow","hidden","important")
  }
 }
-function enforceDOM(){
- const allowed=storyAllowsJournal(),s=gs();
- setButtonVisible($("#charactersButton"),allowed);
- const showDot=Boolean(allowed&&Array.isArray(s?.lwCharactersUnread)&&s.lwCharactersUnread.length>0&&s?.journal?.seen===false);
- $$(".journal-alert").forEach(dot=>dot.classList.toggle("show",showDot));
+function clearCharacterBadgeDuringEarlyStory(){
+ if(storyAllowsJournal())return;
+ const badge=$("#badge");if(!badge)return;
+ const text=String(badge.textContent||"").toLowerCase();
+ if(text.includes("character added")||text.includes("เพิ่มตัวละคร")){
+  badge.textContent="";badge.classList.remove("show")
+ }
+}
+function updateDots(visible){
+ const s=gs();
+ const baseUnread=Boolean(Array.isArray(s?.lwCharactersUnread)&&s.lwCharactersUnread.length&&s?.journal?.seen===false);
+ const mayaUnread=Boolean(s?.chapter4?.phase2?.mayaUnread===true);
+ const show=Boolean(visible&&(baseUnread||mayaUnread));
+ $$(".journal-alert").forEach(dot=>dot.classList.toggle("show",show))
+}
+function correctEarlyChapterNumber(){
+ const s=gs(),screen=active();if(!s)return;
+ if(chapterOneScreen(screen))s.chapter=1;
+ else if(EARLY_CHAPTER_TWO.has(screen))s.chapter=2
+}
+function rehydrateDeveloperCharacters(){
+ const s=gs(),api=window.LastWitnessContentRegistry;
+ if(!s?.flags?.lw_dev_characters_prepared||!storyAllowsJournal()||!api?.characters||!api?.unlockCharacter)return;
+ for(const id of Object.keys(api.characters)){
+  try{api.unlockCharacter(id,{unread:false,source:"dev",quiet:true})}catch(_){}
+ }
+ s.lwCharactersUnread=[];if(s.journal)s.journal.seen=true;
+ try{api.renderCharacters?.(true)}catch(_){}
+}
+function enforce(){
+ syncQueued=false;sanitizeLoadedEarlyState();correctEarlyChapterNumber();
+ const allowed=storyAllowsJournal();
+ rehydrateDeveloperCharacters();
+ try{window.LastWitnessContentRegistry?.updateVisibility?.()}catch(_){}
+ setMenuButtonVisible(allowed);
+ if(gs())gs().lwJournalEnabled=allowed;
+ updateDots(allowed);clearCharacterBadgeDuringEarlyStory();maybeReleaseMaya();maybeReleaseRatchata();
  return allowed
 }
-function forbiddenEarlyState(){
- const s=gs();if(!s)return false;
- const unlocked=Array.isArray(s.lwCharactersUnlocked)?s.lwCharactersUnlocked:[];
- const unread=Array.isArray(s.lwCharactersUnread)?s.lwCharactersUnread:[];
- return Boolean(
-  northJournalUnlocked()||s.lwJournalEnabled===true||s.journal?.unlocked===true||unread.length||
-  unlocked.some(id=>id!=="benedict")||s.flags?.developer_character_unlock_all===true||
-  s.flags?.ch4_arman_identity_verified===true
- )
+function queueEnforce(){
+ if(syncQueued)return;syncQueued=true;
+ requestAnimationFrame(enforce)
 }
-function sanitizeEarlyStory(force=false){
- const api=window.LastWitnessContentRegistry,s=gs();
- if(!api||!s||!earlyStoryGate())return false;
- const key=active()+"|"+String(s.checkpoint||"")+"|"+String(s.flags?.chapter2_character_feature_unlocked);
- if(!force&&!forbiddenEarlyState()&&lastEarlySanitizeKey===key)return false;
- lastEarlySanitizeKey=key;
- try{api.resetForChapter2?.()}catch(error){console.error("LAST WITNESS Character Journal early-story reset failed",error)}
- s.flags=s.flags||{};
- delete s.flags.developer_character_unlock_all;
- delete s.flags.ch4_arman_identity_verified;
- s.lwJournalEnabled=false;
- s.lwCharactersUnlocked=Array.isArray(s.lwCharactersUnlocked)?s.lwCharactersUnlocked.filter(id=>id==="benedict"):[];
- s.lwCharactersUnread=[];
- s.characters=s.characters||{};
- for(const name of ["North","Elena","Somchai","Kittisak","Ratchata","Cheryl Goh","Farid Rahman","Adrian Tan","Inspector Maya Pranoto","Arman Suryadi"])s.characters[name]=false;
- s.journal=Object.assign(s.journal||{},{unlocked:false,seen:true,introShown:false});
- pendingIntroductions.clear();
- confirmedDiscoveries.clear();
- try{api.renderCharacters?.(true);api.updateDots?.()}catch(_){}
- enforceDOM();
+function sanitizeLoadedEarlyState(){
+ const s=gs(),api=window.LastWitnessContentRegistry;if(!s||!chapterOneScreen())return false;
+ const contaminated=Boolean(
+  Number(s.chapter)!==1||s.lwJournalEnabled===true||s.journal?.unlocked===true||
+  s.flags?.chapter2_character_feature_unlocked===true||s.flags?.ch4_arman_identity_verified===true||
+  (Array.isArray(s.lwCharactersUnread)&&s.lwCharactersUnread.length)
+ );
+ if(!contaminated)return false;
+ try{api?.resetForChapter2?.()}catch(_){}
+ s.chapter=1;s.flags=s.flags||{};delete s.flags.ch4_arman_identity_verified;delete s.flags.lw_dev_characters_prepared;
+ s.lwJournalEnabled=false;s.lwCharactersUnread=[];
+ if(s.journal)Object.assign(s.journal,{unlocked:false,seen:true,introShown:false});
  return true
 }
-function characterIdFromText(text){
- const value=normal(text);
- if(!value)return"";
- for(const [id,contract] of Object.entries(CONTRACTS)){
-  if(contract.aliases.some(alias=>value===normal(alias)||value.startsWith(normal(alias)+" ")||value.includes(normal(alias))))return id
+function resetForNewGame(){
+ const s=gs(),api=window.LastWitnessContentRegistry;if(!s)return;
+ try{api?.resetForChapter2?.()}catch(_){}
+ s.chapter=1;s.progress=0;s.flags=s.flags||{};
+ delete s.flags.lw_dev_characters_prepared;delete s.flags.ch4_arman_identity_verified;
+ delete s.chapter3;delete s.chapter4;delete s.endingProfile;
+ s.lwJournalEnabled=false;s.lwCharactersUnread=[];
+ if(s.journal)Object.assign(s.journal,{unlocked:false,seen:true,introShown:false});
+ mayaPending=null;ratchataPending=null;clearCharacterBadgeDuringEarlyStory();enforce()
+}
+function preserveHiddenDeveloperUnlock(){
+ const s=gs(),api=window.LastWitnessContentRegistry;if(!s||storyAllowsJournal())return;
+ const unlocked=Array.isArray(s.lwCharactersUnlocked)?[...s.lwCharactersUnlocked]:[];
+ const characterFlags=Object.assign({},s.characters||{});
+ try{api?.resetForChapter2?.()}catch(_){}
+ s.flags=s.flags||{};s.flags.developer_character_unlock_all=true;s.flags.lw_dev_characters_prepared=true;
+ s.lwCharactersUnlocked=unlocked;s.lwCharactersUnread=[];s.characters=characterFlags;
+ s.lwJournalEnabled=false;
+ if(s.journal)Object.assign(s.journal,{unlocked:false,seen:true,introShown:false});
+ enforce()
+}
+function dialogueVisible(box){return Boolean(box&&!box.classList.contains("hidden")&&!box.hidden&&getComputedStyle(box).display!=="none")}
+function characterToast(text,name){const value=String(text||"").toLowerCase();return value.includes(name)&&(value.includes("character added")||value.includes("เพิ่มตัวละคร"))}
+function mayaToast(text){return characterToast(text,"maya pranoto")}
+function ratchataToast(text){const value=String(text||"").toLowerCase();return (value.includes("ratchata")||value.includes("รัชตะ"))&&(value.includes("character added")||value.includes("เพิ่มตัวละคร"))}
+function hideMayaCard(){
+ const card=$("#characterGrid [data-character='maya']");if(card)card.style.setProperty("display","none","important")
+}
+function showMayaCard(){
+ const card=$("#characterGrid [data-character='maya']");if(card)card.style.removeProperty("display")
+}
+function hideRatchataCard(){const card=$("#characterGrid [data-character='ratchata']");if(card)card.style.setProperty("display","none","important")}
+function showRatchataCard(){const card=$("#characterGrid [data-character='ratchata']");if(card)card.style.removeProperty("display")}
+function queueMayaNotification(message,args){
+ const s=gs(),p=s?.chapter4?.phase2;if(!s||!p)return false;
+ mayaPending={message,args};s.flags=s.flags||{};s.flags.lw_maya_notification_pending=true;
+ p.mayaUnread=false;hideMayaCard();
+ $$(".journal-alert").forEach(dot=>dot.classList.remove("show"));
+ try{if(typeof autoSave==="function")autoSave()}catch(_){}
+ return true
+}
+function queueRatchataNotification(message,args){
+ const s=gs();if(!s)return false;
+ ratchataPending={message,args};s.flags=s.flags||{};s.flags.lw_ratchata_notification_pending=true;
+ s.lwCharactersUnread=(s.lwCharactersUnread||[]).filter(id=>id!=="ratchata");
+ if(s.journal&&s.lwCharactersUnread.length===0)s.journal.seen=true;
+ hideRatchataCard();updateDots(storyAllowsJournal());
+ try{if(typeof autoSave==="function")autoSave()}catch(_){}
+ return true
+}
+function maybeReleaseMaya(){
+ const s=gs(),p=s?.chapter4?.phase2;if(!s||!p)return false;
+ if(!mayaPending&&s.flags?.lw_maya_notification_pending===true){
+  mayaPending={message:language()==="th"?"เพิ่มตัวละคร: สารวัตร Maya Pranoto":"Character added: Inspector Maya Pranoto",args:[]}
  }
- return""
+ if(!mayaPending||active()!=="jakartaAirport")return false;
+ const box=$(MAYA_DIALOGUE);if(!box||dialogueVisible(box))return false;
+ p.mayaUnread=true;s.journal=s.journal||{};s.journal.seen=false;
+ s.flags.lw_maya_notification_pending=false;s.flags.lw_maya_notification_shown=true;
+ showMayaCard();
+ const pending=mayaPending;mayaPending=null;
+ try{originalShowBadge?.(pending.message,...(pending.args||[]))}catch(_){}
+ try{window.LastWitnessContentRegistry?.updateDots?.()}catch(_){}
+ $$(".journal-alert").forEach(dot=>dot.classList.add("show"));
+ try{if(typeof autoSave==="function")autoSave()}catch(_){}
+ return true
 }
-function sessionScreenAllowed(id,screen){return Boolean(CONTRACTS[id]?.screens?.has(screen))}
-function characterDialogueCurrentlyOpen(id){
- return $$(".dialogue").some(box=>dialogueVisible(box)&&characterIdFromText(box.querySelector(".speaker")?.textContent||"")===id)
-}
-function characterUnlocked(id){return Boolean(gs()?.lwCharactersUnlocked?.includes?.(id))}
-function removePrematureUnlock(id){
- const s=gs();if(!s||!CONTRACT_IDS.includes(id))return;
- if(Array.isArray(s.lwCharactersUnlocked))s.lwCharactersUnlocked=s.lwCharactersUnlocked.filter(value=>value!==id);
- if(Array.isArray(s.lwCharactersUnread))s.lwCharactersUnread=s.lwCharactersUnread.filter(value=>value!==id);
- if(id==="arman"){
-  if(s.characters)s.characters["Arman Suryadi"]=false;
-  if(s.flags)delete s.flags.ch4_arman_identity_verified
+function maybeReleaseRatchata(){
+ const s=gs();if(!s)return false;
+ if(!ratchataPending&&s.flags?.lw_ratchata_notification_pending===true){
+  ratchataPending={message:language()==="th"?"เพิ่มตัวละคร: รัชตะ (ดร. ซิงห์)":"Character added: Ratchata (Dr. Singh)",args:[]}
  }
- if(id==="maya"&&s.characters)s.characters["Inspector Maya Pranoto"]=false;
-}
-function dialogueVisible(box){
- if(!box||box.classList.contains("hidden")||box.hidden)return false;
- const style=getComputedStyle(box);return style.display!=="none"&&style.visibility!=="hidden"
-}
-function recordDialogue(box){
- if(!box?.classList?.contains("dialogue"))return;
- const visible=dialogueVisible(box),speaker=box.querySelector(".speaker")?.textContent||"",id=characterIdFromText(speaker);
- let session=dialogueSessions.get(box);
- if(visible){
-  if(!session){session={screen:box.closest(".screen")?.id||active(),ids:new Set(),startedAt:Date.now()};dialogueSessions.set(box,session)}
-  if(id&&sessionScreenAllowed(id,session.screen)&&!confirmedDiscoveries.has(id)){
-   session.ids.add(id);pendingIntroductions.add(id);
-   if(characterUnlocked(id)){removePrematureUnlock(id);try{window.LastWitnessContentRegistry?.renderCharacters?.(true)}catch(_){}}
-  }
-  return
- }
- if(session){
-  dialogueSessions.delete(box);
-  for(const discoveredId of session.ids)pendingIntroductions.delete(discoveredId);
-  finalizeSession(session)
- }
-}
-function finalizeSession(session){
- if(!session?.ids?.size)return;
- queueMicrotask(()=>{
-  const ids=[...session.ids].filter(id=>sessionScreenAllowed(id,session.screen));
-  if(ids.includes("north"))finalizeCharacter("north",session.screen);
-  if(ids.includes("somchai")||ids.includes("kittisak"))finalizePolice(session.screen);
-  for(const id of ids){if(id!=="north"&&id!=="somchai"&&id!=="kittisak")finalizeCharacter(id,session.screen)}
-  queueSync()
- })
-}
-function validArmanContext(){
- const p=gs()?.chapter4?.phase4,stage=String(p?.stage||"");
- return active()==="armanWorkshop"&&p?.started===true&&p?.revealComplete===true&&!pendingIntroductions.has("arman")&&!['proxy-reveal','reveal','arman-intro'].includes(stage)
-}
-function validUnlockContext(id,screen=active()){
- if(devUnlockSession)return true;
- if(!CONTRACT_IDS.includes(id))return true;
- if(!sessionScreenAllowed(id,screen))return false;
- if(id==="arman")return validArmanContext();
- return !pendingIntroductions.has(id)&&!characterDialogueCurrentlyOpen(id)
-}
-function finalizeCharacter(id,screen){
- const api=window.LastWitnessContentRegistry;if(!api||!sessionScreenAllowed(id,screen))return false;
- if(id==="arman"&&!validArmanContext())return false;
- if(characterUnlocked(id)){confirmedDiscoveries.add(id);return false}
- internalFinalizeDepth++;
- try{
-  const fresh=id==="north"?Boolean(api.unlockChapter2North?.({showToast:true})):Boolean(api.unlockCharacter?.(id,{unread:true,source:"story"}));
-  if(characterUnlocked(id))confirmedDiscoveries.add(id);
-  return fresh
- }finally{internalFinalizeDepth--}
-}
-function finalizePolice(screen){
- const api=window.LastWitnessContentRegistry;
- if(!api||screen!=="police2")return false;
- if(characterUnlocked("somchai")&&characterUnlocked("kittisak")){confirmedDiscoveries.add("somchai");confirmedDiscoveries.add("kittisak");return false}
- internalFinalizeDepth++;
- try{
-  const fresh=Boolean(api.unlockPoliceCast?.());
-  if(characterUnlocked("somchai"))confirmedDiscoveries.add("somchai");
-  if(characterUnlocked("kittisak"))confirmedDiscoveries.add("kittisak");
-  return fresh
- }finally{internalFinalizeDepth--}
-}
-function characterNotification(text){
- const value=normal(text);
- if(!value)return"";
- if(value.includes("character added")||value.includes("เพิ่มตัวละคร")||value.includes("character journal updated")||value.includes("อัปเดต character journal"))return characterIdFromText(value)||"character";
- return""
+ if(!ratchataPending||active()!=="medical2"||s.medical?.introComplete!==true)return false;
+ const box=$(RATCHATA_DIALOGUE);if(!box||dialogueVisible(box))return false;
+ s.lwCharactersUnread=Array.from(new Set([...(s.lwCharactersUnread||[]),"ratchata"]));
+ s.journal=s.journal||{};s.journal.seen=false;s.flags.lw_ratchata_notification_pending=false;s.flags.lw_ratchata_notification_shown=true;
+ showRatchataCard();const pending=ratchataPending;ratchataPending=null;
+ try{originalShowBadge?.(pending.message,...(pending.args||[]))}catch(_){}
+ try{window.LastWitnessContentRegistry?.updateDots?.()}catch(_){};updateDots(storyAllowsJournal());
+ try{if(typeof autoSave==="function")autoSave()}catch(_){}
+ return true
 }
 function wrapShowBadge(){
- if(showBadgeWrapped||typeof window.showBadge!=="function")return false;
- originalShowBadge=window.showBadge.bind(window);
- window.showBadge=function(message,...rest){
-  const id=characterNotification(message);
-  if(id){
-   const invalid=devUnlockSession||earlyStoryGate()||shouldHideOutsideStory()||(id!=="character"&&!validUnlockContext(id));
-   if(invalid){notificationLog.push({message:String(message),screen:active(),suppressed:true,time:Date.now()});return false}
-   notificationLog.push({message:String(message),screen:active(),suppressed:false,time:Date.now()})
+ if(typeof window.showBadge!=="function"||window.showBadge.__lwSafeCharacterGate===VERSION)return;
+ originalShowBadge=window.showBadge;
+ const wrapped=function(message,...args){
+  if(mayaToast(message)){
+   if(gs()?.flags?.lw_maya_notification_shown===true)return;
+   if(dialogueVisible($(MAYA_DIALOGUE))&&queueMayaNotification(message,args))return
   }
-  return originalShowBadge(message,...rest)
+  if(ratchataToast(message)){
+   if(gs()?.flags?.lw_ratchata_notification_shown===true)return;
+   if(queueRatchataNotification(message,args))return
+  }
+  return originalShowBadge.apply(this,[message,...args])
  };
- window.showBadge.__lwCharacterContract=VERSION;showBadgeWrapped=true;return true
+ wrapped.__lwSafeCharacterGate=VERSION;window.showBadge=wrapped
 }
-function wrapAPI(){
- const api=window.LastWitnessContentRegistry;if(!api)return false;
- if(!apiWrapped){
-  originalUnlockCharacter=api.unlockCharacter?.bind(api)||null;
-  originalUpdateVisibility=api.updateVisibility?.bind(api)||null;
-  originalUpdateDots=api.updateDots?.bind(api)||null;
-  originalUnlockChapter2North=api.unlockChapter2North?.bind(api)||null;
-  originalUnlockPoliceCast=api.unlockPoliceCast?.bind(api)||null;
-  if(originalUnlockCharacter){
-   const wrapped=function(id,opt={}){
-    const source=opt?.source||"";
-    if(source==="dev"&&!devUnlockSession)return false;
-    if(source==="story"&&CONTRACT_IDS.includes(id)&&internalFinalizeDepth===0){
-     if(!validUnlockContext(id))return false
-    }
-    const result=originalUnlockCharacter(id,opt);queueSync();return result
-   };
-   wrapped.__lwCharacterContract=VERSION;api.unlockCharacter=wrapped
-  }
-
-  if(originalUnlockChapter2North){
-   api.unlockChapter2North=function(options={}){
-    if(!devUnlockSession&&internalFinalizeDepth===0&&(active()!=="office2"||pendingIntroductions.has("north")))return false;
-    const result=originalUnlockChapter2North(options);queueSync();return result
-   }
-  }
-  if(originalUnlockPoliceCast){
-   api.unlockPoliceCast=function(...args){
-    if(!devUnlockSession&&internalFinalizeDepth===0&&(active()!=="police2"||pendingIntroductions.has("somchai")||pendingIntroductions.has("kittisak")))return false;
-    const result=originalUnlockPoliceCast(...args);queueSync();return result
-   }
-  }
-  if(originalUpdateVisibility)api.updateVisibility=function(){const result=originalUpdateVisibility();enforceDOM();return result};
-  if(originalUpdateDots)api.updateDots=function(){const result=originalUpdateDots();enforceDOM();return result};
-  apiWrapped=true
- }
- wrapShowBadge();return true
-}
-function scanDialogues(){
- $$(".dialogue").forEach(recordDialogue);
- for(const id of pendingIntroductions){
-  if(characterUnlocked(id)){removePrematureUnlock(id);try{window.LastWitnessContentRegistry?.renderCharacters?.(true)}catch(_){}}
- }
-}
-function auditCharacters(){
- const s=gs(),screen=active();
- return Object.fromEntries(CONTRACT_IDS.map(id=>[id,{
-  unlocked:Boolean(s?.lwCharactersUnlocked?.includes?.(id)),
-  unread:Boolean(s?.lwCharactersUnread?.includes?.(id)),
-  pending:pendingIntroductions.has(id),confirmed:confirmedDiscoveries.has(id),
-  validHere:validUnlockContext(id,screen),
-  screens:[...CONTRACTS[id].screens]
- }]))
-}
-function sync(){
- syncQueued=false;wrapAPI();scanDialogues();
- if(earlyStoryGate())sanitizeEarlyStory();else lastEarlySanitizeKey="";
- if(devUnlockSession)for(const id of gs()?.lwCharactersUnlocked||[])if(CONTRACT_IDS.includes(id))confirmedDiscoveries.add(id);
- enforceDOM()
-}
-function queueSync(){
- if(syncQueued)return;syncQueued=true;
- requestAnimationFrame(()=>{sync();setTimeout(sync,70)})
-}
-function markExplicitDevUnlock(){
- devUnlockSession=true;lastEarlySanitizeKey="";
- try{sessionStorage.setItem("lastWitness.devCharacterUnlockSession","1")}catch(_){}
- queueSync()
-}
-function clearDevSession(){
- devUnlockSession=false;lastEarlySanitizeKey="";
- try{sessionStorage.removeItem("lastWitness.devCharacterUnlockSession")}catch(_){}
- queueSync()
+function wrapShow(){
+ if(typeof window.show!=="function"||window.show.__lwSafeCharacterGate===VERSION)return;
+ originalShow=window.show;
+ const wrapped=function(screen){const result=originalShow.apply(this,arguments);queueEnforce();return result};
+ wrapped.__lwSafeCharacterGate=VERSION;window.show=wrapped
 }
 function bindClicks(){
  document.addEventListener("click",event=>{
-  if(event.target.closest?.("#devUnlockCharacters")){markExplicitDevUnlock();return}
-  if(event.target.closest?.("#newGame,#restart")){clearDevSession();setTimeout(()=>sanitizeEarlyStory(true),80);return}
-  if(event.target.closest?.("#charactersButton")&&!storyAllowsJournal()){
-   event.preventDefault();event.stopPropagation();event.stopImmediatePropagation();enforceDOM();return
+  const target=event.target;
+  if(target.closest?.("#newGame")){setTimeout(resetForNewGame,0);return}
+  if(target.closest?.("#devUnlockCharacters")){setTimeout(preserveHiddenDeveloperUnlock,0);return}
+  if(target.closest?.(MAYA_DIALOGUE)){setTimeout(()=>{maybeReleaseMaya();enforce()},0);return}
+  if(target.closest?.(RATCHATA_DIALOGUE)){setTimeout(()=>{maybeReleaseRatchata();enforce()},0);return}
+  if(target.closest?.("#charactersButton")&&!storyAllowsJournal()){
+   event.preventDefault();event.stopPropagation();event.stopImmediatePropagation();enforce();return
   }
-  setTimeout(queueSync,0)
+  if(target.closest?.(".menuButton,#resume,#settingsButton,#titleButton,#restart"))queueEnforce()
  },true)
 }
-function bindObservers(){
- bodyObserver?.disconnect();dialogueObserver?.disconnect();
- bodyObserver=new MutationObserver(queueSync);
- bodyObserver.observe(document.body,{subtree:true,childList:true,attributes:true,attributeFilter:["class","hidden","style"]});
- dialogueObserver=new MutationObserver(records=>{
-  const boxes=new Set();
-  for(const record of records){const box=record.target.closest?.(".dialogue")||(record.target.classList?.contains("dialogue")?record.target:null);if(box)boxes.add(box)}
-  boxes.forEach(recordDialogue);queueSync()
- });
- $$(".dialogue").forEach(box=>dialogueObserver.observe(box,{subtree:true,childList:true,attributes:true,attributeFilter:["class","hidden","style"]}))
-}
 function bind(){
- try{devUnlockSession=sessionStorage.getItem("lastWitness.devCharacterUnlockSession")==="1"}catch(_){}
- for(const id of gs()?.lwCharactersUnlocked||[])if(CONTRACT_IDS.includes(id))confirmedDiscoveries.add(id);
- wrapAPI();bindClicks();bindObservers();sync();
+ wrapShowBadge();wrapShow();bindClicks();sanitizeLoadedEarlyState();enforce();
+ document.addEventListener("visibilitychange",()=>{if(!document.hidden)queueEnforce()});
  window.LastWitnessCharacterJournalStoryGate={
-  installed:true,version:VERSION,sync,storyAllowsJournal,earlyStoryGate,screenChapter,
-  markExplicitDevUnlock,clearDevSession,auditCharacters,
+  installed:true,version:VERSION,enforce,storyAllowsJournal,resetForNewGame,
+  maybeReleaseMaya,maybeReleaseRatchata,
   contractStatus:()=>({
-   effectiveChapter:screenChapter(),stateChapter:Number(gs()?.chapter||0),screen:active(),northUnlocked:northJournalUnlocked(),
-   developerSession:devUnlockSession,allowed:storyAllowsJournal(),
+   screen:active(),chapter:Number(gs()?.chapter||0),allowed:storyAllowsJournal(),
    buttonVisible:Boolean($("#charactersButton")&&!$("#charactersButton").hidden&&getComputedStyle($("#charactersButton")).display!=="none"),
-   redDots:$$(".journal-alert.show").length,pending:[...pendingIntroductions],confirmed:[...confirmedDiscoveries],notifications:[...notificationLog]
+   redDots:$$('.journal-alert.show').length,mayaPending:Boolean(mayaPending||gs()?.flags?.lw_maya_notification_pending),ratchataPending:Boolean(ratchataPending||gs()?.flags?.lw_ratchata_notification_pending)
   })
  }
 }
