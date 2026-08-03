@@ -2,39 +2,37 @@
 
 > **MASTER REFERENCE / CURRENT SOURCE OF TRUTH**
 >
-> **Document revision:** 2026-08-02 14:44 ICT
+> **Document revision:** 2026-08-03 10:47 ICT
 >
-> **Replaces planning blob:** `888c2815e36174b31cd506fffbb9f3db03d1ee75`
+> **Replaces planning blob:** `fb76fabd59e50427af9e15e6083cebb8ba338257`
 >
 > **Repository:** `grolygori789-crypto/last-witness`
 >
 > **Production and Default branch:** `production-rebuild`
 >
-> **Owner-approved runtime baseline commit:** `61dfaec35cb8990ac9ea3fafa28d39bee8e4698f`
+> **Current stable Runtime baseline commit:** `8a70778dffbdea65c7ba37954673be11b547f3b2`
 >
-> **Owner-confirmed playable baseline:** `CHAPTER IV · PHASE III COMPLETE`
+> **Baseline commit message:** `Fix Arman journal unlock`
 >
-> **Latest owner-approved runtime build:** `0.16.4`
+> **Current Runtime repair build:** `0.17.7`
 >
-> **Latest owner-approved narrative module:** `CHAPTER IV · PHASE III · 0.16.3`
+> **Base Chapter IV Phase IV story module:** `0.17.0`
 >
-> **Current deployed runtime candidate commit:** `ea3b30d617b347ed04df02f4d3e5fff8a321540c`
+> **Current playable boundary:** `CHAPTER IV · PHASE IV CURRENT IMPLEMENTATION`
 >
-> **Current runtime candidate:** `CHAPTER IV · PHASE IV · 0.17.0 + 0.17.0-d2 navigation / handoff patch`
+> **Owner-device result:** `CURRENT BUILD PASSED OWNER CHECK · ARMAN JOURNAL CONTRACT OWNER-APPROVED`
 >
-> **Owner-device verification status:** `PRELIMINARY SMOKE PASS · DETAILED REGRESSION PENDING`
+> **Formal freeze status:** `CURRENT STABLE BASELINE · FULL PHASE IV FREEZE NOT SEPARATELY DECLARED`
 >
-> **Owner-approved endpoint:** `CHAPTER IV · PHASE III COMPLETE`
+> **Current route:** `CHAPTER IV · PHASE III -> DIRECT HANDOFF -> CHAPTER IV · PHASE IV`
 >
-> **Current deployed candidate route:** `CHAPTER IV · PHASE III -> DIRECT HANDOFF -> CHAPTER IV · PHASE IV`
+> **Next production objective:** `CHAPTER IV · PHASE V · NORTH IS MARKED`
 >
-> **Immediate production objective:** `REPAIR AND VERIFY CHAPTER IV · PHASE IV`
+> **Document status:** `CURRENT STABLE RUNTIME BASELINE · PHASE IV IMPLEMENTATION RECORD · CHARACTER JOURNAL CONTRACT LOCK`
 >
-> **Document status:** `CHARACTER RESPONSIBILITY CANON LOCK · PHASE IV CANDIDATE VERIFICATION LOG`
+> This revision preserves all locked Canon from the preceding Master Plan and replaces stale Phase IV candidate language with the current Runtime record through build `0.17.7`. It documents owner-confirmed behavior, the recovery chain, Character Journal timing, Arman persistence, Developer Mode requirements and the no-regression boundary. It does not modify Production code or assets.
 >
-> This revision preserves all locked Canon and records the present Phase IV implementation-candidate status, preliminary owner-device observations, known defects and verification limits. It does not change Production code or assets.
->
-> Runtime commit `61dfaec35cb8990ac9ea3fafa28d39bee8e4698f` remains the frozen owner-approved code and asset baseline. Candidate commit `ea3b30d617b347ed04df02f4d3e5fff8a321540c` is deployed for repair and verification but is not owner-approved or frozen.
+> Runtime commit `8a70778dffbdea65c7ba37954673be11b547f3b2` is the current owner-confirmed stable baseline. Earlier commit `61dfaec35cb8990ac9ea3fafa28d39bee8e4698f` remains an important historical frozen baseline through Chapter IV Phase III, but it is no longer the current Runtime baseline.
 
 ---
 
@@ -49,8 +47,10 @@
 - Orientation: portrait 9:16
 - Genre: Narrative Detective Adventure / Interactive Crime Investigation
 - Art direction: neo-noir graphic novel, cel-shaded, heavy ink, angular shadows, cinematic crime-adventure, readable on mobile
+- Repository: `grolygori789-crypto/last-witness`
+- Branch: `production-rebuild`
 
-## Current approved scope
+## Current approved and owner-confirmed scope
 
 1. Chapter I complete
 2. Chapter II complete
@@ -58,38 +58,60 @@
 4. Chapter IV Phase I complete
 5. Chapter IV Phase II complete
 6. Chapter IV Phase III complete
+7. Chapter IV Phase IV current implementation present and owner-confirmed on the latest reported defect route
+8. Arman Character Journal contract owner-approved
 
-Owner-approved endpoint:
+Current stable baseline:
 
-- `CHAPTER IV · PHASE III COMPLETE`
+- Commit: `8a70778dffbdea65c7ba37954673be11b547f3b2`
+- Message: `Fix Arman journal unlock`
+- Build: `0.17.7`
 
-Current deployed candidate:
+Current implementation boundary:
 
-- Phase IV implementation module `0.17.0` is present.
-- Developer Mode Phase III and Phase IV entry received a preliminary owner-device smoke pass.
-- The candidate route moves directly from Phase III completion into the Phase IV vehicle approach.
-- Phase IV is not approved, complete or frozen.
+- `CHAPTER IV · PHASE IV · THE MAN BEHIND THE ALIAS`
 
-Immediate target:
+Next target:
 
-- repair the Phase IV vehicle-opening presentation
-- replace and revalidate Dimas and Arman portraits
-- complete detailed Android Chrome regression before any approval
+- `CHAPTER IV · PHASE V · NORTH IS MARKED`
 
-## Absolute freeze rule
+## Approval wording lock
 
-Do not modify approved Chapter I, II, III or Chapter IV Phase I–III without a direct, scoped owner instruction.
+The following statements are allowed:
+
+- `CURRENT STABLE RUNTIME BASELINE`
+- `CURRENT PHASE IV IMPLEMENTATION PASSED OWNER CHECK`
+- `OWNER-APPROVED · ARMAN JOURNAL CONTRACT`
+- `PHASE IV CURRENT IMPLEMENTATION IS THE NO-REGRESSION BASELINE`
+
+Do not silently upgrade the status to `FULL PHASE IV FROZEN` unless the owner explicitly declares a formal freeze after a complete owner-device regression.
+
+## Absolute workflow rule
+
+Before any future code change:
+
+1. read this document from beginning to end
+2. fetch the latest Production commit
+3. inspect `index.html`
+4. inspect static and dynamic load order
+5. inspect the latest SHAs of every affected file
+6. inspect State, Save/Load, Character Journal, Case File, Audio and Developer Mode owners
+7. identify the smallest true implementation owner
+8. avoid global wrappers, polling or document-wide observers unless unavoidable and proven
+9. test from Title and Chapter I, not only from an isolated harness
+10. deliver locally unless the owner explicitly authorizes a GitHub write in the current turn
 
 Do not:
 
-- restore another commit
+- restore another commit without explicit instruction
 - move branch references
-- create, delete, merge or rebase branches
+- create, delete, merge or rebase branches without explicit instruction
 - alter GitHub Pages
-- replace approved assets
-- rewrite Character Journal gates
-- add polling, repair loops, observers or global managers without proof
-- treat a planning-document commit as a runtime build
+- replace owner-approved assets casually
+- rewrite Character Journal gates globally to repair one late character
+- add global MutationObservers or polling loops as a shortcut
+- treat a documentation commit as a Runtime build
+- claim Android or live Pages testing unless actually performed
 - write to GitHub without exact current-turn authorization
 
 Normal delivery remains local. The owner uploads Production files personally.
@@ -110,7 +132,7 @@ Always separate:
 8. adapter or broker
 9. deployer
 10. person who selected victim, room and timing
-11. decision owner
+11. Decision Owner
 
 No single layer may be collapsed into another without corroboration.
 
@@ -119,11 +141,10 @@ No single layer may be collapsed into another without corroboration.
 > **Historical truth is fixed. Legal truth, public truth and institutional truth depend on what survives and what can be proved.**
 
 - Elena is always the real mastermind and killer.
-- A different ending may convict another person only when a coherent, admissible and weighty case exists.
-- Wrong conviction must never be random.
-- Every final accused person must have real culpability, real evidence and a plausible theory.
+- Other characters may be guilty of real offences without owning the murders.
+- Wrong conviction must rest on a coherent alternative case against a genuinely culpable person.
 - No single dialogue choice determines an ending.
-- Choices accumulate through evidence preservation, role separation, witness survival, admissibility, trust and final accusation.
+- Evidence survival, custody, role separation, witness survival, consent, trust, admissibility, final accusation and institutional acceptance accumulate across chapters.
 
 ---
 
@@ -132,46 +153,53 @@ No single layer may be collapsed into another without corroboration.
 ## Source hierarchy
 
 1. Owner’s latest real-device result
-2. Approved GitHub runtime on `production-rebuild`
+2. Current Production Runtime on `production-rebuild`
 3. Latest `GAME_MASTER_PLAN.md`
+4. Older handoff files and historical plans
+5. Assistant memory
 
 When sources conflict:
 
+- owner-tested behavior wins over stale documentation
+- current Runtime wins over older implementation notes
+- locked Canon wins over a Runtime defect
+- do not rewrite Canon to justify broken behavior
 - identify which source is stale
-- preserve owner-tested behavior
-- preserve Canon
-- do not repair runtime from memory
-- do not rewrite Canon to justify a defect
-- ask only when the evidence cannot resolve the conflict
+- ask only when evidence cannot resolve the conflict
 
 ## Required pre-implementation audit
 
-Before any future implementation:
+Before implementation or repair:
 
-1. read this file from beginning to end
-2. confirm branch and runtime baseline
-3. inspect latest `index.html`
-4. inspect static and dynamic load order
-5. inspect current file SHAs
-6. inspect state initialization and migration
-7. inspect Save/Load
-8. inspect audio ownership
-9. inspect Character Journal and Case File gates
-10. inspect Developer Mode
-11. identify the true implementation owner
-12. change the fewest files possible
-13. test the exact affected route
-14. state testing limits honestly
-15. deliver locally unless GitHub write is explicitly authorized
+1. read this file completely
+2. confirm branch and latest commit
+3. inspect `index.html`
+4. inspect static script order
+5. inspect dynamic bootstrap order
+6. inspect State initialization and migrations
+7. inspect Auto Save, manual Save and restore
+8. inspect audio ownership and phase exit cleanup
+9. inspect Character Journal gates and persistence
+10. inspect Case File ownership
+11. inspect Developer Mode and phase jumps
+12. inspect the exact scene module involved
+13. compare against earlier accepted Chapter and Phase behavior
+14. change the fewest files possible
+15. run syntax and static checks
+16. run a full assembled Runtime smoke flow from Title
+17. test clean State, stale State and Developer State
+18. state untested limits honestly
+19. deliver a local package or document
 
 ## Planning-document delivery
 
-- filename remains exactly `GAME_MASTER_PLAN.md`
+- exact filename: `GAME_MASTER_PLAN.md`
 - preserve owner secrets
-- distinguish implemented, approved, proposed and unresolved
-- preserve baseline commit
-- include local SHA-256 in the delivery message
-- do not claim runtime validation for a documentation-only update
+- preserve existing Canon unless explicitly revised
+- distinguish implemented, owner-approved, stable, frozen, planned and unresolved
+- include the replaced blob SHA
+- include local SHA-256
+- do not claim Runtime testing for a documentation-only update
 
 ---
 
@@ -182,15 +210,13 @@ Before any future implementation:
 - Repository: `grolygori789-crypto/last-witness`
 - Production branch: `production-rebuild`
 - Default branch: `production-rebuild`
-- Owner-approved runtime commit: `61dfaec35cb8990ac9ea3fafa28d39bee8e4698f`
+- Current stable Runtime commit: `8a70778dffbdea65c7ba37954673be11b547f3b2`
+- Commit message: `Fix Arman journal unlock`
+- Current Runtime repair build: `0.17.7`
+- Historical frozen Phase III baseline: `61dfaec35cb8990ac9ea3fafa28d39bee8e4698f`
 - Historical Phase II baseline: `ffdc94777c5fbaefdc281f1148b59aff3adf8abe`
-- Playable and owner-approved through Chapter IV Phase III
-- Current deployed candidate commit: `ea3b30d617b347ed04df02f4d3e5fff8a321540c`
-- Candidate Phase IV module: `0.17.0`
-- Candidate navigation and direct-handoff patch: `0.17.0-d2`
-- Candidate status: preliminary owner-device smoke pass only
 
-## Accepted build chain
+## Current build chain
 
 - Chapter IV Phase I: `0.13.2`
 - Chapter IV Phase II: `0.14.9`
@@ -199,51 +225,42 @@ Before any future implementation:
 - targeted QC: `0.15.3`
 - police portrait alignment: `0.15.4`
 - Chapter IV Phase III: `0.16.3`
-- runtime bootstrap: `0.16.4`
+- base Chapter IV Phase IV story module: `0.17.0`
+- Phase III direct handoff: `0.17.0-d2`
+- Developer Phase Navigation: `0.17.0-d2`
+- full-game Runtime recovery layer: `0.17.6`
+- Arman Character Journal contract repair: `0.17.7`
+- compatibility/bootstrap build: `0.17.7`
 
-Candidate chain, not approved:
+## Owner-confirmed current behavior
 
-- Chapter IV Phase IV: `0.17.0`
-- Chapter IV Developer Phase Navigation: `0.17.0-d2`
-- Chapter IV Phase III Direct Handoff: `0.17.0-d2`
+The owner reported that the `0.17.6` recovery corrected the broad Runtime failure and most prior Phase IV defects. The remaining Arman Journal defect was repaired in `0.17.7`. The owner then confirmed the latest round passed.
 
-## Owner-confirmed resolved defect
+Confirmed latest behavior:
 
-Former sequence:
+- game remains playable through the current implemented route
+- Chapter I does not expose Character Journal
+- Chapter II Character Journal follows the North-introduction gate
+- Phase IV proceeds through the Arman encounter
+- Arman is added to Character Journal at the correct point
+- the Character Added notification appears
+- the unread red dot appears
+- Arman remains in the Character list
+- the latest Arman Journal defect is resolved on the owner device
 
-1. Developer Unlock All
-2. Enter Jakarta
-3. Open Maya profile
-4. Return to grid
-5. Open another profile
-6. Other profile failed
+## Current stable endpoint
 
-Root cause:
-
-- Maya’s custom detail DOM lacked:
-  - `data-detail-name`
-  - `data-detail-status`
-  - `data-detail-metrics`
-  - `data-detail-notes`
-
-Approved fix:
-
-- preserved the base Character Journal detail contract
-- did not alter Chapter I Character visibility
-- did not alter Chapter II unlock timing
-- owner confirmed Maya-to-other-profile switching now works
-
-## Current frozen endpoint
-
-> `CHAPTER IV · PHASE III COMPLETE`
+> `CHAPTER IV · PHASE IV CURRENT IMPLEMENTATION`
 
 Next:
 
-> `THE MAN BEHIND THE ALIAS`
+> `CHAPTER IV · PHASE V · NORTH IS MARKED`
 
-No owner-reported blocking runtime defect remains at the frozen Phase III endpoint.
+## Approval boundary
 
-The deployed Phase IV candidate remains under repair. Initial owner-device observation indicates that Developer Mode can now enter Phase III and Phase IV, but detailed regression is still pending.
+The current Runtime is the baseline for all future work. No future Phase V package may regress Chapters I–III, Chapter IV Phase I–IV, Character Journal timing, Arman persistence, Developer Mode entry, Save/Load or Phase IV presentation.
+
+Formal `FROZEN` wording for all of Phase IV requires a separate owner declaration after any desired complete phase regression. Until then, treat the current implementation as owner-confirmed and no-regression locked.
 
 ---
 
@@ -262,8 +279,8 @@ The deployed Phase IV candidate remains under repair. Initial owner-device obser
 
 Order-sensitive:
 
-1. runtime data
-2. audio and Save
+1. Runtime data
+2. Audio and Save
 3. Journal and progress
 4. UI and dialogue
 5. Developer tools
@@ -277,7 +294,7 @@ Order-sensitive:
 13. Production stabilization
 14. compatibility bootstrap
 
-Do not reorder without full audit.
+Do not reorder without a full assembled-Runtime audit.
 
 ## Dynamic Chapter III order
 
@@ -290,57 +307,59 @@ Do not reorder without full audit.
 7. `js/chapters/chapter-03/07-digital-forensics-lab.js`
 8. `js/chapters/chapter-03/08-callback.js`
 
-## Current Chapter IV bootstrap
+## Current Chapter IV bootstrap 0.17.7
 
-### Owner-approved frozen chain
-
-`js/engine/09-defect-hotfix.js` Build `0.16.4` ended at Phase III.
-
-### Current deployed candidate chain
-
-`js/engine/09-defect-hotfix.js` candidate Build `0.17.0-d2` loads:
+`js/engine/09-defect-hotfix.js` loads in this order:
 
 1. `js/engine/15-thai-localization.js?v=0152`
 2. `js/engine/16-targeted-qc-fixes.js?v=0153`
 3. `js/engine/17-police-portrait-alignment.js?v=0154`
-4. `js/chapters/chapter-04/01-afterimage.js?v=0132`
-5. `css/chapter-04-phase-02.css?v=0149`
-6. `js/chapters/chapter-04/02a-jakarta-portrait-guard.js?v=0150`
-7. `js/chapters/chapter-04/02-jakarta-arrival.js?v=0164`
-8. `css/chapter-04-phase-03.css?v=0163`
-9. `js/chapters/chapter-04/03-packet-provenance.js?v=0163d2`
-10. `css/chapter-04-phase-04.css?v=0170`
-11. `js/chapters/chapter-04/04-arman-encounter.js?v=0170`
-12. `js/engine/19-ch4-phase3-direct-handoff.js?v=0170d2`
-13. `js/engine/18-developer-phase-navigation.js?v=0170d2`
+4. `js/engine/20-character-journal-story-gate.js?v=0177`
+5. `js/chapters/chapter-04/01-afterimage.js?v=0132`
+6. `css/chapter-04-phase-02.css?v=0149`
+7. `js/chapters/chapter-04/02a-jakarta-portrait-guard.js?v=0150`
+8. `js/chapters/chapter-04/02-jakarta-arrival.js?v=0164`
+9. `css/chapter-04-phase-03.css?v=0163`
+10. `js/chapters/chapter-04/03-packet-provenance.js?v=0163d2`
+11. `css/chapter-04-phase-04.css?v=0170`
+12. `js/chapters/chapter-04/04-arman-encounter.js?v=0170`
+13. `css/chapter-04-phase-04-revision.css?v=0176`
+14. `js/chapters/chapter-04/04a-arman-encounter-revision.js?v=0177`
+15. `js/engine/19-ch4-phase3-direct-handoff.js?v=0170d2`
+16. `js/engine/18-developer-phase-navigation.js?v=0170d2`
 
-This candidate chain is deployed for repair and verification. It is not the owner-approved frozen runtime.
+## Ownership rule
+
+- `04-arman-encounter.js` owns Phase IV story, evidence, choices, state, ending-profile effects and Phase V lead.
+- `04a-arman-encounter-revision.js` owns accepted Phase IV presentation repair and the scoped Arman Journal extension.
+- `20-character-journal-story-gate.js` owns safe early-story visibility protection and compatibility with the current late-character flow.
+- `06-content-registry-dev.js` remains the authoritative base Journal, Case File and Dev registry for existing characters.
+- `09-defect-hotfix.js` owns deterministic dynamic load order only.
+- `18-developer-phase-navigation.js` owns Developer phase jumps.
+- `19-ch4-phase3-direct-handoff.js` owns the Phase III-to-IV direct route.
 
 ## Future-module safety lock
 
 A future module must be side-effect-free at definition and preload.
 
-Loading Phase IV must not:
+Loading a late module must not:
 
-- set `state.chapter = 4`
-- set an active Phase IV screen
-- unlock Arman
-- unlock Character mode
-- enter Phase IV before true Phase III completion, completed-state restore or an intentional Developer jump
-- overwrite a restored checkpoint
+- alter the active chapter merely because the script loaded
+- expose Character Journal in Chapter I
+- unlock a future character
+- show a Character Added notification
+- change current screen
+- overwrite restored state
+- silently mark unread content as read
+- mutate another phase’s audio or progress
 
-Initialization occurs only on:
-
-- direct handoff after true Phase III completion
-- completed Phase III restore that legitimately advances to Phase IV
-- Phase IV resume
-- intentional Developer jump
+Initialization occurs only on a true story transition, valid restore, completed-state bridge or intentional Developer jump.
 
 ---
 
 # 4. STATE, SAVE AND ENDING PROFILE
 
-## Existing core state
+## Existing shared state
 
 - `screen`
 - `found`
@@ -382,63 +401,95 @@ state.endingProfile = {
   witnessStatus: "unknown",
   northStatus: "active",
   adrianStatus: "unresolved",
-  armanStatus: "unresolved"
+  armanStatus: "unresolved",
+  roleSeparation: 0,
+  bangkokChainIntegrity: 0,
+  institutionalTrust: 0,
+  corroborationBreadth: 0,
+  alternativeHypothesesPreserved: 0,
+  rinStatus: "unknown",
+  localDeployerStatus: "unresolved",
+  fieldOperatorStatus: "unresolved",
+  finalAccused: "",
+  finalCaseVersion: ""
 };
 ```
 
-## Planned additive extension
+Some fields were introduced by the Phase IV module. Cross-chapter use and ending resolution remain subject to future implementation and migration review.
 
-Not implemented. Add only with migration and owner approval.
+## Phase IV base state
 
-```js
-state.endingProfile.roleSeparation = 0;
-state.endingProfile.bangkokChainIntegrity = 0;
-state.endingProfile.institutionalTrust = 0;
-state.endingProfile.corroborationBreadth = 0;
-state.endingProfile.alternativeHypothesesPreserved = 0;
-state.endingProfile.rinStatus = "unknown";
-state.endingProfile.localDeployerStatus = "unresolved";
-state.endingProfile.fieldOperatorStatus = "unresolved";
-state.endingProfile.finalAccused = "";
-state.endingProfile.finalCaseVersion = "";
-```
+`state.chapter4.phase4` owns:
 
-## Hidden evidence-quality scale
+- `started`
+- `approachComplete`
+- `locationCardSeen`
+- `stairwellComplete`
+- `workshopIntroComplete`
+- `triangulationStarted`
+- `triangulationAssignments`
+- `triangulationIndex`
+- `triangulationAttempts`
+- `triangulationComplete`
+- `proxyExposed`
+- `revealStarted`
+- `revealComplete`
+- `armanUnlocked`
+- `dimasDisposition`
+- `armanDisposition`
+- `cacheDisposition`
+- `northResponse`
+- `choicesApplied`
+- `evidenceCollected`
+- `evidenceViewed`
+- `activeCacheIndex`
+- `cacheReviewComplete`
+- `closingDialogueComplete`
+- `complete`
+- `stage`
 
-Use a simple internal four-state model:
+## Phase IV Arman Journal state
 
-- `0 · ABSENT`
-- `1 · INDICATED`
-- `2 · SUPPORTED`
-- `3 · CORROBORATED`
+Build `0.17.7` additionally owns or preserves:
 
-Do not show a morality meter.
+- `state.chapter4.phase4.armanJournalUnlocked`
+- `state.chapter4.phase4.armanJournalUnread`
+- `state.chapter4.phase4.armanJournalNotified`
+- `state.flags.ch4_arman_identity_verified`
+- `state.flags.ch4_arman_journal_unlocked`
+- `state.flags.ch4_arman_journal_notified`
 
-Player-facing consequences appear through:
+Shared arrays remain synchronized:
 
-- evidence wording
-- witness availability
-- admissibility
-- contradiction warnings
-- institutional response
-- character trust
-- final case-board completeness
+- `state.lwCharactersUnlocked`
+- `state.lwCharactersUnread`
+
+Registry persistence key remains:
+
+- `lastWitness.contentRegistry.v3`
 
 ## Restore rule
 
-Every new phase owns:
+Every phase owns:
 
 - defaults
 - migration
 - checkpoint
 - resume bridge
 - active modal restoration
-- dialogue restoration
+- dialogue restoration where supported
 - audio restoration
 - Developer jump
-- completed-state resume
+- completed-state restore
 
-Future modules may not mutate early-game state merely because they loaded.
+Arman-specific restore must preserve:
+
+- card existence after unlock
+- unread dot before first Journal open
+- read state after Journal open
+- no duplicate notification
+- silent Dev unlock
+- recovery from a 0.17.6 save where identity was verified but the card was missing
 
 ---
 
@@ -479,13 +530,11 @@ Every final theory must draw from multiple classes:
 
 ## Proof wording
 
-Every evidence item should support three readable layers:
+Every evidence item should show:
 
 - **Observation**
 - **What it supports**
 - **What it does not prove**
-
-This prevents the player from confusing access, authorship and identity.
 
 ## Final accusation minimum
 
@@ -498,7 +547,7 @@ A valid final accusation requires:
 - at least three evidence classes
 - no unexplained fatal contradiction
 
-A wrong suspect may still satisfy this minimum through a coherent but incomplete record.
+A wrong suspect may satisfy the minimum through a coherent but incomplete record. The game must show the missing truth.
 
 ## Retrospective fairness
 
@@ -506,15 +555,13 @@ Every major reveal must be supported by at least two earlier chapters.
 
 No final reveal may depend on:
 
-- a new fact introduced only during the confrontation
-- a hidden rule never taught to the player
-- a confession replacing proof
+- a new fact introduced only during confrontation
+- an untaught system rule
+- confession replacing proof
 - visual villain coding
 - a single lucky guess
 
 ## Difficulty envelope
-
-The game should feel intelligent, not punishing.
 
 Use:
 
@@ -525,16 +572,15 @@ Use:
 - Reset
 - no softlock
 - no permanent fail
-- wrong answers that explain one principle
+- wrong answers that teach one principle
 - summaries that reduce memory burden
 
 Avoid:
 
 - dense 20–25 button matrices
-- long chains requiring notes outside the game
-- obscure technical jargon without context
-- punishment for normal misunderstanding
+- obscure jargon without context
 - random codes detached from evidence
+- punishment for a reasonable misunderstanding
 
 ---
 
@@ -543,73 +589,55 @@ Avoid:
 ## Benedict
 
 - Age: 42
-- Detective and Lead Investigator
-- protagonist
-- final human decision-maker
+- independent detective and external investigative consultant
+- protagonist and final human decision-maker
 - psychologically sharp
-- reads motive, hesitation, wording, restraint and timing
 - dry humour
+- reads intention, hesitation, wording, restraint and timing
 - does not accuse without evidence
 - must not become a passenger while North solves everything
 - no statutory police authority in foreign jurisdictions
 - works through Kittisak in Bangkok, Cheryl in Singapore and Maya in Indonesia
-
-Long-term relationship Canon:
-
-- may care deeply for Cheryl
-- may reciprocate part of her feeling
-- does not choose a permanent partner
-- chooses a mobile investigative life
+- may care deeply for Cheryl but does not choose a permanent partner
 - no North romance
 
 ## North
 
 - Age: 32
+- Singaporean
 - IT Specialist and Technical Investigator
 - Benedict’s trusted long-term partner
 - leads technical analysis
-- rejects unsupported attribution
 - understands Authentication vs Attribution
+- rejects unsupported attribution
 - becomes an active target in Chapter IV
 - never a passive victim
-- must consent to the false-success operation
+- must consent to false-success planning
 - no romance with Farid
 - partnership with Benedict is the emotional spine
 
-## Elena
+## Elena Sutham
 
 Public role:
 
-- Forensic Analyst
-- credible professional ally
-- calm, intelligent and useful
+- Senior Forensic Systems Analyst
+- Meridian Evidence Systems, Bangkok
+- accredited technical liaison
+- calm, intelligent, useful and credible
 - gives true information
 - controls timing and sequence
-- has no police command authority
-- appears trustworthy
-- may disagree, make limited mistakes and lack some information
-- must not look omniscient
+- no police command authority
+- must not appear omniscient
 
 Owner secret:
 
 - mastermind
-- killed Kawin
-- killed Daniel
-- decision owner
-- selected victim, room and minute
+- physical killer of Kawin and Daniel
+- Decision Owner
+- selected victim, room, timing and discovery sequence
 - used legitimate Bangkok forensic access
-- deployed watcher logic through a valid signed package
-- curated true evidence into a false official chronology
-- does not need to falsify scientific results
-
-Narrative camouflage:
-
-- genuinely helps solve parts of the case
-- protects scientific accuracy
-- may oppose premature accusations against Adrian or Arman
-- may provide useful warnings
-- every suspicious act must retain a plausible innocent explanation until the earned reveal
-- her clues are weak individually and decisive only in combination
+- curated true evidence into a false chronology
+- does not need to falsify science
 
 Forbidden before earned reveal:
 
@@ -619,71 +647,33 @@ Forbidden before earned reveal:
 - confession-like phrasing
 - theatrical cruelty
 - impossible knowledge
-- fake evidence invented solely to implicate her
-- repeated convenient phone calls that make her pattern obvious
+- fake scientific evidence
 
-## Police Captain Kittisak
+## Police Captain Kittisak Siriwat
 
-Canonical rank and authority:
-
-- Thai rank: **ร้อยตำรวจเอก**
-- English rank: **Police Captain**
-- position: **Investigation Inspector / สารวัตรฝ่ายสืบสวน**
+- Full name: `Kittisak Siriwat`
+- Thai: `กิตติศักดิ์ ศิริวัฒน์`
+- Age: 40
+- Rank: Police Captain / ร้อยตำรวจเอก
+- Position: Investigation Inspector / สารวัตรฝ่ายสืบสวน
 - commanding officer of Somchai
 - Bangkok operational commander
-- controls lawful police tasking, internal reporting, warrant coordination, witness protection and unit deployment
-- receives pressure from superiors and institutions
-- may authorize a limited internal compromise audit
-- cannot be ordered by Somchai
-
-Character direction:
-
-- disciplined
-- reserved
-- procedural
+- controls lawful tasking, warrants, internal reporting, witness protection and custody
 - not obstructionist by default
-- may protect an operation, source or unit reputation without being the murderer
-- access to the full case makes him a plausible suspect, but access is consistent with his duty
-- no evidence currently proves knowing participation in the murders
+- normal authority does not prove corruption
 
-Future function:
+## Police Senior Sergeant Major Somchai Rattanakul
 
-- commands the Bangkok parallel investigation
-- determines whether the official unit accepts the final case
-- influences `institutionalTrust` and `publicRecordControl`
-- must never be reduced to a passive desk officer
-
-## Police Senior Sergeant Major Somchai
-
-Canonical rank and authority:
-
-- Thai rank: **ดาบตำรวจ**
-- English rank: **Police Senior Sergeant Major**
-- senior non-commissioned field investigator
+- Full name: `Somchai Rattanakul`
+- Thai: `สมชาย รัตนกุล`
+- Age: 48
+- Rank: Police Senior Sergeant Major / ดาบตำรวจ
+- senior field investigator
 - subordinate to Kittisak
-- cannot issue warrants
-- cannot command Kittisak
-- cannot authorize institutional or cross-border operations
-- executes field assignments and reports findings
-
-Character direction:
-
-- experienced
-- practical
-- observant
-- strong local memory
-- knows routines, buildings, witnesses and physical handoffs
-- may notice details senior officers miss
-- may be framed through credential use or proximity to evidence
-- operational access does not prove command ownership
-
-Future function:
-
-- traces the physical movement of packages
-- checks CCTV, vehicles and handoff points
-- protects or extracts witnesses under Kittisak’s order
-- anchors field continuity in Bangkok
-- influences evidence survival and witness safety
+- cannot issue warrants or command Kittisak
+- experienced, practical and observant
+- anchors physical handoff continuity
+- operational proximity does not prove command ownership
 
 ## Ratchata (Dr. Singh)
 
@@ -691,34 +681,28 @@ Display name exactly:
 
 `Ratchata (Dr. Singh)`
 
+- Full professional identity: Dr. Ratchata Singh
 - Age: 43
+- Thai Sikh
 - Senior Medical Examiner
-- Thai Sikh forensic pathologist
 - dry humour
 - independent and scientifically strict
-- outside Kittisak’s police chain of command
-- gives expert findings, not police orders
+- no police command authority
 - not `R.`
-- protects the physical truth that digital chronology cannot rewrite
-
-Future function:
-
-- compares Kawin and Daniel
-- establishes biological and physical contradictions
-- preserves independent physical corroboration
-- influences `evidenceIntegrity` and `corroborationBreadth`
+- protects physical truth that digital chronology cannot rewrite
 
 ## Inspector Cheryl Goh
 
 - Age: 40
+- Singaporean Chinese
 - Singapore Police liaison
 - measured authority
 - legally strict
-- protects proof boundaries
+- protects proof boundaries and cross-border admissibility
 - respects North
 - genuine long-term ally
-- Farid’s jurisdictional senior in relevant scenes
-- romance never overpowers the case
+- Farid’s operational senior in relevant scenes
+- romance never overtakes the case
 
 ## Farid Rahman
 
@@ -726,130 +710,123 @@ Future function:
 - Singaporean Malay
 - Digital Forensics Specialist
 - fast, meticulous and technically serious
-- preserves alternative explanations
+- preserves alternatives and raw mirrors
 - no romance with North
-- remains remote in Singapore through current Jakarta support
-- holds original raw mirror and watcher capture
+- remains remote in Singapore during current Jakarta support
 
 Remote labels:
 
 - `Farid Rahman (Remote · Singapore)`
 - `Farid Rahman (ต่อสายจากสิงคโปร์)`
 
-Remote suffix remains blue while the name retains normal speaker colour.
-
 ## Adrian Tan Wei Ming
 
-- age 45 in current Journal
-- former System Architect
+- Age: 45
+- former Principal Systems Architect
 - fugitive and complicit insider
-- designed legitimate reconciliation architecture
-- concealed or failed to report misuse
-- may be guilty of enabling, concealment, obstruction or flight
+- designed lawful reconciliation architecture
+- concealed or delayed reporting of abuse
+- may be guilty of enabling, concealment, obstruction and unlawful retention
 - not mastermind
-- did not design the complete murder plan
 - strong false-conviction candidate
 - never a coward or cartoon villain
 
 ## Arman Suryadi
 
+- Age: 39
 - Indonesian
-- age 39
-- hacker, toolmaker and wrapper specialist
-- connected to PALIMPSEST
+- electronics systems consultant and silent co-owner behind Surya Elektronik
+- PALIMPSEST wrapper specialist and broker
 - intelligent, dangerous, tired and complicit
-- used a proxy/decoy at the workshop
-- may have sold, adapted, brokered or protected the tool
+- used Dimas as a controlled proxy
+- adapted wrapper, scrubbed metadata and protected anonymous handoff
 - knew abuse was possible
 - did not select Kawin, Daniel, Room 1807 or the eleven-minute events
 - not mastermind
-- not decision owner
-- real face appears in Chapter IV Phase IV
-- Chapter III hood feed is a digital mask
-- identity requires source evidence, live behaviour and corroboration
+- not Decision Owner
+- real identity appears in Chapter IV Phase IV
+- current Character Journal entry is implemented through the scoped Phase IV extension
 
 ## Inspector Maya Pranoto
 
-- Indonesian National Police Cybercrime liaison
-- Age: 37 in implemented runtime
+- Age: 37
+- Indonesian
+- Indonesian National Police Cybercrime Operations Liaison
 - disciplined, practical and intelligent
-- owns local Indonesian legal authority
+- owns Indonesian local authority
 - professional equal to Cheryl
 - not obstructionist
 - no romance with Benedict
 - no love triangle
-- Journal unlocks at formal introduction
+- Journal unlocks after formal introduction
+
+## Dimas Wibowo
+
+- Age: 34
+- Indonesian
+- electronics repair technician and workshop manager
+- former apprentice and trusted associate of Arman
+- controlled proxy and human witness
+- informed enough to screen contact
+- not stupid
+- not a murderer
+- no Character Journal card
+
+## Daniel Voss
+
+- Age at death: 38
+- German
+- Bangkok resident
+- investigative journalist and regional compliance researcher
+- second victim
+- never returns alive
+- continues only through material prepared before death
 
 ## Kawin Nopparat
 
-Owner-level future Canon:
-
-- Chapter I Room 1807 victim
-- Thai man, age 41
-- Regional Access Governance and Compliance Auditor at Meridian Evidence Systems
-- discovered repeated 18-07 use
-- planned to meet a registrar contact at the pier
+- Age at death: 41
+- Thai
+- Regional Access Governance and Compliance Auditor
+- Chapter I victim
+- discovered 18-07 reuse
+- planned to meet Rin
 - killed by Elena
-- body moved and staged in Room 1807
 - identity revealed in Chapter V
 
 ## Rinrada “Rin” Sornchai
 
-Owner-level future Canon:
-
-- Thai woman, age 37
+- Age: 37
+- Thai
 - former Identity and Access Registrar
 - living witness implied by `R.`
-- `R.` fairly refers to both Rin and the Registrar role
-- saw the emergency credential path
-- witnessed Elena’s physical presence around the pier exchange
-- did not witness every murder act
-- went off-grid to survive
+- not related to Somchai Rattanakul
+- witnessed limited pier facts, not the murder act
 - living Last Witness
 - introduced in Chapter V
 - testimony requires corroboration
-- retains agency
 
-## Secret Character B · Bangkok Local Deployer
+## Narin Theerachai
 
-Role lock:
-
-- not yet physically introduced
-- exact name, appearance and gender require later owner approval
-- civilian or contractor-level Evidence Continuity specialist linked to Meridian Bangkok
-- had legitimate access to signed-package deployment conditions
-- supplied or executed the Bangkok deployment layer accepted by Arman’s broker route
+- Age: 41
+- Thai
+- Senior Continuity Deployment Engineer
+- Bangkok Local Deployer
+- real accomplice
+- handled deployment and concealment
 - did not select victims
-- did not personally kill Kawin or Daniel
-- initially may have believed the work was continuity validation
-- later knowingly concealed irregularities or executed cleanup
-- guilty of real offences
-- strong final-board suspect
-- strong false-conviction candidate
+- strongest non-Elena murder-suspect package
+- future identity introduction requires earned verification
 
-Required evidence against this character:
+## Ika Prameswari
 
-- valid local access
-- package or device proximity
-- post-event deletion or concealment
-- payment, pressure or benefit
-- direct tie to deployment conditions
-- no direct proof of victim selection
-
-## Secret Character C · Field Watcher / Recovery Operator
-
-Role lock:
-
-- not yet introduced
-- exact name, appearance and nationality require later owner approval
-- carries out surveillance against North
-- linked through a cutout rather than directly to Elena
-- may attack, abduct, sabotage or create a false accident
-- needs a record that North has been “removed”
-- guilty of real violence and evidence destruction
-- not responsible for the earlier murders
-- provides a strong but incomplete alternative theory
-- should not be a faceless thug or cartoon villain
+- Age: 34
+- Indonesian
+- private security and asset-recovery specialist
+- Field Watcher / Recovery Operator
+- attacks or attempts to remove North
+- joined after the earlier murders
+- cannot be Kawin or Daniel’s killer
+- guilty of real violence and obstruction
 
 ---
 
@@ -857,86 +834,46 @@ Role lock:
 
 ## Command hierarchy
 
-1. **Kittisak**
+1. Kittisak
    - Police Captain
    - Investigation Inspector
    - command authority
-2. **Somchai**
+2. Somchai
    - Police Senior Sergeant Major
    - field investigator
    - reports to Kittisak
-3. **Elena**
-   - Forensic Analyst
-   - technical advisory role
+3. Elena
+   - forensic advisory role
    - no police command authority
-4. **Ratchata**
-   - Senior Medical Examiner
-   - independent expert
+4. Ratchata
+   - independent medical expert
    - no police command authority
-5. **Benedict**
+5. Benedict
    - narrative Lead Investigator
-   - no statutory Thai police authority
-   - coordinates through Kittisak
-6. **North**
+   - civilian consultant
+6. North
    - technical lead
-   - no police command authority
+   - civilian consultant
 
 ## Dialogue and scene lock
 
 - Somchai addresses Kittisak as a superior.
 - Kittisak assigns Somchai’s field work.
-- Somchai may advise from experience but cannot authorize an operation.
-- Elena may recommend forensic action but cannot issue police orders.
-- Ratchata may refuse unsupported scientific conclusions but cannot command police units.
-- Benedict may propose strategy but Kittisak owns lawful Bangkok police execution.
-- No character crosses jurisdiction merely to accelerate the plot.
-
-## Bangkok parallel-investigation model
-
-From Chapter V onward:
-
-### Kittisak
-
-- opens a limited, need-to-know internal audit
-- isolates compromised evidence routes
-- authorizes witness protection
-- coordinates warrants and secure transfers
-- protects the case from premature institutional closure
-
-### Somchai
-
-- reconstructs physical package movement
-- interviews handlers and witnesses
-- checks cameras, vehicles and access points
-- tracks cleanup teams
-- performs field protection and extraction
-
-### Elena
-
-- assists forensic review under dual-control
-- cannot be sole custodian of disputed evidence
-- provides real technical insight
-- remains apparently valuable and trustworthy
-
-### Ratchata
-
-- independently verifies physical evidence
-- preserves a separate scientific chain
-- tests whether official chronology is biologically possible
+- Somchai may advise but cannot authorize institutional action.
+- Elena may recommend forensic action but cannot order police.
+- Ratchata may reject unsupported science but cannot command police.
+- Benedict proposes strategy; Kittisak owns lawful Bangkok execution.
+- No character crosses jurisdiction merely to accelerate plot.
 
 ## Two-person control after compromise
 
-Once the Bangkok Evidence Chain compromise is known:
-
-- no disputed package is handled by one person alone
-- digital evidence requires hash verification by two independent parties
-- forensic interpretation and custody approval remain separate
-- Elena may analyse, but another qualified person preserves or verifies
+- no disputed package handled by one person alone
+- digital evidence requires independent hash verification
+- interpretation and custody approval remain separate
+- Elena may analyse but may not be sole custodian
 - Kittisak owns command approval
-- Somchai may transport under logged instruction
-- Ratchata’s medical evidence remains independently sealed
-
-This protects fairness and prevents the team from behaving irrationally after discovering compromise.
+- Somchai transports only under logged instruction
+- Ratchata’s medical chain remains separately sealed
 
 ---
 
@@ -944,14 +881,14 @@ This protects fairness and prevents the team from behaving irrationally after di
 
 ## Proven or supported
 
-- a dormant watcher entered North’s laptop through a signed forensic package
-- the package was accepted by the Bangkok Evidence Chain
-- a cleanup process used a valid forensic synchronization credential
-- the cleanup trigger also came through the Bangkok Evidence Chain
-- deployment occurred before Benedict and North left Bangkok
-- the adversary anticipated an investigative milestone
-- Jakarta infrastructure and Bangkok deployment are separate layers
-- a local deployment path existed inside or adjacent to the authorized Bangkok evidence environment
+- dormant watcher entered North’s laptop through a signed forensic package
+- package was accepted by the Bangkok Evidence Chain
+- cleanup used a valid synchronization credential
+- cleanup trigger came through the Bangkok Evidence Chain
+- deployment occurred before the team left Bangkok
+- adversary anticipated an investigative milestone
+- Jakarta infrastructure and Bangkok deployment are separate
+- a local deployment path existed inside or adjacent to authorized evidence workflow
 
 ## Not proven
 
@@ -960,25 +897,14 @@ This protects fairness and prevents the team from behaving irrationally after di
 - Somchai used the credential
 - Elena used the credential
 - Ratchata used the credential
-- the credential owner was the operator
-- the local deployer selected victims
-- the local deployer was the decision owner
-- the Bangkok unit as a whole was corrupt
+- credential owner was the operator
+- Local Deployer selected victims
+- Local Deployer was Decision Owner
+- the whole Bangkok unit was corrupt
 
-## Mandatory interpretation
+Mandatory interpretation:
 
 > **The Bangkok investigation structure was compromised or used. This does not yet prove a knowing traitor inside the police unit.**
-
-Possible mechanisms remain:
-
-- stolen credential
-- cloned credential
-- accepted machine used by another person
-- package signed by an unaware handler
-- legitimate workflow carrying a hidden watcher
-- deliberate insider deployment
-
-The story must investigate these possibilities rather than skip directly to betrayal.
 
 ---
 
@@ -986,16 +912,14 @@ The story must investigate these possibilities rather than skip directly to betr
 
 ## Final-board requirement
 
-By Chapter VII, the player should have at least four serious candidates:
+By Chapter VII, at least four serious candidates remain:
 
 1. Elena
 2. Adrian
 3. Arman
-4. Bangkok Local Deployer
+4. Narin, the Bangkok Local Deployer
 
-The Field Watcher may appear as a fifth operational candidate but does not need to remain a final Decision Owner candidate.
-
-Kittisak and Somchai may enter temporary suspicion because of access or proximity, but their rank, authority and evidence must remain accurate.
+Ika may appear as an operational candidate. Kittisak and Somchai may undergo temporary suspicion but cannot become final murder candidates from access or rank alone.
 
 ## Suspect parity rule
 
@@ -1003,46 +927,35 @@ Every major suspect receives:
 
 - at least three supporting clue types
 - at least one meaningful exculpatory clue
-- a real secret or real offence
-- a plausible motive
-- a plausible opportunity theory
+- a real secret or offence
+- plausible motive
+- plausible opportunity theory
 - a contradiction the player must resolve
-
-No suspect exists only as decoration.
 
 ## Elena
 
-Why she appears innocent:
+Supporting clues:
 
-- corrects genuine scientific errors
-- provides useful records
-- opposes unsupported accusations
-- appears to protect chain of custody
-- has a legitimate reason to know the evidence
-- has no obvious technical signature matching PALIMPSEST
+- legitimate signed-package access
+- links to both victims
+- slightly early knowledge
+- influence over sequence
+- physical presence near pier
+- watcher milestone knowledge
+- benefit from visible technical suspects
 
-Fair clues:
+Counterweight:
 
-- knows a record is missing before the team establishes it existed
-- provides useful information slightly too early
-- repeatedly influences sequence rather than content
-- physical presence near the pier
-- access to the signed Bangkok package
-- benefits from Adrian and Arman becoming visible suspects
-- understands which discovery milestones trigger the watcher
-
-Exculpatory appearance:
-
-- no single log shows her operating the system
-- science she provides is genuine
-- her access is legitimate
-- her assistance produces real breakthroughs
+- science is genuine
+- access is legitimate
+- no single log identifies her
+- assistance produces real breakthroughs
 
 Final truth:
 
-- decision owner
+- Decision Owner
 - physical killer
-- curator of the official chronology
+- curator of official chronology
 
 ## Adrian
 
@@ -1050,203 +963,132 @@ Real guilt:
 
 - enabling architecture
 - concealment
-- failure to report
+- delayed reporting
 - flight
-- possible obstruction
+- retained protected material
 
-Why he looks like the killer:
+Fatal gap:
 
-- designed the system
-- knew the vulnerability
-- fled before exposure
-- retained secret architecture material
-- could explain every system layer
-
-Exculpatory truth:
-
-- legitimate architecture predates the murders
-- no proved local decision path
-- no physical evidence of selecting victims
-- his fear is directed at the system’s controller
-
-Possible wrong-case theory:
-
-- Adrian created the system, remotely triggered it and killed to hide his design.
+- no proved local victim selection
+- no physical murder path
 
 ## Arman
 
 Real guilt:
 
-- built or adapted wrapper
-- brokered anonymity
-- scrubbed metadata
-- used a decoy
-- concealed clients
-- may destroy or withhold logs
+- wrapper authorship
+- brokerage
+- metadata scrubbing
+- proxy deception
+- withholding records
 
-Why he looks like the killer:
+Fatal gap:
 
-- tool fingerprint
-- broker route
-- profit motive
-- deception during physical contact
-- technical ability to control records
+- no proved Bangkok presence
+- no victim-selection evidence
+- no Decision Ownership
 
-Exculpatory truth:
-
-- no proved victim selection
-- no proved Bangkok physical presence
-- deployment conditions came from a legitimate Bangkok client
-- source behaviour separates tool protection from decision ownership
-
-Possible wrong-case theory:
-
-- Arman sold the tool, operated it and personally designed both murders.
-
-## Bangkok Local Deployer
+## Narin
 
 Real guilt:
 
-- deployed trusted packages
-- concealed irregularities
-- executed or enabled cleanup
-- abused legitimate access
-- may have accepted payment or pressure
+- unauthorized deployment
+- evidence tampering
+- concealment
+- cleanup
+- continued compliance after knowledge
 
-Why this person looks like the killer:
+Fatal gap:
 
-- local access
-- physical package path
-- device proximity
-- direct control of accepted credentials
-- post-event concealment
-- possible contact with both victims
+- receives priorities rather than originates them
+- no proof he selected or killed victims
 
-Exculpatory truth:
-
-- did not choose victims
-- did not design the murder chronology
-- followed curated deployment conditions
-- may not have known the full purpose during the first offence
-
-Possible wrong-case theory:
-
-- the deployer used official access to kill both victims and framed foreign technical actors.
-
-## Field Watcher / Recovery Operator
+## Ika
 
 Real guilt:
 
 - surveillance
-- assault, abduction attempt or sabotage
+- attempted abduction or murder
 - evidence destruction
-- attempt to create a false record of North’s removal
+- obstruction
 
-Why this person looks like the killer:
+Fatal contradiction:
 
-- proven violence
-- access to operational intelligence
-- cleanup behaviour
-- connection to the antagonist’s network
-
-Exculpatory truth:
-
-- joined the chain later
-- no evidence connecting the operator to Kawin’s or Daniel’s deaths
-- receives objectives through cutouts
-
-## Kittisak
-
-Temporary suspicion:
-
-- has access to plans and evidence
-- knows team movement
-- can authorize internal processes
-- may delay disclosure to protect an operation or source
-
-Counterweight:
-
-- his authority is normal for his position
-- no evidence of tool authorship
-- no evidence of victim selection
-- his later actions may preserve the case at personal cost
-
-## Somchai
-
-Temporary suspicion:
-
-- handles physical evidence or field transport
-- may appear on CCTV or access logs
-- may be near a package handoff
-
-Counterweight:
-
-- lacks command authority
-- follows written orders
-- proximity is consistent with field duty
-- any theory making him system mastermind must explain missing access and expertise
+- recruitment and travel begin after both earlier murders
 
 ---
 
 # 10. CHARACTER JOURNAL
 
-## Frozen gates
+## Universal discovery contract
 
-### Chapter I
+For every implemented new story character:
+
+1. character appears and completes the first meaningful introduction dialogue
+2. identity or role reaches the required verification threshold
+3. the character is added exactly once
+4. one Character Added notification appears
+5. one unread red dot appears
+6. opening Character Journal clears the unread state
+7. closing and reopening Journal preserves the card
+8. Save/Load preserves unread or read state
+9. repeat dialogue does not notify again
+10. Developer Unlock is silent and does not create unread dots
+
+## Chapter I gate
 
 - Character mode hidden
-- no Character Cards
-- no unlock toast
-- Developer Unlock does not expose Character mode
+- no Character Cards visible
+- no red dot
+- no Character Added toast
+- Developer Unlock may prepare data but must not expose Character mode
+- stale Chapter IV state must not override the active Chapter I screen
 
-### Chapter II
+## Chapter II gate and order
 
-Character Mode appears according to the accepted original timing.
+Character mode first appears only after North’s first Chapter II office conversation is complete.
 
-Unlock order:
+Order:
 
-- Benedict and North
-- Elena
-- Somchai and Kittisak
-- Ratchata
+1. Benedict, initial entry
+2. North after Chapter II office introduction
+3. Elena after café introduction
+4. Somchai and Kittisak after police introduction
+5. Ratchata after medical introduction
 
-### Chapter III
+## Chapter III order
 
-- Cheryl and Farid after formal introduction
+- Cheryl after formal introduction
+- Farid after formal introduction
 - Adrian after identity verification
 - no PALIMPSEST card
 - no alias card
 
-### Chapter IV
+## Chapter IV order
 
-- Maya after formal introduction
-- Arman only after physical encounter plus source-behaviour corroboration
-- no decoy card
+- Maya after formal airport introduction
+- Arman after real identity and first verified introduction dialogue complete
+- no Dimas card
 - no hood-feed card
 - no duplicate costume cards
-- Farid remains one Character entry while remote
+- Farid remains one entry while remote
 
-### Chapter V
+## Arman 0.17.7 contract
 
-- Kawin after identity establishment
-- Rinrada after physical introduction and consent
-- new Local Deployer only after verified identity
-- no role-only placeholder card
+Arman is a scoped Chapter IV Character extension because the legacy base registry allow-list was created before Arman existed and could filter a new dynamic ID.
 
-## Current role-label debt
+The accepted repair must:
 
-Current runtime layers are asymmetric: the base registry still contains generic `Police Officer` labels for both men, but `14-character-canon.js` already overrides Kittisak to `Kittisak Siriwat / กิตติศักดิ์ ศิริวัฒน์` and `Police Captain / ร้อยตำรวจเอก`. Somchai remains generic and is the primary role-label debt.
-
-Future scoped correction should use:
-
-- Somchai:
-  - English: `Police Senior Sergeant Major`
-  - Thai: `ดาบตำรวจ`
-- Kittisak:
-  - English: `Police Captain / Investigation Inspector`
-  - Thai: `ร้อยตำรวจเอก / สารวัตรฝ่ายสืบสวน`
-
-This is documentation Canon only. Do not alter frozen runtime without a scoped owner instruction and regression test.
+- use the established Character card and Detail visual language
+- add Arman after the first verified introduction dialogue completes
+- display one notification only
+- create one unread dot only
+- preserve card and unread state through Save/Load
+- clear only the correct unread state when Journal opens
+- repair a prior save where identity was verified but the card was missing
+- stay silent in Developer Unlock
+- never expose Arman in Chapter I
+- never create a second global Character manager
 
 ## Detail DOM contract
 
@@ -1258,6 +1100,15 @@ Every custom detail view must preserve:
 - `[data-detail-status]`
 - `[data-detail-metrics]`
 - `[data-detail-notes]`
+
+## Role-label debt
+
+Future scoped correction:
+
+- Somchai: `Police Senior Sergeant Major` / `ดาบตำรวจ`
+- Kittisak: `Police Captain · Investigation Inspector` / `ร้อยตำรวจเอก · สารวัตรฝ่ายสืบสวน`
+
+Do not alter stable Runtime solely because the documentation is more complete.
 
 ---
 
@@ -1292,12 +1143,6 @@ Exactly eight phases:
 8. SHADOW OF THE TRUTH
 
 No ninth phase without owner approval.
-
-## Player-facing language
-
-Characters do not speak as though they are in game phases.
-
-Use story objectives and titles, not development language.
 
 ---
 
@@ -1347,43 +1192,30 @@ Forward truth:
 
 `18-07` is not a person.
 
-It may carry:
+It may carry accepted role, permission, device claim, delayed event and route metadata.
 
-- accepted role
-- permission
-- device claim
-- delayed event
-- route metadata
-
-It does not prove:
-
-- physical entry
-- operator
-- identity
-- motive
-- mastermind
+It does not prove physical entry, operator, identity, motive or mastermind.
 
 ## Architecture layers
 
 1. Adrian designed legitimate reconciliation architecture.
 2. Arman built or adapted the wrapper.
-3. Bangkok Local Deployer supplied or executed trusted deployment conditions.
-4. Field Operator handled later surveillance or recovery.
+3. Narin supplied or executed trusted Bangkok deployment conditions.
+4. Ika handled later surveillance or recovery.
 5. Elena selected victim, room, timing, discovery sequence and cleanup priority.
 
-Architecture, authorship, brokerage, deployment, operation and decision ownership are separate.
+Architecture, authorship, brokerage, deployment, operation and Decision Ownership remain separate.
 
 ## North threat escalation
 
-- North separates authorship, route, deployment and decision ownership.
-- `ANALYST OF RECORD` identifies the analytical role.
+- North separates authorship, route, deployment and Decision Ownership.
+- `ANALYST OF RECORD` identifies analytical capability.
 - North threatens the attribution gap protecting Elena.
 - Elena chooses neutralization.
-- the attempt remains deniable
-- the attempt resembles accident, operational failure or another actor’s violence
-- North remains active
-- North consents to the false-success plan
-- the attempt creates evidence
+- attempt remains deniable.
+- North remains active.
+- North must consent to the false-success plan.
+- the attempt creates evidence.
 
 ---
 
@@ -1400,29 +1232,10 @@ Architecture, authorship, brokerage, deployment, operation and decision ownershi
 
 Locked interpretation:
 
-### 05:47
-
-- profile accepted
-- resident-access role
-- operator unknown
-
-### 06:09
-
-- accepted Evidence Division permission
-- profile 18-07
-- corrected event claims FS-12
-- route reaches Singapore infrastructure
-- operator unknown
-
-### 06:17
-
-Always:
-
-**Laboratory Accession Record created**
-
-### 06:20
-
-Official reported discovery.
+- 05:47 proves profile acceptance, not operator identity.
+- 06:09 proves accepted permission and a corrected event claim, not operator identity.
+- 06:17 is always Laboratory Accession Record creation.
+- 06:20 is official reported discovery.
 
 ---
 
@@ -1447,7 +1260,7 @@ Deduction:
 - body moved
 - room staged
 - laptop selectively cleared
-- intended departure interrupted
+- departure interrupted
 - phone positioned for investigators
 - true objects arranged into false order
 
@@ -1459,20 +1272,15 @@ Forward truth:
 
 - victim is Kawin
 - Kawin audited 18-07 reuse
-- arranged pier meeting with Rin
 - Elena killed him
 - Elena staged Room 1807
 - warning caller is Elena through a masked channel
 
-Future payoff:
+No-regression lock:
 
-- Room 1807 becomes the physical template for “The Perfect Record”
-- the room teaches the player that a true object can be placed inside a false story
-- Chapter VII returns to this principle
-
-Frozen rule:
-
-- do not retroactively attach ending scores to Chapter I choices without owner approval
+- Character Journal remains hidden throughout Chapter I.
+- No late character may leak into Chapter I.
+- New Game must clear late-story display state.
 
 ---
 
@@ -1490,10 +1298,10 @@ Key findings:
 
 - two coffee mugs
 - Temporary Profile 18-07
-- Daniel’s investigation board
+- investigation board
 - Room 1807 connection
 - `Ask E. about the corrected time`
-- Café draft edited at 05:51
+- café draft edited at 05:51
 - certified extract
 - sealed custody envelope
 - Evidence Division permission
@@ -1503,19 +1311,10 @@ Key findings:
 - correction from 05:58 to 06:09
 - discovery at 06:20
 
-Elena continuity:
+Character Journal identity:
 
-- North reaches `E.` through investigation
-- Elena gives true archived information
-- no impossible future knowledge
-- no villain coding
-
-Police continuity:
-
-- Kittisak is the Investigation Inspector
-- Somchai is his field subordinate
-- future dialogue must preserve that hierarchy
-- existing generic Journal labels are a known role-label debt
+- Feature first unlocks after North’s initial Chapter II conversation.
+- This timing is an iconic game-system contract and must not be changed.
 
 Ending routes:
 
@@ -1524,16 +1323,6 @@ Ending routes:
 - `chapter3_access`
 
 All converge.
-
-Future payoff:
-
-- Chapter II introduces the Bangkok people who later become part of the internal-compromise inquiry
-- it does not prove any one of them is corrupt
-- Elena’s helpfulness must remain credible when revisited
-
-Frozen rule:
-
-- no retroactive gameplay edits without scoped approval
 
 ---
 
@@ -1554,52 +1343,37 @@ Explain how true evidence survives inside a false chronology without revealing t
 - events within the eleven-minute Reconciliation Window remain eligible
 - accepted events may display by Device Timestamp
 - conflicting certified views may both validate
-- the system obeys rules while the official story is false
+- system can obey rules while official story is false
 
 ## Major conclusions
 
 - Daniel did not travel
 - records and credentials travelled
-- signature and permission can be valid while operator identity remains unknown
+- signature and permission can be valid while operator remains unknown
 - Adrian’s architecture is not murder proof
 - Jakarta is route, not identity
 - watcher and cleanup came through the Bangkok Evidence Chain
-- deployment and decision layers differ
+- deployment and Decision Ownership differ
 
-## Phase IX Callback proof
+## Closing proof boundary
 
 Proven or supported:
 
-- signed Bangkok package carried the watcher
-- cleanup used a valid synchronization credential
-- cleanup was deployed before the team left Bangkok
-- adversary anticipated the raw-mirror milestone
-- local Bangkok deployment and Jakarta tool route are separate
-- Decision Owner unresolved
+- signed Bangkok package carried watcher
+- cleanup used valid synchronization credential
+- deployment predated the team’s departure
+- adversary anticipated raw-mirror milestone
+- local deployment and Jakarta tool route are separate
 
 Not proven:
 
-- knowing police insider
+- named knowing insider
 - Elena
 - Kittisak
 - Somchai
 - Ratchata
 - Arman as operator
 - Adrian as mastermind
-
-Key warning:
-
-> “Look for the person who decided when the room would be found.”
-
-Closing:
-
-> “One in Jakarta. One in Bangkok.”
-
-Future payoff:
-
-- Chapter IV follows the Jakarta hand
-- Chapter V–VI return to the Bangkok hand
-- Chapter VII joins both without collapsing them
 
 ---
 
@@ -1630,34 +1404,23 @@ Weakness:
 - learned of abuse
 - concealed, delayed and fled
 - guilty of real enabling or obstruction
-- not murder mastermind
+- not mastermind
 
 ## Arman
 
-PALIMPSEST can:
-
-- preserve records across broken clocks
-- fail over relays
-- scrub operator metadata
-- protect anonymous delivery
-- survive suppression
+PALIMPSEST can preserve records, fail over relays, scrub operator metadata, protect anonymous delivery and survive suppression.
 
 Arman sold, brokered or adapted it.
 
-He did not choose:
+He did not choose Kawin, Daniel, Room 1807 or the eleven-minute events.
 
-- Kawin
-- Daniel
-- Room 1807
-- the eleven-minute events
-
-## Bangkok Local Deployer
+## Narin
 
 - handled or enabled valid local deployment
-- connected legitimate Bangkok conditions to the broker layer
+- connected Bangkok conditions to broker layer
 - concealed irregularities
 - later assisted cleanup
-- did not own the final decision
+- did not own final decision
 
 ## Elena
 
@@ -1674,17 +1437,6 @@ She:
 - allowed technical actors to become visible suspects
 - used legitimate local access
 - controlled discovery timing
-
-Her mistake:
-
-- Benedict reads intention
-- North reconstructs attribution gaps
-- Rin remembers physical presence
-- Ratchata protects biological truth
-- Cheryl protects proof boundaries
-- Farid preserves alternatives
-- Kittisak can keep the institution from choosing the easiest story
-- Somchai can preserve the physical handoff trail
 
 ## Kawin murder
 
@@ -1705,17 +1457,7 @@ Her mistake:
 - deployed through Elena’s legitimate forensic access and local deployment path
 - signed package carried dormant watcher
 - waited for North’s raw-mirror milestone
-- cleanup attempted to erase callback token while preserving the official record
-
-## Why Elena allowed the investigation
-
-She wanted:
-
-- independent validation of the curated narrative
-- North to expose technical actors
-- Adrian and Arman to become plausible endpoints
-- Rin to react
-- a public record that survived scrutiny
+- cleanup attempted to erase callback token while preserving official record
 
 ---
 
@@ -1723,10 +1465,11 @@ She wanted:
 
 ## Current status
 
-- Phase I complete
-- Phase II complete
-- Phase III complete
-- Phase IV next production target
+- Phase I complete and frozen
+- Phase II complete and frozen
+- Phase III complete and frozen
+- Phase IV implemented in current Runtime and passed the latest owner check
+- Arman Journal contract owner-approved
 - Phase V–VIII planned
 - eight phases total
 
@@ -1746,7 +1489,7 @@ Route Board:
 | Cleanup Credential | Bangkok |
 | Decision Owner | Unresolved |
 
-North becomes the `ANALYST OF RECORD` target.
+North becomes `ANALYST OF RECORD` target.
 
 ## Phase II · JAKARTA ARRIVAL
 
@@ -1761,9 +1504,7 @@ Physical team:
 - Cheryl
 - Maya
 
-Farid remains remote in Singapore.
-
-Maya owns Indonesian authority.
+Farid remains remote in Singapore. Maya owns Indonesian authority.
 
 ## Phase III · PACKET TRAIL
 
@@ -1778,127 +1519,91 @@ Proven or supported:
 - broker handoff
 - Bangkok deployment conditions
 - Decision Owner unknown
-- lawful controlled observation of the broker handle
+- lawful observation of broker handle
 
 Not proven:
 
-- Arman identity
+- Arman identity at that point
 - Arman as operator
 - Arman as murderer
 - Elena involvement
 - final operator
-- decision owner
+- Decision Owner
 
 ## Phase IV · THE MAN BEHIND THE ALIAS
 
 Status:
 
-`OWNER-APPROVED NARRATIVE DIRECTION · TECHNICAL BLUEPRINT REQUIRED · NOT IMPLEMENTED`
+`IMPLEMENTED · CURRENT BUILD OWNER-CHECKED · ARMAN JOURNAL CONTRACT OWNER-APPROVED · NO-REGRESSION BASELINE`
 
-### Purpose
+Formal whole-phase freeze remains separate from the owner’s latest pass wording.
+
+### Purpose achieved by current implementation
 
 - physical encounter with Arman
-- decoy confrontation
-- fair identity verification
-- real face reveal
-- separate knowledge, access and authorship
-- establish Arman’s culpability without making him the mastermind
-- show that North has crossed the adversary’s threat threshold
-- create a location lead for Phase V
-- begin meaningful ending-profile consequences
+- Dimas controlled-proxy confrontation
+- identity verification through physical and source-behaviour evidence
+- real Arman reveal
+- separation of knowledge, access, authorship and Decision Ownership
+- Arman culpability without mastermind attribution
+- North threat classification
+- Phase V location lead
+- ending-profile consequence choices
 
-### Owner-supplied assets
+### Accepted opening sequence
 
-Current source files:
+1. unobstructed full-screen vehicle approach
+2. vehicle stops or Skip completes the same route
+3. soft fade
+4. dedicated Phase title card
+5. professional Day / Location / Time card
+6. automatic entry into the building
 
-- arrival clip: `VID_20260731_194857.mp4`
-- Arman reveal clip: `1060689426_1785502182914902.mp4`
-- main score: `C4P4 Arman Appearance.mp3`
-- staircase background
-- electronics workshop background
-- decoy expression sheet
-- real Arman expression sheet
+There is no `ENTER THE BUILDING` button. The location card advances automatically because it is a cinematic transition, not a decision point.
 
-Production paths remain unassigned until implementation blueprint approval.
+### Accepted interface behavior
 
-The earlier vehicle clip is superseded by `VID_20260731_194857.mp4`.
+- Save and Menu controls present in playable scene HUD
+- Settings accessible through the established drawer
+- progress bar uses the established gold fill
+- no full-screen shade that changes approved scene luminance
+- current stairwell and workshop art remain at owner-approved tone
+- Return to Title stops Phase IV audio correctly
 
-### Scene flow
+### Persona Triangulation
 
-1. rainy approach to the electronics storefront
-2. vehicle arrives already in motion
-3. controlled entry through stairs or rear access
-4. workshop encounter
-5. decoy claims to be Arman
-6. North tests technical authorship
-7. Benedict reads rehearsal and room ownership
-8. premium minigame
-9. Benedict exposes the proxy
-10. exact line:
-   > “อามานจะไม่ออกมาทักทายกันหน่อยเหรอ”
-11. decoy’s restrained shock
-12. real Arman walks out from the dark room
-13. reveal clip preserves original footsteps
-14. Arman admits correct-level involvement
-15. local cache shows North has been classified as an attribution threat
-16. Phase V location lead appears
-
-### Decoy rule
-
-The decoy is:
-
-- workshop associate, caretaker, technician or screener
-- informed enough to answer prepared questions
-- not stupid
-- not random
-- not a Character Journal entry
-- not a murderer
-- a real witness whose treatment may matter later
-
-### Premium minigame · PERSONA TRIANGULATION
-
-Reasoning concept:
-
-Separate:
+Implemented reasoning concept:
 
 - `KNOWLEDGE`
 - `ACCESS`
 - `AUTHORSHIP`
-
-Player reviews evidence such as:
-
-- workshop access
-- broker vocabulary
-- physical familiarity with tools
-- response to a deliberately false technical premise
-- gaze and timing when the false premise is accepted
-
-North’s false premise:
-
-- technically plausible to a reader
-- wrong to the actual builder
-- designed to test source behaviour, not trivia
+- `CONTRADICTION`
 
 Correct conclusion:
 
 > `CONTROLLED PROXY`
 
-The minigame must:
+Standards:
 
-- last about 45–60 seconds
-- be tap-first
-- show one clue at a time
-- allow Reset
-- have no permanent fail
-- explain why access does not equal identity
-- avoid body-language stereotypes
-- use Benedict and North together
+- tap-first
+- resettable
+- no permanent fail
+- wrong answers teach the access-versus-identity distinction
+- Benedict and North contribute distinct reasoning
 
-### Arman admissions
+### Dimas rule
+
+- informed proxy
+- real witness
+- no Character Journal card
+- treatment affects reliability and coercion risk
+- not a cartoon decoy
+
+### Arman admissions boundary
 
 Arman may admit:
 
-- authorship or adaptation
+- wrapper authorship or adaptation
 - brokerage
 - metadata protection
 - anonymous delivery
@@ -1912,33 +1617,44 @@ Arman does not admit:
 - selecting eleven-minute events
 - killing Kawin
 - killing Daniel
-- knowing the final client identity
+- knowing final client identity
 
-### Character Journal unlock
+### Arman Character Journal timing
 
-Unlock Arman only after:
+Unlock occurs after:
 
-- real face seen
-- source behaviour matches
-- physical encounter supports identity
-- at least one corroborating record exists
+- real face is seen
+- reveal is complete
+- source behaviour supports identity
+- first verified Arman introduction dialogue is complete
+
+Then:
+
+- one Character Added notification
+- one unread red dot
+- one card
+- Save/Load persistence
+- no repeated notification
+- opening Journal clears unread
+- Developer Unlock remains silent
+
+### Accepted portrait direction
+
+- no white fringe
+- no severed face crop
+- face and upper torso dominate
+- Benedict-referenced scale and anchor
+- Arman Journal card/detail use a professional face-and-torso crop
+- North expressions used in Phase IV must not show damaged or incomplete face crops
+- Maya bottom-edge contamination must not return
 
 ### Phase IV consequence choices
 
-No single choice locks an ending.
-
-#### Proxy treatment
+#### Dimas treatment
 
 - protect and separate from mastermind
 - pressure for immediate statement
 - treat as co-conspirator
-
-Possible effects:
-
-- witness reliability
-- coercion risk
-- alliance strength
-- future testimony
 
 #### Arman status
 
@@ -1946,44 +1662,23 @@ Possible effects:
 - confidential asset
 - prime suspect
 
-Possible effects:
-
-- attribution proof
-- chain of custody
-- Arman cooperation
-- false-conviction risk
-
 #### Local cache handling
 
 - seal first, analyse second
 - live trace before the window closes
 - preserve a private safety clone
 
-Possible effects:
-
-- evidence integrity
-- attribution proof
-- North exposure
-- public-record control
-
 #### North response
 
 - withdraw her
-- let her design the counteroperation
+- let her design counteroperation
 - use her without full informed consent
 
-Locked ethical rule:
+Ethical lock:
 
-- Benedict cannot use North as uninformed bait
-- a player may choose a harmful route, but the game must show its trust and ending consequences
+- Benedict cannot use North as uninformed bait without consequences.
 
 ### Closing threat beat
-
-North discovers a system that classifies analysts by understanding.
-
-Her profile changes from observation to escalation.
-
-Preferred wording:
 
 ```text
 SUBJECT: N-32
@@ -1991,43 +1686,24 @@ CAPABILITY: ATTRIBUTION
 STATUS: ESCALATED
 ```
 
-A separate antagonist-side screen may show:
+Decision Owner remains unresolved. Elena’s identity remains hidden.
 
-```text
-REMOVE FROM RECORD
-```
+### Phase V lead
 
-Do not reveal Elena’s face or name.
-
-### Phase IV audio
-
-One continuous main score is sufficient.
-
-Direction:
-
-- use `C4P4 Arman Appearance.mp3`
-- preferred cue region begins around 00:18
-- final loop points must be verified during implementation
-- smooth crossfade
-- preserve dialogue dominance
-- duck music during Arman’s reveal
-- preserve original footsteps
-- no villain sting
-- no reveal sting
-- no added footsteps unless the original clip proves insufficient
-- no second full music track unless later testing demonstrates a genuine tonal gap
+Current Phase IV evidence points to the next operational location associated with Aster Recovery and the Aruna coastal setting. Phase V must use this lead rather than invent an unrelated destination.
 
 ## Phase V · NORTH IS MARKED
 
+Next production target.
+
 Locked function:
 
-- undercover Indonesian hotel, resort, beach club, pool or coastal surveillance
-- location justified by Phase IV evidence
-- public leisure setting with hidden operational tension
+- Indonesian coastal hotel, resort, beach club, pool or surveillance setting
+- public leisure cover with operational tension
 - adversary attempts deniable removal
 - North remains active
 - attack creates evidence
-- Field Watcher becomes visible
+- Ika becomes visible or lawfully identifiable
 - player distinguishes violence from Decision Ownership
 
 Threat rhythm:
@@ -2037,18 +1713,17 @@ Threat rhythm:
 3. anomaly
 4. North singled out
 5. attempt
-6. proof that attacker needs a record of removal
+6. proof attacker needs a record of removal
 7. transition to false success
 
 ## Phase VI · THE FALSE SUCCESS
 
 - North consents
-- North designs part of the deception
+- North designs part of deception
 - Farid maintains decoy telemetry
 - Cheryl and Maya control legal perimeter
 - public record may say missing, injured or dead
 - North remains alive and operational
-- player decides how much truth to withhold from institutions
 - choices affect public-record control and institutional trust
 
 ## Phase VII · RELAY FACILITY CLIMAX
@@ -2058,24 +1733,24 @@ Threat rhythm:
 - cleanup triggers
 - North works through hidden channel
 - capture Registrar reference `R.`
-- prove Bangkok watcher deployment predates the Singapore trip
+- prove Bangkok watcher deployment predates Singapore trip
 - Elena sends true useful information slightly too early
 - no obvious villain reveal
-- preserve evidence that distinguishes Local Deployer from Decision Owner
 
 ## Phase VIII · SHADOW OF THE TRUTH
 
 - public record says North removed
 - North secretly alive
-- antagonist believes the record
+- antagonist believes record
 - Benedict returns toward Bangkok
 - Jakarta identifies toolmaker, broker and field operation
 - Decision Owner remains unresolved
-- `R.` becomes the next human lead
+- `R.` becomes next human lead
 
 Closing:
 
 > “Let her believe the record.”
+
 
 ---
 
@@ -2089,11 +1764,11 @@ Supply human continuity that systems cannot manufacture.
 
 Public:
 
-- North missing, injured or presumed dead
+- North missing, injured or presumed dead after the future false-success operation
 
 Private:
 
-- North alive under protection
+- North alive under protection and analytically active
 
 ## Core reveals
 
@@ -2104,8 +1779,8 @@ Private:
 - pier meeting
 - living Last Witness
 - first earned suspicion of Elena
-- Bangkok Local Deployer identity or role
-- distinction between official unit compromise and individual intent
+- Narin identity or role
+- distinction between official-unit compromise and individual intent
 
 ## Bangkok team roles
 
@@ -2114,12 +1789,12 @@ Private:
 - commands return-to-Bangkok operation
 - opens need-to-know internal audit
 - controls warrants and witness protection
-- must balance case integrity against institutional pressure
+- balances case integrity against institutional pressure
 
 ### Somchai
 
-- reconstructs the physical package path
-- checks handoffs and cameras
+- reconstructs physical package path
+- checks handoffs, cameras and vehicles
 - locates witnesses
 - supports Rin extraction
 
@@ -2127,13 +1802,13 @@ Private:
 
 - identifies Kawin
 - compares biological findings
-- proves that official chronology cannot account for both bodies
+- proves official chronology cannot account for both bodies
 
 ### Elena
 
 - helps interpret forensic and custody irregularities
 - remains useful
-- may correctly point toward the Local Deployer
+- may correctly point toward Narin
 - first suspicion arises through timing and physical presence, not villain coding
 
 ## Planned phases
@@ -2147,7 +1822,7 @@ Private:
 7. Witness Extraction
 8. The Missing Piece
 
-## Minigames
+## Planned minigames
 
 ### Victim Identity Reconstruction
 
@@ -2164,9 +1839,9 @@ Private:
 
 - place physical presence, calls, vehicle and witness memory
 - distinguish “present” from “killed”
-- Rin’s sighting of Elena supports presence, not complete murder proof
+- Rin’s sighting supports Elena’s presence, not complete murder proof
 
-## Chapter ending
+## Chapter ending requirement
 
 The team has:
 
@@ -2177,7 +1852,7 @@ The team has:
 
 The team still lacks:
 
-- complete decision-owner chain
+- complete Decision Owner chain
 - admissible link between both murders and Elena
 - proof surviving institutional challenge
 
@@ -2195,7 +1870,7 @@ Elena attempts to:
 
 - migrate records
 - certify final chronology
-- frame Adrian, Arman, Local Deployer or North
+- frame Adrian, Arman, Narin or North
 - erase attribution path
 - control public discovery
 - turn real offences by others into a complete but false murder theory
@@ -2218,19 +1893,18 @@ The team releases different true but incomplete details through isolated channel
 
 Purpose:
 
-- identify which channel reaches the adversary
+- identify which channel reaches adversary
 - separate police command, forensic access, medical chain and external actors
-- avoid falsely treating one leak as final identity proof
+- avoid treating one leak as final identity proof
 
-Kittisak owns lawful authorization.
+Authority:
 
-Somchai executes physical distribution.
-
-North and Farid design telemetry.
-
-Cheryl protects admissibility.
-
-Elena participates under apparently normal forensic access.
+- Kittisak authorizes
+- Somchai executes physical distribution
+- North and Farid design telemetry
+- Cheryl protects admissibility
+- Maya owns Indonesian actions
+- Elena participates under apparently normal forensic access
 
 ## Authority Chain Reconstruction
 
@@ -2244,39 +1918,19 @@ Player maps:
 - who certified
 - who benefited
 
-The correct result distinguishes:
-
-- Kittisak’s command authority
-- Somchai’s field handling
-- Elena’s forensic access
-- Ratchata’s independent findings
-- Local Deployer’s technical execution
-- Decision Owner’s hidden intent
+Correct result distinguishes Kittisak’s authority, Somchai’s handling, Elena’s access, Ratchata’s independent findings, Narin’s execution and the hidden Decision Owner.
 
 ## Parallel Scene Prioritization
-
-The player cannot personally handle every threat.
 
 Possible priorities:
 
 - witness safety
 - physical evidence
 - digital mirror
-- Local Deployer capture
+- Narin capture
 - public-record release
 
-No option should be obviously stupid.
-
-Every option preserves something and risks something else.
-
-## Chapter ending
-
-The team must enter Chapter VII with:
-
-- at least one viable final suspect theory
-- at least one protected evidence route
-- at least one meaningful loss or vulnerability
-- a reason the two final locations activate simultaneously
+No option is obviously stupid. Every option preserves something and risks something else.
 
 ---
 
@@ -2302,12 +1956,7 @@ Resolve:
 1. Room 1807
 2. pier
 
-The adversary creates two simultaneous crises to force the team to choose between:
-
-- preserving a person
-- preserving a record
-- preventing a repeated staging
-- confronting the Decision Owner
+The adversary creates simultaneous crises involving a person, a record, a repeated staging and the Decision Owner.
 
 ## Planned phases
 
@@ -2321,10 +1970,6 @@ The adversary creates two simultaneous crises to force the team to choose betwee
 8. Ending
 
 ## Final minigame · THE LAST RECORD
-
-The final minigame must be substantial but not exhausting.
-
-Structure:
 
 ### Part I · What happened physically
 
@@ -2341,7 +1986,7 @@ Structure:
 - corrected time
 - Singapore trail
 - official discovery sequence
-- North’s removal record
+- North removal record
 
 ### Part III · Who owned each layer
 
@@ -2367,22 +2012,20 @@ Interaction standard:
 
 - one section at a time
 - saveable between sections
-- wrong placement explains the missing distinction
+- wrong placement explains missing distinction
 - final confirmation warns about unresolved contradictions
-- no single “guess the killer” button without a case
+- no unsupported “guess the killer” button
 
 ## Final accusation board
 
-Available serious candidates may include:
+Serious candidates:
 
 - Elena
 - Adrian
 - Arman
-- Bangkok Local Deployer
+- Narin
 
-Field Watcher may be selectable only when enough evidence supports a principal theory.
-
-Kittisak and Somchai should not become final murder candidates unless future approved evidence creates a complete case. Rank-based access alone is insufficient.
+Ika may be selectable only when enough evidence supports a principal theory. Kittisak and Somchai do not become final murder candidates from authority or proximity alone.
 
 ---
 
@@ -2398,15 +2041,18 @@ Kittisak and Somchai should not become final murder candidates unless future app
 | Singapore booking | records travelled, Daniel did not | identity and travel separation |
 | Adrian architecture | legitimate system later abused | architect is not killer |
 | Arman wrapper | anonymity and delivery | toolmaker is not Decision Owner |
+| Dimas proxy | physical access can be rehearsed | identity requires corroboration |
 | Bangkok signed package | local deployment path | internal compromise inquiry |
 | watcher milestone | adversary knew investigation progress | North targeted |
+| N-32 classification | capability becomes threat | Phase V removal attempt |
+| Aster coastal reservation | operational location lead | Phase V setting |
 | North removal record | system needs institutional belief | false-success counteroperation |
 | Rin’s sighting | Elena physically present | presence plus corroboration |
 | Ratchata findings | body contradicts record | physical proof |
 | controlled leak | narrows access path | separates helper, deployer and owner |
 | final record | all layers joined | ending determination |
 
-Every chapter must answer one earlier question and open one narrower question.
+Every chapter answers one earlier question and opens one narrower question.
 
 ---
 
@@ -2418,7 +2064,7 @@ Every minigame:
 
 - mobile-friendly
 - tap-first
-- 30–60 seconds, except staged final minigame
+- 30–60 seconds except staged final minigame
 - Reset-capable
 - no softlock
 - no permanent fail
@@ -2443,7 +2089,9 @@ Every minigame:
 
 ### Chapter IV
 
+- route vs deployment
 - knowledge vs access vs authorship
+- controlled proxy
 - threat intent vs attacker identity
 - deception ethics
 
@@ -2468,11 +2116,7 @@ Every minigame:
 
 ## Fair answer design
 
-Each wrong option should be wrong for one clear reason.
-
-Avoid options that differ only by obscure wording.
-
-Use concise feedback such as:
+Use concise feedback:
 
 - “This proves access, not the operator.”
 - “Presence supports opportunity, not the killing act.”
@@ -2486,72 +2130,51 @@ Use concise feedback such as:
 
 ## No single-choice ending
 
-No choice may directly set:
+No choice may directly set a good or bad ending.
 
-```js
-ending = "bad";
-```
+Each choice affects one or two dimensions such as:
 
-Each choice affects one or two hidden dimensions.
-
-Examples:
-
-- preserve evidence vs trace live
-- protect witness vs obtain immediate lead
-- official custody vs private safety copy
-- correct role separation vs convenient blame
-- North’s informed consent vs operational advantage
-- public release vs sealed prosecution
+- evidence integrity
+- chain of custody
+- attribution proof
+- role separation
+- witness protection
+- North safety
+- alliance strength
+- institutional trust
+- public-record control
 
 ## Recovery rule
 
-A poor choice may be repaired later through:
-
-- corroboration
-- admission of error
-- fresh custody
-- witness rescue
-- independent copy
-- corrected accusation
-- public disclosure
-
-Repair has a cost.
-
-A good early choice does not guarantee success if later evidence is lost.
+A poor choice may be repaired through corroboration, admission of error, fresh custody, witness rescue, independent copy, corrected accusation or public disclosure. Repair has a cost.
 
 ## Choice transparency
 
-The game should not reveal ending points.
-
-It should reveal consequences:
+Do not reveal ending points. Reveal consequences:
 
 - witness trusts you
 - statement challenged as coerced
 - hash preserved
 - live trace exposed North
-- institution refuses private clone
-- alternative suspect theory retained
-- chain of custody weakened
+- institution rejects private clone
+- alternative theory retained
+- custody weakened
 
 ## Ethical agency
 
-North’s safety decisions require North’s consent.
-
-Benedict must not decide over her body.
-
-The game may permit a harmful choice, but must not celebrate it as optimal.
+North’s safety decisions require her informed consent. Harmful routes may exist but must not be celebrated as optimal.
 
 ---
 
 # 25. ENDING ARCHITECTURE
 
-Historical truth remains:
+Historical truth:
 
 - Elena is mastermind
 - Elena killed Kawin
 - Elena killed Daniel
 
-What changes:
+Variable outcomes:
 
 - evidence survival
 - witness survival
@@ -2564,169 +2187,118 @@ What changes:
 
 ## Ending 1 · TRUE CONVICTION
 
-Requirements:
+Requirements include:
 
 - Elena accused
 - Decision Owner corroborated
 - clean or repaired custody
-- Rin survives or equivalent physical corroboration exists
+- Rin or equivalent physical corroboration survives
 - North evidence survives
-- Ratchata physical evidence survives
-- Bangkok deployment path separated from Elena’s final decision
-- at least three evidence classes support the murders
-- institution accepts the case
+- Ratchata evidence survives
+- Narin deployment separated from Elena decision
+- at least three evidence classes
+- institution accepts case
 
 Outcome:
 
-- Elena convicted for the murders
-- Adrian, Arman, Local Deployer and Field Operator face proportionate real charges
-- the official record approaches historical truth
-- not every accomplice is absolved
-- not every institutional wound is healed
+- Elena convicted for murders
+- accomplices face proportionate real charges
+- official record approaches historical truth
 
 ## Ending 2 · RIGHT NAME, NO CASE
 
-Conditions:
-
 - Elena correctly identified
-- final accusation correct
-- one or more essential legal supports fail:
-  - custody
-  - witness
-  - local decision path
-  - physical corroboration
-  - institutional acceptance
+- accusation correct
+- essential legal support fails
+
+Possible failures:
+
+- custody
+- witness
+- local decision path
+- physical corroboration
+- institutional acceptance
 
 Outcome:
 
-- team knows the truth
-- Elena walks, disappears or avoids murder conviction
-- real accomplices may still be convicted for their actual offences
+- team knows truth
+- Elena avoids murder conviction
+- accomplices may still face real charges
 - public record remains disputed
-- North may remain hunted
-- this is not an intelligence failure; it is a proof failure
 
 ## Ending 3 · FALSE CONVICTION
 
-Core rule:
-
-The institution accepts a coherent alternative case against a genuinely culpable person, but attributes the murders to the wrong principal.
-
-Possible variants:
+Institution accepts a coherent alternative case against a genuinely culpable person but attributes murders to the wrong principal.
 
 ### Adrian variant
-
-Strong case elements:
-
-- architecture
-- concealment
-- flight
-- secret token or mirror knowledge
-- motive to hide system abuse
 
 Real offences:
 
 - enabling
-- obstruction
 - concealment
-- unlawful retention or access
+- obstruction
+- unlawful retention
 
 Missing truth:
 
-- no proved local victim selection
-- no proved physical murder action
+- no local victim selection or physical murder path
 
 ### Arman variant
-
-Strong case elements:
-
-- PALIMPSEST authorship
-- broker route
-- decoy
-- metadata scrub
-- payment
-- withheld logs
 
 Real offences:
 
 - cybercrime
 - brokerage
+- metadata scrub
+- concealment
 - obstruction
-- destruction or concealment
 
 Missing truth:
 
-- no proved Bangkok physical presence
-- no victim-selection proof
-- no Decision Owner proof
+- no Bangkok physical presence
+- no victim selection
+- no Decision Ownership
 
-### Local Deployer variant
-
-Strong case elements:
-
-- local credential
-- signed package
-- physical handoff
-- cleanup
-- payment or pressure
-- contact with case infrastructure
+### Narin variant
 
 Real offences:
 
-- unauthorized deployment
-- evidence tampering
-- obstruction
-- conspiracy or facilitation
+- deployment
+- tampering
+- concealment
+- cleanup
+- conspiracy
 
 Missing truth:
 
-- did not choose victims
-- did not personally commit the killings
-- acted under curated conditions
+- did not select or kill victims
+- received curated conditions
 
-Outcome rules:
+Outcome rule:
 
-- conviction must be understandable
-- the convicted person is not innocent of everything
-- murder attribution is wrong
-- the epilogue shows which real offences were proven
-- the historical killer remains free or partly protected
-- the game must not describe the result as a random guess
+The epilogue must state which offences were correctly proven and which murder attribution was wrong.
 
 ## Ending 4 · THE PERFECT RECORD
 
 Conditions:
 
 - witness lost, silenced or discredited
-- North framed, discredited or officially removed
-- chain of custody destroyed
-- physical and digital evidence no longer corroborate
-- institution accepts the engineered chronology
-- player either preserves too little or embraces a theory with fatal contradictions
+- North framed or officially removed
+- custody destroyed
+- physical and digital evidence fail to corroborate
+- institution accepts engineered chronology
+- player embraces a theory with fatal contradictions or preserves too little
 
 Outcome:
 
-- Elena’s version becomes the official record
-- a real accomplice may still be punished
-- the murders are not correctly attributed
-- final image echoes Room 1807
-- true objects remain, but their order tells the wrong story
-
-## Ending fairness lock
-
-- no ending changes the murderer
-- no ending requires arbitrary betrayal
-- no wrong conviction targets a wholly innocent stranger
-- no single dialogue option determines the ending
-- every ending has a complete causal chain
-- every ending receives character epilogues reflecting prior choices
-- the game should show why the institution believed the outcome
+- Elena’s version becomes accepted history
+- real objects remain, but their order tells the wrong story
 
 ---
 
 # 26. ENDING RESOLUTION LOGIC
 
-## Required hidden dimensions
+## Required dimensions
 
 1. `evidenceIntegrity`
 2. `chainOfCustody`
@@ -2741,26 +2313,22 @@ Outcome:
 
 ## Decision sequence
 
-1. determine what evidence survived
-2. determine which evidence is admissible
-3. determine which witnesses survived and remain credible
-4. determine whether roles were correctly separated
-5. evaluate final accused against means, opportunity, motive and conduct
-6. identify unresolved contradiction
+1. determine evidence survival
+2. determine admissibility
+3. determine witness survival and credibility
+4. evaluate role separation
+5. evaluate accused against means, opportunity, motive and conduct
+6. identify fatal contradiction
 7. determine institutional acceptance
 8. render ending
-9. render epilogue variants
+9. render character epilogues
 
-## No invisible punishment
-
-Before final confirmation, the player receives a case-board warning such as:
+Before final confirmation, show warnings such as:
 
 - `DECISION OWNER NOT CORROBORATED`
 - `PHYSICAL PRESENCE UNRESOLVED`
 - `CUSTODY GAP REMAINS`
 - `ALTERNATIVE OPERATOR THEORY NOT ELIMINATED`
-
-The game does not reveal the correct answer but makes risk legible.
 
 ---
 
@@ -2772,7 +2340,7 @@ The game does not reveal the correct answer but makes risk legible.
 - trust through inclusion
 - North consents to false success
 - no romance
-- harmful consent violations affect alliance and endings
+- consent violations affect alliance and endings
 
 ## Benedict and Cheryl
 
@@ -2806,30 +2374,16 @@ The game does not reveal the correct answer but makes risk legible.
 ## Benedict and Elena
 
 - psychological duel inside cooperation
-- Elena guides narrative
+- Elena guides sequence
 - Benedict tests timing and knowledge
 - no accusation before proof
 
 ## Kittisak and Somchai
 
-- clear superior-subordinate relationship
-- professional trust earned through field competence
-- Somchai may challenge an assumption respectfully
+- superior-subordinate relationship
+- professional trust
+- Somchai may challenge assumptions respectfully
 - Kittisak owns final police order
-
-## Kittisak and Elena
-
-- command and forensic advisory relationship
-- Kittisak must not surrender command authority to Elena
-- dual-control after compromise
-- Elena’s usefulness makes her trusted, not automatically innocent
-
-## Ratchata and the unit
-
-- independent scientific voice
-- may contradict police theory
-- does not become comic relief
-- physical findings may repair or destroy a final theory
 
 ---
 
@@ -2840,7 +2394,7 @@ Owners:
 - `02-audio-save.js`
 - `11-production-stabilization.js`
 - scene-local modules
-- integration lifecycle guard
+- lifecycle guard
 
 Do not create another global audio manager.
 
@@ -2854,19 +2408,21 @@ Do not create another global audio manager.
 - no villain music for Elena
 - no identity-reveal sting implying guilt
 
-## Phase IV
+## Phase IV accepted behavior
 
-- one continuous score is preferred
-- preserve vehicle clip audio where useful
-- preserve Arman reveal footsteps
-- duck score under dialogue and reveal
-- no second score unless implementation testing proves necessary
-- no alarm or theatrical reveal cue
+- one continuous principal score
+- vehicle clip audio preserved where appropriate
+- Arman reveal footsteps preserved
+- music louder than rejected early candidate but still below dialogue
+- score ducks under dialogue, overlays and reveal
+- completion card retains appropriate music behavior
+- Return to Title stops Phase IV audio
+- no theatrical guilt sting
 
-## Phase V
+## Phase V direction
 
 - credible public leisure ambience
-- water, distant guests, hotel activity
+- water, distant guests and hotel activity
 - restrained tension
 - no vacation montage
 - no comedy sting
@@ -2886,14 +2442,7 @@ Test where practical:
 - 412×915
 - 430 CSS px
 
-Account for:
-
-- address bar
-- Android navigation
-- safe-area bottom
-- long Thai
-- two-line buttons
-- scrollable modal body
+Account for address bar, Android navigation, safe area, long Thai, two-line buttons and scrollable modal content.
 
 ## Background art
 
@@ -2907,7 +2456,7 @@ Style:
 - cel-shaded
 - heavy ink
 - angular shadows
-- bright enough for mobile
+- mobile-readable luminance
 - operational, not postcard
 - no pseudo-text
 - exact text or no text
@@ -2923,31 +2472,30 @@ Priority:
 5. stable framing
 6. clean silhouette
 
-Standard canvas:
+General:
 
-`744 × 1000`
-
-General standard:
-
-- transparent alpha
-- Maya Phase II pure-black-background exception
+- transparent alpha unless a locked exception exists
 - no whole-sheet portrait
-- crop individual expressions
-- preserve anchor and head scale
-- test on dark dialogue UI
+- individual expressions
+- stable anchor and head scale
+- test on black, game navy, mid-grey, white and checkerboard where extraction is involved
+- no white fringe
+- no missing face area
+- no floating or tiny torso
 
-## Phase IV asset lock
+## Phase IV accepted asset lock
 
-Use:
+- current vehicle approach clip
+- current Arman reveal clip
+- owner-approved stairwell image
+- owner-approved workshop image
+- Dimas as proxy
+- real Arman asset set
+- one continuous Phase IV score
+- current corrected portrait scale
+- no full-screen darkening over owner-graded scenes
 
-- new vehicle clip, not superseded clip
-- owner-approved staircase and workshop references
-- decoy sheet as proxy
-- real Arman sheet as Arman
-- reveal video as physical entrance
-- main score as one-phase score
-
-The blueprint has been approved and an implementation candidate exists. From this point, asset changes must be narrowly scoped to owner-reported defects and must not replace approved earlier-Chapter assets.
+Future asset changes must be narrowly scoped to an owner-reported defect.
 
 ---
 
@@ -2962,75 +2510,84 @@ The blueprint has been approved and an implementation candidate exists. From thi
 - paths
 - duplicate IDs
 - cache queries
-- dimensions
-- alpha behaviour
-- audio decode
+- image dimensions
+- alpha behavior
+- media references
 - changed-file scope
 
-## Runtime flow
+## Full assembled Runtime smoke
 
-- fresh Chapter I
-- Chapter I Character mode absent
-- Chapter II Character mode appears normally
-- Developer Unlock works without changing early gates
-- opening dialogue
-- choices
-- evidence
-- puzzle wrong answer
-- Reset
-- correct answer
-- completion
-- Return to Title
-- Save/Load before, during and after puzzle
+Minimum before any future delivery:
+
+1. load Title through actual script chain
+2. start New Game
+3. play Chapter I opening dialogue
+4. verify buttons respond
+5. verify Character Journal absent
+6. enter Chapter II
+7. verify North Journal unlock timing
+8. test Save/Load
+9. use Developer Mode
+10. jump through every implemented Chapter IV Phase
+11. verify target screen and State
+12. test Return to Title and audio cleanup
 
 ## Character regression
 
-Mandatory sequence:
-
 1. clean reload
-2. Chapter I
-3. no Character mode
-4. Chapter II normal unlock
-5. Dev Unlock All
-6. enter Jakarta
-7. open Maya first
-8. return
-9. open every other profile
-10. repeat switching
-11. close and reopen Journal
-12. test Thai and English
-13. Save/Load
-14. ensure future characters remain hidden
+2. Chapter I has no Character mode
+3. Chapter II normal North unlock
+4. Elena unlock once
+5. Somchai and Kittisak unlock once
+6. Ratchata unlock once
+7. Cheryl and Farid unlock once
+8. Adrian unlock once
+9. Maya unlock after introduction
+10. Arman unlock after verified introduction dialogue
+11. each unread dot clears on Journal open
+12. repeat conversations do not re-notify
+13. Save/Load preserves read status
+14. Dev Unlock is silent
+15. New Game restores early gate
+16. open Maya, return, open every other profile
+17. open Arman, return, open every other profile
+18. test Thai and English
 
-## Phase IV verification gate
+## Phase IV regression
 
-Must test:
+- direct Phase III handoff
+- Developer entry to Phase IV
+- vehicle natural end
+- vehicle Skip
+- dedicated Phase title card
+- automatic location card transition
+- HUD, Save, Menu and Settings
+- gold progress
+- Stairwell dialogue
+- Workshop dialogue
+- Persona Triangulation wrong answer
+- Reset
+- correct completion
+- Dimas choice
+- Arman reveal
+- Arman first introduction
+- Character Added message
+- unread dot
+- Arman card and detail
+- close and reopen Journal
+- Save before reading Arman
+- Load before reading Arman
+- read and Save
+- Load after reading
+- cache review
+- consequence choices
+- completion card
+- Return to Title
+- no stale phase audio
 
-- no `PACKET TRAIL RECONSTRUCTED` completion card between Phase III and the Phase IV vehicle approach
-- Developer Mode enters Phase III and Phase IV from a clean or stale state
-- repeated Developer jumps do not leave stale Phase state
-- genuine story entry only
-- decoy never unlocks Character card
-- Arman unlock timing
-- vehicle clip
-- reveal clip and footsteps
-- one-score lifecycle
-- Persona Triangulation Reset and wrong-answer teaching
-- all consequence choices persist
-- Phase V handoff
-- no premature Chapter IV state from startup
+## Honesty lock
 
-## Honesty
-
-Never claim:
-
-- Android test
-- iPhone test
-- live Pages test
-- complete browser regression
-- listening test
-
-unless actually performed.
+Never claim Android, iPhone, live Pages, listening test or complete browser regression unless actually performed.
 
 Owner-device result remains final.
 
@@ -3040,22 +2597,32 @@ Owner-device result remains final.
 
 - iPhone Safari not owner-tested
 - iOS Add to Home Screen not owner-tested
-- fullscreen may exit after backgrounding
-- legacy global build label may remain `0.12.1`
-- static Chapter I intro says `HOTEL 1807`
-- Canon title is `ROOM 1807`
-- some CSS headers and cache queries differ
-- do not clean accepted runtime without a scoped reason
+- backgrounding may exit fullscreen
+- legacy global build label may differ from module build
+- static Chapter I intro may still say `HOTEL 1807`; Canon title is `ROOM 1807`
+- some CSS headers and cache queries retain historical versions
+- do not clean accepted Runtime without scoped reason
 - do not clear Site Data by default
-- Phase IV implementation candidate `0.17.0` is deployed but is not approved or frozen
-- Phase IV vehicle-opening lower-left title treatment is rejected and remains to be removed
-- Dimas and Arman portrait alpha / edge quality is rejected and requires complete replacement and visual QC
-- detailed owner-device regression for Phase IV remains pending
-- Phase V attack method is not yet implemented
-- Narin Theerachai and Ika Prameswari are Canon-locked identities but are not yet implemented in Runtime
-- Somchai’s current Journal role remains generic; Kittisak already has his full name and Police Captain rank in the Character Canon override, but his Inspector function is not fully displayed
-- broader Phase I–II language audit remains unresolved
-- the Phase IV candidate introduces additional ending-profile fields, but full migration, cross-Chapter use and final-ending behavior remain unapproved
+- broad Chapter IV Phase I–II language audit remains unresolved
+- Somchai Journal role remains generic in current base registry
+- Kittisak full Inspector function may not be displayed everywhere
+- Phase V exact attack choreography is not implemented
+- Narin and Ika are Canon-locked but not Runtime characters yet
+- cross-chapter ending-profile use remains future implementation work
+- formal full Phase IV freeze has not been separately declared
+
+Resolved items no longer belong in active debt:
+
+- vehicle title overlay defect
+- manual Enter Building button
+- Phase IV missing HUD
+- non-gold progress
+- rejected scene darkening
+- reported Maya bottom white edge
+- reported Arman Journal scale defect
+- Chapter I Character Journal leak from 0.17.5
+- stray Arman Character Added notification in early chapters
+- Arman missing from Journal after verified introduction
 
 ---
 
@@ -3071,10 +2638,11 @@ Do not equate:
 - route with identity
 - Jakarta with Arman
 - hood feed with Arman
+- Dimas with Arman
 - Adrian with mastermind
 - Arman with mastermind
-- Local Deployer with killer
-- Field Watcher with prior murders
+- Narin with physical killer
+- Ika with earlier murders
 - Kittisak’s authority with corruption
 - Somchai’s proximity with command
 - Elena’s legitimate access with immediate guilt
@@ -3088,27 +2656,35 @@ Do not equate:
 
 A new assistant must behave as though the owner has said:
 
-> Continue LAST WITNESS from the owner-approved Production baseline.
+> Continue LAST WITNESS from current stable Production baseline.
 >
 > Repository: `grolygori789-crypto/last-witness`.
 >
-> Production and Default branch: `production-rebuild`.
+> Branch: `production-rebuild`.
 >
-> Owner-approved runtime baseline: `61dfaec35cb8990ac9ea3fafa28d39bee8e4698f`.
+> Current stable Runtime baseline: `8a70778dffbdea65c7ba37954673be11b547f3b2`.
 >
-> Read the latest `GAME_MASTER_PLAN.md` from beginning to end.
+> Current Runtime repair build: `0.17.7`.
 >
-> Chapter I through Chapter IV Phase III are frozen and owner-approved.
+> Read `GAME_MASTER_PLAN.md` completely before implementation.
 >
-> Current endpoint is `NEXT · THE MAN BEHIND THE ALIAS`.
+> Chapter I through Chapter IV Phase III are frozen.
 >
-> Phase IV has a deployed implementation candidate. It is not owner-approved, complete or frozen.
+> Current Phase IV implementation passed the latest owner check and is the no-regression baseline.
+>
+> Arman Journal contract is owner-approved.
+>
+> Next target is Chapter IV Phase V, `NORTH IS MARKED`.
 >
 > Do not write to GitHub without exact current-turn authorization.
 >
-> Preserve Chapter I Character hiding and Chapter II Character unlock timing.
+> Preserve Chapter I Character hiding, Chapter II North unlock timing and one-time Character discovery behavior.
 >
-> Preserve Maya profile DOM contract.
+> Preserve Arman unlock after verified introduction dialogue, unread dot, Save/Load persistence and silent Dev unlock.
+>
+> Preserve Maya profile switching and Character Detail DOM contract.
+>
+> Preserve Phase IV HUD, gold progress, automatic location-card transition, owner-approved scenes, portraits and audio behavior.
 >
 > Farid remains remote in Singapore.
 >
@@ -3118,42 +2694,41 @@ A new assistant must behave as though the owner has said:
 >
 > Chapter III proves Bangkok Evidence Chain compromise, not a named knowing insider.
 >
-> Phase IV uses a decoy, Persona Triangulation, Benedict’s Arman line, real Arman reveal, one continuous score and North threat escalation.
->
 > Arman is not mastermind.
 >
 > Historical truth remains Elena.
 >
-> Four major endings arise from accumulated proof, survival, custody, final accusation and institutional acceptance.
->
-> Wrong conviction must rest on a complete alternative case against a genuinely culpable person, never a random guess.
+> Four major endings arise from accumulated proof, survival, custody, accusation and institutional acceptance.
 
 ---
 
 # 34. CURRENT CANON SUMMARY
 
-## Confirmed to player after Phase III
+## Confirmed to player after current Phase IV
 
-- Room 1807 staged
-- Room 1807 victim not Daniel
-- Daniel dead
+- Room 1807 was staged
+- Room 1807 victim is not Daniel
+- Daniel is dead
 - 18-07 is a profile
-- science genuine
+- science is genuine
 - chronology engineered
 - Daniel did not travel
 - records travelled
 - eleven-minute policy exists
 - raw order differs from display
-- Adrian architect, not proven mastermind
-- PALIMPSEST tool family
-- Jakarta route, not identity
+- Adrian is architect, not proved mastermind
+- PALIMPSEST is a tool family
+- Jakarta is route, not identity
 - watcher entered through trusted Bangkok chain
-- cleanup separate
-- Bangkok deployment supported
-- Decision Owner unresolved
-- North recognized as analytical role
-- broker observation authorized
-- next lead: man behind alias
+- Bangkok deployment is supported
+- Dimas was a controlled proxy
+- Arman is physically identified
+- Arman is wrapper specialist and broker
+- Arman is culpable but not proved killer
+- tool authorship differs from Decision Ownership
+- North is classified as an attribution threat
+- coastal operational lead exists
+- Decision Owner remains unresolved
 
 ## Secret owner truth
 
@@ -3162,26 +2737,25 @@ A new assistant must behave as though the owner has said:
 - Elena killed Daniel
 - Kawin is Chapter I victim
 - Rin is `R.` and Last Witness
-- Adrian not mastermind
-- Arman not Decision Owner
-- Local Deployer is real accomplice, not killer
-- Field Watcher attacks North, not earlier victims
+- Adrian is not mastermind
+- Arman is not Decision Owner
+- Narin is real accomplice, not murder owner
+- Ika attacks North, not earlier victims
 - North targeted because she understands attribution
-- four major endings
 - historical truth fixed
+- four major endings
 
 ## Unresolved to player
 
 - Kawin identity
 - Rin identity
 - warning caller
-- pier event
+- full pier event
 - operator at 05:47
 - operator at 06:09
 - knowing insider or stolen access
-- Local Deployer identity
-- Field Watcher identity
-- Arman physical identity
+- Narin identity
+- Ika identity
 - Decision Owner
 - Elena path
 - final admissible case
@@ -3194,7 +2768,7 @@ A new assistant must behave as though the owner has said:
 Update this file whenever any change occurs to:
 
 - Production branch
-- runtime baseline
+- stable Runtime baseline
 - owner acceptance
 - playable boundary
 - Canon
@@ -3214,7 +2788,7 @@ Update this file whenever any change occurs to:
 Before replacement:
 
 1. fetch latest file
-2. preserve runtime facts
+2. preserve Runtime facts
 3. preserve Canon
 4. preserve owner secrets
 5. preserve proof boundaries
@@ -3222,11 +2796,11 @@ Before replacement:
 7. record replaced blob SHA
 8. keep exact filename
 9. compute local SHA-256
-10. never silently promote a proposal to implementation
+10. never silently promote proposal to implementation
 
 ---
 
-# 36. APPROVED BASELINE PRESERVATION LOCK
+# 36. CURRENT BASELINE PRESERVATION LOCK
 
 ```text
 Repository:
@@ -3235,17 +2809,20 @@ grolygori789-crypto/last-witness
 Production and Default Branch:
 production-rebuild
 
-Owner-Approved Runtime Baseline:
+Current Stable Runtime Baseline:
+8a70778dffbdea65c7ba37954673be11b547f3b2
+
+Commit Message:
+Fix Arman journal unlock
+
+Current Runtime Repair Build:
+0.17.7
+
+Base Phase IV Story Module:
+0.17.0
+
+Historical Frozen Phase III Baseline:
 61dfaec35cb8990ac9ea3fafa28d39bee8e4698f
-
-Historical Phase II Baseline:
-ffdc94777c5fbaefdc281f1148b59aff3adf8abe
-
-Latest Approved Runtime Build:
-0.16.4
-
-Latest Approved Narrative Module:
-Chapter IV Phase III 0.16.3
 
 Approved Playable Scope:
 Chapter I
@@ -3254,24 +2831,21 @@ Chapter III
 Chapter IV Phase I
 Chapter IV Phase II
 Chapter IV Phase III
+Chapter IV Phase IV current implementation
 
 Current Endpoint:
-CHAPTER IV · PHASE III COMPLETE
-PACKET TRAIL RECONSTRUCTED
-NEXT · THE MAN BEHIND THE ALIAS
+CHAPTER IV · PHASE IV CURRENT IMPLEMENTATION
 
-Phase IV:
-NOT IMPLEMENTED
-NARRATIVE DIRECTION APPROVED
-TECHNICAL BLUEPRINT REQUIRED
+Next:
+CHAPTER IV · PHASE V · NORTH IS MARKED
 
 Owner Result:
-ANDROID CHROME PASSED THROUGH PHASE III
-MAYA PROFILE SWITCHING PASSED
-OWNER-APPROVED
+CURRENT BUILD PASSED OWNER CHECK
+ARMAN JOURNAL CONTRACT OWNER-APPROVED
 
-Runtime Status:
-FROZEN UNTIL DIRECT OWNER INSTRUCTION
+Formal Freeze Status:
+CURRENT STABLE BASELINE
+FULL PHASE IV FREEZE NOT SEPARATELY DECLARED
 ```
 
 Preserve:
@@ -3279,274 +2853,98 @@ Preserve:
 - branch and baseline distinction
 - Chapter I Character gate
 - Chapter II unlock timing
-- Dev Unlock behaviour
+- one-time Character notification and red-dot contract
+- Dev Unlock behavior
 - Maya DOM contract
+- Arman scoped Journal bridge
 - Farid remote styling
 - current load order
 - Save/Load continuity
+- Phase IV presentation and assets
 - Daniel death lock
 - Kawin identity lock
 - Rin identity lock
 - Chapter III proof boundary
-- Bangkok unit hierarchy
-- Kittisak authority
-- Somchai subordinate field role
+- Bangkok hierarchy
 - Elena secret and anti-villain-coding rule
 - Adrian and Arman boundaries
-- Local Deployer role
-- Field Watcher role
-- Phase IV decoy and real-Arman reveal
-- one-score Phase IV direction
+- Narin and Ika roles
 - North threat and false-success continuity
-- Chapter V–VII cross-chapter logic
-- four major endings
-- complete wrong-conviction case requirement
+- four endings
 - no single-choice ending
-- evidence and puzzle difficulty standard
 - owner-upload workflow
 
+---
 
 # 37. RUNTIME OWNERSHIP AND FILE SNAPSHOT APPENDIX
 
-## Important file snapshot at the frozen baseline
+## Current important file snapshot
 
-| Path | Blob SHA | Current role |
+| Path | Blob SHA | Role |
 |---|---|---|
 | `index.html` | `e30f3fb1f20399d51de9aba220802361a5da15d9` | static DOM and static load order |
-| `js/engine/06-content-registry-dev.js` | `e404cc2c2c47dac9bca12e54874c4e6ee1e1d4f2` | authoritative Journal, Case File and Dev registry |
-| `js/engine/14-character-canon.js` | `b05c41572c7c4f2d27a4d180dc3225dc72c50c95` | canonical Character Journal mutation |
-| `js/chapters/chapter-02/05-chapter2-integration.js` | `a90af7d17259d54e7525c6d574edc12455c63b23` | Chapter III loader and legacy integration |
-| `js/chapters/chapter-04/01-afterimage.js` | `b61d3e8a9e118e9437b8bdf5eb5cb0a9b99c1df2` | Chapter IV Phase I |
-| `css/chapter-04-phase-02.css` | `16d08f45f1a2b336c96cc70d03086f7b6f379062` | Jakarta layout and Maya visual rules |
-| `js/chapters/chapter-04/02a-jakarta-portrait-guard.js` | `218a2abaa0dcab60c2f3764877e910959f74285c` | deterministic Cheryl and Farid portrait fill |
-| `js/chapters/chapter-04/02-jakarta-arrival.js` | `fcced27af919a1e5b352a5b25281ed4b98a6b8f2` | Phase II and Maya Journal extension |
-| `css/chapter-04-phase-03.css` | `bd58144584ddd961bcc0d29c690c9b2e10559f51` | Phase III mobile-first UI |
-| `js/chapters/chapter-04/03-packet-provenance.js` | `83b9d2e123e212e48e063859de93881edbb1fd5a` | Phase III module |
-| `js/engine/09-defect-hotfix.js` | `3beb573b4201846ddc8594ec02a4b6dc33221e8e` | runtime bootstrap `0.16.4` |
+| `js/engine/06-content-registry-dev.js` | `e404cc2c2c47dac9bca12e54874c4e6ee1e1d4f2` | base Journal, Case File and Dev registry |
+| `js/engine/09-defect-hotfix.js` | `8806bfeb1a0f90951afb4e08541f33bd5309fd61` | dynamic bootstrap `0.17.7` |
+| `js/engine/20-character-journal-story-gate.js` | `1f3088012ac911ec8833a2b58d513b91f5040811` | safe Character Journal progression gate `0.17.7` |
+| `js/chapters/chapter-04/04a-arman-encounter-revision.js` | `908fdbc42ef56cd054dbdd841e2c5f7aafee6df9` | Phase IV presentation and Arman Journal contract `0.17.7` |
+| `css/chapter-04-phase-04-revision.css` | `bbba1c320b3870ff4b0412f654415d0344a33ee9` | accepted Phase IV revision styling |
+| `GAME_MASTER_PLAN.md` replaced blob | `fb76fabd59e50427af9e15e6083cebb8ba338257` | previous planning source |
 
-Future assistants must re-fetch current SHAs before editing. These values describe the frozen baseline and may later become historical.
+Future assistants must re-fetch current SHAs before editing.
 
-## Shared runtime owners
+## Shared owners
 
 ### `01-runtime-data.js`
 
-Owns:
-
-- base state
-- localization
-- base portraits
-- clue data
-- base audio references
-- shared globals
-- legacy Save keys
+Owns base State, localization, base portraits, clue data, audio references and shared globals.
 
 ### `02-audio-save.js`
 
-Owns:
-
-- Auto Save
-- named saves
-- IndexedDB slots
-- localStorage fallback
-- `.lwsave` export and import
-- deletion and restore
-- legacy migration
-- base volume controls
+Owns Auto Save, named saves, IndexedDB, localStorage fallback, export/import, deletion, restore and legacy migration.
 
 ### `04-ui-dialogue.js`
 
-Owns base:
-
-- `show(screen)`
-- screen transitions
-- chapter intro
-- base dialogue
-- some evidence behavior
-
-### `06-regression-fixes.js`
-
-Owns active:
-
-- global `runDialogue` override
-- live TH/EN dialogue
-- history
-- Police evidence repair
-- Case File repair
-- Save-button rebinding
-
-### `07-dialogue-continuity.js`
-
-Owns normalized:
-
-- `TAP TO CONTINUE`
-- `แตะเพื่อดำเนินต่อ`
-
-Do not add another prompt observer.
-
-### `08-stability-repair.js`
-
-Owns:
-
-- immediate UI click
-- pointerdown response
-- duplicate-touch suppression
-- legacy stability repairs
-- dynamic Production-stabilization loading
-
-### `11-production-stabilization.js`
-
-Primary shared audio owner for:
-
-- scene-aware ambience
-- early-chapter audio
-- evidence cue
-- puzzle cue
-- scanner cue
-- ducking
-- one-shot cleanup
-- stale-state repair
-
-Shared APIs include:
-
-- `LastWitnessAudioCue.playInspection`
-- `LastWitnessAudioCue.playPuzzleSuccess`
-- `LastWitnessProductionAudio.refresh`
-
-Do not create another global audio manager.
-
-### `12-investigation-lifecycle.js`
-
-Owns:
-
-- dialogue before hotspots
-- review gating
-- puzzle gating
-- narrative-first lifecycle
-- no polling
-- no unnecessary observers
-
-### `13-fullscreen-display.js`
-
-Owns:
-
-- fullscreen
-- Settings and menu controls
-- Save Manager in fullscreen root
-- Exit Game
-- browser-safe fallback
+Owns base screen routing, chapter intros and base dialogue.
 
 ### `06-content-registry-dev.js`
 
-Authoritative owner for:
+Authoritative base owner for:
 
 - Character Journal
 - Case File registry
-- story gates
+- base story gates
 - unread arrays
 - red dots
 - Character Cards
 - Developer unlocks
-- stale filtering
 - persistence
 
 Storage key:
 
 `lastWitness.contentRegistry.v3`
 
-### `14-character-canon.js`
+### `20-character-journal-story-gate.js`
 
-Canonical Character Journal mutation layer.
+Current safe compatibility owner for:
 
-Do not create a parallel Character truth.
+- early Chapter Journal hiding
+- stale-state sanitation at early screens
+- North gate compatibility
+- safe late-character timing support
+- no document-body polling
 
-## Chapter integration owner
+### `04a-arman-encounter-revision.js`
 
-### `05-chapter2-integration.js`
+Scoped owner for:
 
-Owns:
+- Phase IV accepted presentation repair
+- Arman late-character extension
+- Arman card/detail rendering compatibility
+- unread dot and notification
+- Save/Load recovery
+- silent Dev unlock behavior
 
-- Chapter II to III transition
-- Chapter III dynamic loading
-- Chapter III Save/Resume preparation
-- legacy visible build label
-- Developer jumps through Chapter III
-- mobile background lifecycle guard
-- rain boundary
-- Return to Title bridge
-
-It does not own Chapter IV runtime loading.
-
-## Chapter IV current owners
-
-### `01-afterimage.js`
-
-Owns:
-
-- Chapter IV intro
-- Phase I
-- Evidence Route Board
-- Phase I choice
-- Analyst of Record query
-- Phase I state and restore
-- transition to Phase II
-
-### `02-jakarta-arrival.js`
-
-Current module: `0.14.9`
-
-Owns:
-
-- Singapore to Jakarta flight
-- airport, office and lab scenes
-- Maya introduction
-- Maya Journal extension
-- Farid remote label in Phase II
-- Token Verification
-- Phase II audio
-- Phase II state and restore
-- completion bridge
-- Return to Title
-- Phase II Developer jumps
-- accepted Maya detail-contract fix
-
-### `02a-jakarta-portrait-guard.js`
-
-Rules:
-
-- no observer
-- no timer
-- no polling
-- approved mappings win
-- no dialogue mutation
-
-### `03-packet-provenance.js`
-
-Current module: `0.16.3`
-
-Owns:
-
-- Phase III continuation
-- state initialization and migration
-- Evidence Review
-- one-time Case File collection
-- circular Previous and Next
-- Packet Trail reconstruction
-- lawful next-lead choice
-- localization
-- Farid remote label
-- Save/Resume
-- Developer jump
-- completion card
-- handoff to Phase IV
-
-### `09-defect-hotfix.js`
-
-Current role:
-
-- deterministic loading
-- no global repair polling
-- no gameplay override
-- bootstrap Build `0.16.4`
+This is not permission to create parallel Character truth for future characters. Future Runtime should ideally extend the authoritative registry with a planned migration rather than accumulate arbitrary bridges.
 
 ---
 
@@ -3573,52 +2971,17 @@ Fallback:
 
 `last_witness_named_saves_v1`
 
+Character Registry storage:
+
+`lastWitness.contentRegistry.v3`
+
 ## Phase I state
 
-`state.chapter4.phase1` owns:
-
-- started
-- chapterCardSeen
-- locationCardSeen
-- introComplete
-- choiceMade
-- choiceApplied
-- choiceKey
-- boardAssignments
-- boardAttempts
-- boardComplete
-- boardDebriefSeen
-- workingTheoryAdded
-- querySeen
-- queryCuePlayed
-- queryAcknowledged
-- closingDialogueComplete
-- complete
-- stage
+`state.chapter4.phase1` includes started, card flags, intro, choice, board state, query state, closing and stage.
 
 ## Phase II state
 
-`state.chapter4.phase2` owns:
-
-- started
-- flightComplete
-- routeCardSeen
-- airportIntroComplete
-- mayaUnlocked
-- mayaUnread
-- officeIntroComplete
-- choiceMade
-- choiceApplied
-- choiceKey
-- legalBriefComplete
-- verificationStarted
-- verificationSteps
-- consoleWarnings
-- verificationComplete
-- evidenceCollected
-- closingDialogueComplete
-- complete
-- stage
+`state.chapter4.phase2` includes flight, airport, Maya, office, legal brief, verification, evidence, completion and stage.
 
 ## Phase III state
 
@@ -3650,45 +3013,31 @@ Fallback:
 }
 ```
 
-## Phase III completion flags
+## Phase IV state
 
-Exact runtime fields:
+See Section 4 for complete fields.
 
-- `ch4_p3_palimsest_build_proven`
-- `ch4_p3_jakarta_handoff_proven`
-- `ch4_p3_bangkok_deployment_supported`
-- `ch4_p3_decision_owner_unresolved`
-- `ch4_p3_broker_inquiry_authorised`
+Critical Journal migration rules:
 
-The runtime key uses legacy spelling `palimsest`.
-
-Do not rename without Save migration.
-
-Canon spelling remains `PALIMPSEST`.
-
-## Phase III migration
-
-Supports older fields and values including:
-
-- old provenance category names
-- old Matrix state
-- old `authorshipComplete`
-- old `provenanceDebriefSeen`
-- old stages such as `matrix`, `provenance` and `evidence-review`
+- do not rename legacy keys without migration
+- preserve `armanUnlocked` separately from Journal read state
+- identity verification does not automatically mean notification already shown
+- Developer unlock does not become story notification
+- a 0.17.6 missing-card save must recover without duplicate toast
 
 ## Late-chapter restore sequence
 
-1. load prior modules in narrative order
+1. load modules in narrative order
 2. initialize isolated defaults
-3. apply migration
+3. apply migrations
 4. restore snapshot
 5. call correct resume bridge
-6. rebuild active screen
+6. rebuild screen
 7. rebuild audio
 8. rebuild dialogue and modals
 9. rebuild Journal and Case File extensions
 10. preserve completed-state behavior
-11. do not let a future module overwrite the restored chapter
+11. do not let a future module overwrite restored chapter
 
 ---
 
@@ -3696,96 +3045,59 @@ Supports older fields and values including:
 
 ## North
 
-- leanest of North, Cheryl and Maya
 - lean-fit
-- healthy and agile
-- naturally athletic midsection
-- toned arms and legs
+- agile
 - compact silhouette
-- realistic adult proportions
-- minimalist, clean and functional undercover swimwear
+- natural adult proportions
 - no passive pin-up posing
-- no anatomy inflation to compete with other characters
 
 ## Cheryl
 
 - athletic-curvy
-- second most voluptuous
-- slightly less full-figured than Maya
 - strong shoulders
 - toned waist
-- physically capable
 - tomboy confidence
-- sporty, assertive and movement-ready undercover swimwear
-- do not feminize her into another person
-- do not make her a shy caricature
+- movement-ready
 
 ## Maya
 
-- most voluptuous and visually full-figured of the three
-- defined waist
-- fuller hips and thighs
+- fuller figure than Cheryl and North
 - strong and healthy
+- defined waist
 - realistic support and weight distribution
-- elegant, confident and commercially believable undercover swimwear
-- no fantasy lingerie
-- remains composed and authoritative
+- authoritative
 - no romance with Benedict
 
 ## Body-separation rule
 
-Difference must come from:
-
-- full anatomy
-- posture
-- movement
-- silhouette
-- garment construction
-
-Do not use one identical body with only isolated size changes.
-
-## Phase V visual-story rule
-
-The undercover resort or coastal scene:
-
-- serves surveillance
-- preserves competence
-- uses distinct tourist-cover looks
-- is not a vacation montage
-- is not disposable fan service
-- is not a harem scene
-- does not create a romance route
-- preserves realistic anatomy
-- preserves police and technical roles
+Difference comes from full anatomy, posture, movement, silhouette and garment construction, not one identical body with isolated size changes.
 
 ## Maya accepted visual lock
 
-- original dark navy suit
-- suit remains visibly navy
-- pure black portrait background
-- subtle contour preserves black bob silhouette
-- face and upper torso retain strong visual weight
-- no tiny distant portrait
+- dark navy suit remains navy
+- pure black portrait background exception
+- subtle contour preserves bob silhouette
+- face and upper torso carry strong visual weight
+- no tiny portrait
 - no damaged crop
-- no coloured connector under neck
-- no missing shoulders or blazer
-- accepted asset set remains frozen
+- no white bottom line
 
-## Ratchata portrait fallback
+## Dimas and Arman current visual lock
 
-1. `assets/images/ratchata/profile.png`
-2. `assets/images/ratchata/neutral.png`
+- face and upper torso prominent
+- stable top anchor
+- no white matte fringe
+- no floating portrait
+- no full expression sheet
+- no runtime auto-extraction marketed as final professional asset work
+- current owner-accepted presentation is baseline
 
 ## Accepted Character card layout
 
 - raw portrait `<img>`
-- portrait approximately `78 × 88`
-- name upper-right
-- status below name
-- Relationship in original information column
-- no 54×54 wrapper
-- no global oversized redesign
-- no global resizing to repair one character
+- name and status in established layout
+- Relationship summary in original information column
+- no global oversized redesign to repair one character
 
 ---
 
@@ -3810,137 +3122,115 @@ The undercover resort or coastal scene:
 15. Rendezvous Token Verification
 16. Packet Trail Reconstruction
 17. Lawful Next-Lead Selection
+18. Persona Triangulation / Controlled Proxy reconstruction
 
 ## Planned
 
-1. Persona Triangulation / identity and source-behaviour verification
-2. Threat Pattern or Decoy Telemetry Control
-3. Relay Authorization Preservation
-4. Victim Identity Reconstruction
-5. Room/Profile Cross-Map
-6. Pier Event Reconstruction
-7. Controlled Leak Correlation
-8. Authority Chain Reconstruction
-9. Parallel Scene Prioritization
-10. The Last Record
+1. Threat Pattern or Decoy Telemetry Control
+2. Relay Authorization Preservation
+3. Victim Identity Reconstruction
+4. Room/Profile Cross-Map
+5. Pier Event Reconstruction
+6. Controlled Leak Correlation
+7. Authority Chain Reconstruction
+8. Parallel Scene Prioritization
+9. The Last Record
 
 Avoid renamed mechanical duplicates.
-
-## Locked Phase III UI behavior
-
-- modal cards centre in actual runtime
-- Close remains visible
-- Evidence Previous and Next remain separate from collection
-- reconstruction shows one record at a time
-- Back preserves selection
-- Next requires a choice
-- Start Over is secondary
-- final Confirm appears after all assignments
-- wrong answers return to the first incorrect record
-- resume returns to active task
-- Thai and English remain legible
-- do not restore the rejected all-at-once 25-button form
-- do not restore the redundant Confidence Matrix
-
-## Phase III exact correct map
-
-| Record | Correct layer |
-|---|---|
-| PALIMPSEST Build Signature | Tool Origin |
-| Jakarta Relay Exit | Network Route |
-| Broker Ledger Handoff | Broker Handoff |
-| Bangkok Activation Conditions | Local Deployment |
-| Decision Trigger | Still Unknown |
-
-Correct lawful lead:
-
-> Trace the unverified broker handle under controlled observation.
 
 ---
 
 # 41. BUILD HISTORY AND ACCEPTED TECHNICAL DEBT
 
-## Build history
+## Stable historical chain
 
 ### `0.7.x` to `0.12.1`
 
 - Canon separation
 - Save Manager
 - Journal gates
-- Chapter III routes
-- Changi
-- Singapore Office
-- Marina Bay
-- Serviced Apartment
-- Hawker Centre
-- Adrian
-- Digital Forensics Lab
-- Callback
-- Season 1 accepted
+- Chapter III routes and Season 1
 
 ### `0.13.2`
 
 - Chapter IV Phase I AFTERIMAGE
 - Evidence Route Board
-- North becomes Analyst of Record target
-- two-hands split
+- Analyst of Record target
 
-### `0.14.0` to `0.14.7`
+### `0.14.9` to `0.16.4`
 
-- Phase II implementation
-- audio balance
-- takeoff ambience
-- Farid remote label
-- Maya role wrapping
-- portrait iteration
+- Jakarta arrival
+- Maya Journal extension
+- portrait stabilization
+- Phase III Packet Trail
+- owner-approved Phase III baseline
 
-### `0.14.8` / Bootstrap `0.16.3`
+## Phase IV implementation and repair chain
 
-- Jakarta Journal and remote label patch
-- first profile stabilization attempt
-- Maya-first switching still failed
+### `0cbece8853e8049d5a7af1b2bfa4b954d1bc8586`
 
-### `0.14.9` / Bootstrap `0.16.4`
+- `Add Chapter IV Arman encounter`
+- base Phase IV module `0.17.0`
+- rejected for major presentation and portrait defects
 
-- exact Maya detail DOM repair
-- owner tested and approved
+### `5ea29ca53feaeb3ce8e38f8dc580cd9a0fa02eb8`
 
-### Phase III `0.16.2` to `0.16.3`
+- first Developer jump repair
+- insufficient
 
-- replaced dense all-at-once provenance form
-- removed redundant Confidence Matrix
-- introduced repeatable Evidence Review
-- introduced step-by-step Packet Trail
-- introduced lawful next-lead choice
-- rewrote player-facing language
-- added Farid remote styling
-- owner approved
+### `ea3b30d617b347ed04df02f4d3e5fff8a321540c`
 
-## Approved runtime recovery
+- Phase III jump and direct handoff `0.17.0-d2`
+- materially improved entry
 
-- `production-rebuild` created from historical baseline
-- set as Default Branch
-- obsolete `main` removed
-- live playability restored
-- owner played through Phase III
+### `cd681faab50153c4e0ef7d5d2d8fa792be01b367`
 
-## Current accepted technical debt
+- `Polish Chapter IV Phase IV experience`
+- introduced 0.17.1 presentation candidate
+- owner found consistency, HUD and portrait defects
 
-- iPhone Safari not owner-tested
-- iOS Add to Home Screen not owner-tested
-- backgrounding may exit fullscreen
-- legacy Settings build label may remain `0.12.1`
-- static Chapter I intro says `HOTEL 1807`
-- Canon title is `ROOM 1807`
-- Phase II CSS header may retain old comment
-- Phase III CSS header and cache query may differ
-- some internal asset query versions may remain older
-- do not clean accepted runtime casually
-- do not clear Site Data by default
-- broad Chapter IV Phase I–II language audit not complete
-- Somchai’s Journal role is generic; Kittisak’s Canon override contains his full name and Police Captain rank but not the complete Inspector function
-- Phase IV Production-candidate asset paths are assigned, but portrait assets are rejected and must be replaced
-- Phase V exact attack method unresolved
+### `090442b6a64f12912ab4bf0b42c3e607c2006836`
+
+- `Repair Chapter IV Phase IV consistency`
+- 0.17.3 repair
+
+### `6fe7097376a20d2e59c5d5c077d302920522c959`
+
+- `Fix Phase IV journal and portrait defects`
+- 0.17.4 scoped repair
+- Character gate remained defective
+
+### `5adfbaa4be1bf4f834323b291a23a51d03b47146`
+
+- `Fix character discovery timing globally`
+- 0.17.5 rejected blocker
+- global Character Discovery layer caused Chapter I dialogue and buttons to stop responding
+- this build must never be restored as a working baseline
+
+### `02e1dcf7e024a3db26572cf035d3449186f2ab6a`
+
+- `Recover runtime and character progression`
+- 0.17.6 full-game Runtime recovery
+- removed unsafe global discovery implementation
+- restored Chapter I–IV playability
+- corrected most reported Phase IV defects
+- Arman card/unread remained missing
+
+### `8a70778dffbdea65c7ba37954673be11b547f3b2`
+
+- `Fix Arman journal unlock`
+- 0.17.7 scoped Arman Journal contract repair
+- owner confirmed latest round passed
+- current stable Runtime baseline
+
+## Engineering lesson lock
+
+- Synthetic DOM checks are not a substitute for assembled Runtime testing.
+- Do not report full regression from a harness that excludes production load order.
+- A late-character defect must not be solved by wrapping all Character discovery globally.
+- State chapter number cannot be trusted over active screen during stale-save sanitation.
+- Registry filtering, persistence and UI rendering must be tested as one contract.
+- The owner must not become the first tester of a claimed blocker-free build.
 
 ---
 
@@ -3960,9 +3250,8 @@ Every future code package must contain:
 - exact tested scope
 - exact untested scope
 - no unrelated files
-- clearly displayed Suggested Commit Name
-- Suggested Commit Name inside installation document
-- commit name no more than 50 characters when platform requires
+- Suggested Commit Name
+- commit name no more than 50 characters when required
 
 Planning-document delivery:
 
@@ -3970,83 +3259,74 @@ Planning-document delivery:
 - local checksum
 - documentation-only status
 - replaced blob SHA
-- no runtime-success claim
+- no Runtime-success claim
 
 ---
 
-# 43. PHASE IV IMPLEMENTATION BLUEPRINT ACCEPTANCE CHECKLIST
+# 43. PHASE IV IMPLEMENTED CONTRACT AND FUTURE EXTENSION CHECKLIST
 
-Before approving or extending Phase IV, the implementation and approved blueprint must continue to specify:
+Phase IV is no longer a narrative-only blueprint. The current implementation contract must be preserved while Phase V is developed.
 
 ## Narrative
 
-- exact storefront or workshop location
-- whether `Surya Elektronik` is locked or placeholder
-- legal basis for observation and contact
-- decoy identity and relationship to Arman
-- fair clues proving decoy status
-- exact Persona Triangulation flow
-- exact Arman admissions
-- exact North-threat discovery
-- Phase V location handoff
+- Surya Elektronik remains the Arman encounter site
+- Dimas remains controlled proxy
+- Arman identity is physically and behaviorally corroborated
+- Persona Triangulation separates knowledge, access, authorship and contradiction
+- Arman admissions remain limited
+- North threat classification remains
+- Phase V location is justified by Phase IV evidence
 
 ## Characters
 
-- who is physically present
-- who is remote
-- Maya authority
-- Cheryl authority
-- Farid remote suffix
-- decoy has no Journal card
-- Arman unlock timing
-- no premature Local Deployer reveal
+- Benedict, North, Cheryl and Maya are physically present as established by current scenes
+- Farid remains remote
+- Maya owns Indonesian authority
+- Cheryl protects cross-border admissibility
+- Dimas has no Journal card
+- Arman unlock timing remains after verified introduction dialogue
 - no Elena villain coding
 
 ## Evidence
 
 - each item advances story
-- each item has Case File summary
-- each item states proof and limitation
+- each item states support and limit
 - Phase IV evidence does not prove Decision Owner
-- consequence choices update only planned fields with migration
+- current cache evidence and choice outcomes persist
 
 ## Audio
 
-- exact score start and loop point after listening verification
-- vehicle clip audio handling
-- reveal footsteps
-- dialogue ducking
-- scene exit cleanup
-- Return to Title cleanup
+- current score lifecycle preserved
+- reveal footsteps preserved
+- dialogue ducking preserved
+- scene exit cleanup preserved
+- Return to Title cleanup preserved
 - no extra global audio owner
 
-## Save and state
+## Save and State
 
-- Phase IV defaults
-- migration
-- checkpoints
-- resume from every modal
-- resume from video boundary
-- completed-state resume
-- Developer jump
-- Phase V handoff
-- no startup side effect
+- defaults and migrations preserved
+- location-card auto-transition preserved
+- video-boundary restore preserved where implemented
+- Developer jump preserved
+- completed-state behavior preserved
+- Arman Journal read/unread persistence preserved
 
-## Regression
+## Regression before Phase V delivery
 
 - Chapter I Character hidden
-- Chapter II Character normal
-- Dev Unlock
-- Maya-first profile sequence
-- Phase III completion preserved
+- Chapter II North unlock timing
+- all existing Character discovery contracts
+- Dev Unlock silent
+- Maya-first profile switching
+- Arman profile switching
+- Phase III completion and handoff
+- Phase IV natural and Skip routes
 - Thai and English
 - mobile widths
-- Save export and import
-- no Arman early unlock
+- Save export/import where changed code can affect it
 
-The blueprint is not approved merely because the narrative concept is approved.
-
-
+---
 
 # 44. AUTHORITATIVE CHARACTER RESPONSIBILITY BIBLE
 
@@ -4054,1664 +3334,699 @@ The blueprint is not approved merely because the narrative concept is approved.
 
 `OWNER-DELEGATED CANON LOCK · AUTHORITATIVE FOR FUTURE WRITING`
 
-The owner has delegated completion of missing character design. This section therefore locks the responsibilities, knowledge boundaries, legal limits, narrative functions and ending paths required to carry the story through Chapter VII.
-
-Where this section conflicts with an older broad description, this section wins unless the owner later revises it.
-
-This section does not modify frozen Runtime by itself.
+This section locks responsibilities, knowledge boundaries, legal limits, narrative functions and ending paths required through Chapter VII. Where this section conflicts with an older broad description, this section wins unless the owner later revises it.
 
 ## Universal character-writing contract
 
 Every named or speaking character must have:
 
-1. a defined role in the story
-2. a defined legal or operational authority
-3. a defined personal objective
-4. a defined fear or protected interest
-5. a defined blind spot
-6. a defined knowledge boundary
-7. a defined evidence relationship
-8. a defined reason for cooperation or resistance
-9. a defined consequence path
-10. a defined writing prohibition
+1. defined story role
+2. defined legal or operational authority
+3. personal objective
+4. fear or protected interest
+5. blind spot
+6. knowledge boundary
+7. evidence relationship
+8. reason for cooperation or resistance
+9. consequence path
+10. writing prohibition
 
 No character may:
 
 - know facts without a source
-- command outside their authority
-- change competence to make a puzzle easier
-- become suspicious only through lighting, music or facial coding
-- disappear after serving one clue unless their exit is explained
-- become a murderer merely because the player accused them
+- command outside authority
+- lose competence to make a puzzle easier
+- become suspicious only through lighting or music
+- disappear after one clue without explanation
+- become murderer because the player accused them
 - confess in place of evidence
-- solve another character’s specialist function without a story reason
-
----
+- solve another specialist’s function without reason
 
 ## 44.1 Benedict
 
-### Identity
+### Identity and legal standing
 
-- Canonical display name: `Benedict`
 - Age: 42
-- Nationality and legal surname are intentionally non-essential to the mystery and must not be invented in dialogue, UI or records without owner approval.
-- Profession: independent detective and external investigative consultant
-- Base: Bangkok
-- Story role: protagonist and final human decision-maker
+- independent detective
+- external investigative consultant
+- Bangkok base
+- surname and nationality must not be invented without owner approval
 
-### Legal standing
+May:
 
-Benedict works under a written civilian-consultant authorization attached to Kittisak’s special investigation.
-
-He may:
-
-- inspect evidence copies granted to the task group
-- attend interviews with consent
-- recommend investigative strategy
+- inspect authorized evidence copies
+- attend consensual interviews
+- recommend strategy
 - conduct voluntary interviews
 - make deductions
-- coordinate his own non-police investigation
-- act in emergencies to protect life
+- act to protect life in emergencies
 
-He may not:
+May not:
 
 - issue police orders
 - obtain warrants in his own name
 - compel testimony
 - seize property
-- arrest except under ordinary immediate-danger principles
-- command Singaporean or Indonesian officers
+- command foreign police
 - certify evidence
 
-### Narrative function
+### Objective, fear and blind spot
 
-- reads human intention
-- separates fear, guilt, concealment and murder intent
-- prevents technical evidence from becoming convenient blame
-- converts North’s technical findings into human case theory
-- makes the final accusation
-- carries moral responsibility for how the truth is pursued
+Objective:
 
-### Personal objective
+- find the person who owned the final decision without sacrificing someone to an easier institutional story
 
-Find the person who owned the final decision without sacrificing innocent people to an easier institutional story.
+Protected interest:
 
-### Protected interest
+- North’s agency and survival
 
-North’s agency and survival.
+Fear:
 
-### Fear
+- being right but legally unusable
+- protecting North by excluding her
 
-That his instincts will be correct but legally unusable, or that protecting North will become a reason to exclude her from decisions.
+Blind spot:
 
-### Blind spot
-
-He trusts controlled human conversation more than institutional process and may underestimate how much admissibility determines the final outcome.
+- may underestimate how much admissibility controls outcome
 
 ### Knowledge boundary
 
-- Chapter I: knows the room was staged and the warning targets investigators
-- Chapter II: knows Daniel investigated Room 1807, 18-07 and the corrected time
-- Chapter III: understands that architecture, credential and operator differ
-- Chapter IV: identifies the Arman proxy and recognizes that North is being evaluated as a threat
-- Chapter V: learns Kawin’s identity, Rin’s role and Elena’s physical presence near the pier
-- Chapter VI: develops an Elena theory but cannot charge without joining physical, digital and decision evidence
-- Chapter VII: possesses enough material to choose a final accused person, but the strength of the case depends on prior choices
+- Chapter I: room staged, warning targets investigators
+- Chapter II: Daniel followed Room 1807, 18-07 and corrected time
+- Chapter III: architecture, credential and operator differ
+- Chapter IV: Dimas is proxy, Arman is toolmaker, North is marked
+- Chapter V: learns Kawin, Rin and Elena’s presence theory
+- Chapter VI: develops Elena theory but needs joined evidence
+- Chapter VII: makes final accusation
 
-He never knows Elena is the killer merely from intuition.
-
-### Evidence relationship
-
-- may review evidence
-- does not own scientific certification
-- does not own raw digital originals
-- owns the final integrated case theory
-- his notes are intelligence work product unless formally entered into the case
-
-### Chapter duties
-
-- Chapter IV: expose the proxy without humiliating or coercing him
-- Chapter V: reconstruct Kawin’s human intentions and earn Rin’s trust
-- Chapter VI: design the controlled-leak theory with the lawful authorities
-- Chapter VII: lead `THE LAST RECORD`, confront Elena and choose accusation and record strategy
+He never knows Elena is killer merely from intuition.
 
 ### Ending effects
 
-- True Conviction: his theory survives legal testing
-- Right Name, No Case: he identifies Elena but cannot bridge the admissibility gap
-- False Conviction: he mistakes real culpability for murder ownership
-- The Perfect Record: his theory is defeated by lost witnesses, broken custody or an uncorrected fatal contradiction
+- True Conviction: theory survives legal testing
+- Right Name, No Case: identifies Elena but cannot bridge proof gap
+- False Conviction: mistakes culpability for murder ownership
+- The Perfect Record: loses to broken custody, missing witness or fatal contradiction
 
 ### Writing prohibitions
 
 - no magical lie detection
-- no command of police personnel
-- no using North as bait without informed consent
+- no police command
+- no uninformed use of North as bait
 - no flawless deduction without evidence
-- no melodramatic speeches replacing interrogation craft
-
----
+- no melodramatic speech replacing craft
 
 ## 44.2 North
 
-### Identity
+### Identity and authority
 
-- Canonical display name: `North`
 - Age: 32
-- Nationality: Singaporean
-- Residence and operational base: Bangkok
-- Profession: independent IT specialist and technical investigator
-- Story role: attribution lead and Benedict’s long-term partner
+- Singaporean
+- Bangkok resident and operational base
+- independent IT specialist and technical investigator
+- surname must not be invented without owner approval
 
-Her surname is not required by the current story and must not be invented without owner approval.
-
-### Legal standing
-
-North works under the same consultant authorization as Benedict.
-
-She may:
+May:
 
 - analyse lawfully supplied copies
 - build isolated forensic models
 - compare signatures, routes and event structures
-- advise police technical teams
-- preserve her own notes and analysis hashes
+- advise technical teams
+- preserve analysis hashes
 
-She may not:
+May not:
 
 - access live systems without local authorization
 - initiate intrusion
 - seize hardware
 - certify police evidence
-- treat a route or credential as identity
+- treat route or credential as identity
 
-### Narrative function
+### Objective, fear and blind spot
 
-- reconstructs attribution gaps
-- distinguishes Authentication from Attribution
-- proves how the system works
-- becomes the strategic threat Elena cannot tolerate
-- designs the false-success operation
-- remains analytically active while publicly removed
+Objective:
 
-### Personal objective
+- build a conclusion that remains true when system labels mislead
 
-Build a conclusion that remains true even when every system label is misleading.
+Protected interest:
 
-### Protected interest
+- partnership with Benedict and integrity of her work
 
-Her partnership with Benedict and the integrity of her technical work.
+Fear:
 
-### Fear
+- being protected by exclusion
+- analysis used while agency ignored
 
-Being protected by exclusion, or having her analysis used while her agency is ignored.
+Blind spot:
 
-### Blind spot
-
-She may privilege technical elegance over the emotional cost of a strategy.
-
-### Knowledge boundary
-
-- Chapter I: knows digital wiping and scene staging occurred
-- Chapter II: knows 18-07 is duplicated and the official time is unstable
-- Chapter III: knows valid system components can preserve a false story
-- Chapter IV: recognizes proxy behaviour and discovers threat classification
-- Chapter V: works through a hidden channel and may see evidence before the public team can acknowledge her
-- Chapter VI: identifies information leakage and designs decoy telemetry
-- Chapter VII: maps the technical layers but cannot alone prove physical murder intent
+- may privilege technical elegance over emotional cost
 
 ### Evidence relationship
 
-- carries sanitized analysis copies
-- may create reproducible analytical outputs
+- uses sanitized copies
+- creates reproducible outputs
 - cannot replace Farid’s raw mirror
 - cannot replace Ratchata’s physical findings
-- her hidden-channel output needs authenticated preservation to remain admissible
-
-### Chapter duties
-
-- Chapter IV: technical half of Persona Triangulation
-- Chapter V: hidden analysis of Kawin, 18-07 and Registrar links
-- Chapter VI: decoy telemetry, leak correlation and continuity-protocol analysis
-- Chapter VII: technical architecture of `THE LAST RECORD`
+- hidden outputs need authenticated preservation
 
 ### Ending effects
 
 - True Conviction: alive, credible and publicly restored
-- Right Name, No Case: alive but possibly still hidden or hunted
-- False Conviction: her analysis may be selectively used to support the wrong principal
-- The Perfect Record: framed, discredited, officially dead or erased from the accepted account
+- Right Name, No Case: alive but possibly hidden or hunted
+- False Conviction: analysis selectively used against wrong principal
+- The Perfect Record: framed, discredited, officially dead or erased
 
 ### Writing prohibitions
 
 - never passive
-- never a helpless hostage for Benedict’s motivation
-- never performs unauthorized intrusion merely because she can
-- never solves motive better than Benedict without human evidence
+- never helpless hostage
+- never unauthorized intrusion merely because she can
 - no romance with Farid
-
----
 
 ## 44.3 Elena Sutham
 
 ### Identity
 
-- Full legal name: `Elena Sutham`
-- Player-facing name: `Elena`
+- Full name: Elena Sutham
 - Age: 38
-- Nationality: Thai
-- Profession: Senior Forensic Systems Analyst
-- Employer: Meridian Evidence Systems, Bangkok
-- Public assignment: accredited technical liaison to the Bangkok Evidence Division
-- Story role: trusted forensic ally
-- Owner-secret role: mastermind, physical killer and Decision Owner
+- Thai
+- Senior Forensic Systems Analyst
+- Meridian Evidence Systems, Bangkok
+- public role: trusted forensic ally
+- owner-secret role: mastermind, physical killer and Decision Owner
 
 ### Authority
 
-Elena may:
+May:
 
-- review forensic-system records assigned to her
-- validate data structure and scientific metadata
+- review assigned forensic-system records
+- validate structure and metadata
 - prepare technical interpretations
-- submit signed analytical packages through legitimate workflow
-- access continuity and synchronization tools relevant to her assignment
+- submit signed analytical packages
+- access continuity tools relevant to assignment
 
-She may not:
+May not:
 
 - command police
 - authorize arrests or warrants
-- certify Ratchata’s medical conclusions
-- become sole custodian of disputed evidence after compromise is discovered
+- certify Ratchata’s medicine
+- remain sole custodian after compromise
 - control public release in her own name
 
-### Professional history
+### Professional history and ideology
 
-Ten years before the current case, Elena worked on a regional mass-casualty evidence project whose truthful scientific findings became unusable because records fragmented across agencies.
+A decade earlier, a truthful mass-casualty evidence project became unusable because records fragmented across agencies. Elena drew the wrong lesson: institutions cannot act on truth unless a stable record tells them what happened.
 
-She drew the wrong lesson:
+She moved from preserving continuity to curating certainty, then to deciding which truths institutions were allowed to see.
 
-> institutions cannot act on truth unless a stable record tells them what happened.
+### Objective, fear and blind spot
 
-Her work gradually moved from preserving continuity to curating certainty.
+Objective:
 
-She originally used controlled sequencing to protect cases from collapse. She later began deciding which truths institutions were allowed to see.
+- produce an official chronology that survives scrutiny and preserves her control over institutional meaning
 
-### Narrative function
+Protected interest:
 
-- provides true, useful forensic information
-- makes the wrong official story more credible by helping investigators validate parts of it
-- guides attention toward real technical offenders
-- keeps herself outside the obvious tool chain
-- tests whether the team can prove Decision Ownership
-- escalates against North when attribution becomes possible
+- professional legitimacy and Continuity Protocol
 
-### Personal objective
+Fear:
 
-Produce an official chronology that survives scrutiny and preserves her control over institutional meaning.
+- a world admitting that a valid record can tell a false story
 
-### Protected interest
+Blind spot:
 
-Her professional legitimacy, the Continuity Protocol and the belief that she alone can prevent evidentiary chaos.
+- underestimates intimate loyalty, Benedict’s reading of intent and North’s refusal to confuse valid process with true operator
 
-### Fear
+### Genuine limits
 
-Not exposure alone, but a return to a world where institutions must admit that a record can be valid and still tell a false story.
+Elena does not know:
 
-### Blind spot
-
-She understands systems and institutional behaviour better than intimate loyalty. She underestimates Benedict’s sensitivity to intention and North’s refusal to confuse a valid process with a true operator.
+- every Benedict–North conversation
+- all Farid alternative copies
+- every inference Rin made
+- whether Adrian kept every locator
+- how far Arman will cooperate
+- which evidence the player preserved outside expected path
 
 ### Relationship locks
 
-- Kawin: colleague in Meridian governance; he challenged repeated 18-07 use
-- Daniel: trusted her because she had previously corrected a genuine forensic inconsistency for one of his investigations
-- Rin: former Registrar liaison; Elena knew Rin could identify the emergency credential path
-- Kittisak: respected civilian specialist, not subordinate or commander
-- Somchai: operationally cordial; she uses normal evidence-routing expectations
-- Ratchata: mutual scientific respect with a deep methodological difference
-- Adrian: useful visible architect and plausible scapegoat
-- Arman: blind-broker tool supplier; no direct client identity exposed to him
-- Narin: local deployment specialist whose real offences can absorb blame
-- Ika: never receives Elena’s identity directly
-
-### What Elena genuinely does not know
-
-- the precise contents of every private Benedict–North conversation
-- all of Farid’s preserved alternative copies
-- every inference Rin drew from the pier
-- whether Adrian kept an independent architectural locator
-- exactly how far Arman will cooperate
-- which evidence the player preserved outside her expected path
-
-### What Elena believes incorrectly
-
-- North will prioritize technical proof over personal safety in a predictable way
-- Benedict will protect North by removing her from the operation
-- Kittisak will choose institutional stability over a damaging internal truth
-- Rin can be frightened into permanent silence
-- real offences by Adrian, Arman or Narin will be enough to close the murder case
-
-### Chapter knowledge and action
-
-- Before Chapter I: knows Kawin found the reuse pattern and plans to meet Rin
-- Chapter I: kills Kawin, stages Room 1807 and directs investigation toward the room narrative
-- Chapter II: kills Daniel, preserves genuine toxicology, curates the eleven-minute sequence
-- Chapter III: monitors milestone activation through the watcher and triggers cleanup
-- Chapter IV: receives limited truthful updates from Bangkok and decides North must be removed
-- Chapter V: helps identify Narin’s deployment path while controlling how her own presence is interpreted
-- Chapter VI: activates Continuity Protocol and attempts to convert accomplice evidence into a complete alternative murder case
-- Chapter VII: manages two staging sites and confronts the possibility that the team can separate her decision layer from everyone else’s culpability
+- Kawin: governance colleague who challenged 18-07 reuse
+- Daniel: trusted her due to a prior genuine correction
+- Rin: Registrar liaison who could identify emergency path
+- Kittisak: respected police commander, neither subordinate nor superior to her professionally
+- Somchai: operationally cordial
+- Ratchata: scientific respect and methodological conflict
+- Adrian: visible architect and plausible scapegoat
+- Arman: blind-broker supplier who did not receive her identity
+- Narin: local deployment specialist whose crimes can absorb blame
+- Ika: compartmentalized operator who does not receive Elena’s identity directly
 
 ### Evidence against her
 
 Individually explainable:
 
-- legitimate signed-package access
+- legitimate package access
 - slightly early knowledge
-- physical presence near the pier
+- pier presence
 - sequence-control recommendations
-- knowledge of investigation milestones
 - links to both victims
-- access to Narin’s deployment requests
+- access to Narin requests
 
 Decisive only when combined with:
 
-- Rin’s corroborated observation
-- Ratchata’s physical timeline
-- watcher activation structure
+- Rin corroboration
+- Ratchata timeline
+- watcher structure
 - controlled-leak result
-- local-deployment separation
+- deployment separation
 - motive and opportunity
-- proof that Elena selected discovery timing
-
-### Ending effects
-
-- True Conviction: convicted for both murders and conspiracy
-- Right Name, No Case: identified but escapes murder conviction, disappears or exploits the custody gap
-- False Conviction: remains credible while a real accomplice is convicted as principal
-- The Perfect Record: her chronology becomes the accepted history
+- discovery-timing ownership
 
 ### Writing prohibitions
 
 - no villain coding
-- no suspicious smiles
+- no suspicious smile
 - no evil monologue before evidence
 - no omniscience
-- no false scientific result
+- no false science
 - no direct contact with every operative
-- no cruelty for spectacle
-- no sudden personality replacement at reveal
-
----
+- no personality replacement at reveal
 
 ## 44.4 Police Captain Kittisak Siriwat
 
-### Identity
+### Identity and authority
 
-- Full name: `Kittisak Siriwat`
-- Thai: `กิตติศักดิ์ ศิริวัฒน์`
 - Age: 40
-- Rank: Police Captain / ร้อยตำรวจเอก
-- Position: Investigation Inspector / สารวัตรฝ่ายสืบสวน
-- Unit: Bangkok Metropolitan Special Investigations and Evidence Coordination Unit
-- Story role: lawful Bangkok commander and institutional gatekeeper
+- Police Captain / ร้อยตำรวจเอก
+- Investigation Inspector / สารวัตรฝ่ายสืบสวน
+- Bangkok Metropolitan Special Investigations and Evidence Coordination Unit
 
-The unit name is fictional and exists to keep the game’s jurisdiction internally coherent.
+May:
 
-### Authority
-
-Kittisak may:
-
-- assign Bangkok police personnel
-- coordinate warrant applications
-- authorize internal evidence audits
+- assign police personnel
+- coordinate warrants
+- authorize internal audits
 - request witness protection
-- control police custody and secure transport
-- approve controlled leaks under documented operation
-- make official recommendations to prosecutors and superiors
+- control custody and secure transport
+- approve controlled leaks
+- recommend official prosecution path
 
-He may not:
+May not:
 
-- command Singaporean or Indonesian police
-- certify medical or digital findings personally
-- allow Benedict to exercise police powers
-- conceal exculpatory evidence to save the unit
+- command foreign police
+- certify medicine or digital findings personally
+- allow Benedict police powers
+- conceal exculpatory evidence
 
-### Personal objective
+### Objective, fear, blind spot and secret
 
-Bring a case that survives court without allowing the institution to sacrifice the wrong person for closure.
+Objective:
 
-### Protected interest
+- bring a case that survives court without sacrificing wrong person
 
-His officers and the legitimacy of the investigation.
+Protected interest:
 
-### Fear
+- officers and legitimacy of investigation
 
-That exposing the compromise will destroy trust in the unit before the real operator can be identified.
+Fear:
 
-### Blind spot
+- exposing compromise before real operator identified
 
-He may delay disclosure while building a secure internal case, creating the appearance of concealment.
+Blind spot:
 
-### Real secret
+- delayed disclosure may look like concealment
 
-During Chapter II, Kittisak authorizes a limited internal check after noticing that 18-07 appears in a workflow where it should be inactive. He keeps the check compartmentalized to avoid warning a possible insider.
+Real secret:
 
-This is procedurally defensible but later looks suspicious.
-
-### Knowledge boundary
-
-- Chapter II: knows the evidence path contains irregular access
-- Chapter III: learns the signed Bangkok package carried the watcher
-- Chapter IV: knows the local unit may be compromised but not who did it
-- Chapter V: opens a need-to-know internal audit
-- Chapter VI: receives controlled-leak results and must resist institutional pressure to accept the easiest suspect
-- Chapter VII: decides whether the final case enters the official system intact
-
-### Evidence relationship
-
-- command owner of Bangkok police custody
-- not sole custodian
-- must use two-person control after compromise
-- owns official forwarding to prosecutors
-- his delays and authorizations become part of the Authority Chain puzzle
-
-### Chapter duties
-
-- Chapter IV: background containment in Bangkok, no scene takeover
-- Chapter V: command parallel investigation and protect Rin
-- Chapter VI: authorize controlled leak, respond to Evidence Division breach
-- Chapter VII: secure one final site or the formal record, depending on player allocation
+- authorized a compartmentalized internal check during Chapter II after seeing 18-07 irregularity
 
 ### Ending effects
 
-- True Conviction: submits the correct case and accepts institutional scrutiny
-- Right Name, No Case: publicly cannot charge Elena but preserves a sealed dissenting file
-- False Conviction: signs or fails to stop the alternative case
-- The Perfect Record: is removed, discredited or forced to certify the false chronology
-
-### Writing prohibitions
-
-- no taking orders from Somchai
-- no unexplained international authority
-- no obstruction for drama
-- no sudden corruption reveal without new owner-approved Canon
-- no treating Benedict as a sworn officer
-
----
+- True Conviction: submits correct case and accepts scrutiny
+- Right Name, No Case: preserves sealed dissent file
+- False Conviction: signs or fails to stop alternative case
+- The Perfect Record: removed, discredited or forced to certify false chronology
 
 ## 44.5 Police Senior Sergeant Major Somchai Rattanakul
 
-### Identity
+### Identity and authority
 
-- Full name: `Somchai Rattanakul`
-- Thai: `สมชาย รัตนกุล`
 - Age: 48
-- Rank: Police Senior Sergeant Major / ดาบตำรวจ
-- Position: senior field investigator
-- Unit: Kittisak’s Bangkok unit
-- Story role: physical continuity, local memory and field execution
+- Police Senior Sergeant Major / ดาบตำรวจ
+- senior field investigator in Kittisak’s unit
+- not related to Rin
 
-Somchai is not related to Rinrada Sornchai.
+May:
 
-### Authority
-
-Somchai may:
-
-- conduct assigned field inquiries
+- conduct assigned inquiries
 - canvass witnesses
-- retrieve CCTV through police process
-- transport and guard evidence under logged order
-- assist arrests directed by authorized officers
-- lead a small field detail when Kittisak delegates
+- retrieve CCTV through process
+- transport and guard evidence under order
+- assist arrests
+- lead a delegated field detail
 
-He may not:
+May not:
 
 - issue warrants
 - command Kittisak
 - approve cross-border operations
 - certify evidence
-- independently release case information
+- release case information independently
 
-### Personal objective
+### Objective, fear, blind spot and secret
 
-Keep the case anchored to what happened in streets, rooms, vehicles and hands.
+Objective:
 
-### Protected interest
+- anchor case to streets, rooms, vehicles and hands
 
-The reputation and safety of the field team.
+Protected interest:
 
-### Fear
+- field team safety and reputation
 
-That a practical shortcut he took will be interpreted as betrayal.
+Fear:
 
-### Blind spot
+- practical shortcut interpreted as betrayal
 
-He trusts experienced routine and may initially dismiss a technical anomaly as paperwork failure.
+Blind spot:
 
-### Real secret
+- may dismiss technical anomaly as paperwork failure
 
-During the Chapter II evidence transfer, Somchai rerouted a sealed transport through a service entrance to avoid a media crowd. He logged the destination and seal but not the intermediate stop.
+Real secret:
 
-The gap was not malicious, but it created a credible physical window for package substitution or observation.
-
-### Knowledge boundary
-
-- Chapter II: knows physical evidence movement and station routines
-- Chapter III: learns that a trusted package was compromised
-- Chapter IV: traces who physically handled related transfers in Bangkok
-- Chapter V: finds the handoff route that leads toward Narin
-- Chapter VI: performs controlled physical distribution and witness extraction
-- Chapter VII: protects a site, a witness or evidence according to player allocation
-
-### Evidence relationship
-
-- handles physical custody under order
-- does not analyse technical contents
-- his body-camera, vehicle log and witness canvass can corroborate or repair custody
-- his unlogged detour creates a challenge the player must explain rather than hide
-
-### Ending effects
-
-- True Conviction: cleared and recognized for recovering the physical trail
-- Right Name, No Case: cleared, but the custody gap remains a legal weakness
-- False Conviction: his field findings may unintentionally strengthen the wrong principal theory
-- The Perfect Record: suspended, scapegoated or used to explain the compromise
-
-### Writing prohibitions
-
-- no command authority over Kittisak
-- no advanced cyber deductions
-- no comic-relief incompetence
-- no secret family relationship with Rin
-- no villain coding from ordinary field access
-
----
+- rerouted a sealed transfer through a service entrance to avoid media and failed to log the intermediate stop, creating a real custody challenge without malicious intent
 
 ## 44.6 Ratchata (Dr. Singh)
 
-### Identity
+### Identity and authority
 
-- Full professional identity: `Dr. Ratchata Singh`
-- Display name exactly: `Ratchata (Dr. Singh)`
+- Full professional identity: Dr. Ratchata Singh
 - Age: 43
-- Nationality: Thai
-- Heritage: Sikh
-- Position: Senior Medical Examiner
-- Institution: Bangkok Metropolitan Medical Examiner Office
-- Story role: independent physical-truth authority
+- Thai Sikh
+- Senior Medical Examiner
+- Bangkok Metropolitan Medical Examiner Office
 
-### Authority
+May:
 
-Ratchata may:
-
-- conduct or supervise post-mortem examination
+- conduct and supervise post-mortem examination
 - certify biological findings
-- issue independent medical opinions
-- request re-examination or preservation of samples
-- refuse wording unsupported by the body
+- issue independent opinions
+- request re-examination and preservation
+- refuse unsupported wording
 
-He may not:
+May not:
 
 - command police
 - certify digital attribution
-- decide the final accused
-- alter a collection time merely to fit an investigative theory
+- decide final accused
+- change scientific times to fit theory
 
-### Personal objective
+### Objective, fear, blind spot and secret
 
-Ensure the body is never forced to agree with a record.
+Objective:
 
-### Protected interest
+- ensure body is never forced to agree with record
 
-Scientific independence.
+Protected interest:
 
-### Fear
+- scientific independence
 
-That a technically valid report will be used inside a false chronology.
+Fear:
 
-### Blind spot
+- valid report used inside false chronology
 
-He initially assumes administrative corrections are separate from scientific truth because the measured toxicology is genuine.
+Blind spot:
 
-### Real secret
+- initially treats timing correction as administrative because toxicology is genuine
 
-He noticed the eleven-minute discrepancy earlier than he admitted but considered it an administrative timing issue because it did not change the toxicological result.
+Real secret:
 
-His delay is professionally uncomfortable, not criminal.
-
-### Knowledge boundary
-
-- Chapter II: proves science genuine and collection time disputed
-- Chapter III: learns two certified views can validate
-- Chapter IV: remains in Bangkok and preserves independent samples
-- Chapter V: identifies Kawin and compares both deaths
-- Chapter VI: protects the independent sample chain during Evidence Division breach
-- Chapter VII: supplies the physical contradiction that prevents a purely technical suspect theory from becoming complete
-
-### Ending effects
-
-- True Conviction: testimony connects both murders to the engineered chronology
-- Right Name, No Case: physical truth survives but cannot identify Decision Owner
-- False Conviction: his evidence proves murders occurred but may be attached to the wrong principal
-- The Perfect Record: samples are lost, excluded or buried beneath certified chronology
-
-### Writing prohibitions
-
-- not `R.`
-- no police orders
-- no digital expertise beyond informed collaboration
-- no comic-relief reduction
-- no changing biological findings to serve the plot
-
----
+- noticed discrepancy earlier but delayed escalating it as an administrative issue
 
 ## 44.7 Inspector Cheryl Goh
 
-### Identity
+### Identity and authority
 
-- Full name: `Inspector Cheryl Goh`
 - Age: 40
-- Nationality: Singaporean
-- Rank: Inspector
-- Position: Cross-Border Digital Evidence Liaison
-- Unit: Singapore Police Force, Technology Crime and Digital Evidence Coordination
-- Story role: admissibility, jurisdiction and disciplined alliance
+- Singaporean Chinese
+- Inspector
+- Cross-Border Digital Evidence Liaison
 
-The unit title is fictional but functionally locked.
+In Singapore may coordinate lawful access, direct support, authorize Farid tasking and preserve sealed copies.
 
-### Authority
+Outside Singapore may liaise, witness transfer and advise admissibility.
 
-In Singapore, Cheryl may:
+May not command Maya or Kittisak, arrest abroad without local authority or turn Singapore possession into foreign identity proof.
 
-- coordinate lawful digital-evidence access
-- direct Singapore-side police support
-- authorize Farid’s operational tasking for this case
-- preserve sealed copies
-- liaise with prosecutors and foreign police
+### Objective, fear, blind spot and secret
 
-In Indonesia and Thailand, she may:
+Objective:
 
-- act as liaison and witness to transfer
-- advise on admissibility
-- coordinate Singapore-held evidence
+- build case surviving every jurisdiction
 
-She may not:
+Protected interest:
 
-- command Maya or Kittisak
-- arrest or search outside Singapore without local authority
-- turn Singapore possession of data into foreign identity proof
+- integrity of Singapore originals
 
-### Personal objective
+Fear:
 
-Build a case that survives every jurisdiction it crosses.
+- urgency creates brilliant but inadmissible answer
 
-### Protected interest
+Blind spot:
 
-The integrity of the Singapore-held originals and the credibility of the joint investigation.
+- caution may shrink a volatile opportunity
 
-### Fear
+Real secret:
 
-That urgency will produce a brilliant but inadmissible answer.
-
-### Blind spot
-
-She may delay action long enough for a volatile opportunity to shrink.
-
-### Real secret
-
-Before Adrian’s introduction, Cheryl knew Singapore had an unresolved internal alert associated with his old architecture credentials. She withheld it until identity and legal basis were sufficient.
-
-This protects the operation but can appear as selective disclosure.
-
-### Knowledge boundary
-
-- Chapter III: knows Singapore route, raw mirror and Adrian alert
-- Chapter IV: knows Arman inquiry but not Bangkok Decision Owner
-- Chapter V: supports hidden North channel and Singapore corroboration
-- Chapter VI: protects cross-border admissibility and resists a single-jurisdiction shortcut
-- Chapter VII: authenticates Singapore records in the final case
-
-### Evidence relationship
-
-- institutional custodian for Singapore police transfers
-- does not perform Farid’s analysis
-- signs jurisdictional transfer and witness statements
-- can strengthen or weaken admissibility based on prior choices
-
-### Ending effects
-
-- True Conviction: testifies to clean cross-border preservation
-- Right Name, No Case: keeps a legally sound Singapore file that cannot complete the murder case
-- False Conviction: may authenticate genuine tool evidence used against the wrong principal
-- The Perfect Record: Singapore evidence is isolated, rejected or publicly mischaracterized
-
-### Writing prohibitions
-
-- no command of foreign police
-- no jealousy-driven decisions
-- no instant trust
-- no procedural obstruction without a reason
-- romance never overtakes the case
-
----
+- knew of an unresolved alert tied to Adrian credentials before his introduction and withheld it until legal basis and identity were sufficient
 
 ## 44.8 Farid Rahman
 
-### Identity
+### Identity and authority
 
-- Full name: `Farid Rahman`
 - Age: 31
-- Nationality: Singaporean Malay
-- Position: Digital Forensics Specialist
-- Unit: Singapore Police Force Digital Forensics Laboratory
-- Employment status: civilian technical specialist attached to police operations
-- Story role: original preservation, alternative hypotheses and decoy telemetry
+- Singaporean Malay
+- civilian Digital Forensics Specialist attached to police operations
 
-### Authority
+May preserve forensic images, calculate hashes, perform documented analysis, maintain lab mirrors and testify to process.
 
-Farid may:
+May not command Cheryl, arrest, perform foreign live intrusion, disclose sealed evidence or infer motive from code.
 
-- preserve forensic images
-- calculate and attest hashes
-- perform documented analysis
-- maintain lab-controlled mirrors
-- testify to technical process
+### Objective, fear, blind spot and secret
 
-He may not:
+Objective:
 
-- command Cheryl
-- arrest
-- perform foreign live intrusion
-- disclose sealed evidence without authorization
-- infer motive from code alone
+- preserve enough alternatives that system cannot force one explanation
 
-### Personal objective
+Protected interest:
 
-Preserve enough alternative evidence that the system cannot force one convenient explanation.
+- raw mirror and reproducibility
 
-### Protected interest
+Fear:
 
-The original raw mirror and reproducibility of analysis.
+- clean report erases contradictory data
 
-### Fear
+Blind spot:
 
-That a single “clean” report will erase the contradictory data needed to prove manipulation.
+- excitement may make possibility sound like conclusion
 
-### Blind spot
+Real secret:
 
-Excitement can make him explain a technical possibility before the legal team is ready to hear it as only a possibility.
-
-### Real secret
-
-Under authorized disaster-recovery protocol, Farid created a second air-gapped integrity mirror before the watcher cleanup attempt.
-
-The mirror is lawful, logged and not a private copy, but its compartmentalization means most characters do not know it exists.
-
-### Knowledge boundary
-
-- Chapter III: knows raw order, watcher capture and PALIMPSEST family
-- Chapter IV: validates Arman behaviour remotely but cannot identify him from code alone
-- Chapter V: maintains North’s hidden authenticated channel
-- Chapter VI: runs decoy telemetry and controlled-leak comparison
-- Chapter VII: proves whether the final digital record derives from original data or a continuity rewrite
-
-### Ending effects
-
-- True Conviction: original and recovery mirror corroborate the case
-- Right Name, No Case: proves manipulation but not physical Decision Ownership
-- False Conviction: his accurate tool evidence is overextended against Adrian, Arman or Narin
-- The Perfect Record: mirrors are destroyed, excluded or dismissed as unauthorized
-
-### Writing prohibitions
-
-- no romance with North
-- not comic relief
-- no motive conclusions from code
-- no unexplained foreign access
-- no secret private hacking
-
----
+- created a lawful air-gapped recovery mirror under disaster-recovery protocol before watcher cleanup
 
 ## 44.9 Inspector Maya Pranoto
 
-### Identity
+### Identity and authority
 
-- Full name: `Inspector Maya Pranoto`
 - Age: 37
-- Nationality: Indonesian
-- Rank: Inspector
-- Position: Cybercrime Operations Liaison
-- Unit: Indonesian National Police, Jakarta Cyber Operations Directorate
-- Story role: Indonesian authority, lawful contact and local operational control
+- Indonesian
+- Inspector
+- Cybercrime Operations Liaison
+- Indonesian National Police, Jakarta Cyber Operations Directorate
 
-The unit title is fictional but functionally locked.
+May authorize observation, coordinate surveillance, seek Indonesian search/arrest authority, seize evidence under process, command local support and limit foreign access.
 
-### Authority
+May not authorize Singapore/Bangkok actions, identify person from IP alone, permit live intrusion for speed or surrender custody without transfer records.
 
-Maya may:
+### Objective, fear, blind spot and background
 
-- authorize controlled observation in Indonesia
-- coordinate surveillance
-- seek Indonesian search or arrest authority
-- seize evidence under Indonesian process
-- command local Indonesian police support
-- limit foreign investigators’ access
-- approve passive technical challenge
+Objective:
 
-She may not:
+- expose Indonesian infrastructure use without turning Indonesia into suspect
 
-- authorize Singapore or Bangkok actions
-- identify a person from an IP address alone
-- permit live intrusion merely for speed
-- surrender Indonesian custody without transfer documentation
+Protected interest:
 
-### Personal objective
+- sovereignty and unit credibility
 
-Expose the use of Indonesian infrastructure without allowing foreign investigators to turn Indonesia into a convenient suspect.
+Fear:
 
-### Protected interest
+- foreign-led operation contaminates evidence
 
-Local legal sovereignty and the credibility of her cybercrime unit.
+Blind spot:
 
-### Fear
+- expects technical actors to resemble prior cybercrime suspects and underestimates institutional control
 
-That a foreign-led operation will contaminate evidence or blame a route for a murder.
+Background:
 
-### Blind spot
-
-She initially expects technical actors to behave like prior cybercrime suspects and underestimates Elena’s institutional rather than technical control.
-
-### Real background
-
-Maya’s unit previously inspected the commercial district containing Surya Elektronik during a counterfeit-device case. She knows the premises type and local contacts, not Arman’s secret role.
-
-This justifies operational familiarity without making her omniscient.
-
-### Knowledge boundary
-
-- Chapter IV: owns local observation, Arman contact and Phase V lead
-- Chapter V: supports North’s hidden status from Indonesia
-- Chapter VI: helps preserve Field Watcher evidence and lawful cross-border transfer
-- Chapter VII: authenticates Indonesian seizure and Arman/Ika evidence
-
-### Ending effects
-
-- True Conviction: Indonesian evidence supports proportionate charges and Elena’s larger case
-- Right Name, No Case: secures Arman and Ika offences even if Elena cannot be convicted
-- False Conviction: lawful Indonesian evidence is used to overstate Arman’s role
-- The Perfect Record: local evidence is isolated from the accepted Bangkok chronology
-
-### Writing prohibitions
-
-- no romance with Benedict
-- no harem coding
-- no obstructionist stereotype
-- no foreign command authority
-- no IP-to-identity shortcut
-
----
+- unit previously inspected Surya Elektronik district in a counterfeit-device case, giving local familiarity without omniscience
 
 ## 44.10 Adrian Tan Wei Ming
 
 ### Identity
 
-- Full name: `Adrian Tan Wei Ming`
 - Age: 45
-- Nationality: Singaporean Chinese
-- Former position: Principal Systems Architect
-- Former employer: Meridian Evidence Systems
-- Story role: legitimate architect, complicit insider and strong false-conviction target
+- Singaporean Chinese
+- former Principal Systems Architect
+- former Meridian Evidence Systems
 
 ### Real conduct
 
-- designed the lawful offline reconciliation architecture
-- approved an external failover-security contractor relationship that later connected to Arman
-- recognized signs of unauthorized forked use
+- designed lawful architecture
+- approved external contractor relationship later tied to Arman
+- recognized misuse indicators
 - delayed reporting
-- retained protected architecture material
-- fled after believing the system controller intended to frame or silence him
+- retained protected material
+- fled after fearing framing or silencing
 
 ### Relationship with Arman
 
-Adrian met Arman twice during legitimate failover testing under a contractor identity.
+Met Arman twice during legitimate failover testing. Recognizes coding habits, response grammar and wrapper philosophy. Cannot prove current handle identity, Bangkok user or victim selector.
 
-He recognizes:
+### Objective, fear and blind spot
 
-- coding habits
-- response grammar
-- wrapper philosophy
+Objective:
 
-He cannot prove:
+- expose enough truth to stop abuse without becoming sole explanation
 
-- that the current broker handle belongs to Arman
-- who used the wrapper in Bangkok
-- who selected victims
+Fear:
 
-### Personal objective
+- court and public prefer architect as complete answer
 
-Expose enough truth to stop the abuse without becoming the single person blamed for every layer.
+Blind spot:
 
-### Protected interest
-
-His freedom and the distinction between his architecture and later murder use.
-
-### Fear
-
-That a court and public will prefer the architect as the complete explanation.
-
-### Blind spot
-
-Self-preservation makes him disclose facts too late, which strengthens suspicion.
-
-### Knowledge boundary
-
-- knows architecture and early fork indicators
-- knows Arman as former contractor
-- does not know Kawin or Daniel were selected until told
-- does not know Elena is the client
-- does not know all local deployment details
-- suspects Meridian Bangkok access but lacks identity proof
-
-### Evidence relationship
-
-- architecture documents
-- revoked token
-- mirror locator
-- testimony about intended system behavior
-- his retained materials may be illegally held but evidentially important
-
-### Ending effects
-
-- True Conviction: convicted or sanctioned for concealment and enabling, protected as cooperating witness
-- Right Name, No Case: may still face real charges while Elena escapes
-- False Conviction: convicted as murder mastermind
-- The Perfect Record: killed, disappeared or permanently blamed in the official history
-
-### Writing prohibitions
-
-- no coward caricature
-- no complete knowledge of Elena
-- no instant absolution
-- no technical ability treated as murder proof
-- no confession to acts he did not commit
-
----
+- self-preservation delays disclosure and strengthens suspicion
 
 ## 44.11 Arman Suryadi
 
 ### Identity
 
-- Full name: `Arman Suryadi`
 - Age: 39
-- Nationality: Indonesian
-- Public cover: electronics systems consultant and silent co-owner behind Surya Elektronik
-- Hidden role: PALIMPSEST wrapper specialist and broker
-- Story role: toolmaker, dangerous witness and false-conviction target
+- Indonesian
+- public cover: electronics systems consultant and silent co-owner behind Surya Elektronik
+- hidden role: PALIMPSEST wrapper specialist and broker
 
 ### Real conduct
 
-- adapted the reconciliation wrapper
+- adapted reconciliation wrapper
 - added metadata scrubbing and anonymous handoff
-- protected clients from direct attribution
-- used Dimas as a proxy during the workshop contact
-- accepted money without requiring full end-use disclosure
+- protected clients from attribution
+- used Dimas as proxy
+- accepted money without full end-use disclosure
 - knew abuse was possible
-- withheld records after realizing a homicide investigation was involved
+- withheld records after learning of homicide investigation
 
 ### Client separation
 
-Arman did not receive Elena’s identity.
+Received:
 
-He received:
-
-- a valid Bangkok client certificate
+- valid Bangkok client certificate
 - deployment constraints
 - timing tolerances
 - delivery conditions
-- a blind contact code associated with Meridian continuity operations
+- blind Meridian continuity contact code
 
-He can lead the team toward Narin’s deployment role but not directly to Elena.
+Did not receive Elena’s identity.
 
-### Personal objective
+### Objective, fear and blind spot
 
-Survive both prosecution and client retaliation while preventing himself from becoming the official murderer.
+Objective:
 
-### Protected interest
+- survive prosecution and client retaliation without becoming official murderer
 
-Dimas, his own technical records and the distinction between toolmaking and victim selection.
+Protected interest:
 
-### Fear
+- Dimas, records and distinction between toolmaking and victim selection
 
-That cooperation will expose him to the client, while silence will make him the easiest killer to convict.
+Fear:
 
-### Blind spot
+- cooperation exposes him; silence makes him easiest killer to convict
 
-He believes controlling information is the same as controlling risk.
+Blind spot:
 
-### Knowledge boundary
+- believes controlling information equals controlling risk
 
-- knows his wrapper and broker route
-- knows the Bangkok certificate class
-- knows a local deployment specialist used the channel
-- does not know victim identities until the team explains
-- does not know who physically killed them
-- may recognize Narin’s operational signature after Phase IV evidence
-- does not know Elena’s final intent
+### Runtime Journal contract
 
-### Evidence relationship
+Current entry is implemented in Chapter IV Phase IV through the scoped `0.17.7` bridge. It must remain one card, one notification, one unread state and one Detail view.
 
-- source behaviour
-- local cache
-- broker records
-- encrypted drive
-- architecture fragments
-- testimony requiring corroboration
+## 44.12 Dimas Wibowo
 
-### Ending effects
-
-- True Conviction: convicted for cybercrime, brokerage, obstruction and related conspiracy; not murder
-- Right Name, No Case: faces real charges while Elena escapes
-- False Conviction: convicted as murder principal
-- The Perfect Record: disappears, is killed or becomes the accepted foreign mastermind
-
-### Writing prohibitions
-
-- no cartoon villain
-- no cowardice
-- no sudden altruism
-- no direct knowledge of Elena without future earned evidence
-- no technical skill treated as innocence
-- no reveal sting implying murder guilt
-
----
-
-## 44.12 Dimas Wibowo · Arman Proxy
-
-### Identity
-
-- Full name: `Dimas Wibowo`
 - Age: 34
-- Nationality: Indonesian
-- Occupation: electronics repair technician and day-to-day manager of Surya Elektronik
-- Relationship to Arman: former apprentice and trusted workshop associate
-- Story role: controlled proxy, human witness and test of investigative restraint
-
-### Why he helps Arman
-
-Years earlier, Arman financed the equipment that kept Dimas’s family workshop open after a fire.
-
-Dimas believes:
-
-- Arman is guilty of cybercrime
-- the visitors may be corrupt police or client enforcers
-- screening contact buys time
-
-He does not believe Arman committed murder.
-
-### Knowledge
-
-Dimas knows:
-
-- broker vocabulary
-- workshop routines
-- a prepared answer script
-- that Arman is physically nearby
-- that dangerous clients exist
-
-Dimas does not know:
-
-- PALIMPSEST architecture
-- victim names
-- Decision Owner
-- the full Bangkok deployment path
-
-### Real offence
-
-- obstruction
-- false statement
-- possible evidence concealment
-
-### Evidence value
-
-- corroborates Arman’s physical presence
-- explains workshop ownership and device access
-- can testify that Arman reacted to the false technical premise
-- may preserve a delivery observation Arman overlooked
-
-### Choice consequences
-
-- respectful separation from the mastermind increases witness reliability
-- coercion damages testimony
-- treating him as the killer strengthens an easy but weak story
-
-### Ending effects
-
-- True Conviction: immunity or reduced charge in exchange for truthful testimony
-- Right Name, No Case: remains protected or disappears
-- False Conviction: may become a coerced witness against Arman
-- The Perfect Record: is silenced or absorbed into the official foreign-conspiracy story
-
-### Writing prohibitions
-
-- no stupidity
+- Indonesian
+- electronics repair technician and workshop manager
+- former apprentice and trusted associate
+- screens contact because Arman once saved family workshop after fire
+- knows broker vocabulary, workshop routines and prepared script
+- does not know architecture, victim names or Decision Owner
+- real offences may include obstruction, false statement and concealment
 - no Character Journal card
-- no exaggerated panic
 - no advanced system explanations
-- no random betrayal without motivation
-
----
 
 ## 44.13 Daniel Voss
 
-### Identity
-
-- Full name: `Daniel Voss`
 - Age at death: 38
-- Nationality: German
-- Residence: Bangkok
-- Profession: independent investigative journalist and regional compliance researcher
-- Story role: second victim, bridge from Kawin’s audit to the public truth
-
-### Relationship to Kawin
-
-Daniel previously interviewed Kawin about regional evidence-governance failures.
-
-Kawin selected Daniel as an external safeguard because:
-
-- Daniel understood compliance systems
-- he was outside Meridian
-- he could publish if internal reporting failed
-
-### Relationship to Elena
-
-Daniel trusted Elena because she had previously identified a genuine forensic metadata error for one of his investigations and refused to exaggerate it.
-
-That history makes his trust rational.
-
-### Personal objective before death
-
-Verify Kawin’s warning, obtain the original report and publish a defensible investigation rather than a conspiracy claim.
-
-### What Daniel knew
-
-- Room 1807 was staged
-- Kawin investigated 18-07
-- the corrected time mattered
-- Singapore infrastructure appeared in the trail
-- `E.` could verify the report
-- someone expected records to travel independently of people
-
-### What Daniel did not know
-
-- Elena killed Kawin
-- PALIMPSEST’s full structure
-- Adrian and Arman’s exact roles
-- the watcher was already positioned
-- his official chronology would be engineered
-
-### Daniel’s intentional evidence
-
-- private investigation board
-- encrypted handoff
-- unsent café draft
-- scheduled archive signal
-- notes linking Kawin and 18-07
-
-### Evidence Elena intentionally leaves visible
-
-- enough of the board to direct investigators toward technical actors
-- the café path
-- genuine toxicology
-- the corrected-time discrepancy
-
-### Why Elena kills Daniel
-
-He is close enough to connect the physical victim in Room 1807 to the accepted evidence path and has an external publication route she cannot control through institutional certification alone.
-
-### Posthumous function
-
-- supplies documents, recordings and scheduled signals
-- never returns alive
-- never operates the system after death
-- his mistakes remain part of the fair mystery
-
----
+- German
+- independent investigative journalist and compliance researcher
+- trusted Elena because she previously corrected a genuine metadata error
+- knew Kawin/1807/18-07/corrected-time/Singapore links incompletely
+- did not know Elena was killer or full architecture
+- left board, handoff, draft, archive signal and notes
+- never operates system after death
 
 ## 44.14 Kawin Nopparat
 
-### Identity
-
-- Full name: `Kawin Nopparat`
 - Age at death: 41
-- Nationality: Thai
-- Position: Regional Access Governance and Compliance Auditor
-- Employer: Meridian Evidence Systems
-- Story role: Chapter I victim and original discoverer of the reuse pattern
-
-### Personality
-
-- methodical
-- ethically stubborn
-- cautious with accusation
-- uncomfortable with publicity
-- trusts process until process itself becomes the evidence
-
-### Discovery
-
-Kawin finds:
-
-- repeated 18-07 reactivation
-- emergency permissions outside approved incidents
-- synchronization routes touching unrelated cases
-- certification that proves permission but not operator identity
-
-### Relationship to Rin
-
-Rin issued the original emergency profile under a legitimate continuity event.
-
-Kawin contacts her because only she can explain:
-
-- original purpose
-- expiry expectation
-- registrar overrides
-- who later requested restoration
-
-Their relationship is professional trust, not romance.
-
-### Relationship to Daniel
-
-Daniel is Kawin’s external publication safeguard.
-
-### Relationship to Elena
-
-Elena is a respected Meridian forensic-systems colleague who can explain data corrections. Kawin does not initially suspect her of murder.
-
-He begins to suspect that she controls the sequence of internal review shortly before the pier meeting.
-
-### Why Room 1807
-
-Room 1807 is selected because:
-
-- it echoes profile 18-07 without proving a connection
-- Kawin had legitimate travel preparation
-- the room creates a believable interrupted-departure story
-- it directs investigators toward a physical room instead of an operational profile
-
-### What Kawin carries to the pier
-
-- registrar exception extract
-- audit summary
-- a hardware authentication fragment
-- handwritten cross-reference to Daniel
-- partial request metadata
-
-### What Elena removes or moves
-
-- complete registrar exception extract
-- identity-bearing request header
-- one physical storage fragment
-- body and personal items into Room 1807
-
-### What Elena leaves
-
-- phone
-- `R.` calls
-- pier note
-- true objects arranged to form a false order
-
-### Chapter V identification
-
-Kawin is identified through:
-
-- biological and dental confirmation
-- travel and employment records
-- audit metadata
-- Daniel’s archive
-- a personal authentication object recognized by Rin
-
-### Posthumous function
-
-His audit provides the original Decision Ownership question:
-
-> who decided the emergency profile should remain useful after the emergency ended?
-
----
+- Thai
+- Regional Access Governance and Compliance Auditor
+- found 18-07 reactivation and emergency permissions outside purpose
+- contacted Rin for original Registrar explanation
+- used Daniel as external publication safeguard
+- began suspecting Elena controlled internal review sequence
+- carried registrar extract, audit summary and authentication fragment to pier
+- Elena removed identity-bearing material and moved body to Room 1807
 
 ## 44.15 Rinrada “Rin” Sornchai
 
-### Identity
-
-- Full name: `Rinrada Sornchai`
-- Common name: `Rin`
 - Age: 37
-- Nationality: Thai
-- Former position: Identity and Access Registrar
-- Former employer: Meridian Evidence Systems
-- Story role: living Last Witness and human continuity source
+- Thai
+- former Identity and Access Registrar
+- created or approved original legitimate emergency profile
+- saw Elena near pier, Kawin with evidence wallet, Elena leaving service side with wallet and unscheduled Meridian vehicle
+- did not see killing act, body movement, profile operation or Daniel murder
+- went off-grid because credential could make her look like operator
+- memory is incomplete and requires corroboration
 
-Rin is not related to Somchai Rattanakul.
+## 44.16 Narin Theerachai
 
-### Original 18-07 role
-
-Rin created or approved the original emergency profile during a legitimate regional continuity incident.
-
-The profile should have:
-
-- expired
-- lost elevated role
-- remained archived for audit only
-
-She later discovered restoration requests outside the original purpose.
-
-### Relationship to Kawin
-
-Trusted former colleague. Kawin contacts her for confirmation and physical handoff.
-
-### Relationship to Elena
-
-Rin knew Elena as a highly competent forensic-systems liaison who often requested emergency continuity interpretation.
-
-Rin did not believe Elena was a killer before the pier.
-
-### What Rin witnesses
-
-Rin sees:
-
-- Elena physically present near the pier exchange
-- Kawin carrying the registrar evidence wallet before contact
-- Elena leaving the service side of the pier with that wallet after Kawin disappears
-- a Meridian fleet vehicle departing outside its logged schedule
-
-Rin does not see:
-
-- the killing act
-- the body movement
-- Elena operating the profile
-- Daniel’s murder
-
-### Why she goes off-grid
-
-- her registrar credential appears in the restoration path
-- she believes the system can make her look like the operator
-- Kawin disappears
-- an anonymous message accurately describes her route home
-- she fears both the perpetrator and an institution ready to blame the Registrar
-
-### Personal objective
-
-Survive long enough to ensure the original purpose of 18-07 cannot be rewritten.
-
-### Protected interest
-
-Her credibility and the distinction between issuing a role and operating it.
-
-### Blind spot
-
-Fear makes her withhold one detail about the evidence wallet until trust is earned.
-
-### Credibility challenges
-
-- delayed reporting
-- personal fear
-- apparent credential connection
-- incomplete view
-- memory under stress
-
-### Corroboration
-
-- CCTV geometry
-- vehicle telemetry
-- Kawin’s object
-- Somchai’s canvass
-- Daniel’s archive
-- Ratchata’s timeline
-
-### Ending effects
-
-- True Conviction: protected witness whose testimony is corroborated
-- Right Name, No Case: survives, but testimony cannot bridge the legal gap
-- False Conviction: may identify Elena’s presence while institution attributes murder control elsewhere
-- The Perfect Record: killed, disappeared, discredited or formally blamed as credential origin
-
-### Writing prohibitions
-
-- no perfect memory
-- no complete eyewitness murder account
-- no family link to Somchai
-- no passive rescue object
-- no confession substitute
-
----
-
-## 44.16 Narin Theerachai · Bangkok Local Deployer
-
-### Identity
-
-- Full name: `Narin Theerachai`
 - Age: 41
-- Nationality: Thai
-- Position: Senior Continuity Deployment Engineer
-- Employer: Meridian Evidence Systems, Bangkok
-- Story role: local deployer, real accomplice and strongest non-Elena murder suspect
+- Thai
+- Senior Continuity Deployment Engineer
+- legitimate authority over continuity packages, certificates and endpoint configuration
+- no authority over victims, science, police or murder records
+- Elena presented tasks as continuity validation and anti-tamper deployment
+- moved from belief, to suspicion, to knowing concealment after Kawin death
+- real offences include unauthorized deployment, tampering, obstruction, concealment and conspiracy
+- no proof of victim selection or physical killings
 
-### Authority
+## 44.17 Ika Prameswari
 
-Narin legitimately handles:
-
-- continuity packages
-- certificate deployment
-- emergency synchronization profiles
-- approved endpoint configuration
-- service-account maintenance
-
-He has no authority to:
-
-- select victims
-- alter medical conclusions
-- command police
-- authorize homicide investigation records
-
-### Relationship to Elena
-
-Elena is a senior analytical client and respected internal authority, not Narin’s formal line manager.
-
-She gives him tasks packaged as:
-
-- emergency continuity validation
-- anti-tamper deployment
-- protected evidence migration
-- exposure containment
-
-### Progression of guilt
-
-#### Initial stage
-
-Narin believes he is protecting sensitive forensic continuity.
-
-#### Suspicion stage
-
-He notices:
-
-- victim-linked timing
-- cleanup requests
-- unusual profile reuse
-
-He chooses not to stop.
-
-#### Knowing stage
-
-After Kawin’s death, he understands the deployment is concealing serious crime.
-
-He continues because of:
-
-- fear of prosecution
-- professional ruin
-- financial dependency
-- Elena’s controlled evidence showing that he can be made to appear solely responsible
-
-### Real offences
-
-- unauthorized deployment
-- evidence tampering
-- obstruction
-- concealment
-- conspiracy after the fact
-- misuse of credentials
-- support for the North operation through technical conditions
-
-### Why he appears to be the murderer
-
-- local access
-- direct technical means
-- physical proximity
-- Kawin audited his deployment area
-- Daniel contacted a source associated with his unit
-- cleanup actions
-- personal benefit and fear
-- false or incomplete statements
-- a gap in his location record
-
-### Exculpatory truth
-
-- no proof he selected either victim
-- no proof he physically killed either victim
-- deployment instructions predefine targets and timing
-- controlled-leak evidence shows he receives rather than originates final priorities
-- his post-event fear differs from Elena’s anticipatory control
-
-### Personal objective
-
-Avoid becoming the sole explanation while keeping his family and career from collapsing.
-
-### Fear
-
-Elena can convert his genuine crimes into a complete murder record.
-
-### Blind spot
-
-He believes partial compliance gives him bargaining power; instead it deepens his culpability.
-
-### Chapter duties
-
-- Chapter V: emerges through package handoff and Kawin audit
-- Chapter VI: central Authority Chain and controlled-leak suspect
-- Chapter VII: may cooperate, flee, be arrested or become final accused
-
-### Ending effects
-
-- True Conviction: convicted for deployment, tampering, obstruction and conspiracy
-- Right Name, No Case: convicted for real offences while Elena avoids murder conviction
-- False Conviction: convicted as the murderer and mastermind
-- The Perfect Record: becomes official internal rogue actor, dead or unavailable to contradict the record
-
-### Writing prohibitions
-
-- no innocent dupe after the knowing stage
-- no secret mastermind
-- no direct victim selection
-- no instant full confession
-- no purely financial cartoon motive
-
----
-
-## 44.17 Ika Prameswari · Field Watcher / Recovery Operator
-
-### Identity
-
-- Full name: `Ika Prameswari`
 - Age: 34
-- Nationality: Indonesian
-- Occupation: private security and asset-recovery specialist
-- Cover employer: Aster Recovery Solutions
-- Prior background: maritime security investigations
-- Story role: physical threat to North and operational suspect
-
-### Recruitment chain
-
-Ika receives work through:
-
-- a corporate recovery cutout
-- compartmentalized digital objectives
-- payment routed through a regional security vendor
-
-She does not initially know Elena’s identity.
-
-Narin supplies some technical and location conditions without controlling the final target priority.
-
-### Initial belief
-
-Ika is told that North:
-
-- possesses stolen protected evidence
-- has compromised a continuity investigation
-- must be isolated and the device recovered
-
-### Escalation
-
-The order changes from recovery to:
-
-- create a credible accident or disappearance
-- confirm that institutional records show North removed
-- recover or destroy the analytical device
-
-Ika understands by Phase V that the objective may kill North and proceeds.
-
-### Real offences
-
-- surveillance
-- attempted abduction
-- attempted murder or reckless lethal operation
-- evidence destruction
-- conspiracy
-- obstruction
-
-### Why she may appear to be the earlier killer
-
-- demonstrated violence
-- operational discipline
-- access to movement data
-- cleanup skills
-- connection to the same network
-
-### Fatal contradiction
-
-Her recruitment, payment and travel trail begins after Daniel’s murder.
-
-She cannot be the killer of Kawin or Daniel without falsifying independent physical records.
-
-### Personal objective
-
-Complete the contract, protect her professional identity and avoid being discarded by the employer.
-
-### Fear
-
-That the client intends to leave her as the visible killer.
-
-### Blind spot
-
-She mistakes compartmentalization for protection.
-
-### Chapter duties
-
-- Chapter V: surveillance and attempted removal
-- Chapter VI: source of field evidence and false-success pressure
-- Chapter VII: witness, fugitive, detainee or eliminated cutout depending on choices
-
-### Ending effects
-
-- True Conviction: convicted for the North operation and cooperates against the cutout chain
-- Right Name, No Case: convicted for her real violence
-- False Conviction: may be blamed for all physical murders only when the player ignores the recruitment-timeline contradiction; the institution can accept her as a hired principal only in a severely damaged case
-- The Perfect Record: disappears, dies or becomes the official rogue recovery agent
-
-### Writing prohibitions
-
-- no faceless thug
-- no superhuman combat ability
-- no knowledge of Elena without earned chain evidence
-- no participation in earlier murders
-- no sexualized villain coding
+- Indonesian
+- private security and recovery specialist
+- receives work through Aster Recovery Solutions and compartmentalized objectives
+- initially told North possesses stolen evidence
+- objective escalates to disappearance or credible accident
+- real offences include surveillance, attempted abduction/murder, evidence destruction and obstruction
+- recruitment begins after Daniel murder, creating fatal contradiction to earlier-killer theory
 
 ---
 
@@ -5720,130 +4035,81 @@ She mistakes compartmentalization for protection.
 ## PALIMPSEST
 
 - tool family and alias
-- not a person
-- not an autonomous mastermind
+- not person
+- not autonomous mastermind
 - does not choose victims
-- preserves and protects delivery across broken clocks
-- may contain automated responses
-- a message signed by PALIMPSEST does not by itself identify Arman
+- may preserve and protect delivery across broken clocks
+- signed message does not by itself identify Arman
 - no Character Journal card
 
 ## UNKNOWN SOURCE / Hood Feed
 
 - digital mask
-- visual and voice transformation layer
 - not identity evidence
-- may represent Arman in a specific verified session
-- must not be generalized to every session
+- may represent Arman in one verified session
+- cannot generalize to every session
 - no Character Journal card
-- no face matching from stylized mask
 
 ## Temporary Operational Profile 18-07
 
 - role-bearing profile
-- created for legitimate emergency continuity
+- originally legitimate
 - later restored or reused
 - proves accepted access
 - does not prove operator
-- not a person
 - no Character Journal card
 
 ## ANALYST OF RECORD
 
-- role classification generated from analytical behaviour
-- initially identifies North’s capability, not her legal name
-- becomes linked to North through later contextual evidence
-- explains why the adversary targets her
-- not a person
+- role classification generated from analytical behavior
+- initially identifies capability, not legal name
+- explains why North is targeted
+- not person
 
 ## CONTINUITY PROTOCOL
 
-- Elena’s operational doctrine and later formalized procedure
-- combines true records into a controlled chronology
-- may migrate, certify and publish a final account
-- not a single software application
-- not sentient
+- Elena’s operational doctrine
+- combines true records into controlled chronology
 - functions through people, credentials, policy and timing
+- not one sentient application
 
 ---
 
 # 46. AUTHORITY MATRIX
 
-Legend:
-
-- `OWNS` = final lawful authority in that jurisdiction or domain
-- `MAY` = may perform under authorization
-- `ADVISES` = specialist recommendation only
-- `NO` = no authority
-
-| Character | Bangkok police command | Singapore police command | Indonesia police command | Search / arrest | Digital analysis | Medical certification | Evidence custody | Public case release |
+| Character | Bangkok command | Singapore command | Indonesia command | Search / arrest | Digital analysis | Medical certification | Evidence custody | Public release |
 |---|---:|---:|---:|---:|---:|---:|---:|---:|
-| Benedict | NO | NO | NO | NO | MAY on supplied copies | NO | work product only | NO |
-| North | NO | NO | NO | NO | MAY on authorized copies | NO | analysis hashes only | NO |
-| Elena | NO | NO | NO | NO | ADVISES / assigned access | NO | limited assigned package | NO |
-| Kittisak | OWNS | NO | NO | OWNS in Bangkok process | NO | NO | OWNS Bangkok command chain | MAY through institution |
-| Somchai | delegated field role | NO | NO | MAY under order | NO | NO | MAY handle under log | NO |
-| Ratchata | NO | NO | NO | NO | NO | OWNS medical domain | OWNS medical samples | MAY issue expert report |
-| Cheryl | NO | OWNS case liaison | NO | OWNS only under Singapore process | ADVISES | NO | OWNS Singapore police transfer | MAY through SPF |
-| Farid | NO | NO | NO | NO | OWNS lab analysis | NO | OWNS lab mirror process | NO |
-| Maya | NO | NO | OWNS | OWNS under Indonesian process | authorizes local technical act | NO | OWNS Indonesian seizure | MAY through Indonesian authority |
-| Adrian | NO | NO | NO | NO | private expertise only | NO | personal retained material | NO |
-| Arman | NO | NO | NO | NO | private / criminal expertise | NO | private cache only | NO |
-| Dimas | NO | NO | NO | NO | limited technician knowledge | NO | workshop items only | NO |
-| Rin | NO | NO | NO | NO | registrar expertise | NO | personal witness materials | NO |
-| Narin | NO | NO | NO | NO | assigned deployment access | NO | enterprise handling only | NO |
-| Ika | NO | NO | NO | NO | operational device use only | NO | unlawful possession | NO |
+| Benedict | NO | NO | NO | NO | supplied copies | NO | work product | NO |
+| North | NO | NO | NO | NO | authorized copies | NO | analysis hashes | NO |
+| Elena | NO | NO | NO | NO | assigned advisory access | NO | limited package | NO |
+| Kittisak | OWNS | NO | NO | Bangkok process | NO | NO | Bangkok command chain | institutional route |
+| Somchai | delegated | NO | NO | under order | NO | NO | handles under log | NO |
+| Ratchata | NO | NO | NO | NO | NO | OWNS medical | medical samples | expert report |
+| Cheryl | NO | liaison authority | NO | Singapore process | advises | NO | Singapore transfer | SPF route |
+| Farid | NO | NO | NO | NO | OWNS lab analysis | NO | lab mirror process | NO |
+| Maya | NO | NO | OWNS | Indonesian process | authorizes local act | NO | Indonesian seizure | local institution |
+| Adrian | NO | NO | NO | NO | private expertise | NO | personal material | NO |
+| Arman | NO | NO | NO | NO | private/criminal expertise | NO | private cache | NO |
+| Dimas | NO | NO | NO | NO | limited technician | NO | workshop items | NO |
+| Rin | NO | NO | NO | NO | Registrar expertise | NO | witness materials | NO |
+| Narin | NO | NO | NO | NO | deployment access | NO | enterprise handling | NO |
+| Ika | NO | NO | NO | NO | operational device use | NO | unlawful possession | NO |
 
-## Location command owners
+Location owners:
 
 - Bangkok: Kittisak
-- Singapore: Cheryl for police coordination, subject to SPF superiors
+- Singapore coordination: Cheryl
+- Singapore lab process: Farid
 - Jakarta and Indonesian sites: Maya
-- Singapore Digital Forensics Lab: Farid owns process; Cheryl owns operational authorization
-- Bangkok medical evidence: Ratchata owns scientific process; Kittisak owns police coordination
-- Narrative final decision: Benedict
-- Technical attribution interpretation: North
-- No one character owns all layers
+- Bangkok medicine: Ratchata for science, Kittisak for police coordination
+- narrative final decision: Benedict
+- technical attribution interpretation: North
 
 ---
 
 # 47. KNOWLEDGE MATRIX
 
-## 47.1 Victims before death
-
-### Kawin
-
-Knows:
-
-- 18-07 was reused
-- original Registrar can explain the emergency role
-- Meridian internal process is implicated
-- Elena controls part of forensic interpretation sequence
-
-Does not know:
-
-- PALIMPSEST name
-- Arman identity
-- Elena intends to kill him
-- Daniel will become the next victim
-
-### Daniel
-
-Knows:
-
-- Kawin’s death and Room 1807 are connected to 18-07
-- corrected time matters
-- Singapore appears in the record trail
-- Elena can validate forensic structure
-
-Does not know:
-
-- Elena killed Kawin
-- full wrapper architecture
-- the watcher is waiting
-- local deployer identity
-
-## 47.2 End of Chapter I
+## End of Chapter I
 
 | Character | Knowledge lock |
 |---|---|
@@ -5851,79 +4117,65 @@ Does not know:
 | North | laptop selectively cleared, objects curated |
 | Kittisak | official homicide facts and consultant involvement |
 | Somchai | physical scene and evidence movement |
-| Elena | full truth, but publicly absent from the team |
+| Elena | full truth, publicly absent |
 | Player | victim unidentified, `R.` unresolved |
 
-## 47.3 End of Chapter II
+## End of Chapter II
 
 | Character | Knowledge lock |
 |---|---|
 | Benedict | Daniel investigated Room 1807, 18-07 and corrected time |
 | North | duplicated profile and unstable chronology |
-| Elena | full murder design and expected investigative path |
+| Elena | full murder design and expected path |
 | Kittisak | irregular authorized access exists |
-| Somchai | physical custody route and his own detour |
-| Ratchata | science genuine, time discrepancy meaningful |
+| Somchai | physical custody route and detour |
+| Ratchata | science genuine, timing meaningful |
 | Player | Daniel dead, science true, chronology suspicious |
 
-## 47.4 End of Chapter III
+## End of Chapter III
 
 | Character | Knowledge lock |
 |---|---|
 | Benedict | tool, deployment and Decision Owner differ |
-| North | valid records can preserve a false story; watcher targeted milestone |
+| North | valid records can preserve false story |
 | Cheryl | Singapore route and preserved original |
-| Farid | raw mirror, watcher capture and alternative copies |
-| Adrian | architecture abused; PALIMPSEST-like wrapper involved |
+| Farid | raw mirror, watcher capture and alternatives |
+| Adrian | architecture abused, wrapper involved |
 | Elena | North reached attribution threshold |
 | Kittisak | Bangkok chain compromised |
-| Player | Jakarta tool route, Bangkok deployment, Decision Owner unknown |
+| Player | Jakarta tool route, Bangkok deployment, owner unknown |
 
-## 47.5 End of Chapter IV
+## Current Phase IV knowledge
 
 | Character | Knowledge lock |
 |---|---|
-| Benedict | Dimas is proxy; Arman is real toolmaker; North is marked |
-| North | threat classification and likely next operational location |
-| Maya | Indonesian route, Arman identity and lawful seizure status |
-| Cheryl | admissibility of encounter and Arman admissions |
-| Farid | source-behaviour match, not client identity |
-| Arman | team can distinguish authorship from decision ownership |
+| Benedict | Dimas is proxy, Arman is toolmaker, North is marked |
+| North | threat classification and next operational location |
+| Maya | Indonesian route, Arman identity and local authority status |
+| Cheryl | encounter admissibility and admissions boundary |
+| Farid | source-behavior match, not client identity |
+| Arman | team can separate authorship from Decision Ownership |
 | Dimas | team knows Arman is present |
-| Elena | operation has reached Arman and North must be neutralized |
-| Player | Arman culpable but not proved killer; North targeted |
+| Elena | team reached Arman and North must be neutralized |
+| Player | Arman culpable, not proved killer; North targeted |
 
-## 47.6 End of Chapter V
+## End of Chapter V target
 
-| Character | Knowledge lock |
-|---|---|
-| Benedict | Kawin identity, Rin testimony, Elena presence theory |
-| North | hidden-channel map connecting Registrar and local deployer |
-| Kittisak | internal path reaches Narin’s deployment domain |
-| Somchai | physical handoff and vehicle path |
-| Ratchata | Kawin and Daniel physical timelines cannot fit official record |
-| Rin | team can protect or expose her |
-| Narin | team is near his knowing stage |
-| Elena | Rin has resurfaced and the false-success record may be incomplete |
-| Player | Elena becomes a fair suspect, but Narin remains at least as plausible |
+- Kawin identified
+- Rin testimony available
+- Narin role supported
+- Elena becomes fair suspect but not dominant certainty
 
-## 47.7 End of Chapter VI
+## End of Chapter VI target
 
-| Character | Knowledge lock |
-|---|---|
-| Benedict | has competing complete case theories |
-| North | knows controlled-leak direction and continuity rewrite |
-| Kittisak | knows which institutional channel leaked |
-| Cheryl | knows what remains admissible across borders |
-| Maya | knows Ika’s operational chain |
-| Farid | knows whether hidden original survived |
-| Narin | may know he was selected as scapegoat |
-| Elena | knows the team has a Decision Owner theory |
-| Player | can distinguish real offences from murder ownership, but may still choose wrong |
+- competing complete theories exist
+- controlled leak narrows chain
+- Continuity Protocol exposed
+- Ika operational role known
 
-## 47.8 Chapter VII pre-accusation lock
+## Chapter VII pre-accusation lock
 
-The player must have access to:
+Player must access:
 
 - physical event reconstruction
 - record claims
@@ -5938,7 +4190,7 @@ The player must have access to:
 - custody quality
 - fatal contradictions
 
-No character supplies the complete answer alone.
+No character supplies complete answer alone.
 
 ---
 
@@ -5946,32 +4198,28 @@ No character supplies the complete answer alone.
 
 | Evidence | Original lawful custodian | Analysis holder | Certification / testimony | Main risk |
 |---|---|---|---|---|
-| Room 1807 physical items | Kittisak’s Bangkok chain | Benedict / North copies | Somchai handling, Ratchata where medical | staged order |
+| Room 1807 physical items | Kittisak chain | Benedict / North copies | Somchai, Ratchata where medical | staged order |
 | Kawin body and samples | Ratchata medical chain | Ratchata | Ratchata | identity and chronology |
-| Daniel apartment evidence | Kittisak’s Bangkok chain | Benedict / North | Somchai handling | curated visibility |
-| Original toxicology material | Ratchata / forensic lab dual chain | Elena and authorized lab analysts | Ratchata for body, lab for instrument | corrected metadata |
-| 05:58 / 06:09 headers | Bangkok evidence system | North, Farid | authorized digital examiners | valid but misleading display |
-| Singapore raw mirror | SPF Digital Forensics Lab | Farid | Farid + Cheryl transfer | overextension to identity |
-| North sanitized clone | North under case authorization | North | reproducibility against raw mirror | hidden-channel admissibility |
-| Jakarta token capture | Maya’s Indonesian chain | North / Farid copies | Maya + Farid | route mistaken for identity |
-| Arman local cache | Maya after voluntary handoff or seizure | North / Farid | Maya custody, Arman testimony | client identity absent |
-| Dimas statement | Maya | Benedict / Cheryl review | Dimas | coercion / self-protection |
-| Rin statement | Kittisak witness-protection chain | Benedict / North | Rin with corroboration | delayed report |
-| Registrar object | Kittisak secure evidence | North / Rin | Rin + technical validation | credential origin mistaken for operator |
-| Narin deployment logs | Kittisak / enterprise seizure chain | North / Farid | Narin, enterprise custodian | real guilt overstated |
-| Ika recovery devices | Maya | Farid / North | Maya + Ika | later violence mistaken for earlier murders |
-| Controlled-leak channels | split by jurisdiction | North / Farid | Kittisak, Cheryl, Maya | contamination if channels overlap |
-| Final Record package | multi-party sealed set | case team | Kittisak formal submission | one missing pillar changes ending |
+| Daniel apartment evidence | Kittisak chain | Benedict / North | Somchai | curated visibility |
+| Original toxicology | Ratchata / lab dual chain | authorized analysts | Ratchata and lab | corrected metadata |
+| 05:58 / 06:09 headers | Bangkok evidence system | North / Farid | digital examiners | valid misleading display |
+| Singapore raw mirror | SPF lab | Farid | Farid + Cheryl | identity overextension |
+| North sanitized clone | North under authorization | North | reproducibility | hidden-channel admissibility |
+| Jakarta token capture | Maya chain | North / Farid copies | Maya + Farid | route mistaken for identity |
+| Arman local cache | Maya after handoff/seizure | North / Farid | Maya + Arman | client identity absent |
+| Dimas statement | Maya | Benedict / Cheryl | Dimas | coercion / self-protection |
+| Rin statement | Kittisak protection chain | Benedict / North | Rin plus corroboration | delayed report |
+| Narin logs | Kittisak / enterprise chain | North / Farid | Narin / custodian | real guilt overstated |
+| Ika devices | Maya | Farid / North | Maya + Ika | later violence mistaken for earlier murders |
+| Final Record package | multi-party sealed set | case team | Kittisak submission | one missing pillar changes ending |
 
-## Mandatory two-person controls
-
-After Chapter III compromise:
+Mandatory two-person controls:
 
 - Elena never handles disputed digital evidence alone.
-- Narin never deploys a package without independent logged approval.
-- Somchai never transports a disputed package without seal and second-person acknowledgment.
-- North’s hidden outputs require Farid or another authorized hash witness.
-- Final evidence packages require jurisdiction-specific signatures and a cross-reference manifest.
+- Narin never deploys without independent logged approval after compromise is known.
+- Somchai never transports disputed package without seal and second acknowledgment.
+- North hidden outputs require Farid or authorized hash witness.
+- final packages require jurisdiction-specific signatures and cross-reference manifest.
 
 ---
 
@@ -5979,65 +4227,55 @@ After Chapter III compromise:
 
 | Character | Chapter IV | Chapter V | Chapter VI | Chapter VII |
 |---|---|---|---|---|
-| Benedict | exposes proxy, negotiates Arman | reconstructs Kawin, earns Rin trust | builds competing case theories | final confrontation and accusation |
-| North | Persona Triangulation, marked | hidden analysis, Registrar map | decoy telemetry, leak analysis | technical Last Record |
-| Elena | remote useful ally, orders neutralization secretly | helps expose Narin, controls interpretation | activates Continuity Protocol | defends final chronology |
-| Kittisak | contains Bangkok chain | commands internal audit and witness protection | authorizes leak and breach response | secures official case path |
-| Somchai | traces physical Bangkok handling | finds handoff and supports extraction | executes field distribution | protects site, witness or evidence |
-| Ratchata | preserves samples | identifies Kawin and links physical timelines | protects medical chain | provides physical contradiction |
-| Cheryl | admissibility and joint authority | Singapore support, hidden North legitimacy | cross-border preservation | authenticates Singapore evidence |
-| Farid | remote source verification | hidden-channel authentication | decoy telemetry and mirror protection | proves original vs rewritten record |
-| Maya | local Arman operation | protects Indonesia-side false success | Ika evidence and transfer | authenticates Indonesia chain |
-| Adrian | limited architecture help | explains original system intent | may warn of Continuity Protocol | witness or accused |
-| Arman | identity reveal and admissions | identifies deployment signature | assists relay / may withhold | witness, fugitive or accused |
-| Dimas | proxy and workshop witness | optional protected statement | corroborates Arman presence | minor witness |
-| Daniel | posthumous archive | handoff reveals Kawin | publication route evidence | motive and continuity evidence |
-| Kawin | posthumous identity | audit becomes central | registrar request evidence | original victim intent |
-| Rin | not yet public | Last Witness introduction | protected witness / targeted | testimony and survival |
-| Narin | off-screen operational shadow | identified as deployer | main internal suspect | accomplice, witness or accused |
-| Ika | not yet identified | attacks North | false-success pressure / capture | operational witness or fugitive |
+| Benedict | exposes proxy, negotiates Arman | reconstructs Kawin, earns Rin trust | builds competing theories | confrontation and accusation |
+| North | triangulation, marked | hidden analysis, Registrar map | telemetry and leak analysis | technical Last Record |
+| Elena | remote ally, secretly orders removal | helps expose Narin, controls interpretation | activates Protocol | defends chronology |
+| Kittisak | contains Bangkok chain | commands audit and protection | authorizes leak and breach response | secures official path |
+| Somchai | traces physical handling | finds handoff and extraction route | executes distribution | protects site/witness/evidence |
+| Ratchata | preserves samples | identifies Kawin | protects medical chain | physical contradiction |
+| Cheryl | admissibility and joint authority | Singapore support | cross-border preservation | authenticates records |
+| Farid | remote source verification | hidden-channel authentication | telemetry and mirror protection | proves original vs rewrite |
+| Maya | local Arman operation | Indonesia-side false success | Ika evidence and transfer | authenticates seizure |
+| Adrian | limited architecture help | explains original intent | warns of Protocol | witness or accused |
+| Arman | identity reveal and admissions | identifies deployment signature | assists relay or withholds | witness, fugitive or accused |
+| Dimas | proxy and workshop witness | optional protected statement | corroborates presence | minor witness |
+| Rin | not public | Last Witness introduction | protected witness / target | testimony and survival |
+| Narin | operational shadow | identified as deployer | main internal suspect | accomplice, witness or accused |
+| Ika | not identified | attacks North | false-success pressure | operational witness or fugitive |
 
-## Handoff rules
+Current Chapter IV deliverables satisfied by implemented Phase IV:
 
-- Chapter IV must produce the Phase V location and threat logic.
-- Chapter V must identify Kawin, Rin and Narin’s role without proving Elena’s murder ownership.
-- Chapter VI must produce at least two complete competing theories and reveal the Continuity Protocol.
-- Chapter VII must resolve the theories through evidence quality, not a new confession.
+- Arman identity established
+- Dimas proxy explained
+- authorship separated from murder
+- North threat established
+- Phase V location justified
+- consequence choices stored
 
 ---
 
 # 50. SUSPECT CASE PACKAGES
 
-## 50.1 Elena case package
+## Elena
 
-### Means
+Means:
 
-- legitimate forensic package access
-- ability to define sequence and milestone
-- access to both victims’ investigative context
+- legitimate forensic access
+- sequence and milestone control
+- both victims’ context
 - ability to direct Narin through legitimate-looking requests
 
-### Motive
+Motive:
 
 - protect Continuity Protocol and institutional control
-- prevent exposure
-- preserve professional ideology and authority
 
-### Opportunity
+Opportunity:
 
-- physical presence near pier
-- access to Daniel’s trusted forensic interaction
-- timing control around both discoveries
+- pier presence
+- Daniel trust
+- timing control
 
-### Conduct
-
-- early knowledge
-- curated useful truth
-- watcher milestone
-- North neutralization
-- Continuity Protocol
-
-### Required corroboration
+Required corroboration:
 
 - Rin
 - Ratchata
@@ -6046,205 +4284,107 @@ After Chapter III compromise:
 - victim relationship
 - discovery-timing decision
 
-### Fatal gap when incomplete
+Fatal gap when incomplete:
 
-Presence and access alone do not prove killing or final decision.
+- presence and access alone do not prove murder or final decision
 
----
+## Adrian
 
-## 50.2 Adrian case package
+Means:
 
-### Means
+- architecture, tokens and system knowledge
 
-- architecture
-- tokens
-- system knowledge
+Real charges:
 
-### Motive theory
+- enabling, concealment, obstruction and unlawful retention
 
-- hide his design abuse
-- avoid professional ruin
+Fatal contradiction:
 
-### Opportunity theory
+- no proved local victim selection or physical murder path
 
-- remote system control
+## Arman
 
-### Conduct
+Means:
 
-- concealment
-- flight
-- retained secret material
+- wrapper, metadata scrub and broker route
 
-### Real charges
+Real charges:
 
-- enabling
-- concealment
-- obstruction
-- unlawful retention
+- cybercrime, brokerage, obstruction and concealment
 
-### Fatal contradiction
+Fatal contradiction:
 
-No proven local victim selection or physical murder path.
+- no proved Bangkok presence or victim selection
 
----
+## Narin
 
-## 50.3 Arman case package
+Means:
 
-### Means
+- valid deployment access, packages and cleanup execution
 
-- PALIMPSEST wrapper
-- metadata scrub
-- broker route
+Real charges:
 
-### Motive theory
+- tampering, obstruction, conspiracy and unauthorized access
 
-- money
-- client protection
-- avoid exposure
+Fatal contradiction:
 
-### Opportunity theory
+- controlled-leak and target-priority evidence show he receives final decisions
 
-- remote operation through anonymous handoff
+## Ika
 
-### Conduct
+Means:
 
-- proxy
-- hidden cache
-- withheld logs
+- surveillance, violence, device recovery and accident staging
 
-### Real charges
+Real charges:
 
-- cybercrime
-- brokerage
-- obstruction
-- concealment
+- attempted murder, abduction and obstruction
 
-### Fatal contradiction
+Fatal contradiction:
 
-No proven Bangkok presence or victim-selection evidence.
-
----
-
-## 50.4 Narin case package
-
-### Means
-
-- valid local deployment
-- direct package access
-- credential maintenance
-- cleanup execution
-
-### Motive theory
-
-- Kawin auditing his domain
-- career and financial exposure
-- self-preservation
-
-### Opportunity theory
-
-- local proximity
-- transport and device access
-- gaps in location record
-
-### Conduct
-
-- concealment
-- false statements
-- cleanup
-- continued deployment after knowledge
-
-### Real charges
-
-- tampering
-- obstruction
-- conspiracy
-- unauthorized access
-
-### Fatal contradiction
-
-Controlled-leak and target-priority evidence show he receives final decisions rather than originates them.
-
----
-
-## 50.5 Ika case package
-
-### Means
-
-- physical surveillance and lethal capability
-- device recovery
-- accident staging
-
-### Motive theory
-
-- paid contract
-- protection of employer
-
-### Opportunity theory
-
-- follows North and joint team
-
-### Conduct
-
-- attempted removal
-- evidence destruction
-
-### Real charges
-
-- attempted murder
-- abduction
-- obstruction
-
-### Fatal contradiction
-
-Recruitment and payment trail begins after both earlier murders.
+- recruitment begins after earlier murders
 
 ---
 
 # 51. ENDING FATE MATRIX
 
-## Legend
+Legend:
 
-- `TC` = True Conviction
-- `RN` = Right Name, No Case
-- `FC` = False Conviction
-- `PR` = The Perfect Record
+- `TC` True Conviction
+- `RN` Right Name, No Case
+- `FC` False Conviction
+- `PR` The Perfect Record
 
 | Character | TC | RN | FC | PR |
 |---|---|---|---|---|
-| Benedict | correct case survives | knows truth, cannot complete charge | lives with wrong principal conviction | defeated or publicly discredited |
-| North | alive and restored | alive, hidden or hunted | analysis selectively misused | framed, erased or officially dead |
-| Elena | convicted for murders | identified but escapes murder conviction | remains credible while another is convicted | authors accepted history |
-| Kittisak | submits correct case, accepts scrutiny | preserves sealed dissent file | institution accepts his or superior’s wrong case | removed or forced to certify false record |
-| Somchai | cleared, field trail recognized | cleared but custody gap remains | findings support wrong theory | scapegoated for handling gap |
-| Ratchata | testimony anchors physical truth | proves murder but not owner | physical truth attached to wrong principal | samples excluded or lost |
-| Cheryl | authenticates cross-border case | preserves sound Singapore file | genuine foreign evidence overextended | Singapore file isolated |
-| Farid | mirrors corroborate final case | proves manipulation only | tool evidence overextended | mirrors destroyed or dismissed |
-| Maya | Indonesian chain supports proportionate charges | convicts Arman/Ika offences | Arman evidence supports wrong murder case | local evidence excluded from official story |
-| Adrian | cooperating witness, real charges | real charges, Elena escapes | convicted as mastermind | permanent scapegoat or eliminated |
-| Arman | convicted for real cyber offences | real charges, Elena escapes | convicted as murder principal | accepted foreign mastermind or disappears |
-| Dimas | reduced charge / immunity | protected or disappears | coerced witness against Arman | silenced or absorbed into conspiracy story |
-| Daniel | work publicly vindicated | truth known privately | work used to support wrong suspect | memory curated into false account |
-| Kawin | identity and audit restored | identity restored, justice incomplete | audit used against wrong principal | remains a convenient unidentified or misread victim |
-| Rin | protected and corroborated | survives without complete legal effect | testimony presence accepted but owner misattributed | lost, discredited or blamed |
-| Narin | convicted for real accomplice offences | convicted for real offences | convicted as murderer | official rogue insider, unable to contradict |
-| Ika | convicted for North operation | convicted for real violence | may be overstated as hired killer in damaged case | disappears or becomes official lone operative |
+| Benedict | correct case survives | knows truth, cannot complete charge | lives with wrong principal | defeated/discredited |
+| North | alive and restored | alive, hidden or hunted | analysis misused | framed or erased |
+| Elena | convicted | identified but escapes | credible while another convicted | authors accepted history |
+| Kittisak | submits correct case | preserves dissent file | institution accepts wrong case | removed or forced to certify |
+| Somchai | cleared and recognized | cleared with custody gap | findings support wrong theory | scapegoated |
+| Ratchata | anchors physical truth | proves murder, not owner | truth attached to wrong principal | samples excluded/lost |
+| Cheryl | authenticates case | preserves sound file | genuine evidence overextended | Singapore file isolated |
+| Farid | mirrors corroborate | proves manipulation only | tool evidence overextended | mirrors destroyed/dismissed |
+| Maya | supports proportionate charges | convicts Arman/Ika offences | Arman evidence overstated | local evidence excluded |
+| Adrian | cooperating witness, real charges | real charges, Elena escapes | convicted as mastermind | permanent scapegoat |
+| Arman | convicted for cyber offences | real charges, Elena escapes | convicted as murder principal | accepted foreign mastermind |
+| Dimas | reduced charge/immunity | protected/disappears | coerced witness | silenced/absorbed |
+| Rin | protected and corroborated | survives without legal bridge | presence used with wrong owner | lost/discredited/blamed |
+| Narin | convicted for accomplice offences | real offences only | convicted as murderer | official rogue insider |
+| Ika | convicted for North operation | real violence only | overstated hired killer | disappears/lone operative |
 
-## False Conviction variant lock
+False Conviction epilogue must state:
 
-The final epilogue must state both:
-
-1. which real offences were correctly proven
-2. which murder attribution was wrong
-
-The player must understand why the institution accepted the case.
+1. real offences correctly proven
+2. murder attribution that was wrong
 
 ---
 
 # 52. CHARACTER JOURNAL AND DISPLAY LOCK
 
-## Existing characters
+## Existing Runtime entries
 
-Current authoritative Runtime character entries include:
+Current authoritative or implemented entries include:
 
 - Benedict
 - North
@@ -6256,18 +4396,18 @@ Current authoritative Runtime character entries include:
 - Farid Rahman
 - Adrian Tan Wei Ming
 - Inspector Maya Pranoto through Chapter IV extension
+- Arman Suryadi through Chapter IV Phase IV scoped Journal extension `0.17.7`
 
-## Future Character entries
+## Future entries
 
-- Arman after physical and behavioural corroboration
 - Kawin after Chapter V identity reconstruction
 - Rin after physical introduction and consent
 - Narin after identity and role verification
 - Ika after physical identity or lawful operational identification
 
-## No Character entry
+## No entry
 
-- Dimas unless the owner later promotes him to a recurring major role
+- Dimas unless owner later promotes him
 - PALIMPSEST
 - 18-07
 - Hood Feed
@@ -6275,30 +4415,34 @@ Current authoritative Runtime character entries include:
 - Continuity Protocol
 - unnamed aliases
 
-## Runtime role-label correction debt
+## Arman display and persistence lock
 
-Current Runtime facts:
+- one card only
+- one profile only
+- role: wrapper specialist / technical broker
+- face and upper torso prominent
+- card survives registry reconciliation
+- card survives Save/Load
+- first story unlock generates one notification and unread dot
+- Journal open clears unread
+- Dev unlock silent
+- no Chapter I leakage
 
-- Kittisak is overridden to:
-  - `Kittisak Siriwat`
-  - `กิตติศักดิ์ ศิริวัฒน์`
-  - `Police Captain`
-  - `ร้อยตำรวจเอก`
-- Somchai remains:
-  - `Police Officer`
-  - `เจ้าหน้าที่ตำรวจ`
+## Runtime role-label debt
 
-Future scoped Runtime correction should set Somchai to:
+Kittisak current override:
 
-- English role: `Police Senior Sergeant Major`
-- Thai role: `ดาบตำรวจ`
+- `Kittisak Siriwat`
+- `กิตติศักดิ์ ศิริวัฒน์`
+- `Police Captain`
+- `ร้อยตำรวจเอก`
 
-Kittisak’s future display may add Inspector function without removing his rank:
+Future display may add Inspector function.
 
-- English: `Police Captain · Investigation Inspector`
-- Thai: `ร้อยตำรวจเอก · สารวัตรฝ่ายสืบสวน`
+Somchai future scoped correction:
 
-Do not change frozen Runtime solely through this documentation update.
+- `Police Senior Sergeant Major`
+- `ดาบตำรวจ`
 
 ---
 
@@ -6309,46 +4453,47 @@ Before writing any scene, answer:
 1. What does each present character know?
 2. From which source?
 3. When did they learn it?
-4. Has that source been shared with the room?
-5. Is the information proven, supported or assumed?
-6. Does the character have authority to act?
-7. Who owns the evidence?
-8. What would the character protect?
-9. What mistake can the character plausibly make?
-10. Which later Chapter receives the consequence?
+4. Has that source been shared?
+5. Is information proven, supported or assumed?
+6. Does character have authority to act?
+7. Who owns evidence?
+8. What would character protect?
+9. What mistake is plausible?
+10. Which later chapter receives consequence?
 
-A scene fails continuity review when:
+A scene fails when:
 
-- Elena knows an undisclosed private fact without watcher or human source
+- Elena knows undisclosed private fact without source
 - Benedict orders police
-- North uses a live system without authorization
-- Somchai approves a warrant
+- North uses live system without authorization
+- Somchai approves warrant
 - Kittisak certifies science
-- Ratchata identifies a digital operator
+- Ratchata identifies digital operator
 - Cheryl commands Maya
 - Maya seizes Singapore evidence
-- Farid identifies motive from code
+- Farid infers motive from code
 - Adrian knows victim-selection facts
 - Arman knows Elena directly without earned evidence
 - Dimas explains architecture
-- Rin witnesses more than the locked pier events
+- Rin witnesses more than locked pier events
 - Narin owns final target selection
-- Ika appears in pre-recruitment events
+- Ika appears before recruitment
 
 ---
 
 # 54. FINAL CHAPTER HANDOFF GUARANTEE
 
-The story can proceed safely to Chapter VII only when each preceding Chapter produces the following deliverables.
-
 ## Chapter IV deliverables
+
+Current implementation satisfies:
 
 - Arman identity established
 - Dimas proxy explained
 - authorship separated from murder
 - North threat established
 - Phase V location justified
-- at least one consequence choice stored
+- consequence choices stored
+- Arman Character Journal contract active
 
 ## Chapter V deliverables
 
@@ -6356,7 +4501,7 @@ The story can proceed safely to Chapter VII only when each preceding Chapter pro
 - Rin introduced
 - pier event reconstructed
 - Narin role supported
-- Elena becomes a fair but not dominant suspect
+- Elena becomes fair but not dominant suspect
 - physical and human evidence added
 
 ## Chapter VI deliverables
@@ -6364,9 +4509,9 @@ The story can proceed safely to Chapter VII only when each preceding Chapter pro
 - Continuity Protocol explained
 - controlled-leak result
 - Authority Chain reconstructed
-- Ika’s operational role established
-- at least two legally plausible principal theories remain
-- final evidence losses and survivals locked
+- Ika role established
+- at least two plausible principal theories remain
+- evidence losses and survivals locked
 
 ## Chapter VII deliverables
 
@@ -6375,195 +4520,251 @@ The story can proceed safely to Chapter VII only when each preceding Chapter pro
 - final accused selected
 - institution response calculated
 - one of four endings rendered
-- each major character receives a consequence consistent with prior choices
+- each major character receives consequence
 
-## Absolute final rule
+Absolute final rule:
 
-The correct answer must feel earned.
-
-The wrong answer must feel understandable.
-
-The worst ending must feel caused.
-
-No ending may feel randomly assigned.
+- correct answer feels earned
+- wrong answer feels understandable
+- worst ending feels caused
+- no ending feels random
 
 ---
 
 # 55. CHARACTER RESPONSIBILITY UPDATE RECORD
 
-This revision adds or locks:
+This Master Plan preserves and locks:
 
-- Benedict’s consultant authority
-- North’s nationality, legal limits and hidden-channel role
-- Elena’s full identity, employer, ideology, knowledge limits and relationships
-- Kittisak’s age, unit, secret and Chapter V–VII command role
-- Somchai’s full identity, custody gap and field role
-- Ratchata’s institution, professional delay and ending function
-- Cheryl’s unit, jurisdiction and disclosure boundary
-- Farid’s lab role, lawful recovery mirror and ending function
-- Maya’s unit, authority and local familiarity
-- Adrian’s relationship to Arman and exact knowledge boundary
-- Arman’s cover, client separation and ending path
-- Dimas as the fixed Phase IV proxy
-- Daniel’s profession, trust network and intentional evidence
-- Kawin’s personality, audit discovery and Room 1807 logic
-- Rin’s exact witness scope and credibility structure
-- Narin Theerachai as the named Bangkok Local Deployer
-- Ika Prameswari as the named Field Watcher
+- Benedict authority and final responsibility
+- North nationality, legal limits and hidden-channel role
+- Elena full identity, ideology, limits and relationships
+- Kittisak rank, authority, secret and command role
+- Somchai full identity, custody gap and field role
+- Ratchata institution and independent physical-truth role
+- Cheryl jurisdiction and disclosure boundary
+- Farid lawful recovery mirror
+- Maya authority and local familiarity
+- Adrian relationship to Arman and limits
+- Arman cover, client separation and current Journal implementation
+- Dimas as fixed Phase IV proxy
+- Daniel trust network and posthumous material
+- Kawin discovery and Room 1807 logic
+- Rin exact witness scope
+- Narin as named Local Deployer
+- Ika as named Field Watcher
 - non-human entity rules
-- authority matrix
-- knowledge matrix
-- evidence custody matrix
-- Chapter IV–VII duty matrix
-- suspect case packages
+- authority and knowledge matrices
+- evidence custody
+- duty handoffs
+- suspect packages
 - ending fate matrix
-- final continuity checklist
+- current stable Runtime baseline
+- defect and recovery history through `0.17.7`
 
-This update is Canon and planning only.
+---
 
-It does not claim that future Runtime, art, Journal entries, state fields or endings are implemented.
-
-
-
-# 56. PHASE IV IMPLEMENTATION CANDIDATE AND OWNER-DEVICE VERIFICATION LOG
+# 56. PHASE IV IMPLEMENTATION AND OWNER-DEVICE VERIFICATION LOG
 
 ## Status vocabulary
 
-Use these terms exactly:
+- `DEPLOYED CANDIDATE`: present for repair/testing
+- `PRELIMINARY SMOKE PASS`: limited owner observation
+- `OWNER-APPROVED CONTRACT`: owner explicitly confirms a named behavior
+- `CURRENT STABLE BASELINE`: latest owner-confirmed Runtime starting point
+- `FROZEN`: owner approval plus explicit freeze declaration
 
-- `DEPLOYED CANDIDATE` means files are present on Production for repair and testing.
-- `PRELIMINARY SMOKE PASS` means the owner observed the requested route working in a limited check.
-- `DETAILED REGRESSION PENDING` means the full phase, repeated routes and connected systems have not been approved.
-- `OWNER-APPROVED` requires explicit owner confirmation after meaningful device testing.
-- `FROZEN` requires owner approval plus a documented stable baseline.
+## History
 
-A preliminary smoke pass must never be rewritten as full approval.
-
-## Deployed candidate history
-
-### Phase IV implementation
+### Initial Phase IV implementation
 
 - Commit: `0cbece8853e8049d5a7af1b2bfa4b954d1bc8586`
-- Message: `Add Chapter IV Arman encounter`
-- Module: `js/chapters/chapter-04/04-arman-encounter.js`
-- Module build: `0.17.0`
-- Status: deployed candidate, rejected for visual defects, not approved
+- Build: `0.17.0`
+- Result: rejected for visual and consistency defects
 
-### First Developer jump repair
+### Developer jump repairs
 
-- Commit: `5ea29ca53feaeb3ce8e38f8dc580cd9a0fa02eb8`
-- Message: `Fix Chapter IV developer jumps`
-- Result: insufficient
-- Defect: Phase III could still fail when stale Phase II or Phase III false values overrode Dev defaults
-- Status: superseded by `0.17.0-d2`
+- `5ea29ca53feaeb3ce8e38f8dc580cd9a0fa02eb8`: insufficient
+- `ea3b30d617b347ed04df02f4d3e5fff8a321540c`: Phase III and IV entry materially improved
 
-### Phase III jump and direct-handoff repair
+### Presentation and consistency candidates
 
-- Commit: `ea3b30d617b347ed04df02f4d3e5fff8a321540c`
-- Message: `Fix Phase III jump and direct handoff`
-- Patch build: `0.17.0-d2`
+- `cd681faab50153c4e0ef7d5d2d8fa792be01b367`: owner found title-card inconsistency, missing HUD, portrait and progress defects
+- `090442b6a64f12912ab4bf0b42c3e607c2006836`: consistency repair
+- `6fe7097376a20d2e59c5d5c077d302920522c959`: scoped Journal and portrait repair, early-story gate still defective
+
+### Rejected global Character discovery build
+
+- Commit: `5adfbaa4be1bf4f834323b291a23a51d03b47146`
+- Build: `0.17.5`
+- Severity: blocker
+- Result: Chapter I dialogue and buttons failed
+- Cause: broad global wrapping and observation of Character discovery/state
+- Status: rejected, never use as stable baseline
+
+### Full-game recovery
+
+- Commit: `02e1dcf7e024a3db26572cf035d3449186f2ab6a`
+- Build: `0.17.6`
+- Result:
+  - restored playability
+  - removed unsafe global discovery system
+  - restored Chapter I Journal hiding
+  - restored Chapter II timing
+  - corrected most Phase IV defects
+- Remaining defect: Arman missing from Journal and no unread notification
+
+### Arman Journal contract repair
+
+- Commit: `8a70778dffbdea65c7ba37954673be11b547f3b2`
+- Build: `0.17.7`
 - Scope:
-  - reset stale prerequisite Phase containers before Developer jumps
-  - wait for Runtime API availability
-  - verify requested screen and Phase state before treating a jump as successful
-  - route completed Phase III directly into the Phase IV vehicle approach
-  - suppress the obsolete Phase III completion-card interruption
+  - retains Arman card after base registry filtering
+  - adds one-time notification
+  - adds unread dot
+  - preserves Save/Load
+  - clears unread on Journal open
+  - repairs 0.17.6 missing-card saves
+  - keeps Dev unlock silent
+  - avoids Chapter I leakage
+  - uses scoped Phase IV extension rather than new global manager
+- Owner result: latest round passed
+- Status: `CURRENT STABLE RUNTIME BASELINE · OWNER-APPROVED ARMAN JOURNAL CONTRACT`
 
-## Preliminary owner-device smoke test
+## Current no-regression lock
 
-- Date: `2026-08-02 14:44 ICT`
-- Platform: Android Chrome
-- Tester: owner
-- Depth: limited preliminary check
+Future packages must not disturb:
 
-Observed:
-
-- Developer Mode now appears able to enter Chapter IV Phase III.
-- Developer Mode now appears able to enter Chapter IV Phase IV.
-- The latest navigation repair appears materially improved over the prior failed build.
-- No detailed full-flow approval has been given.
-
-Current status:
-
-`PRELIMINARY OWNER-DEVICE SMOKE PASS · DETAILED REGRESSION PENDING`
-
-This observation does not approve:
-
-- repeated jumps across every Chapter IV Phase
-- stale-save and clean-save permutations
-- complete Phase III direct handoff under every restore path
-- Phase IV full narrative flow
-- Persona Triangulation
-- choices and ending-profile persistence
-- Save/Load
-- Character Journal
-- Case File
-- audio balance, fades or loop quality
-- Thai and English dialogue
-- Phase IV completion and Phase V handoff
-
-## Known outstanding Phase IV defects
-
-### Vehicle-opening presentation
-
-Rejected:
-
-- lower-left black title treatment over the moving vehicle footage
-- large `THE MAN BEHIND THE ALIAS` overlay during the vehicle approach
-
-Required final sequence:
-
-1. unobstructed full-screen vehicle approach
-2. vehicle stops
-3. soft fade
-4. dedicated Phase title card
-5. professional Day / Location / Time card
-6. entry into the Arman location
-
-### Dimas and Arman portraits
-
-Rejected:
-
-- severe white edge contamination
-- visible white matte / fringe
-- unattractive extraction
-- insufficient separation of dark hair and clothing from the dialogue background
-
-Required:
-
-- restart extraction from the original sheets
-- true transparent alpha
-- edge-colour decontamination
-- no white outline
-- stable Benedict-referenced head scale and anchor
-- full QC on black, game navy, mid-grey, white and checkerboard backgrounds
-- owner visual approval before reintegration
-
-## Next repair order
-
-1. preserve the now-working Phase III and Phase IV Developer entry
-2. verify the direct Phase III-to-Phase IV handoff in more detail
-3. remove the vehicle-footage title overlay and restore the approved cinematic card sequence
-4. rebuild Dimas and Arman portraits as a separate asset-only repair
-5. test the complete Phase IV flow
-6. tune audio only after the scene flow is stable
-7. request owner approval
-8. freeze only after approval
-
-## No-regression lock
-
-Future repair packages must not disturb:
-
-- Chapter I–III approved gameplay
-- Chapter IV Phase I–III content
+- Chapters I–III gameplay
+- Chapter IV Phase I–IV current implementation
+- Chapter I Character hiding
+- Chapter II North unlock timing
+- one-time Character notifications and unread dots
 - Maya profile switching
-- Chapter II Character Journal timing
-- Phase III and Phase IV Developer entry that received the preliminary smoke pass
-- Save schema outside the exact repair requirement
-- existing approved audio owners
-- previous Character and Case File gates
+- Arman card, profile, persistence and read state
+- Phase III direct handoff
+- Developer entries
+- Save schema outside scoped need
+- current audio owners
+- accepted portraits, scenes and HUD
 
-Each repair should address one defect family at a time and stop for owner verification before the next family is changed.
+---
+
+# 57. CURRENT STABLE RUNTIME BASELINE 0.17.7
+
+## Baseline identity
+
+- Commit: `8a70778dffbdea65c7ba37954673be11b547f3b2`
+- Message: `Fix Arman journal unlock`
+- Branch: `production-rebuild`
+- Build: `0.17.7`
+- Date recorded: `2026-08-03 10:47 ICT`
+
+## Owner-confirmed current state
+
+- latest reported Phase IV defect resolved
+- Arman added to Character Journal
+- Character Added notification visible at correct story point
+- unread red dot visible
+- Arman card remains in list
+- current round passed owner check
+
+## Baseline interpretation
+
+This commit is the required starting point for future Phase V work.
+
+Do not:
+
+- branch future work from 0.17.5
+- restore 0.17.6 without the 0.17.7 Journal contract
+- remove the scoped Arman bridge before replacing it with a fully migrated authoritative-registry implementation
+- treat an older Phase III baseline as the current Runtime
+
+## Formal freeze boundary
+
+- Chapters I–III remain frozen.
+- Chapter IV Phase I–III remain frozen.
+- Phase IV current implementation is owner-confirmed and no-regression locked.
+- Full formal Phase IV freeze requires explicit owner wording if that distinction is needed for future release governance.
+
+---
+
+# 58. RELEASE AND REGRESSION LOCK AFTER OWNER APPROVAL
+
+## Future Phase V entry condition
+
+Phase V implementation may begin only after:
+
+1. latest Production commit re-confirmed
+2. this Master Plan read completely
+3. Phase IV state and handoff inspected
+4. owner-approved assets for Phase V defined
+5. threat and legal-authority blueprint approved
+6. Save/Load and Dev entry designed
+7. no-regression matrix includes Chapters I–IV
+
+## Mandatory pre-delivery matrix
+
+### Natural route
+
+- Title
+- New Game
+- Chapter I dialogue and buttons
+- Chapter II Journal gate
+- Chapter III route
+- Chapter IV Phase I–IV
+- Phase IV completion or Phase V handoff
+
+### Character route
+
+- every current character first unlock
+- no duplicate toast
+- unread dot
+- read clearing
+- profile switching
+- Thai and English
+- Save/Load
+
+### Developer route
+
+- unlock characters
+- unlock evidence
+- jump every implemented phase
+- repeat jumps in non-linear order
+- return to Title
+- New Game after Dev state
+
+### Save route
+
+- clean save
+- stale save
+- pre-Arman save
+- unread Arman save
+- read Arman save
+- completed Phase IV save
+
+### Media route
+
+- natural video end
+- Skip
+- visibility/background interruption
+- audio ducking
+- phase exit cleanup
+
+## Reporting language
+
+A test report must separate:
+
+- static checks
+- synthetic browser checks
+- assembled Runtime checks
+- owner-device checks
+- untested platform behavior
+
+Never call synthetic testing an owner-device pass.
+
+## Final no-regression rule
+
+The owner must never again receive a package described as fully tested when the production Bootstrap, Chapter I interaction loop or exact Character registry contract was not actually exercised.
 
 ---
 
