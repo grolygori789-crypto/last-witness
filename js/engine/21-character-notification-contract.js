@@ -1,18 +1,18 @@
-/* LAST WITNESS — Scoped Character Notification Contract 0.17.10
+/* LAST WITNESS — Scoped Character Notification Contract 0.17.11
  * Repairs owner-reported Character Journal notification gaps without replacing
  * the Character Registry, show(), showBadge(), Save Manager or chapter owners.
  *
  * Scope:
  * - Somchai + Kittisak: perform the existing Registry story unlock immediately
  *   after the first Police Station introduction dialogue finishes.
- * - Adrian: repair the Phase VII recovery race so first verified discovery owns
- *   one Character Added toast and one unread dot, including affected old saves.
+ * - Adrian: repair the Phase VII recovery race and the missing Phase VII HUD
+ *   journal-alert target so the one-time toast and unread dot appear together.
  * - Arman: keep the existing one-time notification visible above the Phase IV
  *   choice modal while preserving the existing unread-dot and Save/Load state.
  */
 (function(){
 "use strict";
-const VERSION="0.17.10";
+const VERSION="0.17.11";
 if(window.LastWitnessCharacterNotificationContract?.version===VERSION&&window.LastWitnessCharacterNotificationContract?.installed)return;
 
 const $=(selector,root=document)=>root.querySelector(selector);
@@ -35,6 +35,7 @@ let policeSyncQueued=false;
 let adrianSyncQueued=false;
 let policeUnlockCount=0;
 let adrianRepairCount=0;
+let adrianHudDotRepairCount=0;
 
 function activeScreen(){return $(".screen.active")?.id||gs()?.screen||""}
 function save(){try{if(typeof autoSave==="function")autoSave()}catch(_){} }
@@ -103,6 +104,25 @@ function adrianStoryReady(){
  return Boolean(activeScreen()===ADRIAN_SCREEN&&adrianVerified()&&adrianDialogueClosed()&&!devCharacterUnlockActive())
 }
 function adrianNotified(){return gs()?.flags?.[ADRIAN_NOTIFICATION_FLAG]===true}
+function ensureAdrianHudDot(){
+ const screen=$("#"+ADRIAN_SCREEN),button=$(".ch3-p7-menu",screen||document);
+ if(!screen||!button)return null;
+ let dot=$(".journal-alert",button);
+ if(!dot){
+  dot=document.createElement("i");
+  dot.className="journal-alert";
+  dot.setAttribute("aria-hidden","true");
+  dot.dataset.lwAdrianHudDot=VERSION;
+  button.appendChild(dot);
+  adrianHudDotRepairCount+=1
+ }
+ return dot
+}
+function syncAdrianHudDot(){
+ const dot=ensureAdrianHudDot();if(!dot)return false;
+ try{window.LastWitnessContentRegistry?.updateDots?.()}catch(error){console.error("LAST WITNESS Adrian HUD unread-dot sync failed",error)}
+ return dot.classList.contains("show")
+}
 function ensureAdrianState(){
  const s=gs();if(!s)return false;
  s.flags=s.flags||{};s.journal=s.journal||{unlocked:true,seen:true,introShown:false};
@@ -128,15 +148,17 @@ function showAdrianNotification(){
 }
 function reconcileAdrian(){
  adrianSyncQueued=false;
- if(!adrianStoryReady()||adrianNotified())return false;
+ if(!adrianStoryReady())return false;
+ ensureAdrianHudDot();
+ if(adrianNotified()){syncAdrianHudDot();return false}
  const s=gs();if(!ensureAdrianState())return false;
  if(!s.lwCharactersUnread.includes(ADRIAN_ID))s.lwCharactersUnread.push(ADRIAN_ID);
  s.journal.unlocked=true;s.journal.seen=false;s.flags[ADRIAN_CONTRACT_FLAG]=VERSION;
  const api=window.LastWitnessContentRegistry;
  try{api?.renderCharacters?.(true)}catch(error){console.error("LAST WITNESS Adrian Character render repair failed",error)}
- try{api?.updateDots?.()}catch(error){console.error("LAST WITNESS Adrian unread-dot repair failed",error)}
+ syncAdrianHudDot();
  const shown=showAdrianNotification();
- if(shown){adrianRepairCount+=1;save()}
+ if(shown){adrianRepairCount+=1;save();setTimeout(syncAdrianHudDot,0)}
  return shown
 }
 function queueAdrianReconcile(delay=0){
@@ -154,7 +176,7 @@ function bindAdrianDialogue(){
 }
 function observeAdrianScreen(){
  const screen=$("#"+ADRIAN_SCREEN);if(!screen)return false;
- bindAdrianDialogue();
+ bindAdrianDialogue();ensureAdrianHudDot();syncAdrianHudDot();
  if(!adrianScreenObserver){
   adrianScreenObserver=new MutationObserver(()=>{
    if(screen.classList.contains("active")){
@@ -220,7 +242,7 @@ function observeBadge(){
 }
 function queueAllReconciles(){
  bindPoliceDialogue();observeAdrianInjection();observeAdrianScreen();bindAdrianDialogue();
- queuePoliceReconcile(0);queueAdrianReconcile(0);syncArmanToastLayer()
+ queuePoliceReconcile(0);queueAdrianReconcile(0);syncAdrianHudDot();syncArmanToastLayer()
 }
 function bindLifecycle(){
  bindPoliceDialogue();observePoliceScreen();observeAdrianInjection();observeAdrianScreen();observeBadge();
@@ -256,6 +278,9 @@ function contractStatus(){
   adrianUnread:Boolean(s?.lwCharactersUnread?.includes?.(ADRIAN_ID)),
   adrianNotified:adrianNotified(),
   adrianRepairCount,
+  adrianHudDotExists:Boolean($("#"+ADRIAN_SCREEN+" .ch3-p7-menu .journal-alert")),
+  adrianHudDotVisible:Boolean($("#"+ADRIAN_SCREEN+" .ch3-p7-menu .journal-alert.show")),
+  adrianHudDotRepairCount,
   devCharacterUnlockActive:devCharacterUnlockActive(),
   armanToastVisible:Boolean(badge?.classList.contains(ARMAN_TOAST_CLASS)&&badge.classList.contains("show")),
   badgeText:String(badge?.textContent||"").trim()
@@ -266,7 +291,7 @@ function bind(){
  window.LastWitnessCharacterNotificationContract={
   installed:true,version:VERSION,
   reconcilePoliceCharacters,queuePoliceReconcile,
-  reconcileAdrian,queueAdrianReconcile,
+  reconcileAdrian,queueAdrianReconcile,syncAdrianHudDot,
   syncArmanToastLayer,contractStatus
  }
 }
