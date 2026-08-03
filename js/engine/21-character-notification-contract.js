@@ -1,18 +1,18 @@
-/* LAST WITNESS — Scoped Character Notification Contract 0.17.13
+/* LAST WITNESS — Scoped Character Notification Contract 0.17.14
  * Repairs owner-reported Character Journal notification gaps without replacing
  * the Character Registry, show(), showBadge(), Save Manager or chapter owners.
  *
  * Scope:
  * - Somchai + Kittisak: perform the existing Registry story unlock immediately
  *   after the first Police Station introduction dialogue finishes.
- * - Adrian: preserve the verified one-time Character Added toast and unread dot,
- *   while resetting stale notifications only for a fresh Developer Hawker jump.
+ * - Adrian: keep the Hawker HUD marker visually impossible before identity
+ *   verification, then show the normal unread dot with the one-time toast.
  * - Arman: keep the existing one-time notification visible above the Phase IV
  *   choice modal while preserving the existing unread-dot and Save/Load state.
  */
 (function(){
 "use strict";
-const VERSION="0.17.13";
+const VERSION="0.17.14";
 if(window.LastWitnessCharacterNotificationContract?.version===VERSION&&window.LastWitnessCharacterNotificationContract?.installed)return;
 
 const $=(selector,root=document)=>root.querySelector(selector);
@@ -27,7 +27,9 @@ const ADRIAN_ID="adrian";
 const ADRIAN_NAME="Adrian Tan Wei Ming";
 const ADRIAN_NOTIFICATION_FLAG="lw_adrian_character_notification_shown_01710";
 const ADRIAN_CONTRACT_FLAG="lw_adrian_character_notification_contract";
-const ADRIAN_DEV_FRESH_FLAG="lw_adrian_dev_fresh_entry_01713";
+const ADRIAN_PREVERIFY_CLASS="lw-adrian-preverify";
+const ADRIAN_DEV_PREVERIFY_CLASS="lw-adrian-dev-preverify";
+const ADRIAN_DEV_FRESH_FLAG="lw_adrian_dev_fresh_entry_01714";
 const ARMAN_TOAST_CLASS="lw-arman-character-toast";
 let policeScreenObserver=null;
 let adrianScreenObserver=null;
@@ -38,7 +40,9 @@ let adrianSyncQueued=false;
 let policeUnlockCount=0;
 let adrianRepairCount=0;
 let adrianHudDotRepairCount=0;
-let adrianDevResetCount=0;
+let adrianGateSyncCount=0;
+let adrianDevFinalizeCount=0;
+let adrianDevPending=false;
 
 function activeScreen(){return $(".screen.active")?.id||gs()?.screen||""}
 function save(){try{if(typeof autoSave==="function")autoSave()}catch(_){} }
@@ -131,12 +135,25 @@ function adrianUnread(){
  return Boolean(Array.isArray(s?.lwCharactersUnread)&&s.lwCharactersUnread.includes(ADRIAN_ID))
 }
 function syncAdrianHudDot(){
- const dot=ensureAdrianHudDot();if(!dot)return false;
- /* The Hawker HUD marker follows the same global unread owner as every standard
-  * scene. Developer fresh-entry normalization prevents stale prerequisites from
-  * producing a false marker before Adrian is introduced. */
+ const screen=$("#"+ADRIAN_SCREEN),dot=ensureAdrianHudDot();if(!screen||!dot)return false;
+ const verified=adrianVerified();
+ if(verified)clearAdrianDevGate();
+ screen.classList.toggle(ADRIAN_PREVERIFY_CLASS,!verified);
+ screen.dataset.lwAdrianVerified=verified?"1":"0";
+ adrianGateSyncCount+=1;
+ if(!verified){
+  /* Registry.updateDots() may run later and re-add .show because Developer
+   * prerequisites are globally unread. The persistent screen class and CSS gate
+   * remain authoritative until the story owner verifies Adrian. */
+  dot.classList.remove("show");
+  dot.setAttribute("aria-hidden","true");
+  return false
+ }
  try{window.LastWitnessContentRegistry?.updateDots?.()}catch(error){console.error("LAST WITNESS Character unread-dot sync failed",error)}
- return dot.classList.contains("show")
+ const shouldShow=Boolean(adrianUnread()&&gs()?.journal?.seen===false&&!devCharacterUnlockActive());
+ dot.classList.toggle("show",shouldShow);
+ dot.setAttribute("aria-hidden",shouldShow?"false":"true");
+ return shouldShow
 }
 function ensureAdrianState(){
  const s=gs();if(!s)return false;
@@ -181,8 +198,9 @@ function queueAdrianReconcile(delay=0){
  adrianSyncQueued=true;
  setTimeout(reconcileAdrian,Math.max(0,Number(delay)||0))
 }
-function resetAdrianForFreshDevEntry(){
- const s=gs();if(!s)return false;
+function finalizeAdrianDevFreshEntry(){
+ const s=gs(),p=adrianPhase();
+ if(!adrianDevPending||!s||!p||p.identityVerified===true)return false;
  s.flags=s.flags||{};s.journal=s.journal||{unlocked:true,seen:true,introShown:false};
  s.characters=s.characters||{};
  s.lwCharactersUnlocked=Array.isArray(s.lwCharactersUnlocked)?s.lwCharactersUnlocked:[];
@@ -192,15 +210,20 @@ function resetAdrianForFreshDevEntry(){
  delete s.flags.ch3_adrian_met;
  delete s.flags[ADRIAN_NOTIFICATION_FLAG];
  delete s.flags[ADRIAN_CONTRACT_FLAG];
- for(const key of Object.keys(s.flags)){
-  if(key.startsWith("lw_adrian_character_notification_shown_")&&key!==ADRIAN_NOTIFICATION_FLAG)delete s.flags[key]
- }
  s.flags[ADRIAN_DEV_FRESH_FLAG]=VERSION;
  s.journal.seen=true;
- try{window.LastWitnessContentRegistry?.renderCharacters?.(true)}catch(error){console.error("LAST WITNESS Adrian Dev character reset render failed",error)}
- try{window.LastWitnessContentRegistry?.updateDots?.()}catch(error){console.error("LAST WITNESS Adrian Dev unread reset failed",error)}
- adrianDevResetCount+=1;
+ document.documentElement.classList.add(ADRIAN_DEV_PREVERIFY_CLASS);
+ $$(".journal-alert.show").forEach(node=>node.classList.remove("show"));
+ adrianDevFinalizeCount+=1;
  return true
+}
+function queueAdrianDevFreshEntry(){
+ adrianDevPending=true;
+ for(const delay of [0,60,180,360])setTimeout(finalizeAdrianDevFreshEntry,delay)
+}
+function clearAdrianDevGate(){
+ adrianDevPending=false;
+ document.documentElement.classList.remove(ADRIAN_DEV_PREVERIFY_CLASS)
 }
 function bindAdrianDialogue(){
  const box=$(ADRIAN_DIALOGUE);if(!box||box.dataset.lwCharacterNotificationBound===VERSION)return;
@@ -258,6 +281,16 @@ function injectArmanToastStyle(){
    max-width:min(420px,calc(100vw - 24px));
    white-space:normal;
   }
+  #${ADRIAN_SCREEN}.${ADRIAN_PREVERIFY_CLASS} .ch3-p7-menu .journal-alert{
+   display:none!important;
+   opacity:0!important;
+   visibility:hidden!important;
+  }
+  html.${ADRIAN_DEV_PREVERIFY_CLASS} .journal-alert{
+   display:none!important;
+   opacity:0!important;
+   visibility:hidden!important;
+  }
  `;
  document.head.appendChild(style)
 }
@@ -278,17 +311,19 @@ function observeBadge(){
 }
 function queueAllReconciles(){
  bindPoliceDialogue();observeAdrianInjection();observeAdrianScreen();bindAdrianDialogue();
+ const screen=activeScreen();
+ if(screen!==ADRIAN_SCREEN&&screen!=="chapter3Phase7Card")clearAdrianDevGate();
  queuePoliceReconcile(0);queueAdrianReconcile(0);syncAdrianHudDot();syncArmanToastLayer()
 }
 function bindLifecycle(){
  bindPoliceDialogue();observePoliceScreen();observeAdrianInjection();observeAdrianScreen();observeBadge();
  window.addEventListener("pageshow",queueAllReconciles);
  document.addEventListener("visibilitychange",()=>{if(!document.hidden)queueAllReconciles()},false);
- /* Window capture runs before the Chapter III Developer button's own capture
-  * handler, even when that handler was registered earlier. This guarantees that
-  * the exact Hawker fresh-entry transaction starts with no carried unread state. */
  window.addEventListener("click",event=>{
-  if(event.target.closest?.('[data-dev-jump="chapter3Phase7"]'))resetAdrianForFreshDevEntry()
+  const target=event.target.closest?.("[data-dev-jump]");
+  if(!target)return;
+  if(target.dataset.devJump==="chapter3Phase7")queueAdrianDevFreshEntry();
+  else clearAdrianDevGate()
  },true);
  document.addEventListener("click",event=>{
   /* Phase VII creates its screen/dialogue only when the phase starts. Delegation
@@ -326,8 +361,10 @@ function contractStatus(){
   adrianHudDotExists:Boolean($("#"+ADRIAN_SCREEN+" .ch3-p7-menu .journal-alert")),
   adrianHudDotVisible:Boolean($("#"+ADRIAN_SCREEN+" .ch3-p7-menu .journal-alert.show")),
   adrianHudDotRepairCount,
-  adrianDevJumpSelector:'[data-dev-jump="chapter3Phase7"]',
-  adrianDevResetCount,
+  adrianPreverifyGate:Boolean($("#"+ADRIAN_SCREEN)?.classList.contains(ADRIAN_PREVERIFY_CLASS)),
+  adrianDevPreverifyGate:document.documentElement.classList.contains(ADRIAN_DEV_PREVERIFY_CLASS),
+  adrianDevPending,adrianDevFinalizeCount,
+  adrianGateSyncCount,
   devCharacterUnlockActive:devCharacterUnlockActive(),
   armanToastVisible:Boolean(badge?.classList.contains(ARMAN_TOAST_CLASS)&&badge.classList.contains("show")),
   badgeText:String(badge?.textContent||"").trim()
@@ -339,7 +376,7 @@ function bind(){
   installed:true,version:VERSION,
   reconcilePoliceCharacters,queuePoliceReconcile,
   reconcileAdrian,queueAdrianReconcile,syncAdrianHudDot,
-  resetAdrianForFreshDevEntry,
+  queueAdrianDevFreshEntry,finalizeAdrianDevFreshEntry,
   syncArmanToastLayer,contractStatus
  }
 }
