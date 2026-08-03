@@ -1,13 +1,14 @@
-/* LAST WITNESS — Free-standing Phase Action Standard 0.17.16
+/* LAST WITNESS — Phase Action + Secure Mirror Geometry Standard 0.17.17
  *
  * Scope:
  * - Free-standing investigation CTA buttons on scene screens only.
  * - Horizontal geometry and mobile text fit.
  * - Forensic Science bottom-stack correction for CHAIN OF CUSTODY.
+ * - Chapter III Phase VIII Secure Mirror Access/Console horizontal containment.
  *
  * Explicitly out of scope:
- * - Modal, evidence-panel, choice, completion-card, title, save/menu and
- *   transition-specific controls.
+ * - All other modal, evidence-panel, choice, completion-card, title, save/menu
+ *   and transition-specific controls.
  * - Visibility, pointer events, state, progress, handlers, audio and routing.
  */
 
@@ -133,3 +134,37 @@
     --lw-forensic-label-gap:10px;
   }
 }
+
+/*
+ * Chapter III · Phase VIII · Secure Reconciliation Mirror
+ *
+ * The shared .modal owner reserves 18px on both sides. The Phase VIII owner
+ * previously sized its cards with viewport units (95vw / 91vw), which ignored
+ * that reserved inner width. On mobile the grid item therefore overflowed the
+ * right edge and its border appeared clipped. Keep the shared modal padding and
+ * size only these two Phase VIII cards against their actual containing block.
+ */
+#ch3P8Console.ch3-p8-console,
+#ch3P8Access.ch3-p8-access{
+  box-sizing:border-box!important;
+  place-items:center!important;
+}
+
+#ch3P8Console.ch3-p8-console > .modal-card{
+  width:min(100%,680px)!important;
+  max-width:100%!important;
+  min-width:0!important;
+  margin-inline:auto!important;
+  justify-self:center!important;
+  box-sizing:border-box!important;
+}
+
+#ch3P8Access.ch3-p8-access > .modal-card{
+  width:min(100%,480px)!important;
+  max-width:100%!important;
+  min-width:0!important;
+  margin-inline:auto!important;
+  justify-self:center!important;
+  box-sizing:border-box!important;
+}
+

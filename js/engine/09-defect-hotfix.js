@@ -1,11 +1,11 @@
-/* LAST WITNESS - Legacy Compatibility Shim + Runtime Bootstrap 0.17.16
+/* LAST WITNESS - Legacy Compatibility Shim + Runtime Bootstrap 0.17.17
  * Loads approved localization and targeted QC before dynamic Chapter IV modules.
  * Existing Phase I through Phase III order is preserved. Phase IV 0.17.0 loads first,
  * followed by the Arman Journal contract repair 0.17.7,
  * then the direct Phase III handoff and Developer Phase Navigation patches.
  * Character notification contract 0.17.14 and Modal Scroll UX 0.17.15 remain unchanged.
- * Phase Action Standard 0.17.16 adds a late-loaded, CSS-only visual contract for
- * free-standing investigation action buttons through Chapter IV Phase IV.
+ * Phase Action Standard 0.17.17 preserves the approved scene-action geometry and
+ * adds a scoped Phase VIII Secure Mirror modal-centering correction.
  */
 (function(){
 "use strict";
@@ -82,7 +82,7 @@ script("js/engine/15-thai-localization.js?v=0152","lwThaiLocalizationScript",()=
   ()=>Boolean(window.LastWitnessDeveloperPhaseNavigation?.version==="0.17.0-d2"&&window.LastWitnessDeveloperPhaseNavigation?.installed)
  ).catch(error=>console.error("LAST WITNESS Developer Phase Navigation failed to load",error)))
  .then(()=>stylesheet(
-  "css/phase-action-standard.css?v=01716",
+  "css/phase-action-standard.css?v=01717",
   "lwPhaseActionStandardStyle"
  ))
  .catch(error=>console.error("LAST WITNESS runtime bootstrap failed",error));
