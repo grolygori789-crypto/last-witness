@@ -1,10 +1,10 @@
-/* LAST WITNESS - Legacy Compatibility Shim + Runtime Bootstrap 0.17.14
+/* LAST WITNESS - Legacy Compatibility Shim + Runtime Bootstrap 0.17.15
  * Loads approved localization and targeted QC before dynamic Chapter IV modules.
  * Existing Phase I through Phase III order is preserved. Phase IV 0.17.0 loads first,
  * followed by the Arman Journal contract repair 0.17.7,
  * then the direct Phase III handoff and Developer Phase Navigation patches.
- * Character notification contract 0.17.14 preserves prior repairs and applies a
- * persistent Hawker pre-verification visual gate until Adrian is introduced.
+ * Character notification contract 0.17.14 remains unchanged. Modal Scroll UX
+ * 0.17.15 adds scoped Dialogue History and Case File mobile behavior only.
  */
 (function(){
 "use strict";
@@ -41,6 +41,11 @@ script("js/engine/15-thai-localization.js?v=0152","lwThaiLocalizationScript",()=
   "lwCharacterNotificationContractScript",
   ()=>Boolean(window.LastWitnessCharacterNotificationContract?.version==="0.17.14"&&window.LastWitnessCharacterNotificationContract?.installed)
  ).catch(error=>console.error("LAST WITNESS Character notification contract failed to load",error)))
+ .then(()=>script(
+  "js/engine/22-modal-scroll-experience.js?v=01715",
+  "lwModalScrollExperienceScript",
+  ()=>Boolean(window.LastWitnessModalScrollExperience?.version==="0.17.15"&&window.LastWitnessModalScrollExperience?.installed)
+ ).catch(error=>console.error("LAST WITNESS Modal Scroll UX failed to load",error)))
  .then(()=>script("js/chapters/chapter-04/01-afterimage.js?v=0132","lwChapter04Phase01Script",()=>Boolean(window.LastWitnessChapter4Phase1)))
  .then(()=>{
   stylesheet("css/chapter-04-phase-02.css?v=0149","lwChapter04Phase02Style");
