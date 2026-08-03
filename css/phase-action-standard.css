@@ -1,14 +1,14 @@
-/* LAST WITNESS — Phase Action + Secure Mirror Geometry Standard 0.17.17
+/* LAST WITNESS — Phase Action + Modal Geometry Standard 0.17.18
  *
  * Scope:
  * - Free-standing investigation CTA buttons on scene screens only.
  * - Horizontal geometry and mobile text fit.
  * - Forensic Science bottom-stack correction for CHAIN OF CUSTODY.
  * - Chapter III Phase VIII Secure Mirror Access/Console horizontal containment.
+ * - Chapter IV Phase IV minigame card containment, centring and cache-header fit.
  *
  * Explicitly out of scope:
- * - All other modal, evidence-panel, choice, completion-card, title, save/menu
- *   and transition-specific controls.
+ * - Modal systems outside the explicitly named Phase VIII and Phase IV owners.
  * - Visibility, pointer events, state, progress, handlers, audio and routing.
  */
 
@@ -168,3 +168,89 @@
   box-sizing:border-box!important;
 }
 
+
+/*
+ * Chapter IV · Phase IV · minigame geometry
+ *
+ * The shared modal owner reserves 18px on both sides, while the Phase IV owner
+ * sized every minigame card at 94vw. On narrow mobile viewports the card was
+ * therefore wider than the modal's containing block and appeared shifted right.
+ * The same overflow clipped the cache header's REVIEW ALL control. These rules
+ * are deliberately scoped to the three Phase IV minigame roots only.
+ */
+#ch4P4Triad.ch4-p4-modal,
+#ch4P4Choice.ch4-p4-modal,
+#ch4P4Cache.ch4-p4-modal{
+  box-sizing:border-box!important;
+  place-items:center!important;
+}
+
+#ch4P4Triad.ch4-p4-modal > .modal-card,
+#ch4P4Choice.ch4-p4-modal > .modal-card,
+#ch4P4Cache.ch4-p4-modal > .modal-card{
+  width:min(100%,660px)!important;
+  max-width:100%!important;
+  min-width:0!important;
+  margin-inline:auto!important;
+  justify-self:center!important;
+  box-sizing:border-box!important;
+}
+
+#ch4P4Triad.ch4-p4-modal > .modal-card > header > :first-child,
+#ch4P4Choice.ch4-p4-modal > .modal-card > header > :first-child,
+#ch4P4Cache.ch4-p4-modal > .modal-card > header > :first-child{
+  min-width:0!important;
+}
+
+#ch4P4Triad.ch4-p4-modal header h3,
+#ch4P4Choice.ch4-p4-modal header h3,
+#ch4P4Cache.ch4-p4-modal header h3{
+  max-width:100%!important;
+  overflow-wrap:anywhere;
+}
+
+#ch4P4Cache.ch4-p4-modal .ch4-p4-head-actions{
+  min-width:0!important;
+  max-width:100%!important;
+}
+
+#ch4P4Cache.ch4-p4-modal .ch4-p4-close{
+  white-space:nowrap;
+}
+
+/* The cache header has three controls beside a two-line evidence title. On
+ * phones, move the controls to a dedicated second row instead of compressing
+ * or clipping the REVIEW ALL label. Triad and disposition headers remain in
+ * their original single-row layout because their right-side controls fit.
+ */
+@media (max-width:520px){
+  #ch4P4Cache.ch4-p4-modal > .modal-card > header{
+    display:grid!important;
+    grid-template-columns:minmax(0,1fr)!important;
+    align-items:start!important;
+    gap:10px!important;
+  }
+
+  #ch4P4Cache.ch4-p4-modal > .modal-card > header > :first-child,
+  #ch4P4Cache.ch4-p4-modal .ch4-p4-head-actions{
+    width:100%!important;
+    max-width:100%!important;
+  }
+
+  #ch4P4Cache.ch4-p4-modal .ch4-p4-head-actions{
+    display:grid!important;
+    grid-template-columns:auto minmax(32px,1fr) auto!important;
+    align-items:center!important;
+    gap:8px!important;
+  }
+
+  #ch4P4Cache.ch4-p4-modal .ch4-p4-counter{
+    justify-self:center!important;
+  }
+
+  #ch4P4Cache.ch4-p4-modal .ch4-p4-close{
+    justify-self:end!important;
+    min-width:max-content!important;
+    max-width:100%!important;
+  }
+}
