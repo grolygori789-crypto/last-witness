@@ -1,11 +1,11 @@
-/* LAST WITNESS - Chapter IV / Phase IV Full-Game Recovery 0.17.6
+/* LAST WITNESS - Chapter IV / Phase IV Arman Journal Contract Repair 0.17.7
  * Repairs Phase IV presentation against the established Chapter IV contract.
  * Story, evidence, choices, ending-profile effects and Phase III handoff remain owned
  * by 04-arman-encounter.js 0.17.0.
  */
 (function(){
 "use strict";
-const BUILD="0.17.6";
+const BUILD="0.17.7";
 if(window.LastWitnessChapter4Phase4Revision?.version===BUILD&&window.LastWitnessChapter4Phase4Revision?.installed)return;
 
 const APPROACH="armanVehicleApproach";
@@ -34,6 +34,9 @@ let audioFrame=0;
 let audioTimer=0;
 let registryUnlockOriginal=null;
 let armanUnlockDeferred=false;
+let armanJournalSyncing=false;
+let armanModalObserver=null;
+let armanGridObserver=null;
 
 function phase(){return gs()?.chapter4?.phase4||null}
 function save(){try{if(typeof autoSave==="function")autoSave()}catch(_){} }
@@ -189,37 +192,162 @@ function fadeScore(target,duration=320){
 function syncAudio(){if(!SCREENS.has(active())){stopMedia($("#ch4P4Score"),active()==="title");return}fadeScore(scoreTarget(),active()===COMPLETE?460:320)}
 function scheduleAudioSync(){clearTimeout(audioTimer);audioTimer=setTimeout(syncAudio,540);setTimeout(syncAudio,80);setTimeout(syncAudio,820);setTimeout(syncAudio,1360)}
 
-/* Match the existing Journal contract: unlock after Arman's first verified dialogue ends. */
+/* Arman is a Phase IV extension character. The base registry exposes dynamic
+ * character data, but its Chapter I-III allow-list cannot retain a new ID.
+ * This scoped bridge preserves the established Journal card/detail contract,
+ * one-time notification, unread dot and Save/Load state without changing the
+ * frozen registry owner or creating a second global character manager. */
+const REGISTRY_STORE="lastWitness.contentRegistry.v3";
+const ARMAN_ID="arman";
+const ARMAN_NAME="Arman Suryadi";
+const ARMAN_BLOCKED_STAGES=new Set(["proxy-reveal","reveal","arman-intro"]);
+
+function armanDialogueOpen(){
+ const box=$("#"+WORKSHOP+"Dialogue");
+ return Boolean(box&&!box.classList.contains("hidden")&&!box.hidden&&getComputedStyle(box).display!=="none")
+}
 function armanStoryUnlockReady(){
- const p=phase(),stage=String(p?.stage||""),box=$("#"+WORKSHOP+"Dialogue");
- const dialogueOpen=Boolean(box&&!box.classList.contains("hidden")&&!box.hidden&&getComputedStyle(box).display!=="none");
+ const s=gs(),p=phase(),stage=String(p?.stage||"");
  return Boolean(
-  active()===WORKSHOP&&p?.started===true&&p?.revealComplete===true&&!dialogueOpen&&
-  !['proxy-reveal','reveal','arman-intro'].includes(stage)
+  s&&Number(s.chapter)>=4&&SCREENS.has(active())&&p?.started===true&&
+  p?.revealComplete===true&&p?.armanUnlocked===true&&!armanDialogueOpen()&&
+  !ARMAN_BLOCKED_STAGES.has(stage)
  )
+}
+function armanData(){return window.LastWitnessContentRegistry?.characters?.arman||null}
+function armanRelation(){
+ const s=gs();return s?.relationships?.[ARMAN_NAME]||{trust:24,respect:69,attachment:8,suspicion:72}
+}
+function armanMetrics(){
+ const data=armanData(),relation=armanRelation(),labels={
+  trust:{en:"Trust",th:"ความไว้วางใจ"},respect:{en:"Professional Respect",th:"ความนับถือทางวิชาชีพ"},
+  attachment:{en:"Rapport",th:"ความคุ้นเคย"},suspicion:{en:"Suspicion",th:"ความสงสัย"}
+ };
+ if(relation&&typeof relation==="object")return ["trust","respect","attachment","suspicion"].map(key=>({key,label:labels[key],value:Math.round(Number(relation[key])||0)}));
+ return Array.isArray(data?.metrics)?data.metrics:[]
+}
+function armanRelationAverage(){
+ const metrics=armanMetrics();if(!metrics.length)return Math.round(Number(armanData()?.relation?.value)||37);
+ return Math.round(metrics.reduce((sum,item)=>sum+(item.key==="suspicion"?100-clamp(item.value,0,100):clamp(item.value,0,100)),0)/metrics.length)
+}
+function armanRelationSummary(){
+ const value=armanRelationAverage();
+ return `<div class="relation-summary"><div class="relation-label-row"><span>${tr("Relationship","ความสัมพันธ์")}</span><strong>${value}%</strong></div><div class="relation-bar"><div class="relation-fill" style="width:${value}%"></div></div></div>`
+}
+function armanMetricMarkup(){
+ return `<div class="relation-metrics">${armanMetrics().map(item=>`<div class="relation-metric ${item.key==="suspicion"?"suspicion":""}"><div class="relation-metric-head"><span>${item.label?.[thai()?"th":"en"]||item.label?.en||item.key}</span><strong>${clamp(item.value,0,100)}%</strong></div><div class="relation-bar"><div class="relation-fill" style="width:${clamp(item.value,0,100)}%"></div></div></div>`).join("")}</div>`
+}
+function writeArmanRegistryStore(){
+ const s=gs(),p=phase();if(!s||!p)return;
+ try{
+  const stored=JSON.parse(localStorage.getItem(REGISTRY_STORE)||"{}");
+  const unlocked=new Set(Array.isArray(stored.charactersUnlocked)?stored.charactersUnlocked:[]);
+  const unread=new Set(Array.isArray(stored.charactersUnread)?stored.charactersUnread:[]);
+  if(p.armanJournalUnlocked===true||s.flags?.developer_character_unlock_all===true)unlocked.add(ARMAN_ID);else unlocked.delete(ARMAN_ID);
+  if(p.armanJournalUnread===true)unread.add(ARMAN_ID);else unread.delete(ARMAN_ID);
+  stored.charactersUnlocked=[...unlocked];stored.charactersUnread=[...unread];
+  localStorage.setItem(REGISTRY_STORE,JSON.stringify(stored))
+ }catch(_){}
+}
+function syncArmanArrays(){
+ const s=gs(),p=phase();if(!s||!p)return false;
+ const dev=s.flags?.developer_character_unlock_all===true;
+ if(p.armanJournalUnlocked!==true&&!dev)return false;
+ s.lwCharactersUnlocked=Array.from(new Set([...(s.lwCharactersUnlocked||[]),ARMAN_ID]));
+ if(p.armanJournalUnread===true){
+  s.lwCharactersUnread=Array.from(new Set([...(s.lwCharactersUnread||[]),ARMAN_ID]));
+  s.journal=s.journal||{};s.journal.seen=false
+ }else s.lwCharactersUnread=(s.lwCharactersUnread||[]).filter(id=>id!==ARMAN_ID);
+ s.characters=s.characters||{};s.characters[ARMAN_NAME]=true;
+ s.relationships=s.relationships||{};s.relationships[ARMAN_NAME]=s.relationships[ARMAN_NAME]||{trust:24,respect:69,attachment:8,suspicion:72};
+ writeArmanRegistryStore();return true
+}
+function journalVisible(){
+ const button=$("#charactersButton");
+ return Boolean(button&&!button.hidden&&getComputedStyle(button).display!=="none"&&getComputedStyle(button).visibility!=="hidden")
+}
+function syncArmanDot(){
+ const s=gs(),p=phase();if(!s||!p)return;
+ const otherUnread=Boolean((s.lwCharactersUnread||[]).some(id=>id!==ARMAN_ID)&&s.journal?.seen===false);
+ const mayaUnread=Boolean(s.chapter4?.phase2?.mayaUnread===true);
+ const show=Boolean(journalVisible()&&(p.armanJournalUnread===true||otherUnread||mayaUnread));
+ $$(".journal-alert").forEach(dot=>dot.classList.toggle("show",show))
+}
+function showArmanDetail(){
+ const data=armanData(),grid=$("#characterGrid"),detail=$("#characterDetail"),back=$("#charactersBack");if(!data||!detail)return;
+ const lang=thai()?"th":"en",src=data.src||PORTRAIT_BASE+"arman/profile.png?v="+PORTRAIT_VERSION;
+ detail.innerHTML=`<div data-detail-shell><div class="character-detail-head"><img data-detail-portrait data-detail-image="arman" src="${src}" alt="" width="512" height="640" loading="eager" decoding="async" style="object-fit:cover"><div><div class="character-name" data-detail-name>${data.name?.[lang]||data.name?.en||ARMAN_NAME}</div><div class="character-status" data-detail-status>${data.role?.[lang]||data.role?.en||""}${data.age?` · ${data.age}`:""}</div></div></div><div data-detail-metrics>${armanMetricMarkup()}</div><div class="character-notes" data-detail-notes>${data.bio?.[lang]||data.bio?.en||""}</div></div>`;
+ if(grid)grid.style.display="none";detail.style.display="block";if(back)back.style.display="block"
+}
+function ensureArmanCard(){
+ if(armanJournalSyncing)return false;const s=gs(),p=phase(),data=armanData(),grid=$("#characterGrid");
+ if(!s||!p||!data||!grid)return false;
+ const dev=s.flags?.developer_character_unlock_all===true;
+ if(p.armanJournalUnlocked!==true&&!dev){$("#characterGrid [data-character='arman']")?.remove();return false}
+ armanJournalSyncing=true;
+ try{
+  let card=$("#characterGrid [data-character='arman']"),created=false;
+  if(!card){card=document.createElement("button");card.type="button";card.className="character-card";card.dataset.character=ARMAN_ID;grid.appendChild(card);created=true}
+  const lang=thai()?"th":"en",src=data.src||PORTRAIT_BASE+"arman/profile.png?v="+PORTRAIT_VERSION;
+  card.innerHTML=`${src?`<img src="${src}" alt="" width="512" height="640" loading="eager" decoding="async" data-character-image="arman" style="object-fit:cover">`:""}<div class="character-name">${data.name?.[lang]||data.name?.en||ARMAN_NAME}</div><div class="character-status">${data.status?.[lang]||data.status?.en||data.role?.[lang]||data.role?.en||""}</div>${armanRelationSummary()}`;
+  card.onclick=showArmanDetail;card.style.removeProperty("display");
+  return created
+ }finally{armanJournalSyncing=false}
+}
+function markArmanRead(){
+ const s=gs(),p=phase();if(!s||!p||p.armanJournalUnread!==true)return false;
+ p.armanJournalUnread=false;s.lwCharactersUnread=(s.lwCharactersUnread||[]).filter(id=>id!==ARMAN_ID);
+ const mayaUnread=Boolean(s.chapter4?.phase2?.mayaUnread===true),otherUnread=(s.lwCharactersUnread||[]).length>0;
+ if(!mayaUnread&&!otherUnread&&s.journal)s.journal.seen=true;
+ writeArmanRegistryStore();syncArmanDot();save();return true
+}
+function showArmanAddedBadge(){
+ const s=gs(),p=phase();if(!s||!p||p.armanJournalNotified===true||s.flags?.ch4_arman_journal_notified===true)return false;
+ if(typeof showBadge!=="function")return false;
+ p.armanJournalNotified=true;s.flags=s.flags||{};s.flags.ch4_arman_journal_notified=true;
+ showBadge(tr("Character added: Arman Suryadi","เพิ่มตัวละคร: Arman Suryadi"));return true
+}
+function unlockArmanJournalScoped({notify=true,unread=true}={}){
+ const s=gs(),p=phase();if(!s||!p||!armanData())return false;
+ const dev=s.flags?.developer_character_unlock_all===true;
+ const first=p.armanJournalUnlocked!==true&&s.flags?.ch4_arman_journal_unlocked!==true;
+ p.armanJournalUnlocked=true;s.flags=s.flags||{};s.flags.ch4_arman_journal_unlocked=true;
+ if(first&&!dev&&unread!==false)p.armanJournalUnread=true;
+ if(dev){p.armanJournalUnread=false;p.armanJournalNotified=true;s.flags.ch4_arman_journal_notified=true}
+ syncArmanArrays();ensureArmanCard();syncArmanDot();
+ if(first&&!dev&&notify!==false)showArmanAddedBadge();
+ armanUnlockDeferred=false;save();return first
+}
+function recoverArmanJournal(){
+ const s=gs(),p=phase();if(!s||!p||!armanData())return false;
+ if(s.flags?.developer_character_unlock_all===true){
+  if(p.armanUnlocked===true){p.armanJournalUnlocked=true;p.armanJournalUnread=false;p.armanJournalNotified=true;s.flags.ch4_arman_journal_unlocked=true;s.flags.ch4_arman_journal_notified=true}
+  syncArmanArrays();ensureArmanCard();syncArmanDot();return false
+ }
+ if(armanStoryUnlockReady()&&p.armanJournalUnlocked!==true)return unlockArmanJournalScoped({notify:true,unread:true});
+ if(p.armanJournalUnlocked===true||s.flags?.ch4_arman_journal_unlocked===true){p.armanJournalUnlocked=true;syncArmanArrays();ensureArmanCard();syncArmanDot()}
+ return false
 }
 function installArmanUnlockGate(){
  const api=window.LastWitnessContentRegistry;if(!api?.unlockCharacter)return false;
  if(api.unlockCharacter.__lwP4ArmanGate===BUILD)return true;
  registryUnlockOriginal=api.unlockCharacter.bind(api);
  const wrapped=function(id,opt={}){
-  if(id==="arman"&&opt?.source==="story"&&!armanStoryUnlockReady()){
-   armanUnlockDeferred=true;
-   return false
+  if(id===ARMAN_ID&&opt?.source==="story"){
+   if(!armanStoryUnlockReady()){armanUnlockDeferred=true;return false}
+   return unlockArmanJournalScoped({notify:opt?.quiet!==true,unread:opt?.unread!==false})
   }
   return registryUnlockOriginal(id,opt)
  };
  wrapped.__lwP4ArmanGate=BUILD;api.unlockCharacter=wrapped;return true
 }
-function releaseDeferredArman(){
- const s=gs(),p=phase(),api=window.LastWitnessContentRegistry;
- if(active()!==WORKSHOP||!s||!p||!api?.characters?.arman||!armanStoryUnlockReady())return false;
- if(Array.isArray(s.lwCharactersUnlocked)&&s.lwCharactersUnlocked.includes("arman")){armanUnlockDeferred=false;try{api.updateDots?.()}catch(_){};return false}
- if(!registryUnlockOriginal&&!installArmanUnlockGate())return false;
- const fresh=registryUnlockOriginal("arman",{unread:true,source:"story"});
- armanUnlockDeferred=false;
- if(fresh===false)try{api.renderCharacters?.(true)}catch(_){}
- try{api.updateDots?.()}catch(_){};save();return Boolean(fresh)
+function releaseDeferredArman(){return recoverArmanJournal()}
+function syncArmanJournal(){
+ if(armanJournalSyncing)return;
+ recoverArmanJournal();
+ const modal=$("#charactersModal");
+ if(modal?.classList.contains("open"))markArmanRead();
+ syncArmanArrays();ensureArmanCard();syncArmanDot()
 }
 
 
@@ -249,7 +377,7 @@ function normalizePortraits(){
  })
 }
 
-function updateLanguage(){updateTitleLanguage();updateHUDLanguage();bindHUD();normalizePortraits();try{window.LastWitnessContentRegistry?.updateDots?.()}catch(_){} }
+function updateLanguage(){updateTitleLanguage();updateHUDLanguage();bindHUD();normalizePortraits();try{window.LastWitnessContentRegistry?.updateDots?.()}catch(_){}syncArmanJournal()}
 function upgradeMarkup(){
  const approach=$("#"+APPROACH),location=$("#"+LOCATION),reveal=$("#"+REVEAL);
  $(".ch4-p4-video-title",approach)?.remove();$$(".ch4-p4-video-shade",approach).forEach(node=>node.remove());$$(".ch4-p4-video-shade",reveal).forEach(node=>node.remove());
@@ -269,8 +397,10 @@ function contractStatus(){
   hud:HUD_SCREENS.every(id=>Boolean($("#"+id+" .ch4-p4-topbar .ch4-p4-save")&&$("#"+id+" .ch4-p4-topbar .ch4-p4-menu"))),
   progress:[...SCREENS].every(id=>Boolean($("#"+id+" .ch4-p4-progress"))),
   armanRegistered:Boolean(window.LastWitnessContentRegistry?.characters?.arman),
-  armanUnlocked:Boolean(s?.lwCharactersUnlocked?.includes?.("arman")),
-  armanUnread:Boolean(s?.lwCharactersUnread?.includes?.("arman")),
+  armanUnlocked:Boolean(phase()?.armanJournalUnlocked&&s?.lwCharactersUnlocked?.includes?.("arman")),
+  armanUnread:Boolean(phase()?.armanJournalUnread&&s?.lwCharactersUnread?.includes?.("arman")),
+  armanCardVisible:Boolean($("#characterGrid [data-character='arman']")),
+  armanDetailContract:Boolean($("#characterDetail [data-detail-name]")&&$("#characterDetail [data-detail-status]")&&$("#characterDetail [data-detail-metrics]")&&$("#characterDetail [data-detail-notes]")),
   settingsAvailable:Boolean($("#settingsButton")&&!$("#settingsButton").disabled),
   saveAvailable:Boolean(typeof manualSave==="function"||window.LastWitnessSaveManager?.open),
   portraitsVerified:$$('.ch4-p4-dialogue img.portrait').every(img=>img.classList.contains('ch4-p4-portrait-verified')||!img.closest('.ch4-p4-dialogue:not(.hidden)')),
@@ -279,19 +409,22 @@ function contractStatus(){
   mayaPortraitClean:$$('.ch4-p4-dialogue img.maya-portrait').every(img=>getComputedStyle(img).clipPath!=="none")
  }
 }
-function syncRuntime(){upgradeMarkup();recoverTitleOnRestore();releaseDeferredArman();normalizePortraits();syncProgress();scheduleAudioSync();if(active()==="title")stopMedia($("#ch4P4Score"),true);if(SCREENS.has(active()))setBuild()}
+function syncRuntime(){upgradeMarkup();recoverTitleOnRestore();releaseDeferredArman();normalizePortraits();syncArmanJournal();syncProgress();scheduleAudioSync();if(active()==="title")stopMedia($("#ch4P4Score"),true);if(SCREENS.has(active()))setBuild()}
 function installObservers(){
  const queue=()=>{requestAnimationFrame(syncRuntime)};
  for(const id of SCREENS){const screen=$("#"+id);if(screen)new MutationObserver(queue).observe(screen,{attributes:true,attributeFilter:["class"]})}
  const dialogue=$("#"+WORKSHOP+"Dialogue");if(dialogue)new MutationObserver(queue).observe(dialogue,{attributes:true,attributeFilter:["class"],childList:true,subtree:true});
+ const modal=$("#charactersModal"),grid=$("#characterGrid");
+ if(modal&&!armanModalObserver){armanModalObserver=new MutationObserver(queue);armanModalObserver.observe(modal,{attributes:true,attributeFilter:["class"]})}
+ if(grid&&!armanGridObserver){armanGridObserver=new MutationObserver(()=>{if(!armanJournalSyncing)queue()});armanGridObserver.observe(grid,{childList:true})}
  document.addEventListener("click",()=>{setTimeout(syncRuntime,20);setTimeout(syncRuntime,380)},true);
- document.addEventListener("visibilitychange",()=>{if(document.hidden){clearLocationTimer();stopMedia($("#ch4P4Score"),false)}else{recoverTitleOnRestore();scheduleLocationAdvance(true);scheduleAudioSync()}});
+ document.addEventListener("visibilitychange",()=>{if(document.hidden){clearLocationTimer();stopMedia($("#ch4P4Score"),false)}else{recoverTitleOnRestore();scheduleLocationAdvance(true);scheduleAudioSync();syncArmanJournal()}});
  document.addEventListener("click",event=>{if(event.target.closest?.("[data-lang]"))setTimeout(updateLanguage,0);if(event.target.closest?.("#developerMenuButton,#settingsVersion"))setTimeout(()=>window.LastWitnessDeveloperPhaseNavigation?.install?.(),0)},true);
  $("#musicRange")?.addEventListener("input",scheduleAudioSync,true);$("#soundToggle")?.addEventListener("change",scheduleAudioSync,true)
 }
 function bind(){
  installArmanUnlockGate();upgradeMarkup();installObservers();recoverTitleOnRestore();releaseDeferredArman();setBuild();
- window.LastWitnessChapter4Phase4Revision={installed:true,version:BUILD,syncProgress,syncAudio,releaseDeferredArman,normalizePortraits,audioTarget:scoreTarget,contractStatus}
+ window.LastWitnessChapter4Phase4Revision={installed:true,version:BUILD,syncProgress,syncAudio,releaseDeferredArman,unlockArmanJournalScoped,syncArmanJournal,ensureArmanCard,markArmanRead,normalizePortraits,audioTarget:scoreTarget,contractStatus}
 }
 
 if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",bind,{once:true});else bind();

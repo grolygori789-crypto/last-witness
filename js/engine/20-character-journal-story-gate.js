@@ -1,4 +1,4 @@
-/* LAST WITNESS — Safe Character Journal Progression Gate 0.17.6
+/* LAST WITNESS — Safe Character Journal Progression Gate 0.17.7
  * Recovery goals:
  * - preserve the authoritative 06-content-registry-dev.js character truth
  * - keep Character Journal hidden throughout Chapter I
@@ -9,7 +9,7 @@
  */
 (function(){
 "use strict";
-const VERSION="0.17.6";
+const VERSION="0.17.7";
 if(window.LastWitnessCharacterJournalStoryGate?.version===VERSION&&window.LastWitnessCharacterJournalStoryGate?.installed)return;
 
 const $=(selector,root=document)=>root.querySelector(selector);
@@ -73,7 +73,8 @@ function updateDots(visible){
  const s=gs();
  const baseUnread=Boolean(Array.isArray(s?.lwCharactersUnread)&&s.lwCharactersUnread.length&&s?.journal?.seen===false);
  const mayaUnread=Boolean(s?.chapter4?.phase2?.mayaUnread===true);
- const show=Boolean(visible&&(baseUnread||mayaUnread));
+ const armanUnread=Boolean(s?.chapter4?.phase4?.armanJournalUnread===true);
+ const show=Boolean(visible&&(baseUnread||mayaUnread||armanUnread));
  $$(".journal-alert").forEach(dot=>dot.classList.toggle("show",show))
 }
 function correctEarlyChapterNumber(){
@@ -244,7 +245,7 @@ function bind(){
   contractStatus:()=>({
    screen:active(),chapter:Number(gs()?.chapter||0),allowed:storyAllowsJournal(),
    buttonVisible:Boolean($("#charactersButton")&&!$("#charactersButton").hidden&&getComputedStyle($("#charactersButton")).display!=="none"),
-   redDots:$$('.journal-alert.show').length,mayaPending:Boolean(mayaPending||gs()?.flags?.lw_maya_notification_pending),ratchataPending:Boolean(ratchataPending||gs()?.flags?.lw_ratchata_notification_pending)
+   redDots:$$('.journal-alert.show').length,mayaPending:Boolean(mayaPending||gs()?.flags?.lw_maya_notification_pending),ratchataPending:Boolean(ratchataPending||gs()?.flags?.lw_ratchata_notification_pending),armanUnread:Boolean(gs()?.chapter4?.phase4?.armanJournalUnread)
   })
  }
 }
