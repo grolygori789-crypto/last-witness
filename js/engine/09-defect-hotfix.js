@@ -1,9 +1,9 @@
-/* LAST WITNESS - Legacy Compatibility Shim + Runtime Bootstrap 0.17.9
+/* LAST WITNESS - Legacy Compatibility Shim + Runtime Bootstrap 0.17.10
  * Loads approved localization and targeted QC before dynamic Chapter IV modules.
  * Existing Phase I through Phase III order is preserved. Phase IV 0.17.0 loads first,
  * followed by the Arman Journal contract repair 0.17.7,
  * then the direct Phase III handoff and Developer Phase Navigation patches.
- * Character notification contract 0.17.9 preserves the Police and Arman repairs
+ * Character notification contract 0.17.10 preserves the Police and Arman repairs
  * and adds a scoped Adrian discovery transaction repair.
  */
 (function(){
@@ -37,9 +37,9 @@ script("js/engine/15-thai-localization.js?v=0152","lwThaiLocalizationScript",()=
   ()=>Boolean(window.LastWitnessCharacterJournalStoryGate?.version==="0.17.7"&&window.LastWitnessCharacterJournalStoryGate?.installed)
  ).catch(error=>console.error("LAST WITNESS Character Journal story gate failed to load",error)))
  .then(()=>script(
-  "js/engine/21-character-notification-contract.js?v=0179",
+  "js/engine/21-character-notification-contract.js?v=01710",
   "lwCharacterNotificationContractScript",
-  ()=>Boolean(window.LastWitnessCharacterNotificationContract?.version==="0.17.9"&&window.LastWitnessCharacterNotificationContract?.installed)
+  ()=>Boolean(window.LastWitnessCharacterNotificationContract?.version==="0.17.10"&&window.LastWitnessCharacterNotificationContract?.installed)
  ).catch(error=>console.error("LAST WITNESS Character notification contract failed to load",error)))
  .then(()=>script("js/chapters/chapter-04/01-afterimage.js?v=0132","lwChapter04Phase01Script",()=>Boolean(window.LastWitnessChapter4Phase1)))
  .then(()=>{

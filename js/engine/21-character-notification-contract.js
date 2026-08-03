@@ -1,4 +1,4 @@
-/* LAST WITNESS — Scoped Character Notification Contract 0.17.9
+/* LAST WITNESS — Scoped Character Notification Contract 0.17.10
  * Repairs owner-reported Character Journal notification gaps without replacing
  * the Character Registry, show(), showBadge(), Save Manager or chapter owners.
  *
@@ -12,7 +12,7 @@
  */
 (function(){
 "use strict";
-const VERSION="0.17.9";
+const VERSION="0.17.10";
 if(window.LastWitnessCharacterNotificationContract?.version===VERSION&&window.LastWitnessCharacterNotificationContract?.installed)return;
 
 const $=(selector,root=document)=>root.querySelector(selector);
@@ -24,11 +24,12 @@ const ADRIAN_SCREEN="chapter3HawkerCentre";
 const ADRIAN_DIALOGUE="#ch3P7Dialogue";
 const ADRIAN_ID="adrian";
 const ADRIAN_NAME="Adrian Tan Wei Ming";
-const ADRIAN_NOTIFICATION_FLAG="lw_adrian_character_notification_shown_0179";
+const ADRIAN_NOTIFICATION_FLAG="lw_adrian_character_notification_shown_01710";
 const ADRIAN_CONTRACT_FLAG="lw_adrian_character_notification_contract";
 const ARMAN_TOAST_CLASS="lw-arman-character-toast";
 let policeScreenObserver=null;
 let adrianScreenObserver=null;
+let adrianInjectionObserver=null;
 let badgeObserver=null;
 let policeSyncQueued=false;
 let adrianSyncQueued=false;
@@ -152,13 +153,34 @@ function bindAdrianDialogue(){
  },false)
 }
 function observeAdrianScreen(){
- const screen=$("#"+ADRIAN_SCREEN);if(!screen||adrianScreenObserver)return;
- adrianScreenObserver=new MutationObserver(()=>{
-  if(screen.classList.contains("active")){
-   bindAdrianDialogue();queueAdrianReconcile(0);setTimeout(reconcileAdrian,180)
-  }
+ const screen=$("#"+ADRIAN_SCREEN);if(!screen)return false;
+ bindAdrianDialogue();
+ if(!adrianScreenObserver){
+  adrianScreenObserver=new MutationObserver(()=>{
+   if(screen.classList.contains("active")){
+    bindAdrianDialogue();queueAdrianReconcile(0);setTimeout(reconcileAdrian,180)
+   }
+  });
+  adrianScreenObserver.observe(screen,{attributes:true,attributeFilter:["class"]})
+ }
+ if(screen.classList.contains("active")){
+  queueAdrianReconcile(0);setTimeout(reconcileAdrian,180)
+ }
+ return true
+}
+function observeAdrianInjection(){
+ const game=$("#game");if(!game)return false;
+ if(observeAdrianScreen()){
+  if(adrianInjectionObserver){adrianInjectionObserver.disconnect();adrianInjectionObserver=null}
+  return true
+ }
+ if(adrianInjectionObserver)return false;
+ adrianInjectionObserver=new MutationObserver(()=>{
+  if(!observeAdrianScreen())return;
+  adrianInjectionObserver?.disconnect();adrianInjectionObserver=null
  });
- adrianScreenObserver.observe(screen,{attributes:true,attributeFilter:["class"]})
+ adrianInjectionObserver.observe(game,{childList:true});
+ return false
 }
 
 /* Arman toast layer contract. */
@@ -197,14 +219,24 @@ function observeBadge(){
  syncArmanToastLayer()
 }
 function queueAllReconciles(){
- bindPoliceDialogue();bindAdrianDialogue();
+ bindPoliceDialogue();observeAdrianInjection();observeAdrianScreen();bindAdrianDialogue();
  queuePoliceReconcile(0);queueAdrianReconcile(0);syncArmanToastLayer()
 }
 function bindLifecycle(){
- bindPoliceDialogue();observePoliceScreen();bindAdrianDialogue();observeAdrianScreen();observeBadge();
+ bindPoliceDialogue();observePoliceScreen();observeAdrianInjection();observeAdrianScreen();observeBadge();
  window.addEventListener("pageshow",queueAllReconciles);
  document.addEventListener("visibilitychange",()=>{if(!document.hidden)queueAllReconciles()},false);
  document.addEventListener("click",event=>{
+  /* Phase VII creates its screen/dialogue only when the phase starts. Delegation
+   * is mandatory here: a listener attached during bootstrap cannot see an element
+   * that does not exist yet. Timers run after the phase owner's final-click handler
+   * sets introComplete and identityVerified. */
+  if(event.target.closest?.(ADRIAN_DIALOGUE)){
+   setTimeout(reconcileAdrian,0);
+   setTimeout(reconcileAdrian,80);
+   setTimeout(reconcileAdrian,220)
+  }
+  if(event.target.closest?.("#"+ADRIAN_SCREEN))setTimeout(reconcileAdrian,80);
   if(event.target.closest?.("#continueGame,#loadTitle,#resume,.load-save,.lw-save-load"))setTimeout(queueAllReconciles,80)
  },true);
  if(activeScreen()===POLICE_SCREEN)queuePoliceReconcile(0);
