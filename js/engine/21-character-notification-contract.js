@@ -1,21 +1,22 @@
-/* LAST WITNESS — Scoped Character Notification Contract 0.17.12
+/* LAST WITNESS — Scoped Character Notification Contract 0.17.13
  * Repairs owner-reported Character Journal notification gaps without replacing
  * the Character Registry, show(), showBadge(), Save Manager or chapter owners.
  *
  * Scope:
  * - Somchai + Kittisak: perform the existing Registry story unlock immediately
  *   after the first Police Station introduction dialogue finishes.
- * - Adrian: keep the Phase VII HUD marker hidden until Adrian is verified
- *   and specifically unread, then show it with the one-time Character Added toast.
+ * - Adrian: preserve the verified one-time Character Added toast and unread dot,
+ *   while resetting stale notifications only for a fresh Developer Hawker jump.
  * - Arman: keep the existing one-time notification visible above the Phase IV
  *   choice modal while preserving the existing unread-dot and Save/Load state.
  */
 (function(){
 "use strict";
-const VERSION="0.17.12";
+const VERSION="0.17.13";
 if(window.LastWitnessCharacterNotificationContract?.version===VERSION&&window.LastWitnessCharacterNotificationContract?.installed)return;
 
 const $=(selector,root=document)=>root.querySelector(selector);
+const $$=(selector,root=document)=>Array.from(root.querySelectorAll(selector));
 const gs=()=>{try{return state}catch(_){return window.state||null}};
 const POLICE_SCREEN="police2";
 const POLICE_DIALOGUE="#policeDialogue";
@@ -26,6 +27,7 @@ const ADRIAN_ID="adrian";
 const ADRIAN_NAME="Adrian Tan Wei Ming";
 const ADRIAN_NOTIFICATION_FLAG="lw_adrian_character_notification_shown_01710";
 const ADRIAN_CONTRACT_FLAG="lw_adrian_character_notification_contract";
+const ADRIAN_DEV_FRESH_FLAG="lw_adrian_dev_fresh_entry_01713";
 const ARMAN_TOAST_CLASS="lw-arman-character-toast";
 let policeScreenObserver=null;
 let adrianScreenObserver=null;
@@ -36,6 +38,7 @@ let adrianSyncQueued=false;
 let policeUnlockCount=0;
 let adrianRepairCount=0;
 let adrianHudDotRepairCount=0;
+let adrianDevResetCount=0;
 
 function activeScreen(){return $(".screen.active")?.id||gs()?.screen||""}
 function save(){try{if(typeof autoSave==="function")autoSave()}catch(_){} }
@@ -86,10 +89,13 @@ function observePoliceScreen(){
 }
 
 /* Adrian Phase VII contract.
- * The Phase VII owner sets identityVerified before calling Registry.unlockCharacter().
- * Registry.ensureState() therefore recovers Adrian first and makes the subsequent
- * story unlock non-fresh. This scoped reconciliation restores the missing one-time
- * unread state and toast without changing the Registry or Phase VII progression. */
+ * Phase VII sets identityVerified before Registry.unlockCharacter(). Registry
+ * recovery can therefore make the story unlock non-fresh. The reconciliation
+ * below restores one story notification and one unread state after verification.
+ *
+ * A Developer fresh jump is a different contract. It must begin with prerequisite
+ * characters prepared silently, no stale unread marker, and Adrian undiscovered.
+ * The bridge resets only that exact startFreshForDev transaction. */
 function adrianPhase(){return gs()?.chapter3?.phase7||null}
 function adrianDialogueClosed(){
  const box=$(ADRIAN_DIALOGUE);
@@ -107,15 +113,17 @@ function adrianNotified(){return gs()?.flags?.[ADRIAN_NOTIFICATION_FLAG]===true}
 function ensureAdrianHudDot(){
  const screen=$("#"+ADRIAN_SCREEN),button=$(".ch3-p7-menu",screen||document);
  if(!screen||!button)return null;
- let dot=$(".journal-alert",button);
+ const dots=$$(".journal-alert",button);
+ let dot=dots.shift()||null;
+ dots.forEach(node=>node.remove());
  if(!dot){
   dot=document.createElement("i");
   dot.className="journal-alert";
   dot.setAttribute("aria-hidden","true");
-  dot.dataset.lwAdrianHudDot=VERSION;
   button.appendChild(dot);
   adrianHudDotRepairCount+=1
  }
+ dot.dataset.lwAdrianHudDot=VERSION;
  return dot
 }
 function adrianUnread(){
@@ -124,18 +132,11 @@ function adrianUnread(){
 }
 function syncAdrianHudDot(){
  const dot=ensureAdrianHudDot();if(!dot)return false;
- /* Keep the global drawer/menu markers under the Registry owner, then override
-  * only the dynamically-created Hawker HUD marker. That marker must represent
-  * Adrian's verified unread state, not an unrelated stale unread entry carried
-  * into the scene by a Developer jump or an older save. */
+ /* The Hawker HUD marker follows the same global unread owner as every standard
+  * scene. Developer fresh-entry normalization prevents stale prerequisites from
+  * producing a false marker before Adrian is introduced. */
  try{window.LastWitnessContentRegistry?.updateDots?.()}catch(error){console.error("LAST WITNESS Character unread-dot sync failed",error)}
- const s=gs();
- const shouldShow=Boolean(
-  activeScreen()===ADRIAN_SCREEN&&adrianVerified()&&adrianUnread()&&
-  s?.journal?.seen===false&&!devCharacterUnlockActive()
- );
- dot.classList.toggle("show",shouldShow);
- return shouldShow
+ return dot.classList.contains("show")
 }
 function ensureAdrianState(){
  const s=gs();if(!s)return false;
@@ -179,6 +180,27 @@ function queueAdrianReconcile(delay=0){
  if(adrianSyncQueued)return;
  adrianSyncQueued=true;
  setTimeout(reconcileAdrian,Math.max(0,Number(delay)||0))
+}
+function resetAdrianForFreshDevEntry(){
+ const s=gs();if(!s)return false;
+ s.flags=s.flags||{};s.journal=s.journal||{unlocked:true,seen:true,introShown:false};
+ s.characters=s.characters||{};
+ s.lwCharactersUnlocked=Array.isArray(s.lwCharactersUnlocked)?s.lwCharactersUnlocked:[];
+ s.lwCharactersUnread=[];
+ s.lwCharactersUnlocked=s.lwCharactersUnlocked.filter(id=>id!==ADRIAN_ID);
+ s.characters["Adrian Tan"]=false;
+ delete s.flags.ch3_adrian_met;
+ delete s.flags[ADRIAN_NOTIFICATION_FLAG];
+ delete s.flags[ADRIAN_CONTRACT_FLAG];
+ for(const key of Object.keys(s.flags)){
+  if(key.startsWith("lw_adrian_character_notification_shown_")&&key!==ADRIAN_NOTIFICATION_FLAG)delete s.flags[key]
+ }
+ s.flags[ADRIAN_DEV_FRESH_FLAG]=VERSION;
+ s.journal.seen=true;
+ try{window.LastWitnessContentRegistry?.renderCharacters?.(true)}catch(error){console.error("LAST WITNESS Adrian Dev character reset render failed",error)}
+ try{window.LastWitnessContentRegistry?.updateDots?.()}catch(error){console.error("LAST WITNESS Adrian Dev unread reset failed",error)}
+ adrianDevResetCount+=1;
+ return true
 }
 function bindAdrianDialogue(){
  const box=$(ADRIAN_DIALOGUE);if(!box||box.dataset.lwCharacterNotificationBound===VERSION)return;
@@ -262,6 +284,12 @@ function bindLifecycle(){
  bindPoliceDialogue();observePoliceScreen();observeAdrianInjection();observeAdrianScreen();observeBadge();
  window.addEventListener("pageshow",queueAllReconciles);
  document.addEventListener("visibilitychange",()=>{if(!document.hidden)queueAllReconciles()},false);
+ /* Window capture runs before the Chapter III Developer button's own capture
+  * handler, even when that handler was registered earlier. This guarantees that
+  * the exact Hawker fresh-entry transaction starts with no carried unread state. */
+ window.addEventListener("click",event=>{
+  if(event.target.closest?.('[data-dev-jump="chapter3Phase7"]'))resetAdrianForFreshDevEntry()
+ },true);
  document.addEventListener("click",event=>{
   /* Phase VII creates its screen/dialogue only when the phase starts. Delegation
    * is mandatory here: a listener attached during bootstrap cannot see an element
@@ -273,6 +301,9 @@ function bindLifecycle(){
    setTimeout(reconcileAdrian,220)
   }
   if(event.target.closest?.("#"+ADRIAN_SCREEN))setTimeout(reconcileAdrian,80);
+  if(event.target.closest?.("#charactersButton,#charactersModal .closeModal,#charactersBack")){
+   setTimeout(syncAdrianHudDot,0);setTimeout(syncAdrianHudDot,100)
+  }
   if(event.target.closest?.("#continueGame,#loadTitle,#resume,.load-save,.lw-save-load"))setTimeout(queueAllReconciles,80)
  },true);
  if(activeScreen()===POLICE_SCREEN)queuePoliceReconcile(0);
@@ -294,8 +325,9 @@ function contractStatus(){
   adrianRepairCount,
   adrianHudDotExists:Boolean($("#"+ADRIAN_SCREEN+" .ch3-p7-menu .journal-alert")),
   adrianHudDotVisible:Boolean($("#"+ADRIAN_SCREEN+" .ch3-p7-menu .journal-alert.show")),
-  adrianHudDotEligible:Boolean(activeScreen()===ADRIAN_SCREEN&&adrianVerified()&&adrianUnread()&&s?.journal?.seen===false&&!devCharacterUnlockActive()),
   adrianHudDotRepairCount,
+  adrianDevJumpSelector:'[data-dev-jump="chapter3Phase7"]',
+  adrianDevResetCount,
   devCharacterUnlockActive:devCharacterUnlockActive(),
   armanToastVisible:Boolean(badge?.classList.contains(ARMAN_TOAST_CLASS)&&badge.classList.contains("show")),
   badgeText:String(badge?.textContent||"").trim()
@@ -307,6 +339,7 @@ function bind(){
   installed:true,version:VERSION,
   reconcilePoliceCharacters,queuePoliceReconcile,
   reconcileAdrian,queueAdrianReconcile,syncAdrianHudDot,
+  resetAdrianForFreshDevEntry,
   syncArmanToastLayer,contractStatus
  }
 }
