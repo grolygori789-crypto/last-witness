@@ -2,15 +2,19 @@
 
 > **MASTER REFERENCE / CURRENT SOURCE OF TRUTH**
 >
-> **Document revision:** 2026-08-05 00:46 ICT
+> **Document revision:** 2026-08-05 01:58 ICT
 >
 > **Repository:** `grolygori789-crypto/last-witness`
 >
 > **Production and Default branch:** `production-rebuild`
 >
-> **Latest Production HEAD observed:** `7928a24622f258cfc1a6b825f9445ed246817866`
+> **Repository HEAD observed at audit:** `1869493b4461f1716b9677d89eadcbc79a4737dc`
 >
-> **Latest HEAD message:** `Fix Phase V portraits and time (0.18.5)`
+> **Repository HEAD message:** `Update master plan for Phase V portrait blocker`
+>
+> **Current Runtime code/assets HEAD:** `7928a24622f258cfc1a6b825f9445ed246817866`
+>
+> **Current Runtime HEAD message:** `Fix Phase V portraits and time (0.18.5)`
 >
 > **Current Runtime candidate:** `0.18.5`
 >
@@ -24,13 +28,15 @@
 >
 > **Document status:** `CURRENT CANONICAL HANDOFF · OWNER-RESULT OVERRIDE · PHASE V PORTRAIT REPAIR LOCK`
 
-This document replaces the previous canonical planning revision dated 2026-08-04 08:40 ICT.
+This document replaces the canonical planning revision dated 2026-08-05 00:46 ICT.
 
-The previous revision correctly preserved long-range Canon and the accepted `0.17.18` baseline, but its Phase V implementation status is now historical. Chapter IV Phase V has since been implemented through Production candidate `0.18.5`.
+The preceding revision correctly recorded the current Runtime candidate and Phase V blocker, but it used the Runtime commit as the latest repository HEAD and incorrectly treated North's Indian ethnicity as incompatible with her Singaporean nationality. This revision separates repository-documentation state from Runtime state and restores North's full Canon as a Singaporean of Indian ethnicity.
 
-Whenever an older statement conflicts with the status in Sections 0, 1, 2, 8, 9, 10 or 26 of this document, the newer owner-reported status in this revision wins.
+Chapter IV Phase V is implemented through Runtime candidate `0.18.5`. The latest repository commit observed during this audit is documentation-only. When the owner uploads this replacement file, the repository HEAD will advance again; therefore all commit identifiers must still be re-fetched before future editing.
 
-This is a documentation-only update. It does not modify Runtime code, assets or GitHub.
+Whenever an older statement conflicts with Sections 0, 1, 2, 8, 9, 10, 22, 23, 24, 26 or 45, the newer owner-reported status in this revision wins.
+
+This is a documentation-only replacement file. It modifies no Runtime code or asset and performs no GitHub write. The owner uploads the file personally.
 
 ---
 
@@ -38,13 +44,14 @@ This is a documentation-only update. It does not modify Runtime code, assets or 
 
 ## 0.1 Latest owner result
 
-The owner's latest test result for Chapter IV Phase V is authoritative:
+The owner's latest real-device result for Chapter IV Phase V is authoritative:
 
-- the Phase V implementation is present and playable
+- Phase V is present and playable
 - the combat sequence is correct and accepted
 - the current dialogue portrait scale is acceptable
 - no other current problem has been reported
 - the remaining blocker is the quality of character cutouts used in the Phase V dialogue box
+- the owner has explicitly authorized a portrait-cutout-only repair
 
 `NO OTHER CURRENT DEFECT REPORTED` means no other defect was observed in the owner's latest test. It is not a guarantee that no undiscovered defect exists.
 
@@ -69,7 +76,7 @@ The current `0.18.5` portrait repair is not owner-accepted as final.
 
 ## 0.3 Scope lock
 
-The next repair must address only the Phase V portrait asset preparation and the smallest directly necessary portrait-loading reference.
+The next repair must address only the Phase V portrait asset preparation and the smallest directly necessary portrait-loading or cache reference.
 
 Do not modify unless a proven portrait-specific dependency requires it:
 
@@ -100,7 +107,7 @@ Do not modify unless a proven portrait-specific dependency requires it:
 
 Combat is accepted. Do not reopen it.
 
-The current portrait size is accepted. Do not solve extraction defects by shrinking, enlarging or aggressively repositioning the portraits.
+The current portrait size is accepted. Do not solve extraction defects by shrinking, enlarging or aggressively repositioning portraits.
 
 ## 0.4 Proven repair direction
 
@@ -108,7 +115,7 @@ Treat this as a source-asset extraction failure, not a CSS-decoration problem.
 
 The correct repair direction is:
 
-1. return to the latest owner-approved expression-sheet or full-reference source for each character
+1. return to the latest owner-approved expression sheet or full-reference source for each character
 2. extract each required expression again from source
 3. preserve the complete visible head, hair silhouette, neck, shoulders and intended upper torso
 4. create true alpha from the source boundary
@@ -120,7 +127,7 @@ The correct repair direction is:
 
 Do not use aggressive automatic background removal as the final method without manual correction.
 
-Do not use generative face, hair, body or costume reconstruction unless the owner explicitly authorizes a specific source defect repair.
+Do not use generative face, hair, body or costume reconstruction unless the owner explicitly authorizes repair of a specific source defect.
 
 ## 0.5 Prohibited cosmetic concealment
 
@@ -139,7 +146,7 @@ Do not hide a bad cutout with:
 - cropping the source more tightly
 - adding a fake solid background inside the PNG
 
-A subtle natural separation at the pixel edge may be used only when it comes from correct edge decontamination and does not create a visible artificial outline.
+A subtle natural edge separation may be used only when produced by correct edge decontamination and when it does not create a visible artificial outline.
 
 ## 0.6 Acceptance criteria
 
@@ -179,12 +186,12 @@ Profile PNGs must be checked only for the same extraction defect. Do not redesig
 
 ## 0.8 Required visual proof
 
-Before claiming the repair is complete, provide:
+Before claiming the repair candidate is ready, provide:
 
 - a contact sheet showing every repaired dialogue portrait on transparency
 - a second contact sheet showing every repaired portrait on pure black
 - a third check on mid-gray or checkerboard to reveal contamination and missing alpha
-- screenshots from the actual Phase V dialogue UI at the owner’s normal mobile viewport
+- screenshots from the actual Phase V dialogue UI at the owner's normal mobile viewport
 - at least one screenshot for every character
 - close inspection of the darkest hair regions
 
@@ -216,22 +223,23 @@ When sources conflict:
 
 Before editing:
 
-1. fetch the latest `production-rebuild` HEAD
-2. verify that the current HEAD still descends from or matches the observed `0.18.5` candidate
-3. fetch and read this file completely
-4. inspect `index.html`
-5. inspect static and dynamic load order
-6. inspect `js/engine/09-defect-hotfix.js`
-7. inspect `js/chapters/chapter-04/05-north-is-marked.js`
-8. inspect `css/chapter-04-phase-05.css`
-9. inspect all current Phase V portrait PNGs
-10. inspect the latest approved expression-sheet or full-reference sources actually supplied in the working package
-11. compare every Runtime portrait against its source
-12. prove which extraction operation removed each missing region
-13. choose the smallest true owner of the defect
-14. repair locally
-15. test in the assembled Runtime, not only in an image viewer
-16. report tested and untested scope honestly
+1. fetch the latest `production-rebuild` repository HEAD
+2. identify separately the latest documentation-only commit and latest Runtime code/assets commit
+3. verify that current Runtime still matches or descends from the observed `0.18.5` Runtime candidate
+4. fetch and read this file completely
+5. inspect `index.html`
+6. inspect static and dynamic load order
+7. inspect `js/engine/09-defect-hotfix.js`
+8. inspect `js/chapters/chapter-04/05-north-is-marked.js`
+9. inspect `css/chapter-04-phase-05.css`
+10. inspect all current Phase V portrait PNGs
+11. inspect the latest approved expression-sheet or full-reference sources actually supplied in the working package
+12. compare every Runtime portrait against its source
+13. prove which extraction operation removed each missing region
+14. choose the smallest true owner of the defect
+15. repair locally
+16. test in the assembled Runtime, not only in an image viewer
+17. report tested and untested scope honestly
 
 ## 1.3 GitHub write rule
 
@@ -265,6 +273,8 @@ Include:
 
 Do not include unrelated files.
 
+For a documentation-only replacement such as this file, deliver the complete `GAME_MASTER_PLAN.md` directly and do not bundle unrelated Runtime files.
+
 ---
 
 # 2. CURRENT VERIFIED PRODUCTION SNAPSHOT
@@ -274,13 +284,15 @@ Do not include unrelated files.
 - Repository: `grolygori789-crypto/last-witness`
 - Production branch: `production-rebuild`
 - Default branch: `production-rebuild`
-- Latest observed HEAD: `7928a24622f258cfc1a6b825f9445ed246817866`
-- Latest observed HEAD message: `Fix Phase V portraits and time (0.18.5)`
+- Repository HEAD observed at audit: `1869493b4461f1716b9677d89eadcbc79a4737dc`
+- Repository HEAD message: `Update master plan for Phase V portrait blocker`
+- Latest Runtime code/assets HEAD: `7928a24622f258cfc1a6b825f9445ed246817866`
+- Latest Runtime HEAD message: `Fix Phase V portraits and time (0.18.5)`
 - Current Phase V Runtime candidate: `0.18.5`
 - Last fully accepted pre-Phase-V baseline: `f4a7a1df997cddc0d2b53da23cd5c9f0b7cdba99`
 - Pre-Phase-V baseline build: `0.17.18`
 
-Re-fetch all identifiers before editing. Do not use these values as a substitute for the latest GitHub state.
+The repository HEAD and Runtime HEAD are deliberately listed separately because the current repository HEAD is documentation-only. Re-fetch all identifiers before editing. Do not use these values as a permanent branch pointer.
 
 ## 2.2 Current implementation boundary
 
@@ -324,7 +336,7 @@ Chapters I–III and Chapter IV Phases I–IV remain protected.
 Preserve:
 
 - Chapter I Character Journal hidden
-- Chapter II Journal first appears after North’s initial office conversation
+- Chapter II Journal first appears after North's initial office conversation
 - one-time Character Added notification behavior
 - unread red-dot timing and read clearing
 - silent Developer unlock behavior
@@ -467,7 +479,7 @@ Current status:
 ## 5.6 North threat
 
 - North understands attribution
-- her capability threatens Elena’s protective gap
+- her capability threatens Elena's protective gap
 - Elena chooses neutralization
 - the attempt remains deniable
 - North remains alive and active
@@ -519,9 +531,9 @@ Interpretation:
 ## North
 
 - age 32
-- Singaporean
+- Singaporean of Indian ethnicity (Singaporean Indian)
 - IT Specialist and Technical Investigator
-- Benedict’s trusted long-term partner
+- Benedict's trusted long-term partner
 - understands Authentication versus Attribution
 - active and capable
 - never a passive victim
@@ -562,7 +574,7 @@ Forbidden before earned reveal:
 - age 40
 - Police Captain and Investigation Inspector
 - Bangkok operational commander
-- Somchai’s superior
+- Somchai's superior
 - owns warrants, police tasking, protection and custody
 - normal authority does not prove corruption
 
@@ -687,7 +699,7 @@ Forbidden before earned reveal:
 - Field Watcher / Recovery Operator
 - receives compartmentalized objectives through Aster Recovery
 - guilty of later surveillance, violence and obstruction
-- recruited after Daniel’s murder
+- recruited after Daniel's murder
 - cannot be the earlier killer
 - not Decision Owner
 
@@ -761,7 +773,7 @@ No character may:
 - command outside their authority
 - lose competence for puzzle convenience
 - confess in place of proof
-- solve another specialist’s role without narrative reason
+- solve another specialist's role without narrative reason
 
 ---
 
@@ -774,7 +786,7 @@ No character may:
 - Phase IV lead: Aster Recovery reserved three rooms and a poolside cabana
 - reservation time reference: 10:30 local
 - playable resort insertion time in `0.18.5`: `DAY 5 · 14:30 WIB`
-- Maya’s team enters after perimeter setup
+- Maya's team enters after perimeter setup
 - no uniforms
 - no live credential
 
@@ -836,7 +848,7 @@ The owner reports that combat is correct.
 
 Preserve:
 
-- North’s left/right combat readability
+- North's left/right combat readability
 - opposing fighter direction
 - three-exchange logic
 - accepted actions and response flow
@@ -894,14 +906,17 @@ Preserve:
 
 ## North resort lock
 
-- Indian appearance
-- warm medium-brown skin
+- Singaporean of Indian ethnicity (Singaporean Indian)
+- Indian heritage is part of her identity and visual Canon
+- warm medium-brown / deeper warm tan complexion matching the latest owner-approved references
 - short wavy dark hair
 - slim athletic body
 - black bikini with subtle leaf pattern
 - small necklace
 - confident and analytical
 - never passive pin-up behavior
+
+North's nationality is Singaporean and her ethnicity is Indian. Do not simplify her nationality to Indian, and do not erase or replace her Indian ethnicity. Older `Indian appearance` wording may be retained only when it clearly refers to ethnic or visual heritage rather than nationality.
 
 ## Cheryl resort lock
 
@@ -973,7 +988,7 @@ For Benedict, North, Cheryl, Maya and Ika:
 
 ## 10.2 Geometry
 
-Each character’s expression set must maintain:
+Each character's expression set must maintain:
 
 - stable head scale
 - stable eye-line
@@ -1122,7 +1137,7 @@ General rules:
 - stop phase audio on exit
 - no guilt sting merely for identity reveal
 - no villain music for Elena
-- no musical proof of Ika’s identity before evidence
+- no musical proof of Ika's identity before evidence
 
 The current portrait repair has no audio scope.
 
@@ -1229,7 +1244,7 @@ Requires:
 - Rin or equivalent corroboration
 - North evidence survives
 - Ratchata evidence survives
-- Narin deployment separated from Elena’s decisions
+- Narin deployment separated from Elena's decisions
 - at least three evidence classes
 - institution accepts the case
 
@@ -1262,7 +1277,6 @@ Possible conditions:
 No single choice directly sets an ending.
 
 ---
-
 # 17. FUTURE CHAPTER DIRECTION
 
 ## Chapter IV Phase VI · THE FALSE SUCCESS
@@ -1395,11 +1409,11 @@ CSS should not need redesign. Modify:
 
 - `css/chapter-04-phase-05.css`
 
-only when a proven portrait-specific CSS rule itself clips or distorts the corrected PNGs.
+only when a proven portrait-specific CSS rule itself clips or distorts corrected PNGs.
 
 Do not include combat files.
 
-Do not replace every Phase V file merely because the previous patch did.
+Do not replace every Phase V file merely because a previous patch did.
 
 ---
 
@@ -1529,11 +1543,13 @@ A new assistant must behave as though the owner has said:
 >
 > Branch: `production-rebuild`.
 >
-> Latest observed HEAD at this handoff: `7928a24622f258cfc1a6b825f9445ed246817866`.
+> Repository HEAD observed before this replacement plan was uploaded: `1869493b4461f1716b9677d89eadcbc79a4737dc`.
 >
-> Latest observed build: `0.18.5`.
+> Runtime code/assets HEAD observed: `7928a24622f258cfc1a6b825f9445ed246817866`.
 >
-> Re-fetch GitHub before editing because the branch may have advanced.
+> Latest observed Runtime build: `0.18.5`.
+>
+> Re-fetch GitHub before editing because the branch will advance when the owner uploads this file or later work.
 >
 > Read `GAME_MASTER_PLAN.md` completely before doing any work.
 >
@@ -1543,15 +1559,17 @@ A new assistant must behave as though the owner has said:
 >
 > The current portrait scale is acceptable and must not be redesigned.
 >
-> The only known active defect is the dialogue portrait cutout quality in Chapter IV Phase V.
+> The only known active defect is dialogue portrait cutout quality in Chapter IV Phase V.
 >
-> Portrait heads and hair are clipped, parts of bodies disappear, and dark hair merges into the black background.
+> Portrait heads and hair are clipped, parts of bodies disappear, dark hair merges into black and gray source contamination remains.
 >
 > Treat the defect as faulty source extraction and alpha preparation.
 >
-> Re-extract the affected PNGs from the latest owner-approved source sheets.
+> Re-extract affected PNGs from the latest owner-approved source sheets.
 >
 > Preserve complete heads, hairstyles, shoulders and intended upper torsos.
+>
+> North is a Singaporean of Indian ethnicity. Preserve both her Singaporean nationality and Indian heritage.
 >
 > Do not hide the defect with glow, outline, gray plates, blur, CSS masking or scaling changes.
 >
@@ -1571,7 +1589,7 @@ A new assistant must behave as though the owner has said:
 
 ## Owner report date
 
-`2026-08-05 00:46 ICT`
+`2026-08-05 01:49 ICT`
 
 ## Current build under test
 
@@ -1587,7 +1605,9 @@ A new assistant must behave as though the owner has said:
 - missing hair
 - missing body regions
 - dark hair lost against black
-- extraction quality remains visibly poor
+- gray background residue
+- poor alpha edges
+- extraction quality remains visibly unprofessional
 
 ## Explicitly accepted / no current problem reported
 
@@ -1595,13 +1615,18 @@ A new assistant must behave as though the owner has said:
 - portrait scale
 - remaining observed Phase V behavior
 
+## Current authorization
+
+- owner authorizes portrait-cutout repair
+- authorization does not extend to combat, story, timing, UI redesign or unrelated systems
+
 ## Repair priority
 
 `BLOCKER · HIGHEST CURRENT PRIORITY`
 
 ## Closure condition
 
-This defect remains open until the owner tests the repaired package on the real game and confirms that the portrait cutouts are visually correct.
+This defect remains open until the owner tests the repaired package in the real game and confirms that the portrait cutouts are visually correct.
 
 ---
 
@@ -1614,10 +1639,16 @@ grolygori789-crypto/last-witness
 Branch:
 production-rebuild
 
-Latest observed Production HEAD:
+Repository HEAD observed at audit:
+1869493b4461f1716b9677d89eadcbc79a4737dc
+
+Repository HEAD message:
+Update master plan for Phase V portrait blocker
+
+Runtime code/assets HEAD:
 7928a24622f258cfc1a6b825f9445ed246817866
 
-Latest observed Production message:
+Runtime HEAD message:
 Fix Phase V portraits and time (0.18.5)
 
 Current Runtime candidate:
@@ -1639,9 +1670,14 @@ Accepted and locked:
 COMBAT
 CURRENT PORTRAIT SCALE
 ALL OTHER CURRENTLY OBSERVED PHASE V BEHAVIOR
+
+North visual Canon:
+SINGAPOREAN OF INDIAN ETHNICITY
+WARM MEDIUM-BROWN / DEEPER WARM TAN COMPLEXION
+SHORT WAVY DARK HAIR
 ```
 
-Re-fetch the repository before any repair. This snapshot records the handoff moment and must not be mistaken for a permanent branch pointer.
+Re-fetch the repository before any repair. This snapshot records the audit moment and must not be mistaken for a permanent branch pointer.
 
 ---
 
@@ -1649,21 +1685,24 @@ Re-fetch the repository before any repair. This snapshot records the handoff mom
 
 This revision:
 
-- updates the canonical branch name to the verified current branch
-- records current Production candidate `0.18.5`
+- separates repository HEAD from Runtime code/assets HEAD
+- records repository HEAD `1869493b4461f1716b9677d89eadcbc79a4737dc`
+- records Runtime code/assets HEAD `7928a24622f258cfc1a6b825f9445ed246817866`
+- records current Runtime candidate `0.18.5`
 - records Phase V as implemented
 - preserves `0.17.18` as the protected pre-Phase-V baseline
-- records the owner’s latest observed result
+- records the owner's latest observed result and portrait-only repair authorization
 - makes dialogue portrait extraction the only known active blocker
 - locks combat against unnecessary changes
 - locks current portrait scale against unnecessary changes
+- corrects North's visual Canon to Singaporean of Indian ethnicity and separates nationality from ethnicity
 - defines exact portrait repair acceptance criteria
 - forbids cosmetic concealment of bad cutouts
 - preserves story Canon, authority, proof boundaries and ending architecture
 - preserves the owner-upload workflow
 - modifies no Runtime file
 - modifies no asset
-- writes nothing to GitHub
+- performs no GitHub write
 - makes no new Runtime-testing claim
 
 ---
@@ -1675,17 +1714,19 @@ For current work, use this order:
 1. Section 0, Current Owner-Result Override
 2. Section 2, Current Verified Production Snapshot
 3. Section 8, Phase V Implemented Contract
-4. Section 10, Portrait PNG Technical Contract
-5. Section 18, No-Regression Lock
-6. Section 20, Portrait Repair Test Plan
-7. Section 22, Exact Next-Chat Operating Instruction
-8. remaining Canon and architecture sections
-9. historical Git commits and older planning revisions
+4. Section 9, Phase V Visual Canon
+5. Section 10, Portrait PNG Technical Contract
+6. Section 18, No-Regression Lock
+7. Section 20, Portrait Repair Test Plan
+8. Section 22, Exact Next-Chat Operating Instruction
+9. Section 23, Current Defect Record
+10. Section 24, Baseline Preservation Lock
+11. remaining Canon and architecture sections
+12. historical Git commits and older planning revisions
 
-Any older statement saying that Phase V is not implemented, that attack choreography is still unresolved, or that audio is the only missing category is historical and superseded.
+Any older statement saying that Phase V is not implemented, attack choreography is unresolved, audio is the only missing category, repository HEAD equals Runtime HEAD, or North is described as either only Indian or only Singaporean while omitting the other identity component is historical and superseded.
 
 ---
-
 
 # 27. COMPLETE RUNTIME OWNERSHIP SNAPSHOT
 
@@ -1821,7 +1862,7 @@ Owns presentation behavior for Dialogue History and Case File scrolling. It does
 
 ### `04a-arman-encounter-revision.js`
 
-Scoped owner for accepted Phase IV presentation and Arman’s late-character extension. It is not blanket permission to create parallel Character systems.
+Scoped owner for accepted Phase IV presentation and Arman's late-character extension. It is not blanket permission to create parallel Character systems.
 
 ### `05-north-is-marked.js`
 
@@ -1836,7 +1877,7 @@ Scoped Phase V owner for:
 - Phase V audio synchronization
 - Phase V portrait asset references
 
-A portrait repair must not expand this module’s authority.
+A portrait repair must not expand this module's authority.
 
 ---
 
@@ -1980,7 +2021,7 @@ Objective:
 
 Protected interest:
 
-- North’s agency and survival
+- North's agency and survival
 
 Fear:
 
@@ -2176,7 +2217,7 @@ Received:
 - delivery conditions
 - blind continuity contact code
 
-Did not receive Elena’s identity.
+Did not receive Elena's identity.
 
 Objective:
 
@@ -2206,7 +2247,7 @@ Protected interest:
 - discovered 18-07 reactivation
 - contacted Rin
 - used Daniel as publication safeguard
-- began suspecting Elena’s sequence control
+- began suspecting Elena's sequence control
 - carried evidence to the pier
 - identity-bearing material was removed after death
 
@@ -2224,7 +2265,7 @@ Protected interest:
 
 - legitimate deployment authority
 - no authority over victims or murder records
-- initially believed Elena’s tasks were continuity work
+- initially believed Elena's tasks were continuity work
 - moved from belief to suspicion to knowing concealment
 - real accomplice
 - not victim selector
@@ -2277,7 +2318,7 @@ Protected interest:
 
 ## CONTINUITY PROTOCOL
 
-- Elena’s doctrine
+- Elena's doctrine
 - combines true records into controlled chronology
 - acts through people, policy, credentials and timing
 - not one sentient application
@@ -2382,7 +2423,6 @@ The player may know:
 No character supplies the complete answer alone.
 
 ---
-
 # 33. EVIDENCE OWNERSHIP AND CUSTODY MATRIX
 
 | Evidence | Original lawful custodian | Analysis holder | Certification/testimony | Main risk |
@@ -2452,7 +2492,7 @@ Motive:
 Opportunity:
 
 - pier presence
-- Daniel’s trust
+- Daniel's trust
 - discovery timing
 
 Required corroboration:
@@ -2622,7 +2662,7 @@ Planned phases:
 1. Return to Bangkok
 2. Name in Room 1807
 3. Room/Profile Cross-Map
-4. Daniel’s Handoff
+4. Daniel's Handoff
 5. The Registrar
 6. Pier Reconstruction
 7. Witness Extraction
@@ -2663,7 +2703,7 @@ Planned phases:
 |---|---|---|
 | Room 1807 staged | true objects arranged into false order | model for false official record |
 | `R.` calls | Rin and Registrar | living witness and authority |
-| pier note | Kawin’s meeting | physical reconstruction |
+| pier note | Kawin's meeting | physical reconstruction |
 | 18-07 | operational profile | access without identity |
 | corrected time | accepted false chronology | timing control |
 | Singapore booking | records travelled | travel/identity separation |
@@ -2752,7 +2792,7 @@ Choices affect dimensions such as:
 
 Show consequences, not hidden ending points.
 
-North’s safety decisions require informed consent.
+North's safety decisions require informed consent.
 
 ---
 
@@ -2927,7 +2967,9 @@ The route that uses North without full consent has consequences and is never cel
 - the owner must not be the first tester of a claimed blocker-free build
 - dark hair cannot be safely extracted by naive black-background thresholding
 - a transparent border does not prove that the subject was preserved
-- “45/45 RGBA PNG” does not prove that heads and bodies are intact
+- `45/45 RGBA PNG` does not prove that heads and bodies are intact
+- documentation HEAD and Runtime HEAD must be recorded separately when the latest commit changes only documentation
+- demographic and visual Canon must agree; stale appearance labels cannot override current character identity
 
 ---
 
@@ -3027,13 +3069,17 @@ A resolved historical issue may be reopened only when the owner reproduces it in
 - all eight dialogue expressions per character
 - black-background inspection
 - checkerboard inspection
+- mid-gray inspection
+- white-background inspection
 - actual dialogue UI inspection
 - current scale preserved
 - no head loss
 - no body loss
 - no hair loss
 - no gray contamination
+- no white or cyan fringe
 - no outline or glow
+- no identity, costume or expression drift
 
 ## Reporting honesty
 
@@ -3075,12 +3121,18 @@ This revision preserves the binding substance of the previous full-merge canonic
 - owner-upload workflow
 - Phase V visual identity
 - two-clip and motion-comic historical contracts where still relevant
-- North’s agency
-- Ika’s fatal earlier-murder timeline contradiction
+- North's agency
+- Ika's fatal earlier-murder timeline contradiction
 
-It updates the status layer to reflect that Phase V is now implemented through `0.18.5` and that the only currently reported blocker is the Phase V dialogue portrait cutout quality.
+It updates the status layer to reflect:
 
-No historical “Phase V not implemented” statement has authority over the current owner-result override.
+- Phase V implemented through Runtime candidate `0.18.5`
+- repository HEAD and Runtime HEAD are separate concepts
+- the latest repository commit observed is documentation-only
+- the only currently reported blocker is Phase V dialogue portrait cutout quality
+- current North Canon is Singaporean of Indian ethnicity, with the complexion and visual identity shown in owner-approved references
+
+No historical `Phase V not implemented`, nationality/ethnicity conflation, or stale single-HEAD statement has authority over the current owner-result override.
 
 ---
 
@@ -3092,16 +3144,28 @@ LAST WITNESS
 SOURCE OF TRUTH:
 GAME_MASTER_PLAN.md
 
+DOCUMENT REVISION:
+2026-08-05 01:49 ICT
+
 REPOSITORY:
 grolygori789-crypto/last-witness
 
 BRANCH:
 production-rebuild
 
-LATEST OBSERVED HEAD:
+REPOSITORY HEAD OBSERVED AT AUDIT:
+1869493b4461f1716b9677d89eadcbc79a4737dc
+
+REPOSITORY HEAD MESSAGE:
+Update master plan for Phase V portrait blocker
+
+RUNTIME CODE/ASSETS HEAD:
 7928a24622f258cfc1a6b825f9445ed246817866
 
-LATEST OBSERVED BUILD:
+RUNTIME HEAD MESSAGE:
+Fix Phase V portraits and time (0.18.5)
+
+LATEST OBSERVED RUNTIME BUILD:
 0.18.5
 
 CURRENT IMPLEMENTED ENDPOINT:
@@ -3119,15 +3183,24 @@ VISIBLE FAILURES:
 HEADS CLIPPED
 BODY REGIONS MISSING
 DARK HAIR LOST AGAINST BLACK
-GRAY SOURCE CONTAMINATION / POOR ALPHA EDGES
+GRAY SOURCE CONTAMINATION
+POOR TRUE-ALPHA EDGES
+
+CURRENT AUTHORIZATION:
+PORTRAIT CUTOUT REPAIR ONLY
 
 REPAIR OWNER:
 PORTRAIT SOURCE EXTRACTION AND TRUE-ALPHA PREPARATION
 
+NORTH CURRENT CANON:
+SINGAPOREAN OF INDIAN ETHNICITY
+WARM MEDIUM-BROWN / DEEPER WARM TAN COMPLEXION
+SHORT WAVY DARK HAIR
+
 DO NOT TOUCH:
 COMBAT
 STORY
-CANON
+CANON OUTSIDE THIS CORRECTION
 TIMING
 HUD
 AUDIO
@@ -3140,9 +3213,14 @@ VIDEOS
 EARLIER CHAPTERS
 
 DELIVERY:
-LOCAL ZIP ONLY
+LOCAL ZIP FOR RUNTIME REPAIR
+DIRECT FULL FILE FOR MASTER PLAN REPLACEMENT
 OWNER UPLOADS GITHUB
 NO SUCCESS CLAIM BEFORE OWNER TEST
+
+IMPORTANT:
+RE-FETCH GITHUB BEFORE FUTURE EDITING
+THE HEAD WILL ADVANCE WHEN THE OWNER UPLOADS THIS FILE
 ```
 
 ---
