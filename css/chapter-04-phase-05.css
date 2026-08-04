@@ -1,4 +1,4 @@
-/* LAST WITNESS - Chapter IV / Phase V: NORTH IS MARKED 0.18.4 */
+/* LAST WITNESS - Chapter IV / Phase V: NORTH IS MARKED 0.18.5 */
 :root{--p5-gold:#ddb56d;--p5-gold-soft:#f0d49c;--p5-blue:#77a4b7;--p5-ink:#04070b;--p5-paper:#f5eee4;--p5-red:#c73939}
 .ch4-p5-video,.ch4-p5-card,.ch4-p5-scene,.ch4-p5-marked,.ch4-p5-combat,.ch4-p5-complete{display:none;background:#040609;color:var(--p5-paper);overflow:hidden}
 .ch4-p5-video.active,.ch4-p5-card.active,.ch4-p5-scene.active,.ch4-p5-marked.active,.ch4-p5-combat.active,.ch4-p5-complete.active{display:block}
@@ -125,7 +125,7 @@ html[lang="th"] .ch4-p5-title-card h2,html[lang="th"] .ch4-p5-location-card h2,h
  .ch4-p5-marked .ch4-p5-objective{font-size:9.8px}
 }
 
-/* LAST WITNESS - Chapter IV / Phase V owner-device correction 0.18.4
+/* LAST WITNESS - Chapter IV / Phase V owner-device correction 0.18.5
  * Restores standard utility controls, top-safe scene geometry, black portrait wells,
  * persistent marked-scene audio duck and stable combat progress/effects.
  */
@@ -177,7 +177,7 @@ html[lang="th"] .ch4-p5-title-card h2,html[lang="th"] .ch4-p5-location-card h2,h
 @media(prefers-reduced-motion:reduce){.ch4-p5-combat-stage.rush .ch4-p5-combat-frame,.ch4-p5-combat-stage.impact .ch4-p5-impact-burst{animation:none!important}}
 
 
-/* LAST WITNESS - Phase V portrait matte and directional lock 0.18.4
+/* LAST WITNESS - Phase V portrait matte and directional lock 0.18.5
  * Source-preserving cutouts use a black edge-decontaminated matte around dark hair.
  * No glow, gray plate or synthetic outline is applied.
  */
@@ -186,3 +186,11 @@ html[lang="th"] .ch4-p5-title-card h2,html[lang="th"] .ch4-p5-location-card h2,h
 .ch4-p5-card-portrait.benedict{transform:scale(1.045)!important}
 .ch4-p5-card-portrait.north{transform:scale(1.08)!important}
 .ch4-p5-card-portrait.cheryl,.ch4-p5-card-portrait.maya,.ch4-p5-card-portrait.ika{transform:scale(1.025)!important}
+
+
+/* LAST WITNESS - Phase V portrait edge proof 0.18.5
+ * Portrait PNGs now own their decontaminated true-alpha matte and restrained cool contour.
+ * Runtime must not add glow, gray vignette, cyan aura or blend-mode effects.
+ */
+.ch4-p5-dialogue .portrait-wrap{background:#000!important}
+.ch4-p5-card-portrait{filter:none!important;mix-blend-mode:normal!important}
