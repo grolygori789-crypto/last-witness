@@ -1,4 +1,4 @@
-/* LAST WITNESS - Chapter IV / Phase V: NORTH IS MARKED 0.18.1 */
+/* LAST WITNESS - Chapter IV / Phase V: NORTH IS MARKED 0.18.2 */
 :root{--p5-gold:#ddb56d;--p5-gold-soft:#f0d49c;--p5-blue:#77a4b7;--p5-ink:#04070b;--p5-paper:#f5eee4;--p5-red:#c73939}
 .ch4-p5-video,.ch4-p5-card,.ch4-p5-scene,.ch4-p5-marked,.ch4-p5-combat,.ch4-p5-complete{display:none;background:#040609;color:var(--p5-paper);overflow:hidden}
 .ch4-p5-video.active,.ch4-p5-card.active,.ch4-p5-scene.active,.ch4-p5-marked.active,.ch4-p5-combat.active,.ch4-p5-complete.active{display:block}
@@ -71,66 +71,56 @@ html[lang="th"] .ch4-p5-title-card h2,html[lang="th"] .ch4-p5-location-card h2,h
 .ch4-p5-card-portrait{transform:scale(1.04)}
 .ch4-p5-combat>.ch4-p5-progress{top:calc(68px + env(safe-area-inset-top));right:10px;bottom:auto;opacity:.78}
 
-/* LAST WITNESS - Chapter IV / Phase V owner defect repair 0.18.1
- * Scope: card continuity, true-alpha dialogue portraits, scene-label geometry,
- * pure-gold phase progress, combat composition and Phase IV completion continuity.
+/* LAST WITNESS - Chapter IV / Phase V defect correction 0.18.2
+ * Exact continuity repair after owner-device review.
  */
 
-/* Match the accepted Chapter IV Phase IV title/location card language exactly. */
-.ch4-p5-card.ch4-p4-location{display:none;align-items:center;justify-content:center;padding:calc(28px + env(safe-area-inset-top)) 22px calc(28px + env(safe-area-inset-bottom));background:#040609}
-.ch4-p5-card.ch4-p4-location.active{display:flex}
-.ch4-p5-title-card.ch4-p4-phase-title-card{display:block;width:min(91vw,620px);padding:clamp(34px,9vw,70px) clamp(24px,7vw,58px);border:0;background:transparent;box-shadow:none}
-.ch4-p5-title-card.ch4-p4-phase-title-card h2{max-width:15ch;margin:18px auto 0;font:500 clamp(38px,11vw,68px)/.96 Georgia,serif;letter-spacing:.055em}
-.ch4-p5-title-mark.ch4-p4-phase-mark{width:76px;height:54px;margin:0 auto 25px}
-.ch4-p5-title-mark.ch4-p4-phase-mark i{width:48px;height:48px}.ch4-p5-title-mark.ch4-p4-phase-mark i:nth-child(2){width:34px;height:34px}.ch4-p5-title-mark.ch4-p4-phase-mark i:nth-child(3){width:18px;height:18px}
-.ch4-p5-location-card.ch4-p4-location-card{width:min(92vw,570px);padding:clamp(27px,7vw,48px);border:1px solid rgba(221,181,109,.38);background:linear-gradient(155deg,rgba(22,27,34,.96),rgba(6,8,12,.98) 76%);box-shadow:0 30px 84px rgba(0,0,0,.70),inset 0 1px rgba(255,255,255,.04)}
-.ch4-p5-location-card.ch4-p4-location-card p{max-width:45ch;font-size:13.5px;line-height:1.65}
+/* The phase title is part of the establishing clip, exactly as in accepted Phase IV. */
+.ch4-p5-video-title{z-index:24}
+.ch4-p5-video-title h2{max-width:15ch}
+#arunaLocationCard.active{display:flex}
+#arunaLocationCard .ch4-p4-location-card{animation:ch4P5CardIn .68s cubic-bezier(.2,.75,.25,1) both}
 
-/* Scene text returns to the accepted upper safe-area geometry. */
-.ch4-p5-label{top:calc(34px + env(safe-area-inset-top));left:16px}
-.ch4-p5-objective{top:calc(58px + env(safe-area-inset-top));left:16px;right:16px;padding:9px 12px}
-.ch4-p5-marked .ch4-p5-label{top:calc(30px + env(safe-area-inset-top))}
-.ch4-p5-marked .ch4-p5-objective{top:calc(54px + env(safe-area-inset-top));max-width:560px}
+/* Progress belongs to playable Phase content, never to opening cinematics/cards. */
+#arunaEstablishing .ch4-p5-progress,#arunaPhase5Card .ch4-p5-progress,#arunaLocationCard .ch4-p5-progress,#arunaTeamReveal .ch4-p5-progress{display:none!important}
+.ch4-p5-progress{color:#f1dfbb}
+.ch4-p5-progress-fill{background:linear-gradient(90deg,#8c6123 0%,#bd8435 32%,#ddb56d 68%,#f1d79f 100%)!important;box-shadow:0 0 8px rgba(221,181,109,.52)!important}
 
-/* True-alpha cool-cut portraits. No baked dark card, white matte or edge halo. */
-.ch4-p5-dialogue{min-height:178px;grid-template-columns:136px minmax(0,1fr)}
-.ch4-p5-dialogue.right{grid-template-columns:minmax(0,1fr) 136px}
-.ch4-p5-dialogue .portrait-wrap{overflow:hidden;background:linear-gradient(160deg,#101821,#020407 86%);box-shadow:inset 0 0 0 1px rgba(132,184,207,.12)}
-.ch4-p5-dialogue .portrait-wrap:before{background:radial-gradient(circle at 52% 24%,rgba(92,153,180,.20),transparent 48%);clip-path:none}
-.ch4-p5-dialogue .portrait-wrap:after{height:24%;background:linear-gradient(transparent,rgba(2,4,7,.78));border-bottom:1px solid rgba(119,164,183,.42);box-shadow:0 1px rgba(221,181,109,.22)}
-.ch4-p5-card-portrait{position:absolute;z-index:2;inset:0;width:100%;height:100%;object-fit:contain;object-position:center top;transform:scale(1.075);transform-origin:center top;filter:drop-shadow(0 0 1.15px rgba(133,201,229,.72)) drop-shadow(0 0 4px rgba(65,124,151,.27)) drop-shadow(0 10px 14px rgba(0,0,0,.66))}
-.ch4-p5-card-portrait.benedict{transform:scale(1.11)}
-.ch4-p5-card-portrait.north,.ch4-p5-card-portrait.cheryl,.ch4-p5-card-portrait.maya,.ch4-p5-card-portrait.ika{transform:scale(1.085)}
+/* Dialogue portraits: seamless black alpha-vignette assets, no cyan/blue edge treatment. */
+.ch4-p5-dialogue{min-height:166px;grid-template-columns:128px minmax(0,1fr)}
+.ch4-p5-dialogue.right{grid-template-columns:minmax(0,1fr) 128px}
+.ch4-p5-dialogue .portrait-wrap{overflow:hidden;background:#020407!important;box-shadow:inset 0 0 0 1px rgba(221,181,109,.12)!important}
+.ch4-p5-dialogue .portrait-wrap:before,.ch4-p5-dialogue .portrait-wrap:after{display:none!important;content:none!important}
+.ch4-p5-card-portrait{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;object-position:center top;transform:scale(1.08)!important;transform-origin:center top;filter:none!important}
+.ch4-p5-card-portrait.benedict{transform:scale(1.10)!important}
+.ch4-p5-card-portrait.north,.ch4-p5-card-portrait.cheryl,.ch4-p5-card-portrait.maya,.ch4-p5-card-portrait.ika{transform:scale(1.08)!important}
 
-/* Phase progress is gold only. Blue belongs to no part of this meter. */
-.ch4-p5-progress{color:#f0dfbd}
-.ch4-p5-progress-fill{background:linear-gradient(90deg,#8c6123 0%,#c89343 34%,#ddb56d 68%,#f0d49c 100%);box-shadow:0 0 9px rgba(221,181,109,.58)}
+/* Marked CG: compact intel header sits above North's face. */
+.ch4-p5-marked .ch4-p5-label{top:calc(12px + env(safe-area-inset-top))!important;left:16px;right:16px;width:max-content;max-width:calc(100% - 32px);padding:5px 9px;background:rgba(3,6,10,.84);border-left:2px solid rgba(221,181,109,.86);font-size:9.6px;letter-spacing:.145em;white-space:nowrap}
+.ch4-p5-marked .ch4-p5-objective{top:calc(40px + env(safe-area-inset-top))!important;left:16px;right:16px;max-width:410px;padding:6px 9px;background:linear-gradient(90deg,rgba(3,6,10,.88),rgba(3,6,10,.42) 84%,transparent);font-size:10.5px;line-height:1.34}
 
-/* Combat editorial split: mirrored attacker, face-safe crops and exchange-specific space. */
-.ch4-p5-combat-stage{--p5-split-top:57%;--p5-split-bottom:49%;background:#04070b}
-.ch4-p5-panel{background-color:#05080c;background-repeat:no-repeat;background-size:auto 100%;will-change:clip-path,transform;background-position:center center}
-.ch4-p5-panel.north{clip-path:polygon(0 0,var(--p5-split-top) 0,var(--p5-split-bottom) 100%,0 100%);background-position:42% center}
-.ch4-p5-panel.unknown{clip-path:polygon(var(--p5-split-top) 0,100% 0,100% 100%,var(--p5-split-bottom) 100%);background-position:58% center}
-.ch4-p5-panel-divider{left:52.4%;transform:rotate(4.8deg);background:linear-gradient(transparent,rgba(221,181,109,.92) 18%,rgba(221,181,109,.72) 66%,transparent);box-shadow:0 0 13px rgba(221,181,109,.45)}
-.ch4-p5-combat-stage[data-exchange="0"]{--p5-split-top:57%;--p5-split-bottom:49%}
-.ch4-p5-combat-stage[data-exchange="0"] .north{background-position:38% center}.ch4-p5-combat-stage[data-exchange="0"] .unknown{background-position:65% center}
-.ch4-p5-combat-stage[data-exchange="1"]{--p5-split-top:60%;--p5-split-bottom:51%}
-.ch4-p5-combat-stage[data-exchange="1"] .north{background-position:38% center}.ch4-p5-combat-stage[data-exchange="1"] .unknown{background-position:66% center}
-.ch4-p5-combat-stage[data-exchange="2"]{--p5-split-top:66%;--p5-split-bottom:55%}
-.ch4-p5-combat-stage[data-exchange="2"] .north{background-position:31% center}.ch4-p5-combat-stage[data-exchange="2"] .unknown{background-position:72% center}
-.ch4-p5-panel:after{background:linear-gradient(180deg,rgba(2,4,7,.02),transparent 56%,rgba(1,2,4,.30))}
+/* Combat uses approved precomposed editorial frames. Both heads and actions stay readable. */
+.ch4-p5-combat-stage{position:relative;flex:0 1 auto;width:100%;height:min(58dvh,590px);min-height:390px;overflow:hidden;background:#030609}
+.ch4-p5-combat-frame{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center center;display:block}
+.ch4-p5-panel,.ch4-p5-panel-divider{display:none!important}
+.ch4-p5-combat-stage:after{content:"";position:absolute;z-index:3;inset:0;pointer-events:none;background:linear-gradient(180deg,rgba(2,4,7,.04),transparent 70%,rgba(2,4,7,.20))}
+.ch4-p5-combat-stage.north-win .ch4-p5-combat-frame{animation:ch4P5FrameNorth .46s cubic-bezier(.18,.75,.25,1) both}
+.ch4-p5-combat-stage.unknown-win .ch4-p5-combat-frame{animation:ch4P5FrameUnknown .46s cubic-bezier(.18,.75,.25,1) both}
+@keyframes ch4P5FrameNorth{45%{transform:translateX(1.2%) scale(1.014)}100%{transform:none}}
+@keyframes ch4P5FrameUnknown{45%{transform:translateX(-1.2%) scale(1.014)}100%{transform:none}}
+.ch4-p5-combat>.ch4-p5-progress{top:auto!important;right:14px!important;bottom:calc(151px + env(safe-area-inset-bottom))!important;opacity:.88}
 
-/* Completion uses the accepted Phase IV card geometry instead of a new visual dialect. */
-.ch4-p5-complete.ch4-p4-complete.active{display:flex;align-items:center;justify-content:center;padding:calc(26px + env(safe-area-inset-top)) 20px calc(26px + env(safe-area-inset-bottom));background:#040609}
-.ch4-p5-complete-card.ch4-p4-complete-card{width:min(92vw,620px);max-height:90dvh;padding:clamp(25px,6.5vw,46px);border-color:rgba(221,181,109,.52);background:linear-gradient(156deg,rgba(22,31,40,.98),rgba(5,8,13,.995) 76%);box-shadow:0 38px 110px rgba(0,0,0,.82),inset 0 1px rgba(255,255,255,.055)}
-.ch4-p5-complete-sigil.ch4-p4-complete-sigil{width:72px;height:72px;margin:0 auto 18px}
-.ch4-p5-complete-grid.ch4-p4-complete-grid{grid-template-columns:1fr 1fr;gap:8px;margin:18px 0}
+/* Completion is rendered by the accepted Phase IV classes without a Phase V sigil/redesign. */
+#arunaPhase5Complete.ch4-p4-complete.active{display:flex}
+#arunaPhase5Complete .ch4-p5-progress{right:16px;bottom:calc(17px + env(safe-area-inset-bottom))}
 
 @media(max-width:430px){
- .ch4-p5-dialogue{grid-template-columns:126px minmax(0,1fr)}.ch4-p5-dialogue.right{grid-template-columns:minmax(0,1fr) 126px}
- .ch4-p5-combat-stage[data-exchange="2"]{--p5-split-top:68%;--p5-split-bottom:57%}
+ .ch4-p5-dialogue{grid-template-columns:120px minmax(0,1fr)}.ch4-p5-dialogue.right{grid-template-columns:minmax(0,1fr) 120px}
+ .ch4-p5-combat-stage{height:min(56dvh,555px);min-height:370px}
 }
 @media(max-width:360px){
- .ch4-p5-dialogue{grid-template-columns:114px minmax(0,1fr)}.ch4-p5-dialogue.right{grid-template-columns:minmax(0,1fr) 114px}
- .ch4-p5-card-portrait{transform:scale(1.07)}
+ .ch4-p5-dialogue{grid-template-columns:108px minmax(0,1fr)}.ch4-p5-dialogue.right{grid-template-columns:minmax(0,1fr) 108px}
+ .ch4-p5-combat-stage{height:min(54dvh,500px);min-height:340px}
+ .ch4-p5-marked .ch4-p5-label{font-size:8.7px;letter-spacing:.11em}
+ .ch4-p5-marked .ch4-p5-objective{font-size:9.8px}
 }
