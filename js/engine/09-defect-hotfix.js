@@ -1,11 +1,8 @@
-/* LAST WITNESS - Legacy Compatibility Shim + Runtime Bootstrap 0.17.18
+/* LAST WITNESS - Legacy Compatibility Shim + Runtime Bootstrap 0.18.0
  * Loads approved localization and targeted QC before dynamic Chapter IV modules.
- * Existing Phase I through Phase III order is preserved. Phase IV 0.17.0 loads first,
- * followed by the Arman Journal contract repair 0.17.7,
- * then the direct Phase III handoff and Developer Phase Navigation patches.
- * Character notification contract 0.17.14 and Modal Scroll UX 0.17.15 remain unchanged.
- * Phase Action Standard 0.17.18 preserves approved scene-action and Phase VIII
- * geometry, then adds scoped Chapter IV Phase IV minigame containment/centring.
+ * Existing Phase I through Phase IV order is preserved. Phase V loads as one
+ * isolated future module before the accepted handoff and Developer navigation.
+ * Shared 0.17.18 geometry remains unchanged and deliberately late.
  */
 (function(){
 "use strict";
@@ -71,15 +68,23 @@ script("js/engine/15-thai-localization.js?v=0152","lwThaiLocalizationScript",()=
    ()=>Boolean(window.LastWitnessChapter4Phase4Revision?.version==="0.17.7"&&window.LastWitnessChapter4Phase4Revision?.installed)
   ).catch(error=>console.error("LAST WITNESS Phase IV consistency repair failed to load",error))
  })
+ .then(()=>{
+  stylesheet("css/chapter-04-phase-05.css?v=0180","lwChapter04Phase05Style");
+  return script(
+   "js/chapters/chapter-04/05-north-is-marked.js?v=0180",
+   "lwChapter04Phase05Script",
+   ()=>Boolean(window.LastWitnessChapter4Phase5?.version==="0.18.0")
+  ).catch(error=>console.error("LAST WITNESS North Is Marked failed to load",error))
+ })
  .then(()=>script(
   "js/engine/19-ch4-phase3-direct-handoff.js?v=0170d2",
   "lwChapter4Phase3DirectHandoffScript",
   ()=>Boolean(window.LastWitnessPhase3DirectHandoff?.version==="0.17.0-d2"&&window.LastWitnessPhase3DirectHandoff?.installed)
  ).catch(error=>console.error("LAST WITNESS Phase III direct handoff failed to load",error)))
  .then(()=>script(
-  "js/engine/18-developer-phase-navigation.js?v=0170d2",
+  "js/engine/18-developer-phase-navigation.js?v=0180d1",
   "lwDeveloperPhaseNavigationScript",
-  ()=>Boolean(window.LastWitnessDeveloperPhaseNavigation?.version==="0.17.0-d2"&&window.LastWitnessDeveloperPhaseNavigation?.installed)
+  ()=>Boolean(window.LastWitnessDeveloperPhaseNavigation?.version==="0.18.0-d1"&&window.LastWitnessDeveloperPhaseNavigation?.installed)
  ).catch(error=>console.error("LAST WITNESS Developer Phase Navigation failed to load",error)))
  .then(()=>stylesheet(
   "css/phase-action-standard.css?v=01718",

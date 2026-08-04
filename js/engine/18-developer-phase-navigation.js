@@ -1,10 +1,10 @@
-/* LAST WITNESS — Isolated Chapter IV Developer Phase Navigation 0.17.0-d2
+/* LAST WITNESS - Isolated Chapter IV Developer Phase Navigation 0.18.0-d1
  * Provides reliable fresh-entry Developer Console jumps to every implemented
  * Chapter IV phase. This file changes Developer Mode only.
  */
 (function(){
 "use strict";
-const VERSION="0.17.0-d2";
+const VERSION="0.18.0-d1";
 if(window.LastWitnessDeveloperPhaseNavigation?.version===VERSION){
  try{window.LastWitnessDeveloperPhaseNavigation.install?.()}catch(_){}
  return
@@ -21,7 +21,8 @@ const PHASES=[
  {id:"chapter4Phase1",phase:1,en:"Chapter IV · Phase I · Afterimage",th:"บทที่ IV · เฟส I · ภาพตกค้าง",api:"LastWitnessChapter4Phase1",screens:["chapter4Intro","chapter4Phase1Card","chapter4Afterimage","chapter4Phase1Complete"]},
  {id:"chapter4Phase2",phase:2,en:"Chapter IV · Phase II · Jakarta Arrival",th:"บทที่ IV · เฟส II · เดินทางถึง Jakarta",api:"LastWitnessChapter4Phase2",screens:["jakartaFlight","jakartaAirport","jakartaCybercrimeOffice","jakartaVerificationLab","jakartaPhase2Complete"]},
  {id:"chapter4PacketProvenance",phase:3,en:"Chapter IV · Phase III · Packet Trail",th:"บทที่ IV · เฟส III · เส้นทางข้อมูล",api:"LastWitnessChapter4Phase3",screens:["jakartaVerificationLab","jakartaPacketProvenanceComplete"]},
- {id:"chapter4ArmanEncounter",phase:4,en:"Chapter IV · Phase IV · The Man Behind the Alias",th:"บทที่ IV · เฟส IV · ชายผู้อยู่หลังนามแฝง",api:"LastWitnessChapter4Phase4",screens:["armanVehicleApproach","armanLocationCard","armanStairwell","armanWorkshop","armanReveal","armanPhase4Complete"]}
+ {id:"chapter4ArmanEncounter",phase:4,en:"Chapter IV · Phase IV · The Man Behind the Alias",th:"บทที่ IV · เฟส IV · ชายผู้อยู่หลังนามแฝง",api:"LastWitnessChapter4Phase4",screens:["armanVehicleApproach","armanLocationCard","armanStairwell","armanWorkshop","armanReveal","armanPhase4Complete"]},
+ {id:"chapter4NorthMarked",phase:5,en:"Chapter IV · Phase V · North Is Marked",th:"บทที่ IV · เฟส V · North ถูกหมายหัว",api:"LastWitnessChapter4Phase5",screens:["arunaEstablishing","arunaPhase5Card","arunaLocationCard","arunaTeamReveal","arunaMainPool","arunaCabana","arunaPoolside","arunaServicePath","arunaBlindCorner","arunaNorthMarked","arunaCombat","arunaPhase5Complete"]}
 ];
 
 let running=false;
@@ -31,26 +32,29 @@ function closeDeveloperUI(){
  $("#developerModal")?.classList.remove("open")
 }
 function stopCurrentMedia(){
- ["LastWitnessChapter4Phase4","LastWitnessChapter4Phase3","LastWitnessChapter4Phase2","LastWitnessChapter4Phase1"].forEach(name=>{
+ ["LastWitnessChapter4Phase5","LastWitnessChapter4Phase4","LastWitnessChapter4Phase3","LastWitnessChapter4Phase2","LastWitnessChapter4Phase1"].forEach(name=>{
   try{window[name]?.stopAudio?.(true)}catch(error){console.warn("LAST WITNESS Dev navigation media stop skipped",name,error)}
  })
 }
 function resetPhaseContainers(item){
  const s=gs();if(!s)throw new Error("Game state unavailable");
  s.chapter4=s.chapter4||{};s.flags=s.flags||{};s.characters=s.characters||{};s.relationships=s.relationships||{};
- /* The phase modules use Object.assign(defaults, existingState) when priming
-    prerequisites. Stale false values therefore override their Dev defaults.
-    Delete the relevant containers first so each Dev jump starts from a truly
-    fresh, deterministic state. */
- if(item.phase===1){delete s.chapter4.phase1;delete s.chapter4.phase2;delete s.chapter4.phase3;delete s.chapter4.phase4}
- if(item.phase===2){delete s.chapter4.phase1;delete s.chapter4.phase2;delete s.chapter4.phase3;delete s.chapter4.phase4}
- if(item.phase===3){delete s.chapter4.phase2;delete s.chapter4.phase3;delete s.chapter4.phase4}
- if(item.phase===4){delete s.chapter4.phase3;delete s.chapter4.phase4}
+ if(item.phase===1){delete s.chapter4.phase1;delete s.chapter4.phase2;delete s.chapter4.phase3;delete s.chapter4.phase4;delete s.chapter4.phase5}
+ if(item.phase===2){delete s.chapter4.phase1;delete s.chapter4.phase2;delete s.chapter4.phase3;delete s.chapter4.phase4;delete s.chapter4.phase5}
+ if(item.phase===3){delete s.chapter4.phase2;delete s.chapter4.phase3;delete s.chapter4.phase4;delete s.chapter4.phase5}
+ if(item.phase===4){delete s.chapter4.phase3;delete s.chapter4.phase4;delete s.chapter4.phase5}
+ if(item.phase===5){delete s.chapter4.phase4;delete s.chapter4.phase5}
  if(item.phase===4&&s.flags.developer_character_unlock_all!==true){
   s.characters["Arman Suryadi"]=false;
   if(Array.isArray(s.lwCharactersUnlocked))s.lwCharactersUnlocked=s.lwCharactersUnlocked.filter(id=>id!=="arman");
   if(Array.isArray(s.lwCharactersUnread))s.lwCharactersUnread=s.lwCharactersUnread.filter(id=>id!=="arman");
   delete s.flags.ch4_arman_identity_verified
+ }
+ if(item.phase===5&&s.flags.developer_character_unlock_all!==true){
+  s.characters["Ika Prameswari"]=false;
+  if(Array.isArray(s.lwCharactersUnlocked))s.lwCharactersUnlocked=s.lwCharactersUnlocked.filter(id=>id!=="ika");
+  if(Array.isArray(s.lwCharactersUnread))s.lwCharactersUnread=s.lwCharactersUnread.filter(id=>id!=="ika");
+  delete s.flags.ch4_p5_ika_identified
  }
 }
 async function waitForApi(item,timeout=8000){
@@ -67,7 +71,7 @@ function phaseStarted(item){
  const s=gs(),screen=$(".screen.active")?.id||s?.screen||"";
  return Number(s?.chapter)===4&&item.screens.includes(screen)&&Boolean(s?.chapter4?.["phase"+item.phase]?.started)
 }
-async function waitForEntry(item,timeout=3500){
+async function waitForEntry(item,timeout=4200){
  const started=performance.now();
  while(performance.now()-started<timeout){if(phaseStarted(item))return true;await sleep(40)}
  return phaseStarted(item)
