@@ -1,4 +1,4 @@
-/* LAST WITNESS - Legacy Compatibility Shim + Runtime Bootstrap 0.18.11
+/* LAST WITNESS - Legacy Compatibility Shim + Runtime Bootstrap 0.18.12
  * Loads approved localization and targeted QC before dynamic Chapter IV modules.
  * Existing Phase I through Phase IV order is preserved. Phase V loads as one
  * isolated future module before the accepted handoff and Developer navigation.
@@ -77,6 +77,11 @@ script("js/engine/15-thai-localization.js?v=0152","lwThaiLocalizationScript",()=
    ()=>Boolean(window.LastWitnessChapter4Phase5?.version==="0.18.9")
   ).catch(error=>console.error("LAST WITNESS North Is Marked failed to load",error))
  })
+ .then(()=>script(
+  "js/engine/23-chapter4-native-thai.js?v=01812",
+  "lwChapter4NativeThaiScript",
+  ()=>Boolean(window.LastWitnessChapter4NativeThai?.version==="0.18.12"&&window.LastWitnessChapter4NativeThai?.installed)
+ ).catch(error=>console.error("LAST WITNESS Chapter IV Native Thai localization failed to load",error)))
  .then(()=>script(
   "js/engine/19-ch4-phase3-direct-handoff.js?v=0170d2",
   "lwChapter4Phase3DirectHandoffScript",
