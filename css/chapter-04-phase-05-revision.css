@@ -1,4 +1,4 @@
-/* LAST WITNESS - Chapter IV / Phase V owner-result repair 0.18.9
+/* LAST WITNESS - Chapter IV / Phase V owner-result repair 0.18.10
  * Scope: mobile portrait grounding and face-safe action-accurate combat frames.
  */
 
@@ -47,9 +47,11 @@
 }
 
 
-/* Owner-device correction 0.18.9: exchange-2 preserves Ika's accepted visible face,
- * while the approved north-kick full-frame art replaces only North's diagonal side.
- * The right side is never clipped or replaced, so Ika remains readable.
+/* Owner-device correction 0.18.10: preserve the accepted Ika composition while
+ * fitting North's 864x1536 kick art by stage height instead of full-stage width.
+ * At the owner viewport, cover enlarged the portrait art to roughly 173% of stage
+ * height and removed the head. A 106% height fit fills the diagonal lane, leaves
+ * motion-effect safety margin and crops only a small amount vertically.
  */
 .ch4-p5-combat-stage[data-action="kick"][data-kick-overlay="north-kick"] .ch4-p5-panel.north{
  display:block!important;
@@ -57,8 +59,8 @@
  z-index:2;
  inset:0;
  background-repeat:no-repeat;
- background-size:cover;
- background-position:center center;
+ background-size:auto 106%;
+ background-position:left center;
  clip-path:polygon(0 0,60% 0,49% 100%,0 100%);
  pointer-events:none;
 }
