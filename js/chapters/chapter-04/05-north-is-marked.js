@@ -1,11 +1,11 @@
-/* LAST WITNESS - Chapter IV / Phase V: NORTH IS MARKED 0.18.5
+/* LAST WITNESS - Chapter IV / Phase V: NORTH IS MARKED 0.18.6
  * Isolated Phase V implementation. Preserves the 0.17.18 no-regression baseline.
  */
 (function(){
 "use strict";
-if(window.LastWitnessChapter4Phase5?.version==="0.18.5")return;
+if(window.LastWitnessChapter4Phase5?.version==="0.18.6")return;
 
-const BUILD="0.18.5";
+const BUILD="0.18.6";
 const P4_COMPLETE="armanPhase4Complete";
 const ESTABLISH="arunaEstablishing";
 const PHASE_CARD="arunaPhase5Card";
@@ -114,7 +114,7 @@ const EMOTION_INDEX={
  "Ika Prameswari":{unreadable:0,watching:1,warning:2,smirk:3,assessing:4,surprised:5,hostile:6,ready:7}
 };
 function speakerLabel(name){if(name==="Farid Rahman")return thai()?"Farid Rahman (ต่อสายจากสิงคโปร์)":"Farid Rahman (Remote · Singapore)";if(!thai())return name;return {"Inspector Cheryl Goh":"สารวัตร Cheryl Goh","Inspector Maya Pranoto":"สารวัตร Maya Pranoto"}[name]||name}
-function portraitMarkup(name,emotion){const cls=PORTRAIT_CLASSES[name];if(cls){const index=EMOTION_INDEX[name]?.[emotion]??0;return `<img class="ch4-p5-card-portrait ${cls}" src="${BASE}portraits/${cls}-${index}.png?v=0185" alt="">`}let src="";try{src=typeof portrait==="function"?portrait(name,emotion||"neutral"):""}catch(_){}return src?`<img class="ch4-p5-external-portrait" src="${src}" alt="">`:""}
+function portraitMarkup(name,emotion){const cls=PORTRAIT_CLASSES[name];if(cls){const index=EMOTION_INDEX[name]?.[emotion]??0;return `<img class="ch4-p5-card-portrait ${cls}" src="${BASE}portraits/${cls}-${index}.png?v=0186" alt="">`}let src="";try{src=typeof portrait==="function"?portrait(name,emotion||"neutral"):""}catch(_){}return src?`<img class="ch4-p5-external-portrait" src="${src}" alt="">`:""}
 function dialogueBox(){const screen=active();return SCREENS.has(screen)?$("#"+screen+"Dialogue"):null}
 function recordHistory(line){try{const s=gs();s.history=s.history||[];s.history.push({speaker:speakerLabel(line[0]),text:thai()?line[3]:line[2],chapter:4,phase:5})}catch(_){} }
 function renderDialogue(){const box=dialogueBox();if(!box||!dialogue)return;const line=dialogue.lines[dialogue.i],speaker=line[0],emotion=line[1],right=speaker!=="Benedict",portrait=portraitMarkup(speaker,emotion);box.className="dialogue ch4-p5-dialogue"+(right?" right":"");const label=speaker==="Farid Rahman"?`Farid Rahman <span class="ch4-p5-remote">${thai()?"(ต่อสายจากสิงคโปร์)":"(Remote · Singapore)"}</span>`:speakerLabel(speaker);box.innerHTML=`<div class="portrait-wrap">${portrait}</div><div class="dialogue-copy"><div class="speaker">${label}</div><div class="line">${thai()?line[3]:line[2]}</div></div><div class="next">${tr("TAP TO CONTINUE","แตะเพื่อดำเนินต่อ")}</div>`;syncAudio()}
