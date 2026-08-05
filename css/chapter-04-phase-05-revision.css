@@ -1,27 +1,47 @@
-/* LAST WITNESS - Chapter IV / Phase V owner-result repair 0.18.7
- * Scope: narrow-screen portrait grounding and action-accurate combat panels.
+/* LAST WITNESS - Chapter IV / Phase V owner-result repair 0.18.8
+ * Scope: mobile portrait grounding and face-safe action-accurate combat frames.
  */
 
-/* The approved 640x820 portrait canvases need the accepted 120px well at 360px.
- * The former 108px well forced contain-fit to leave a visible black shelf below
- * several portraits even though the source cutouts and top anchors were correct.
+/* The portrait well is 120x166 CSS px on the owner device while every approved
+ * dialogue portrait canvas is 640x820. A contained canvas is only 153.75px tall,
+ * and the older per-character scales left 5-9px of visible black shelf below the
+ * cutout. Scale from the top so the complete head stays anchored while every
+ * portrait reaches and slightly passes the lower clipping edge.
  */
-@media(max-width:360px){
+@media(max-width:430px){
  .ch4-p5-dialogue{grid-template-columns:120px minmax(0,1fr)!important}
  .ch4-p5-dialogue.right{grid-template-columns:minmax(0,1fr) 120px!important}
+ .ch4-p5-card-portrait,
+ .ch4-p5-card-portrait.benedict,
+ .ch4-p5-card-portrait.north,
+ .ch4-p5-card-portrait.cheryl,
+ .ch4-p5-card-portrait.maya,
+ .ch4-p5-card-portrait.ika{
+  object-fit:contain!important;
+  object-position:center top!important;
+  transform:scale(1.10)!important;
+  transform-origin:center top!important;
+ }
 }
 
-/* Restore the separate action/reaction artwork. The precomposed exchange frames
- * could only show one frozen pose and therefore could not represent the button
- * the player actually pressed.
+/* The separate combat files are complete full-frame illustrations, not isolated
+ * left/right sprites. Clipping each one through the diagonal panels removed Ika's
+ * face. Restore the approved precomposed frames and switch the frame immediately
+ * from the button actually pressed: guard, punch or kick.
  */
-.ch4-p5-combat-frame{display:none!important}
-.ch4-p5-panel,.ch4-p5-panel-divider{display:block!important}
-.ch4-p5-panel{background-repeat:no-repeat;background-position:center center;background-size:cover}
-.ch4-p5-combat-stage[data-result="north"] .ch4-p5-panel.north{filter:contrast(1.035) saturate(1.035)}
-.ch4-p5-combat-stage[data-result="ika"] .ch4-p5-panel.unknown{filter:contrast(1.035) saturate(1.035)}
+.ch4-p5-combat-frame{
+ display:block!important;
+ position:absolute;
+ z-index:1;
+ inset:0;
+ width:100%;
+ height:100%;
+ object-fit:cover;
+ object-position:center center;
+}
+.ch4-p5-panel,.ch4-p5-panel-divider{display:none!important}
 
 @media(prefers-reduced-motion:reduce){
- .ch4-p5-combat-stage.north-win .ch4-p5-panel.north,
- .ch4-p5-combat-stage.unknown-win .ch4-p5-panel.unknown{animation:none!important}
+ .ch4-p5-combat-stage.north-win .ch4-p5-combat-frame,
+ .ch4-p5-combat-stage.unknown-win .ch4-p5-combat-frame{animation:none!important}
 }
