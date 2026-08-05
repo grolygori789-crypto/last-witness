@@ -1,0 +1,27 @@
+/* LAST WITNESS - Chapter IV / Phase V owner-result repair 0.18.7
+ * Scope: narrow-screen portrait grounding and action-accurate combat panels.
+ */
+
+/* The approved 640x820 portrait canvases need the accepted 120px well at 360px.
+ * The former 108px well forced contain-fit to leave a visible black shelf below
+ * several portraits even though the source cutouts and top anchors were correct.
+ */
+@media(max-width:360px){
+ .ch4-p5-dialogue{grid-template-columns:120px minmax(0,1fr)!important}
+ .ch4-p5-dialogue.right{grid-template-columns:minmax(0,1fr) 120px!important}
+}
+
+/* Restore the separate action/reaction artwork. The precomposed exchange frames
+ * could only show one frozen pose and therefore could not represent the button
+ * the player actually pressed.
+ */
+.ch4-p5-combat-frame{display:none!important}
+.ch4-p5-panel,.ch4-p5-panel-divider{display:block!important}
+.ch4-p5-panel{background-repeat:no-repeat;background-position:center center;background-size:cover}
+.ch4-p5-combat-stage[data-result="north"] .ch4-p5-panel.north{filter:contrast(1.035) saturate(1.035)}
+.ch4-p5-combat-stage[data-result="ika"] .ch4-p5-panel.unknown{filter:contrast(1.035) saturate(1.035)}
+
+@media(prefers-reduced-motion:reduce){
+ .ch4-p5-combat-stage.north-win .ch4-p5-panel.north,
+ .ch4-p5-combat-stage.unknown-win .ch4-p5-panel.unknown{animation:none!important}
+}
