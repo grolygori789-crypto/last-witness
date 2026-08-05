@@ -1,4 +1,4 @@
-/* LAST WITNESS - Chapter IV / Phase V owner-result repair 0.18.8
+/* LAST WITNESS - Chapter IV / Phase V owner-result repair 0.18.9
  * Scope: mobile portrait grounding and face-safe action-accurate combat frames.
  */
 
@@ -44,4 +44,38 @@
 @media(prefers-reduced-motion:reduce){
  .ch4-p5-combat-stage.north-win .ch4-p5-combat-frame,
  .ch4-p5-combat-stage.unknown-win .ch4-p5-combat-frame{animation:none!important}
+}
+
+
+/* Owner-device correction 0.18.9: exchange-2 preserves Ika's accepted visible face,
+ * while the approved north-kick full-frame art replaces only North's diagonal side.
+ * The right side is never clipped or replaced, so Ika remains readable.
+ */
+.ch4-p5-combat-stage[data-action="kick"][data-kick-overlay="north-kick"] .ch4-p5-panel.north{
+ display:block!important;
+ position:absolute;
+ z-index:2;
+ inset:0;
+ background-repeat:no-repeat;
+ background-size:cover;
+ background-position:center center;
+ clip-path:polygon(0 0,60% 0,49% 100%,0 100%);
+ pointer-events:none;
+}
+.ch4-p5-combat-stage[data-action="kick"][data-kick-overlay="north-kick"] .ch4-p5-panel-divider{
+ display:block!important;
+ z-index:5;
+ pointer-events:none;
+}
+.ch4-p5-combat-stage[data-action="kick"].rush .ch4-p5-panel.north{
+ animation:ch4P5CombatRush .25s cubic-bezier(.16,.75,.24,1) both;
+}
+.ch4-p5-combat-stage[data-action="kick"].north-win .ch4-p5-panel.north{
+ animation:ch4P5FrameNorth .46s cubic-bezier(.18,.75,.25,1) both;
+}
+.ch4-p5-combat-stage[data-action="kick"].unknown-win .ch4-p5-panel.north{
+ animation:ch4P5FrameUnknown .46s cubic-bezier(.18,.75,.25,1) both;
+}
+@media(prefers-reduced-motion:reduce){
+ .ch4-p5-combat-stage[data-action="kick"] .ch4-p5-panel.north{animation:none!important}
 }
