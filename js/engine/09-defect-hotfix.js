@@ -1,4 +1,4 @@
-/* LAST WITNESS - Legacy Compatibility Shim + Runtime Bootstrap 0.18.10
+/* LAST WITNESS - Legacy Compatibility Shim + Runtime Bootstrap 0.18.11
  * Loads approved localization and targeted QC before dynamic Chapter IV modules.
  * Existing Phase I through Phase IV order is preserved. Phase V loads as one
  * isolated future module before the accepted handoff and Developer navigation.
@@ -63,9 +63,9 @@ script("js/engine/15-thai-localization.js?v=0152","lwThaiLocalizationScript",()=
  .then(()=>{
   stylesheet("css/chapter-04-phase-04-revision.css?v=0176","lwChapter04Phase04RevisionStyle");
   return script(
-   "js/chapters/chapter-04/04a-arman-encounter-revision.js?v=0177",
+   "js/chapters/chapter-04/04a-arman-encounter-revision.js?v=0178",
    "lwChapter04Phase04RevisionScript",
-   ()=>Boolean(window.LastWitnessChapter4Phase4Revision?.version==="0.17.7"&&window.LastWitnessChapter4Phase4Revision?.installed)
+   ()=>Boolean(window.LastWitnessChapter4Phase4Revision?.version==="0.17.8"&&window.LastWitnessChapter4Phase4Revision?.installed)
   ).catch(error=>console.error("LAST WITNESS Phase IV consistency repair failed to load",error))
  })
  .then(()=>{

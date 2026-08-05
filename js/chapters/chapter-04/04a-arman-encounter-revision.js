@@ -1,11 +1,11 @@
-/* LAST WITNESS - Chapter IV / Phase IV Arman Journal Contract Repair 0.17.7
+/* LAST WITNESS - Chapter IV / Phase IV Arman Journal Contract Repair 0.17.8
  * Repairs Phase IV presentation against the established Chapter IV contract.
  * Story, evidence, choices, ending-profile effects and Phase III handoff remain owned
  * by 04-arman-encounter.js 0.17.0.
  */
 (function(){
 "use strict";
-const BUILD="0.17.7";
+const BUILD="0.17.8";
 if(window.LastWitnessChapter4Phase4Revision?.version===BUILD&&window.LastWitnessChapter4Phase4Revision?.installed)return;
 
 const APPROACH="armanVehicleApproach";
@@ -31,7 +31,7 @@ let locationTimer=0;
 let locationTimerDue=0;
 let titleTransitioning=false;
 let audioFrame=0;
-let audioTimer=0;
+const audioTimers=new Set();
 let registryUnlockOriginal=null;
 let armanUnlockDeferred=false;
 let armanJournalSyncing=false;
@@ -41,6 +41,7 @@ let armanGridObserver=null;
 function phase(){return gs()?.chapter4?.phase4||null}
 function save(){try{if(typeof autoSave==="function")autoSave()}catch(_){} }
 function stopMedia(media,reset=false){if(!media)return;try{media.pause();if(reset)media.currentTime=0}catch(_){} }
+function clearAudioSyncTimers(){for(const timer of audioTimers)clearTimeout(timer);audioTimers.clear()}
 function setCheckpoint(value){const s=gs();if(!s)return;s.checkpoint=value;save()}
 function showScreen(id){
  try{if(typeof show==="function")show(id)}catch(_){}
@@ -178,19 +179,30 @@ function installProgress(){for(const id of SCREENS){const screen=$("#"+id);if(sc
 function dialogueVisible(){return Boolean($(".ch4-p4-dialogue:not(.hidden)"))}
 function overlayVisible(){return Boolean($("#ch4P4Triad.open,#ch4P4Choice.open,#ch4P4Cache.open"))}
 function scoreTarget(){
- const s=gs(),screen=active();if(!s||s.sound===false||!SCREENS.has(screen)||Number(s.music??.33)<=0)return 0;
+ const s=gs(),screen=active();if(document.hidden||!s||s.sound===false||!SCREENS.has(screen)||Number(s.music??.33)<=0)return 0;
  const music=clamp(Number(s.music??.33)),dialogueDuck=dialogueVisible()?.58:1,overlayDuck=overlayVisible()?.66:1,videoDuck=screen===REVEAL?.19:(screen===APPROACH?.78:1),completeLift=screen===COMPLETE?.88:1;
  return clamp(music*.43*dialogueDuck*overlayDuck*videoDuck*completeLift,0,.44)
 }
 function fadeScore(target,duration=320){
- const media=$("#ch4P4Score");if(!media)return;if(audioFrame)cancelAnimationFrame(audioFrame);
+ const media=$("#ch4P4Score");if(!media)return;
+ if(document.hidden){if(audioFrame)cancelAnimationFrame(audioFrame);audioFrame=0;stopMedia(media,false);return}
+ if(audioFrame)cancelAnimationFrame(audioFrame);
  const start=clamp(media.volume),end=clamp(target,0,.9),began=performance.now();
  if(end>0&&media.paused){media.loop=true;media.muted=false;media.play().catch(()=>{})}
  const step=now=>{const q=Math.max(0,Math.min(1,(now-began)/duration)),smooth=q*q*(3-2*q);media.volume=start+(end-start)*smooth;if(q<1)audioFrame=requestAnimationFrame(step);else{audioFrame=0;if(end===0)media.pause()}};
  audioFrame=requestAnimationFrame(step)
 }
-function syncAudio(){if(!SCREENS.has(active())){stopMedia($("#ch4P4Score"),active()==="title");return}fadeScore(scoreTarget(),active()===COMPLETE?460:320)}
-function scheduleAudioSync(){clearTimeout(audioTimer);audioTimer=setTimeout(syncAudio,540);setTimeout(syncAudio,80);setTimeout(syncAudio,820);setTimeout(syncAudio,1360)}
+function syncAudio(){
+ const media=$("#ch4P4Score");
+ if(document.hidden){if(audioFrame)cancelAnimationFrame(audioFrame);audioFrame=0;stopMedia(media,false);return}
+ if(!SCREENS.has(active())){stopMedia(media,active()==="title");return}
+ fadeScore(scoreTarget(),active()===COMPLETE?460:320)
+}
+function queueAudioSync(delay){
+ const timer=setTimeout(()=>{audioTimers.delete(timer);if(!document.hidden)syncAudio()},delay);
+ audioTimers.add(timer)
+}
+function scheduleAudioSync(){clearAudioSyncTimers();if(document.hidden)return;[80,540,820,1360].forEach(queueAudioSync)}
 
 /* Arman is a Phase IV extension character. The base registry exposes dynamic
  * character data, but its Chapter I-III allow-list cannot retain a new ID.
@@ -389,7 +401,7 @@ function bindCinematicControls(){
  const skip=$("#ch4P4ApproachSkip"),video=$("#ch4P4ApproachVideo"),returnButton=$("#ch4P4ReturnTitle");
  if(skip&&skip.dataset.lwP4RevisionBound!==BUILD){skip.dataset.lwP4RevisionBound=BUILD;skip.addEventListener("click",finishVehicle,true)}
  if(video&&video.dataset.lwP4RevisionBound!==BUILD){video.dataset.lwP4RevisionBound=BUILD;video.addEventListener("ended",finishVehicle,true);video.addEventListener("error",finishVehicle,true)}
- if(returnButton&&returnButton.dataset.lwP4RevisionBound!==BUILD){returnButton.dataset.lwP4RevisionBound=BUILD;returnButton.addEventListener("click",()=>{clearTimeout(titleTimer);clearLocationTimer();stopMedia($("#ch4P4Score"),true)},true)}
+ if(returnButton&&returnButton.dataset.lwP4RevisionBound!==BUILD){returnButton.dataset.lwP4RevisionBound=BUILD;returnButton.addEventListener("click",()=>{clearTimeout(titleTimer);clearLocationTimer();clearAudioSyncTimers();stopMedia($("#ch4P4Score"),true)},true)}
 }
 function setBuild(){const node=$("#settingsVersion");if(node&&SCREENS.has(active()))node.textContent="LAST WITNESS · BUILD "+BUILD}
 function contractStatus(){
@@ -418,7 +430,7 @@ function installObservers(){
  if(modal&&!armanModalObserver){armanModalObserver=new MutationObserver(queue);armanModalObserver.observe(modal,{attributes:true,attributeFilter:["class"]})}
  if(grid&&!armanGridObserver){armanGridObserver=new MutationObserver(()=>{if(!armanJournalSyncing)queue()});armanGridObserver.observe(grid,{childList:true})}
  document.addEventListener("click",()=>{setTimeout(syncRuntime,20);setTimeout(syncRuntime,380)},true);
- document.addEventListener("visibilitychange",()=>{if(document.hidden){clearLocationTimer();stopMedia($("#ch4P4Score"),false)}else{recoverTitleOnRestore();scheduleLocationAdvance(true);scheduleAudioSync();syncArmanJournal()}});
+ document.addEventListener("visibilitychange",()=>{if(document.hidden){clearLocationTimer();clearAudioSyncTimers();if(audioFrame)cancelAnimationFrame(audioFrame);audioFrame=0;stopMedia($("#ch4P4Score"),false)}else{recoverTitleOnRestore();scheduleLocationAdvance(true);scheduleAudioSync();syncArmanJournal()}});
  document.addEventListener("click",event=>{if(event.target.closest?.("[data-lang]"))setTimeout(updateLanguage,0);if(event.target.closest?.("#developerMenuButton,#settingsVersion"))setTimeout(()=>window.LastWitnessDeveloperPhaseNavigation?.install?.(),0)},true);
  $("#musicRange")?.addEventListener("input",scheduleAudioSync,true);$("#soundToggle")?.addEventListener("change",scheduleAudioSync,true)
 }
