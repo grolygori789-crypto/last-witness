@@ -1,11 +1,11 @@
-/* LAST WITNESS - Limited North QA Access 0.18.14
+/* LAST WITNESS - Limited North QA Access 0.18.15
  * Session-scoped tester navigation using the existing BUILD x7 access door.
  * Owner Developer Mode, story state schema, saves, audio and gameplay owners
  * remain unchanged. Tester commands call approved existing entry APIs only.
  */
 (function(){
 "use strict";
-const VERSION="0.18.14";
+const VERSION="0.18.15";
 if(window.LastWitnessNorthQA?.version===VERSION&&window.LastWitnessNorthQA?.installed){
  try{window.LastWitnessNorthQA.install?.()}catch(_){}
  return
@@ -21,6 +21,10 @@ const CHAPTER4_IDS={1:"chapter4Phase1",2:"chapter4Phase2",3:"chapter4PacketProve
 let running=false;
 let installed=false;
 let memoryRole="";
+const TITLE_MEDIA_ALLOW=new Set(["themeAudio","rainAudio","clickAudio"]);
+let titleExitGuard=false;
+let titleGuardEpoch=0;
+let titleGuardTimers=[];
 
 function testerAuthorized(){
  try{const role=sessionStorage.getItem(ROLE_KEY);if(role)return role===TESTER_ROLE}catch(_){}
@@ -44,6 +48,71 @@ function stopCurrentMedia(){
  ].forEach(name=>{try{window[name]?.stopAudio?.(true)}catch(_){}});
  try{window.LastWitnessChapter3?.stopPhase2Media?.()}catch(_){}
  $$("video").forEach(video=>{try{video.pause()}catch(_){}})
+}
+function clearTitleGuardTimers(){
+ titleGuardTimers.forEach(timer=>clearTimeout(timer));titleGuardTimers=[]
+}
+function stopNonTitleMedia(reset=true){
+ $$("audio,video").forEach(media=>{
+  if(TITLE_MEDIA_ALLOW.has(media.id))return;
+  try{media.pause();if(reset)media.currentTime=0}catch(_){}
+ })
+}
+function forceTitleScreen(){
+ const title=$("#title");if(!title)return false;
+ $$(".screen.active").forEach(screen=>screen.classList.remove("active"));
+ title.classList.add("active");
+ const s=gs();if(s)s.screen="title";
+ document.title="Last Witness";
+ return true
+}
+function titleAudioMissing(){
+ const s=gs();if(s?.sound===false||Number(s?.music??.33)<=0)return false;
+ const theme=$("#themeAudio"),rain=$("#rainAudio");
+ return Boolean((theme&&theme.paused)||(rain&&rain.paused))
+}
+function restoreTitleAudio(){
+ try{
+  if(typeof window.LastWitnessChapter2Integration?.titleAudioState==="function"){
+   window.LastWitnessChapter2Integration.titleAudioState();return
+  }
+  const s=gs();if(s?.sound===false)return;
+  const level=Math.max(0,Math.min(1,Number(s?.music??.33)||0));
+  [["themeAudio",level],["rainAudio",level*.48]].forEach(([id,volume])=>{
+   const media=$("#"+id);if(!media)return;
+   try{media.loop=true;media.volume=volume;media.play().catch(()=>{})}catch(_){}
+  })
+ }catch(error){console.warn("LAST WITNESS North QA title audio restore skipped",error)}
+}
+function enforceTitleBoundary(epoch=titleGuardEpoch){
+ if(!titleExitGuard||epoch!==titleGuardEpoch||!testerAuthorized())return;
+ const drifted=activeScreen()!=="title"||!$("#title")?.classList.contains("active");
+ if(drifted)forceTitleScreen();
+ stopNonTitleMedia(true);
+ if(drifted||titleAudioMissing())restoreTitleAudio();
+ syncAccessButtons()
+}
+function armTitleBoundary(){
+ clearTitleGuardTimers();titleExitGuard=true;const epoch=++titleGuardEpoch;
+ [0,50,180,520,900,1500,3000,4500].forEach(ms=>{
+  titleGuardTimers.push(setTimeout(()=>enforceTitleBoundary(epoch),ms))
+ });
+ return epoch
+}
+function disarmTitleBoundary(){
+ titleExitGuard=false;titleGuardEpoch++;clearTitleGuardTimers()
+}
+function guardTitlePlayback(event){
+ if(!titleExitGuard||!testerAuthorized())return;
+ const media=event.target;
+ if(!media?.matches?.("audio,video")||TITLE_MEDIA_ALLOW.has(media.id))return;
+ try{media.pause();media.currentTime=0}catch(_){}
+ const epoch=titleGuardEpoch;
+ setTimeout(()=>enforceTitleBoundary(epoch),0)
+}
+function guardIntentionalTitleDeparture(event){
+ if(!titleExitGuard)return;
+ if(event.target.closest?.("#newGame,#continueGame,#loadTitle"))disarmTitleBoundary()
 }
 function status(text="",kind=""){
  const node=$("#northQaStatus");if(!node)return;
@@ -98,7 +167,7 @@ function showQa(){
  status();syncAccessButtons();$("#northQaModal")?.classList.add("open")
 }
 function lockTesterAccess(){
- setTesterAuthorized(false);$("#northQaModal")?.classList.remove("open");status()
+ disarmTitleBoundary();setTesterAuthorized(false);$("#northQaModal")?.classList.remove("open");status()
 }
 function showAuthFlash(){
  const flash=$("#northQaFlash");if(!flash){showQa();return}
@@ -165,7 +234,7 @@ async function enterChapter4(phase){
 }
 async function runNavigation(action){
  if(!requireTester()||running)return false;
- setBusy(true);status("Opening test entry...");
+ disarmTitleBoundary();setBusy(true);status("Opening test entry...");
  try{
   let success=false;
   if(action==="chapter1")success=await enterChapter1();
@@ -217,12 +286,13 @@ async function copyTestInfo(){
 }
 function returnToTitle(){
  if(!requireTester())return;
+ const epoch=armTitleBoundary();
  stopCurrentMedia();closeOverlays();
  try{
   if(typeof window.LastWitnessChapter2Integration?.returnToTitle==="function")window.LastWitnessChapter2Integration.returnToTitle();
   else if(typeof show==="function")show("title");
  }catch(error){console.error("LAST WITNESS North QA title return failed",error);try{show("title")}catch(_){}}
- syncAccessButtons()
+ enforceTitleBoundary(epoch)
 }
 
 function createStyle(){
@@ -274,7 +344,9 @@ function bindUi(){
  });
  $("#devAccessSubmit")?.addEventListener("click",handleAccessAttempt,true);
  $("#devAccessCode")?.addEventListener("keydown",event=>{if(event.key==="Enter")handleAccessAttempt(event)},true);
- document.addEventListener("click",guardOwnerConsole,true)
+ document.addEventListener("click",guardOwnerConsole,true);
+ document.addEventListener("click",guardIntentionalTitleDeparture,true);
+ document.addEventListener("play",guardTitlePlayback,true)
 }
 function install(){
  if(installed){syncAccessButtons();return true}
