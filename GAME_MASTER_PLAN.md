@@ -2,45 +2,52 @@
 
 > **MASTER REFERENCE / CURRENT SOURCE OF TRUTH**
 >
-> **Document revision:** 2026-08-05 18:00 ICT
+> **Document revision:** 2026-08-06 16:43 ICT
 >
 > **Repository:** `grolygori789-crypto/last-witness`
 >
 > **Production and Default branch:** `production-rebuild`
 >
-> **Repository HEAD observed before this documentation update:** `08b6f8491fa727b47d7f9c944999cfa9ca8c2f1a`
+> **Repository HEAD observed before this documentation update:** `1fd62e51039ebc35b5e0713ce2e25582f81ae079`
 >
-> **Observed HEAD message:** `Fix Phase V kick and water audio`
+> **Observed HEAD message:** `Sync build labels across QA tools`
 >
-> **Current Runtime code/assets HEAD:** `08b6f8491fa727b47d7f9c944999cfa9ca8c2f1a`
+> **Current Runtime code/assets HEAD:** `1fd62e51039ebc35b5e0713ce2e25582f81ae079`
 >
-> **Current Runtime build:** `0.18.9`
+> **Current Runtime build:** `0.18.17`
 >
 > **Current playable boundary:** `CHAPTER IV · PHASE V · NORTH IS MARKED`
 >
-> **Current owner-reported status:** `PHASE V QUICKLY TESTED ON OWNER DEVICE AND ACCEPTABLE WITHIN THE OBSERVED SCOPE`
+> **Current owner-reported status:** `CHAPTERS I–III AND CHAPTER IV PHASES I–V ARE WITHIN THE OWNER'S ACCEPTABLE RANGE; NORTH QA AND AUTHORITATIVE BUILD SYNCHRONIZATION 0.18.17 ARE OWNER-TESTED AND ACCEPTED ON THE OBSERVED PATH`
 >
-> **Known active Phase V defect:** `NONE REPORTED IN THE LATEST QUICK TEST`
+> **Known active Production defect:** `NONE REPORTED AFTER THE OWNER'S 0.18.17 VERIFICATION`
 >
-> **Acceptance limitation:** `QUICK / ROUGH OWNER TEST ONLY · NOT A DETAILED FULL-ROUTE OR CROSS-BROWSER REGRESSION`
+> **Acceptance limitation:** `OWNER-OBSERVED REAL-DEVICE ACCEPTANCE · NOT AN EXHAUSTIVE ALL-ROUTE, ALL-SAVE, ALL-BROWSER OR ALL-DEVICE REGRESSION`
 >
 > **Last fully accepted pre-Phase-V no-regression baseline:** `f4a7a1df997cddc0d2b53da23cd5c9f0b7cdba99` · build `0.17.18`
 >
-> **Previous canonical planning blob replaced by this file:** `9530e1dd66db6b3bc5710f685a212f6eaf6c4014`
+> **Previous canonical planning blob replaced by this file:** `9b490f1d601dc6a00507157dace3b63b65f9e8db`
 >
 > **Next production objective:** `CHAPTER IV · PHASE VI · THE FALSE SUCCESS`
 >
-> **Document status:** `CURRENT CANONICAL HANDOFF · PHASE V QUICK OWNER ACCEPTANCE · PHASE VI PRODUCTION GATE`
+> **Document status:** `CURRENT CANONICAL HANDOFF · PHASE V MAINTENANCE LOCK · NORTH QA AND BUILD SYNC 0.18.17 ACCEPTED · PHASE VI PRODUCTION GATE`
 
-This file replaces the preceding canonical `GAME_MASTER_PLAN.md` revision dated `2026-08-05 01:58 ICT`.
+This file supersedes the current canonical `GAME_MASTER_PLAN.md` revision dated `2026-08-05 18:00 ICT`.
 
-The owner's latest real-device result is the highest-priority operational fact:
+The owner's latest real-device results are the highest-priority operational facts:
 
-- Chapter IV Phase V is present and playable.
-- The owner performed a quick, rough test rather than a detailed full regression.
-- Within that quick test, Phase V is considered acceptable.
-- No further active defect was reported after Runtime build `0.18.9`.
-- This acceptance must not be inflated into a claim that every route, save state, language, browser, device, audio condition or edge case has passed.
+- Chapters I–III and Chapter IV Phases I–V are currently within the owner's acceptable range after a quick overall review.
+- Chapter IV Phase V remains the current playable endpoint.
+- Phase V is maintenance-locked except for reproducible defects, Phase VI blockers or explicit narrow owner authorization.
+- Phase IV background audio lifecycle repair is owner-tested and accepted.
+- Chapter IV native Thai localization is installed through Phase V.
+- Thai display names and Character Journal names for Arman, Dimas and Ika have been repaired.
+- North QA Access is present, limited to approved test navigation and session tools.
+- The North QA `RETURN TO TITLE` Phase V audio leak was reproduced, repaired and then accepted by the owner on the deployed build.
+- Runtime build labels are now synchronized across Settings, Owner Developer Mode, North QA, Copy Test Info, Save Manager metadata and Runtime diagnostics.
+- The owner tested Runtime `0.18.17` and confirmed the synchronized Build presentation is correct.
+- No active Production defect is currently reported after Runtime build `0.18.17`.
+- These results must not be inflated into a claim that every route, save state, language, browser, device, audio condition, viewport or edge case has passed.
 
 This is a documentation-only replacement file. It changes no Runtime code, binary asset or GitHub Pages deployment. The owner uploads it personally under the exact filename:
 
@@ -48,7 +55,7 @@ This is a documentation-only replacement file. It changes no Runtime code, binar
 
 After the owner uploads this document, the repository HEAD will advance through a documentation-only commit. Unless Runtime code or assets are changed separately, the Runtime code/assets baseline remains:
 
-`08b6f8491fa727b47d7f9c944999cfa9ca8c2f1a`
+`1fd62e51039ebc35b5e0713ce2e25582f81ae079`
 
 ---
 
@@ -56,13 +63,22 @@ After the owner uploads this document, the repository HEAD will advance through 
 
 ## 0.1 Latest owner result
 
-The owner reports that Chapter IV Phase V has been tested quickly on the normal device and is now within an acceptable range.
+The owner reports that the game from Chapter I through Chapter IV Phase V is within an acceptable range after a quick overall review.
 
-The test was intentionally fast and not exhaustive.
+The owner separately tested the new North QA route on the deployed build and confirmed the repaired path:
+
+1. unlock tester access
+2. open North QA Access
+3. jump to Chapter IV Phase V
+4. return to Title through the QA command
+5. confirm Phase V music and ambience stop
+6. confirm only Title-owned audio remains
+
+The owner then reported the result as complete and correct.
 
 Allowed status language:
 
-`PHASE V QUICKLY OWNER-TESTED AND ACCEPTABLE WITHIN THE OBSERVED SCOPE`
+`OWNER-TESTED AND ACCEPTED WITHIN THE OBSERVED REAL-DEVICE PATH`
 
 Do not replace that with:
 
@@ -71,56 +87,65 @@ Do not replace that with:
 - final on every device
 - Android-complete in all routes
 - cross-browser approved
-- audio mastered under every hardware condition
-- save/load certified at every checkpoint
+- every tester jump certified
+- every stale save certified
+- every audio slider combination certified
+- every Phase I–V exit route certified
 
 ## 0.2 Current acceptance boundary
 
-The latest quick owner test did not report a remaining defect in:
+The current observed acceptance includes:
 
-- Phase IV to Phase V entry
-- Aruna establishing sequence
-- Chapter/Phase and location presentation
-- undercover team reveal
-- final reveal hold on the approved group image
-- dialogue portrait visibility and lower-edge grounding
-- dark-hair readability against the black dialogue well
-- Phase V dialogue flow
-- resort ambience after the latest water-level reduction
-- combat controls
-- Guard visual response
-- Punch visual response
-- Kick visual response
-- Ika facial visibility during combat
-- combat duration and damage pacing
-- combat completion
-- evidence flow
-- Ika role separation
-- Phase V closing beat
+- Chapters I–III remain playable within the owner's current overall review
+- Chapter IV Phase I remains present
+- Chapter IV Phase II remains present
+- Chapter IV Phase III remains present
+- Chapter IV Phase IV remains present and protected
+- Chapter IV Phase V remains playable and acceptable within the owner's quick review
+- Phase IV background audio stops correctly under the reproduced mobile lifecycle condition
+- Chapter IV Thai localization is installed through Phase V
+- Thai display names for Arman, Dimas and Ika are repaired
+- Character Journal Thai names for Arman and Ika are repaired
+- Dialogue History speaker names are migrated for the repaired Thai names
+- the premature Chapter IV use of Kawin's identity was replaced with canon-safe wording
+- North QA tester authentication works
+- North QA Chapter IV Phase V entry works
+- North QA `RETURN TO TITLE` stops Phase V media correctly
+- Title music resumes correctly after the repaired QA exit
+- the limited tester access remains functional after the repair
+- Settings reports authoritative Runtime build `0.18.17`
+- Owner Developer Console reports authoritative Runtime build `0.18.17`
+- North QA reports authoritative Runtime build `0.18.17`
+- Copy Test Info reports authoritative Runtime build `0.18.17`
+- Save Manager and Runtime diagnostic metadata receive the authoritative Runtime build
+- historical Phase module versions no longer masquerade as the current Runtime build
 
-These are accepted only to the extent observed in the owner's quick test.
+These are accepted only to the extent observed by the owner.
 
-## 0.3 No known active Phase V defect
+## 0.3 No known active Production defect
 
-At this revision, no active Phase V defect is reported by the owner.
+At this revision, no active Production defect is reported by the owner.
 
 This means:
 
-- no defect was noticed in the latest quick pass
+- the last reproduced North QA title-audio leak was repaired
+- the owner verified the repaired path and accepted it
 - no additional repair is currently authorized by default
-- Phase V should be maintenance-locked while Phase VI planning begins
+- Phase V, North QA and the authoritative build-synchronization contract at `0.18.17` should remain maintenance-locked while Phase VI planning begins
 
 It does not mean:
 
 - no hidden defect exists
 - every stale save works
 - every route was replayed
-- every language was checked
+- every language was checked across the entire game
+- every Chapter or Phase tester jump was exercised on the owner device
 - every audio slider combination was checked
 - every screen width was checked
 - every browser was checked
+- every callback timing edge case was checked
 
-## 0.4 Maintenance lock
+## 0.4 Phase V maintenance lock
 
 Do not reopen Chapter IV Phase V for optional cleanup, refactoring, visual redesign or speculative polish.
 
@@ -144,7 +169,71 @@ Every future Phase V repair must identify:
 - tests not performed
 - owner-device result after upload
 
-## 0.5 Portrait production rule going forward
+## 0.5 North QA maintenance lock
+
+North QA Access `0.18.17` is accepted as the current limited tester baseline.
+
+Do not expand it into a second Developer Console.
+
+A North QA modification now requires at least one of:
+
+1. a reproducible tester-navigation defect
+2. a Phase VI tester-entry requirement after Phase VI State is implemented
+3. a tester-only audio or screen lifecycle defect
+4. an owner-tool exposure defect
+5. a tester-session authorization defect
+6. explicit owner authorization for a narrowly defined addition
+
+Preserve:
+
+- the existing BUILD ×7 access door
+- the existing Owner Developer Mode
+- the limited tester role
+- approved Chapter and Phase list only
+- command-level authorization checks
+- session-scoped tester authorization
+- no raw State editor
+- no Reset All Saves
+- no Unlock All Characters
+- no Unlock All Evidence
+- no future Phase access
+- the repaired Return-to-Title media boundary
+
+## 0.6 Runtime Build Synchronization Contract
+
+Runtime build numbering is a release-wide contract, not a decorative Settings label.
+
+Whenever the authoritative Runtime build changes, every applicable player-facing, owner-facing and tester-facing build reference must be updated and verified in the same release.
+
+Required synchronized surfaces:
+
+- Settings build label
+- Owner Developer Console build label
+- North QA Access build label
+- North QA Copy Test Info output
+- Save Manager version metadata
+- Runtime diagnostic metadata
+- Runtime bootstrap version and authoritative build value
+- cache-busting references for changed build-owner modules
+- current Master Plan Runtime snapshot after owner acceptance
+
+Rules:
+
+- one authoritative Runtime build must control all current surfaces
+- historical module versions may remain unchanged internally when they identify that specific module
+- a historical Phase or feature module must never overwrite or masquerade as the authoritative Runtime build
+- North QA diagnostic output must read the authoritative Runtime build rather than maintain an independent release number
+- Owner Developer and North QA surfaces must agree with Settings
+- a release must not be accepted while any current surface reports a stale, missing or conflicting Runtime build
+- every future build bump must include a build-surface audit before the Master Plan is updated
+
+Current owner result:
+
+- Runtime `0.18.17` build synchronization was tested by the owner on the deployed game
+- the owner reported the synchronized Build presentation as correct
+- no active Build-label defect is currently reported
+
+## 0.7 Portrait production rule going forward
 
 For future portrait work, owner-prepared transparent PNGs are the preferred and authoritative workflow.
 
@@ -154,14 +243,14 @@ When the owner supplies a final PNG:
 - do not recut it
 - do not generatively repair it
 - do not redraw hair, face, body or clothing
-- do not replace the owner’s edge treatment
+- do not replace the owner's edge treatment
 - do not alter identity
 - do not add broad glow, cyan aura or cosmetic masking
 - integrate through filename, path, canvas, scale, anchor and Runtime mapping only
 - make only the smallest technical adjustment required for correct in-game placement
 - test on the real dialogue well and mobile viewport
 
-The owner’s manual cutout work takes priority over automated extraction.
+The owner's manual cutout work takes priority over automated extraction.
 
 ---
 
@@ -169,7 +258,7 @@ The owner’s manual cutout work takes priority over automated extraction.
 
 ## 1.1 Source hierarchy
 
-1. owner’s latest real-device result
+1. owner's latest real-device result
 2. current Production Runtime on `production-rebuild`
 3. this exact `GAME_MASTER_PLAN.md`
 4. latest owner-approved binary assets
@@ -202,15 +291,16 @@ Before editing code or assets:
 9. inspect Character Journal, unread and notification owners
 10. inspect Case File and Dialogue History owners
 11. inspect audio owners and exit cleanup
-12. inspect Developer Mode phase navigation
-13. inventory every relevant binary asset
-14. verify actual image dimensions, alpha, crop and path
-15. prove the root cause before patching
-16. choose the smallest true owner
-17. avoid global wrappers, polling or duplicate controllers
-18. test the real Runtime flow rather than only an isolated snippet
-19. report tested and untested scope honestly
-20. deliver locally unless the owner explicitly authorizes a GitHub write in the current turn
+12. inspect Owner Developer Mode phase navigation
+13. inspect North QA role, allowed commands and Return-to-Title boundary when relevant
+14. inventory every relevant binary asset
+15. verify actual image dimensions, alpha, crop and path
+16. prove the root cause before patching
+17. choose the smallest true owner
+18. avoid global wrappers, permanent polling or duplicate controllers
+19. test the real Runtime flow rather than only an isolated snippet
+20. report tested and untested scope honestly
+21. deliver locally unless the owner explicitly authorizes a GitHub write in the current turn
 
 ## 1.3 GitHub write rule
 
@@ -261,15 +351,17 @@ For a documentation-only replacement, deliver the complete file directly under i
 - Repository: `grolygori789-crypto/last-witness`
 - Production branch: `production-rebuild`
 - Default branch: `production-rebuild`
-- Repository HEAD observed before this documentation revision: `08b6f8491fa727b47d7f9c944999cfa9ca8c2f1a`
-- HEAD message: `Fix Phase V kick and water audio`
-- Runtime code/assets HEAD: `08b6f8491fa727b47d7f9c944999cfa9ca8c2f1a`
-- Current Runtime build: `0.18.9`
+- Repository HEAD observed before this documentation revision: `1fd62e51039ebc35b5e0713ce2e25582f81ae079`
+- HEAD message: `Sync build labels across QA tools`
+- Runtime code/assets HEAD: `1fd62e51039ebc35b5e0713ce2e25582f81ae079`
+- Current Runtime build: `0.18.17`
 - Current implemented endpoint: Chapter IV Phase V
-- Current Phase V acceptance: quick owner-device acceptance
+- Current Phase V acceptance: owner-acceptable within the observed quick review
+- Current North QA acceptance: owner-tested and accepted on the reproduced Phase V Return-to-Title path
+- Current Build Synchronization acceptance: owner-tested and accepted across the synchronized Runtime-label surfaces
 - Last fully accepted pre-Phase-V baseline: `f4a7a1df997cddc0d2b53da23cd5c9f0b7cdba99`
 - Pre-Phase-V baseline build: `0.17.18`
-- Previous canonical plan blob: `9530e1dd66db6b3bc5710f685a212f6eaf6c4014`
+- Previous canonical plan blob: `9b490f1d601dc6a00507157dace3b63b65f9e8db`
 
 ## 2.2 Current build chain
 
@@ -278,7 +370,7 @@ Relevant observed build history:
 - Chapter IV Phase I: `0.13.2`
 - Chapter IV Phase II: `0.14.9`
 - Phase II portrait guard: `0.15.0`
-- Thai localization: `0.15.2`
+- Thai localization base: `0.15.2`
 - targeted QC: `0.15.3`
 - police portrait alignment: `0.15.4`
 - Chapter IV Phase III: `0.16.3`
@@ -300,6 +392,14 @@ Relevant observed build history:
 - Phase V reveal, portrait, audio and combat repair: `0.18.7`
 - Phase V portrait grounding and Ika combat visibility repair: `0.18.8`
 - Phase V Kick and water-audio repair: `0.18.9`
+- Phase V Kick framing repair: `0.18.10` · commit `3a7a72298d6023778fc7c995d8130067f87caf33`
+- Phase IV background-audio lifecycle repair: `0.18.11` · commit `ca2e7fe65298d7deb483c17b0bbcc211bdc17a43`
+- Chapter IV native Thai localization: `0.18.12` · commit `1d4b49311428444737bf05335d200859746f0ca2`
+- Chapter IV Thai names and canon-safe wording: `0.18.13` · commit `92f4d0286a9adcfa737e7c46e054c76fc57641f0`
+- Limited North QA Access: `0.18.14` · commit `3554969a485a1113143ea26b115e78e3d3cc5798`
+- North QA Return-to-Title audio guard: `0.18.15` · commit `63606169e1b07445d59b5dae001f095e13e3d2b5`
+- Authoritative Runtime Build Label: `0.18.16` · commit `526b383a85cf755b817dd4b1961295f3ed60921e`
+- Runtime Build Synchronization Contract: `0.18.17` · commit `1fd62e51039ebc35b5e0713ce2e25582f81ae079`
 
 ## 2.3 Current Phase V owners
 
@@ -315,7 +415,30 @@ Primary Phase V Runtime owners include:
 
 Do not add a new Phase V controller merely to override these files.
 
-## 2.4 Current implementation boundary
+## 2.4 Current post-Phase-V support owners
+
+Approved support owners now include:
+
+- `js/chapters/chapter-04/04a-arman-encounter-revision.js`
+  - accepted Phase IV presentation and background-audio lifecycle behavior
+- `js/engine/23-chapter4-native-thai.js`
+  - Chapter IV Phase I–V native Thai display layer
+  - current module version `0.18.13`
+- `js/engine/18-developer-phase-navigation.js`
+  - existing Owner Developer navigation and approved Chapter IV fresh-entry APIs
+- `js/engine/24-north-qa-access.js`
+  - limited North QA role, UI, allowed navigation and Return-to-Title guard
+  - current module version `0.18.17`
+- `js/engine/25-runtime-build-label.js`
+  - authoritative Runtime build label across Settings, Owner Developer, North QA, Copy Test Info, Save Manager and diagnostics
+  - current module version `0.18.17`
+- `js/engine/09-defect-hotfix.js`
+  - Runtime bootstrap, authoritative Runtime build value and cache-busted load order
+  - current Runtime bootstrap version `0.18.17`
+
+Do not duplicate these responsibilities in a second overlay or controller.
+
+## 2.5 Current implementation boundary
 
 Implemented and present:
 
@@ -325,19 +448,22 @@ Implemented and present:
 - Chapter IV Phase III
 - Chapter IV Phase IV
 - Chapter IV Phase V · `NORTH IS MARKED`
+- Owner Developer navigation for implemented content
+- Limited North QA navigation for Chapter I, Chapter II, Chapter III and Chapter IV Phases I–V
 
 Not yet implemented:
 
 - Chapter IV Phase VI · `THE FALSE SUCCESS`
 - Chapter IV Phase VII · `RELAY FACILITY CLIMAX`
 - Chapter IV Phase VIII · `SHADOW OF THE TRUTH`
+- North QA access to Phase VI or later
 
-## 2.5 No-regression baseline
+## 2.6 No-regression baseline
 
 Preserve:
 
 - Chapter I Character Journal hidden
-- Chapter II Journal first appears after North’s initial office conversation
+- Chapter II Journal first appears after North's initial office conversation
 - one-time Character Added notification behavior
 - unread red-dot timing and read clearing
 - silent Developer unlock behavior
@@ -352,7 +478,11 @@ Preserve:
 - Phase IV minigame centering
 - Phase III direct handoff
 - Phase IV HUD, progress and title/location sequence
-- Phase IV audio cleanup
+- Phase IV background-audio lifecycle repair
+- Chapter IV Thai localization through Phase V
+- Thai speaker and Journal name repair for Arman and Ika
+- Thai speaker name repair for Dimas
+- canon-safe Chapter IV wording that does not reveal Kawin early
 - Phase V team-reveal final group frame
 - Phase V final portrait scale and grounding
 - Phase V combat face visibility
@@ -360,6 +490,12 @@ Preserve:
 - Phase V eight-exchange balance
 - Phase V final water-audio level
 - Phase V evidence and role-separation flow
+- North QA limited-role boundary
+- North QA approved Chapter and Phase list
+- North QA Copy Test Info
+- North QA Restart Current Chapter / Phase
+- North QA Return-to-Title media cleanup
+- Owner Developer Mode remaining unchanged for the owner
 
 ---
 
@@ -441,7 +577,7 @@ Current status:
 - Phase II complete
 - Phase III complete
 - Phase IV complete and protected
-- Phase V implemented and quickly owner-accepted
+- Phase V implemented and owner-acceptable within the observed scope
 - Phase VI is the next production objective
 - Phases VII–VIII remain planned
 
@@ -461,6 +597,7 @@ Current status:
 - Kawin Nopparat
 - identity revealed in Chapter V
 - killed by Elena
+- Chapter IV must not reveal the name Kawin prematurely
 
 ## 5.3 `R.`
 
@@ -488,7 +625,7 @@ Current status:
 ## 5.6 North threat
 
 - North understands attribution
-- her capability threatens Elena’s protective gap
+- her capability threatens Elena's protective gap
 - Elena chooses neutralization
 - the attempt remains deniable
 - North remains alive and active
@@ -537,7 +674,7 @@ Elena must remain:
 
 ---
 
-# 6. CHARACTER CANON
+# 6. CHARACTER CANON AND DISPLAY CONTRACT
 
 ## Benedict
 
@@ -559,7 +696,7 @@ Elena must remain:
 - short wavy dark hair
 - warm medium-brown skin
 - analytical, witty and alert
-- Benedict’s trusted long-term partner
+- Benedict's trusted long-term partner
 - no romance with Benedict
 - no romance with Farid
 - never a passive victim
@@ -606,19 +743,31 @@ Elena must remain:
 - not the mastermind
 - does not select the murder victims
 
-## Arman
+## Arman Suryadi
 
 - adapter, broker and technical intermediary
 - may be guilty of cybercrime, concealment and obstruction
 - not the murder principal
 - no Bangkok victim-selection path
+- English internal identity remains `Arman Suryadi`
+- Thai dialogue speaker label: `อามาน`
+- Thai Dialogue History speaker label: `อามาน`
+- Thai Character Journal full name: `อามาน สุริยาดี`
+
+## Dimas Wibowo
+
+- English internal identity remains `Dimas Wibowo`
+- Thai dialogue speaker label: `ดิมาส`
+- Thai Dialogue History speaker label: `ดิมาส`
+- no new Character Journal card is created by the localization repair
 
 ## Ratchata (Dr. Singh)
 
 - age 43
 - Senior Medical Examiner
 - supports genuine toxicology and physical chronology
-- Character Journal name must remain `Ratchata (Dr. Singh)`
+- Character Journal name must remain `Ratchata (Dr. Singh)` in English
+- Thai display remains the approved localized form
 - profile image must remain stable
 
 ## Ika Prameswari
@@ -630,9 +779,13 @@ Elena must remain:
 - surveils and attempts to remove North
 - capable of real violence, obstruction and evidence destruction
 - recruited after the earlier murders
-- cannot be Kawin or Daniel’s killer
-- does not know Elena’s identity directly
+- cannot be Kawin or Daniel's killer
+- does not know Elena's identity directly
 - not Decision Owner
+- English internal identity remains `Ika Prameswari`
+- Thai dialogue speaker label: `อิกา`
+- Thai Dialogue History speaker label: `อิกา`
+- Thai Character Journal full name: `อิกา ปราเมสวารี`
 
 ## Elena
 
@@ -641,6 +794,14 @@ Elena must remain:
 - remote ally on the surface
 - gives real information selectively
 - does not receive villain lighting, villain music or suspicious performance coding prematurely
+
+## Localization display rule
+
+- Internal character keys and English-mode identities remain unchanged.
+- Thai display repair must not mutate Save schema, registry IDs, portrait mapping, evidence ownership or story State.
+- Dialogue History from older saves may be normalized at display time or through the approved scoped migration.
+- English mode remains English.
+- The only English wording changed by the 0.18.13 canon guard is the premature Chapter IV sentence that named Kawin before the intended reveal.
 
 ---
 
@@ -674,7 +835,7 @@ Mandatory rule:
 ## Phase II · JAKARTA ARRIVAL
 
 - establishes Indonesian jurisdiction
-- introduces Maya’s authority
+- introduces Maya's authority
 - preserves international cooperation boundaries
 
 ## Phase III · PACKET PROVENANCE / PACKET TRAIL
@@ -685,7 +846,7 @@ Mandatory rule:
 
 ## Phase IV · THE MAN BEHIND THE ALIAS
 
-- proves Arman’s technical role
+- proves Arman's technical role
 - does not prove Decision Ownership
 - ends with North marked as an attribution threat
 - provides the Aster Recovery / Aruna lead
@@ -708,17 +869,28 @@ Locked Phase IV lead:
 - no uniforms
 - no live credential
 
+## Phase IV accepted audio lifecycle
+
+The accepted `0.18.11` repair preserves:
+
+- Phase IV background audio stops when the app enters the reproduced background/folded-screen condition
+- delayed callbacks do not restart Phase IV audio behind another screen
+- foreground resume follows the current active scene
+- the repair must not be replaced by a broad duplicate controller
+
+The owner tested the reproduced condition on the normal Android device and accepted the result.
+
 ---
 
 # 9. CHAPTER IV PHASE V · NORTH IS MARKED
 
 ## 9.1 Current status
 
-`IMPLEMENTED · RUNTIME 0.18.9 · QUICK OWNER-DEVICE ACCEPTANCE`
+`IMPLEMENTED · PHASE V MODULE 0.18.9 · CURRENT RUNTIME 0.18.17 · OWNER-ACCEPTABLE WITHIN OBSERVED SCOPE`
 
-The owner’s latest quick test considers Phase V acceptable.
+Phase V remains the current maintenance baseline.
 
-This is now the current maintenance baseline for Phase V.
+Post-Phase-V support patches `0.18.10` through `0.18.17` do not change the locked story outcome.
 
 ## 9.2 Location and time
 
@@ -820,7 +992,7 @@ Current mobile contract:
 - no cyan aura
 - no automatic recut of owner-prepared PNG
 - stable head scale and top anchor
-- portrait scale currently accepted in the quick owner test
+- portrait scale currently accepted in the owner's quick review
 
 Future replacement files must preserve existing filenames unless code mapping is deliberately updated.
 
@@ -851,7 +1023,7 @@ The CG proves:
 It does not prove:
 
 - watcher identity
-- Ika’s legal identity
+- Ika's legal identity
 - Decision Ownership
 - earlier murder ownership
 
@@ -886,9 +1058,9 @@ Current visual rule:
 - Guard must read as Guard
 - Punch must read as Punch
 - Kick must read as Kick
-- Ika’s face must remain visible and readable
+- Ika's face must remain visible and readable
 - the right side of the accepted Ika combat composition must not be removed
-- Kick uses the approved kick artwork on North’s side while preserving the accepted Ika side
+- Kick uses the approved kick artwork on North's side while preserving the accepted Ika side
 - action image changes immediately from the actual pressed button
 - reaction must remain physically and narratively plausible
 
@@ -902,7 +1074,7 @@ Current combat asset family includes:
 - `north-kick.webp`
 - Ika/unknown reaction assets retained in the package
 
-Do not return to the rejected split-panel implementation that removed Ika’s face.
+Do not return to the rejected split-panel implementation that removed Ika's face.
 
 ## 9.11 Audio contract
 
@@ -929,8 +1101,6 @@ Current `0.18.9` Ocean/Pool coefficients:
 
 These values remain subject to the global SFX slider.
 
-The owner’s latest quick test did not report that water ambience still overwhelmed the music.
-
 Preserve:
 
 - dialogue dominance
@@ -941,6 +1111,7 @@ Preserve:
 - no duplicate loop
 - no resort ambience on Title
 - no loud water masking the score
+- no delayed Phase V callback restarting media after a tester Return to Title
 
 ## 9.12 Evidence
 
@@ -949,8 +1120,6 @@ Current evidence set:
 1. `ch4_p5_aster_service_token`
 2. `ch4_p5_removal_confirmation_buffer`
 3. `ch4_p5_ika_timeline_match`
-
-Evidence interpretation:
 
 ### Aster Service Token
 
@@ -1005,7 +1174,7 @@ When unlocked:
 - one Character card
 - one Character Added notification
 - one unread dot
-- opening the card clears only Ika’s unread state
+- opening the card clears only Ika's unread state
 - Save/Load preserves read state
 - repeated encounters do not notify again
 - Developer unlock remains silent
@@ -1065,7 +1234,7 @@ The objective is to learn:
 - Cheryl protects cross-border admissibility.
 - Farid preserves remote technical evidence.
 - Benedict links behavior to motive and decision structure.
-- Ika’s violence does not become proof of Elena.
+- Ika's violence does not become proof of Elena.
 - the false record is evidence of system behavior, not automatic proof of authorship.
 - Elena remains hidden.
 - the team must preserve the distinction between operational reaction and Decision Ownership.
@@ -1079,7 +1248,7 @@ Phase VI may support:
 - a relay or control route became active
 - compartmentalized actors respond without knowing the full plan
 - the system prioritizes continuity over physical truth
-- North’s apparent absence changes adversary behavior
+- North's apparent absence changes adversary behavior
 
 Phase VI must not automatically prove:
 
@@ -1092,18 +1261,19 @@ Phase VI must not automatically prove:
 ## 10.5 Required design work before implementation
 
 1. define exact opening checkpoint from Phase V completion
-2. define North’s consent and operational role
+2. define North's consent and operational role
 3. define what false-success signal propagates
 4. define observable downstream reaction
 5. define lawful evidence collection
 6. define Maya and Cheryl authority boundaries
-7. define Farid’s remote preservation role
-8. define Benedict’s investigative decision
+7. define Farid's remote preservation role
+8. define Benedict's investigative decision
 9. define minigame or interactive mechanic only if it advances proof
 10. define Phase VII relay-facility handoff
 11. inventory all required assets
 12. design State and Save/Load migration
-13. test direct Developer entry and natural entry separately
+13. test direct Owner Developer entry and natural entry separately
+14. add North QA Phase VI access only after the Phase VI entry State is stable and owner-approved
 
 ---
 
@@ -1123,10 +1293,10 @@ Core role:
 
 Preserve:
 
-- Maya’s local authority
-- Cheryl’s admissibility role
+- Maya's local authority
+- Cheryl's admissibility role
 - North and Farid technical cooperation
-- Benedict’s synthesis
+- Benedict's synthesis
 - no convenience hacking
 - no illegal seizure without consequence
 - no single log becoming omniscient truth
@@ -1280,6 +1450,34 @@ Required behavior:
 - dialogue remains intelligible
 - music remains audible beneath ambience
 
+## 14.1 North QA Return-to-Title audio boundary
+
+When North QA invokes `RETURN TO TITLE`:
+
+1. call existing Chapter and Phase media owners first
+2. stop and reset every non-Title `audio` and `video` element
+3. prevent delayed old-Phase callbacks from reclaiming the screen
+4. prevent delayed old-Phase callbacks from restarting audio
+5. keep the active screen on `title`
+6. allow only Title-owned media to remain
+7. restore Title audio only when sound and music settings permit it
+
+Allowed Title media IDs during the guard:
+
+- `themeAudio`
+- `rainAudio`
+- `clickAudio`
+
+The title boundary must disarm when the tester intentionally:
+
+- starts a new tester navigation command
+- starts New Game
+- continues a save
+- loads a save
+- locks tester access
+
+The guard is a scoped tester-exit repair. It must not become a permanent global audio loop or duplicate the Phase audio controllers.
+
 Future Phase VI audio must not reuse resort ambience when the location changes unless narratively justified.
 
 ---
@@ -1289,7 +1487,7 @@ Future Phase VI audio must not reuse resort ambience when the location changes u
 ## Discovery rules
 
 - Chapter I: Journal hidden
-- Chapter II: Journal appears only after North’s first office conversation
+- Chapter II: Journal appears only after North's first office conversation
 - new character notification appears once
 - unread dot clears only when the relevant entry is read
 - Save/Load preserves discovered and unread state
@@ -1306,14 +1504,17 @@ Preserve:
 - Maya profile switching
 - Arman card and unread state
 - Ika verified-introduction threshold
-- `Ratchata (Dr. Singh)` exact display name
+- `Ratchata (Dr. Singh)` exact English display name
 - stable portrait paths
+- Thai Arman full name `อามาน สุริยาดี`
+- Thai Ika full name `อิกา ปราเมสวารี`
+- no Dimas card added merely for localization
 
 ---
 
-# 16. STATE, SAVE/LOAD AND DEVELOPER MODE
+# 16. STATE, SAVE/LOAD, OWNER DEVELOPER MODE AND NORTH QA
 
-## State rules
+## 16.1 State rules
 
 - each phase owns a scoped State object
 - migration must preserve older saves where practical
@@ -1323,7 +1524,7 @@ Preserve:
 - phase progress must match narrative State
 - one checkpoint must not masquerade as another
 
-## Save/Load
+## 16.2 Save/Load
 
 Test:
 
@@ -1341,9 +1542,9 @@ Test:
 
 Do not claim save compatibility without testing the relevant migration.
 
-## Developer Mode
+## 16.3 Owner Developer Mode
 
-Developer navigation must:
+Owner Developer navigation must:
 
 - enter each implemented phase
 - prime only required prior State
@@ -1352,7 +1553,185 @@ Developer navigation must:
 - avoid duplicate UI
 - preserve normal New Game behavior after Developer testing
 
-Phase VI must receive its own explicit Developer entry only when its State contract is implemented.
+Owner tools remain available only through the existing owner authorization path.
+
+North QA must not weaken, replace or relabel the owner's full Developer Mode.
+
+Phase VI must receive its own explicit Owner Developer entry only when its State contract is implemented.
+
+## 16.4 North QA Access contract
+
+### Purpose
+
+North QA exists for the real tester North, not the fictional in-game character.
+
+Its purpose is to let the tester return to an implemented Chapter or Phase after progress loss or to reproduce a defect without replaying the entire game.
+
+### Activation
+
+```text
+Settings
+→ tap BUILD 7 times
+→ Developer Access modal
+→ enter tester
+→ Authenticate
+```
+
+Tester access code:
+
+`tester`
+
+This code is client-side convenience, not server-grade authentication. The game is hosted on GitHub Pages and the JavaScript is public.
+
+### Authorization model
+
+- Owner code → full Owner Developer Mode
+- `tester` code → limited North QA role
+- tester authorization is session-scoped through `sessionStorage` with memory fallback
+- tester role hides Owner Developer UI
+- owner commands must also reject tester access at command level
+- opening UI through browser tools must not grant owner permissions
+
+### Approved navigation
+
+North QA may open only:
+
+- Chapter I
+- Chapter II
+- Chapter III
+- Chapter IV Phase I
+- Chapter IV Phase II
+- Chapter IV Phase III
+- Chapter IV Phase IV
+- Chapter IV Phase V
+
+North QA must not expose:
+
+- Phase VI or later before implementation and approval
+- arbitrary internal screens
+- arbitrary checkpoints
+- raw State
+- flag editor
+- relationship editor
+- Unlock All Characters
+- Unlock All Evidence
+- Reset All Saves
+- hidden Canon tools
+
+### Approved session commands
+
+- `RESTART CURRENT CHAPTER / PHASE`
+- `COPY TEST INFO`
+- `RETURN TO TITLE`
+- `LOCK TESTER ACCESS`
+- `CLOSE`
+
+### Existing entry owners
+
+North QA must call existing approved entry APIs rather than create a parallel progression system:
+
+- Chapter I → existing New Game / Chapter I start owner
+- Chapter II → existing Developer Chapter II entry owner
+- Chapter III → existing Production Runtime and Chapter III start owner
+- Chapter IV Phase I–V → `LastWitnessDeveloperPhaseNavigation.run()` and each Phase's approved `startFreshForDev` contract
+
+### Copy Test Info contract
+
+The copied report contains only practical diagnostic context:
+
+- Runtime build
+- access mode
+- chapter
+- phase where applicable
+- active screen
+- checkpoint
+- language
+- document visibility
+
+Do not expose hidden Canon or the full raw State in the copied report.
+
+### Session and save limitation
+
+Tester authorization itself is session-scoped.
+
+The existing entry APIs may still auto-save into the current browser storage because no separate tester Save namespace was introduced.
+
+Therefore:
+
+- Incognito is recommended for isolated testing
+- do not claim that North QA creates a separate persistent Save system
+- do not silently add a new Save schema without owner approval
+
+### Current owner acceptance
+
+Owner-confirmed on the deployed `0.18.17` path:
+
+- tester authentication works
+- North QA menu opens
+- Chapter IV Phase V jump works
+- Return to Title stops Phase V media
+- Title-owned music resumes correctly
+- tester access remains functional after the repair
+
+Not yet claimed:
+
+- every Chapter and Phase jump owner-tested on the real device
+- all stale-save combinations
+- all browser engines
+- all devices
+- all language and audio-slider combinations
+
+---
+
+## 16.5 Authoritative Runtime Build synchronization
+
+The authoritative Runtime build is a shared release identity and must not be inferred from a historical Phase module's own version.
+
+Current synchronized surfaces:
+
+- Settings: `LAST WITNESS · BUILD 0.18.17`
+- Owner Developer Console: `BUILD 0.18.17`
+- North QA Access: `BUILD 0.18.17`
+- North QA Copy Test Info: `Build: 0.18.17`
+- Save Manager metadata: `0.18.17`
+- Runtime diagnostics: `0.18.17`
+- Runtime bootstrap: `0.18.17`
+
+Current owners:
+
+- `js/engine/09-defect-hotfix.js`
+  - establishes the authoritative Runtime build and loads current build owners with cache-busting references
+- `js/engine/25-runtime-build-label.js`
+  - synchronizes current user-, owner- and tester-facing Runtime labels and metadata
+- `js/engine/24-north-qa-access.js`
+  - reads the authoritative Runtime build for North QA presentation and copied diagnostics
+
+Future build-bump procedure:
+
+1. choose the new authoritative Runtime build
+2. update Runtime bootstrap identity
+3. update cache-busting references for changed modules
+4. update the central build-label owner
+5. update North QA to consume the authoritative value
+6. verify Settings
+7. verify Owner Developer Console
+8. verify North QA Access
+9. verify Copy Test Info
+10. verify Save Manager metadata
+11. verify Runtime diagnostic metadata
+12. verify no historical module rewrites the current label
+13. obtain owner acceptance
+14. update this Master Plan to the accepted Runtime HEAD and build
+
+Do not bump only one visible label.
+
+Do not use a Phase module version as the release-wide Runtime version.
+
+Current owner acceptance:
+
+- the owner tested the deployed `0.18.17` synchronization patch
+- the owner reported that the Build presentation changed correctly and passed
+- this is accepted within the observed owner-device path, not an exhaustive cross-browser certification
 
 ---
 
@@ -1375,7 +1754,7 @@ Mandatory controls:
 - Elena never handles disputed digital evidence alone
 - Narin never deploys alone after compromise is known
 - Somchai never transports disputed evidence without seal and second acknowledgment
-- North’s hidden outputs require Farid or authorized hash witness
+- North's hidden outputs require Farid or authorized hash witness
 - final packages require jurisdiction-specific signatures and cross-reference manifest
 - a screenshot is not equivalent to raw evidence
 - a valid signature is not equivalent to human identity
@@ -1415,8 +1794,8 @@ Ending variables include:
 True guilt:
 
 - mastermind
-- Kawin’s killer
-- Daniel’s killer
+- Kawin's killer
+- Daniel's killer
 
 A correct ending still requires admissible corroboration.
 
@@ -1502,6 +1881,9 @@ Every False Conviction ending must distinguish:
 - State schema
 - action-to-asset mapping
 - audio coefficient mapping
+- tester-role command allowlist
+- owner-tool deny boundary
+- Return-to-Title media allowlist
 
 ## 19.2 Natural route
 
@@ -1551,7 +1933,29 @@ Check:
 - Ika unlocks once
 - completed State restores correctly
 
-## 19.4 Language
+## 19.4 North QA focused route
+
+For each approved entry where practical:
+
+1. open Settings
+2. tap BUILD seven times
+3. authenticate with the tester code
+4. confirm Owner Developer tools are not visible
+5. open the requested Chapter or Phase
+6. confirm the expected canonical entry screen and checkpoint
+7. confirm required prior State is primed
+8. confirm future evidence is not unlocked
+9. confirm Character notifications do not fire incorrectly
+10. use Copy Test Info
+11. restart the current Chapter or Phase
+12. return to Title
+13. wait at least five seconds for delayed callback leakage
+14. confirm only Title-owned audio remains
+15. start another Chapter or Phase and confirm the Title guard disarms
+16. lock tester access and confirm QA buttons disappear
+17. authenticate with the owner code and confirm full Owner Developer Mode remains unchanged
+
+## 19.5 Language
 
 Test both:
 
@@ -1567,20 +1971,28 @@ Check:
 - role separation
 - completion card
 - Journal names
+- Dialogue History speaker names
 - no overflow at normal mobile width
+- Arman / อามาน display boundary
+- Dimas / ดิมาส display boundary
+- Ika / อิกา display boundary
 
-## 19.5 Owner-device honesty
+## 19.6 Owner-device honesty
 
 Current confirmed status:
 
-- owner performed a quick real-device test of Runtime `0.18.9`
-- owner considers Phase V acceptable within that quick observed scope
+- owner performed a quick real-device review of the game through Chapter IV Phase V
+- owner considers the current game acceptable within that observed scope
+- owner tested the North QA Phase V Return-to-Title repair on the deployed build
+- owner reported the repaired result as complete and correct
+- owner tested Runtime `0.18.17` authoritative Build synchronization and reported that it passed
+- Settings, Owner Developer, North QA and copied QA diagnostics are accepted as synchronized within the observed path
 
 Not confirmed:
 
-- exhaustive Chapter I–Phase V regression after `0.18.9`
+- exhaustive Chapter I–Phase V regression after `0.18.17`
 - every Save/Load checkpoint
-- every Developer jump
+- every North QA jump on the owner device
 - every Thai/English route
 - iPhone Safari
 - desktop browsers
@@ -1589,7 +2001,7 @@ Not confirmed:
 - all viewport widths
 - accessibility audit
 
-Never convert the current quick acceptance into those unperformed tests.
+Never convert the current acceptance into those unperformed tests.
 
 ---
 
@@ -1608,14 +2020,32 @@ Do not disturb:
 - Forensic bottom stack
 - Secure Mirror containment
 - Phase IV minigame centering
-- Developer Mode
+- Phase IV background-audio lifecycle repair
+- Owner Developer Mode
+- North QA limited-role boundary
+- North QA approved navigation list
+- North QA tester code behavior
+- North QA Copy Test Info fields
+- North QA Restart behavior
+- North QA Return-to-Title audio and screen boundary
+- authoritative Runtime Build synchronization contract
+- Settings Build label
+- Owner Developer Build label
+- North QA Build label
+- North QA Copy Test Info Build value
+- Save Manager Runtime version metadata
+- Runtime diagnostic Build metadata
+- Runtime bootstrap and cache-busting build references
 - Save schema outside scoped need
 - current evidence
 - current audio owners
 - accepted portraits
 - accepted backgrounds
 - current handoffs
-- Thai and English behavior
+- Chapter IV Thai localization
+- repaired Thai names
+- English-mode identities
+- canon-safe Chapter IV wording
 - Phase V final group-frame ending
 - Phase V portrait grounding
 - Ika face visibility
@@ -1643,19 +2073,39 @@ A new assistant must behave as though the owner has said:
 >
 > Fetch the latest HEAD before editing.
 >
-> The Runtime code/assets baseline observed before this Master Plan update is `08b6f8491fa727b47d7f9c944999cfa9ca8c2f1a`, build `0.18.9`.
+> The Runtime code/assets baseline observed before this Master Plan update is `1fd62e51039ebc35b5e0713ce2e25582f81ae079`, build `0.18.17`.
 >
 > Read `GAME_MASTER_PLAN.md` completely.
 >
-> Chapter IV Phase V, `NORTH IS MARKED`, has been quickly tested by the owner on the normal device and is acceptable within the observed scope.
+> Chapters I–III and Chapter IV Phases I–V are currently within the owner's acceptable range after a quick overall review.
 >
-> The owner’s test was fast and not exhaustive.
+> Chapter IV Phase V, `NORTH IS MARKED`, remains the playable endpoint and is maintenance-locked.
 >
-> No active Phase V defect is currently reported.
+> The latest owner acceptance is real-device and path-specific, not exhaustive.
 >
-> Do not reopen Phase V for optional polish.
+> Phase IV background audio lifecycle repair is accepted.
 >
-> Preserve Chapters I–III and Chapter IV Phases I–V.
+> Chapter IV native Thai localization and repaired Thai names are accepted.
+>
+> Preserve `อามาน`, `อามาน สุริยาดี`, `ดิมาส`, `อิกา` and `อิกา ปราเมสวารี` in Thai mode without changing internal English identities.
+>
+> Do not reveal Kawin's identity prematurely in Chapter IV.
+>
+> North QA Access `0.18.17` is accepted as a limited tester system.
+>
+> It opens through Settings → BUILD ×7 → code `tester`.
+>
+> It may access only Chapter I, Chapter II, Chapter III and Chapter IV Phases I–V.
+>
+> It must not expose Owner Developer tools, raw State, reset tools, unlock-all tools or future Phases.
+>
+> Its Return-to-Title command must stop all old Chapter/Phase media and preserve only Title-owned audio.
+>
+> Runtime Build synchronization `0.18.17` is owner-tested and accepted.
+>
+> Settings, Owner Developer, North QA, Copy Test Info, Save Manager metadata and Runtime diagnostics must always report the same authoritative Runtime build.
+>
+> Every future Runtime build bump must update and verify all synchronized surfaces in the same release. Historical module versions must never overwrite the current Runtime build label.
 >
 > The next production objective is Chapter IV Phase VI, `THE FALSE SUCCESS`.
 >
@@ -1677,7 +2127,7 @@ A new assistant must behave as though the owner has said:
 >
 > A valid credential proves access, not identity.
 >
-> Fetch current code, State, Save/Load, Journal, audio and Developer owners before designing Phase VI.
+> Fetch current code, State, Save/Load, Journal, audio, Owner Developer and North QA owners before designing Phase VI.
 >
 > Build locally.
 >
@@ -1699,31 +2149,40 @@ Branch:
 production-rebuild
 
 Runtime code/assets HEAD observed:
-08b6f8491fa727b47d7f9c944999cfa9ca8c2f1a
+1fd62e51039ebc35b5e0713ce2e25582f81ae079
 
 Runtime build:
-0.18.9
+0.18.17
 
 Current implemented endpoint:
 CHAPTER IV · PHASE V · NORTH IS MARKED
 
 Owner acceptance:
-QUICK REAL-DEVICE TEST
+REAL-DEVICE OWNER OBSERVATION
 ACCEPTABLE WITHIN OBSERVED SCOPE
+NORTH QA PHASE V RETURN-TO-TITLE PATH ACCEPTED
+AUTHORITATIVE BUILD SYNCHRONIZATION 0.18.17 ACCEPTED
 NOT EXHAUSTIVE
 
-Known active Phase V defect:
+Known active Production defect:
 NONE REPORTED
 
 Last fully accepted pre-Phase-V baseline:
 f4a7a1df997cddc0d2b53da23cd5c9f0b7cdba99
 BUILD 0.17.18
 
+Current North QA baseline:
+0.18.17
+BUILD ×7
+TESTER CODE: tester
+CHAPTER I–III
+CHAPTER IV PHASE I–V
+
 Next target:
 CHAPTER IV · PHASE VI · THE FALSE SUCCESS
 
 Previous canonical planning blob:
-9530e1dd66db6b3bc5710f685a212f6eaf6c4014
+9b490f1d601dc6a00507157dace3b63b65f9e8db
 ```
 
 Preserve:
@@ -1736,9 +2195,17 @@ Preserve:
 - ending architecture
 - Phase V accepted presentation
 - owner-prepared PNG authority
-- North’s agency
+- North's agency
 - Ika timeline contradiction
 - false-success bridge
+- Chapter IV native Thai localization
+- repaired Thai character names
+- Phase IV background-audio lifecycle
+- North QA limited-role contract
+- North QA Return-to-Title media boundary
+- Runtime Build Synchronization Contract
+- synchronized Settings, Owner Developer, North QA and Copy Test Info labels
+- synchronized Save Manager and Runtime diagnostic metadata
 - owner-upload workflow
 
 ---
@@ -1747,24 +2214,35 @@ Preserve:
 
 This revision:
 
-- updates Production Runtime from the stale `0.18.5` plan status to `0.18.9`
-- records the latest Runtime commit `08b6f8491fa727b47d7f9c944999cfa9ca8c2f1a`
-- records the owner’s quick Phase V acceptance
-- explicitly preserves the limitation that the test was rough and not exhaustive
-- clears the previous portrait-blocker status
-- records no currently reported active Phase V defect
-- maintenance-locks Phase V
-- makes Phase VI `THE FALSE SUCCESS` the next production objective
+- updates the canonical Production snapshot from Runtime `0.18.9` to `0.18.17`
+- records Runtime code/assets HEAD `1fd62e51039ebc35b5e0713ce2e25582f81ae079`
+- records Phase V Kick framing repair `0.18.10`
+- records accepted Phase IV background-audio lifecycle repair `0.18.11`
+- records Chapter IV native Thai localization `0.18.12`
+- records Thai names and canon-safe wording repair `0.18.13`
+- records Limited North QA Access `0.18.14`
+- records North QA Return-to-Title audio guard `0.18.15`
+- records Authoritative Runtime Build Label `0.18.16`
+- records Runtime Build Synchronization Contract `0.18.17`
+- records the owner-tested and accepted North QA Phase V tester-exit path
+- records the owner-tested and accepted `0.18.17` Build synchronization result
+- defines synchronized Settings, Owner Developer, North QA, Copy Test Info, Save Manager and Runtime diagnostic surfaces
+- requires every future Runtime build bump to update and verify all applicable Build surfaces in the same release
+- preserves historical module versions as internal module identities only
+- prohibits historical modules from overwriting the authoritative Runtime build
+- records that no active Production defect is currently reported
+- preserves the limitation that owner acceptance is not exhaustive
+- maintenance-locks Phase V, North QA and the Build Synchronization Contract
+- keeps Phase VI `THE FALSE SUCCESS` as the next production objective
 - preserves core Canon, authority, evidence and ending rules
-- records owner-prepared PNGs as the preferred future portrait workflow
 - performs no Runtime change
 - performs no GitHub write
 
 Recommended documentation commit message:
 
-`Update Phase V acceptance status`
+`Update Master Plan to Runtime 0.18.17`
 
-Character count: 32.
+Character count: 37.
 
 ---
 
@@ -1773,18 +2251,31 @@ Character count: 32.
 After uploading this file:
 
 1. fetch `GAME_MASTER_PLAN.md` from `production-rebuild`
-2. confirm revision `2026-08-05 18:00 ICT`
-3. confirm Runtime build `0.18.9`
-4. confirm Runtime code/assets HEAD `08b6f8491fa727b47d7f9c944999cfa9ca8c2f1a`
-5. confirm the phrase `QUICKLY TESTED ON OWNER DEVICE AND ACCEPTABLE WITHIN THE OBSERVED SCOPE`
-6. confirm the acceptance limitation remains present
-7. confirm no active Phase V defect is reported
+2. confirm revision `2026-08-06 16:43 ICT`
+3. confirm Runtime build `0.18.17`
+4. confirm Runtime code/assets HEAD `1fd62e51039ebc35b5e0713ce2e25582f81ae079`
+5. confirm the current playable boundary is Chapter IV Phase V
+6. confirm no active Production defect is reported
+7. confirm the acceptance limitation remains present
 8. confirm Phase V is maintenance-locked
-9. confirm Phase VI is the next production objective
-10. confirm Elena remains hidden
-11. confirm Ika is not the earlier murderer
-12. confirm North remains active
-13. confirm the owner-upload workflow remains locked
-14. confirm the GitHub upload changed documentation only
+9. confirm North QA `0.18.17` is maintenance-locked
+10. confirm North QA uses BUILD ×7 and code `tester`
+11. confirm North QA is limited to Chapter I–III and Chapter IV Phase I–V
+12. confirm Owner Developer tools remain prohibited to the tester role
+13. confirm the Return-to-Title media boundary is present
+14. confirm only `themeAudio`, `rainAudio` and `clickAudio` are allowed during the Title guard
+15. confirm the Runtime Build Synchronization Contract is present
+16. confirm Settings, Owner Developer, North QA and Copy Test Info share the authoritative Build
+17. confirm Save Manager and Runtime diagnostic metadata share the authoritative Build
+18. confirm future build bumps require a synchronized-surface audit
+19. confirm historical module versions cannot overwrite the authoritative Runtime label
+20. confirm Chapter IV Thai name contracts are present
+21. confirm Kawin is not revealed prematurely in Chapter IV
+22. confirm Phase VI is the next production objective
+23. confirm Elena remains hidden
+24. confirm Ika is not the earlier murderer
+25. confirm North remains active
+26. confirm the owner-upload workflow remains locked
+27. confirm the GitHub upload changed documentation only
 
 Do not treat the new documentation commit as a new Runtime code/assets baseline.
