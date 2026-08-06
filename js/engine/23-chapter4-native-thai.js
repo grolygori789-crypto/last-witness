@@ -1,10 +1,11 @@
-/* LAST WITNESS — Chapter IV Native Thai Subtitle Pass 0.18.12
+/* LAST WITNESS — Chapter IV Native Thai Subtitle Pass 0.18.13
  * Editorial Thai localization for Chapter IV Phases I–V.
- * Text presentation only: English source, story canon, state, saves and gameplay remain untouched.
+ * Text presentation plus one canon-safe wording correction.
+ * Internal IDs, state, saves, portraits, audio, combat and progression remain untouched.
  */
 (function(){
 "use strict";
-const BUILD="0.18.12";
+const BUILD="0.18.13";
 if(window.LastWitnessChapter4NativeThai?.version===BUILD&&window.LastWitnessChapter4NativeThai?.installed)return;
 
 const REPLACEMENTS=new Map([
@@ -826,7 +827,7 @@ const REPLACEMENTS=new Map([
  ],
  [
   "ช่วงเวลาที่เธอถูกว่าจ้างเริ่มขึ้นหลังจาก Kawin และ Daniel เสียชีวิตแล้ว",
-  "Ika ถูกจ้างหลัง Kawin กับ Daniel เสียชีวิตไปแล้ว"
+  "อิกาถูกจ้างหลังเหยื่อทั้งสองรายเสียชีวิตไปแล้ว"
  ],
  [
   "แปลว่าเธอคือผู้โจมตีเรา ไม่ใช่ฆาตกรของคดีแรก",
@@ -1469,22 +1470,93 @@ const REPLACEMENTS=new Map([
   "Dimas มีความรู้ที่ซ้อมมาและเข้าถึงสถานที่ได้ แต่รูปแบบต้นฉบับชี้ว่าคนสร้างคือคนอื่น"
  ]
 ]);
+
+/* Character display names are translated at presentation boundaries only.
+ * Internal speaker keys, registry IDs, save keys and portrait mappings stay English.
+ */
+const CANON_REPLACEMENTS=new Map([
+ [
+  "Her recruitment begins after Kawin and Daniel were already dead.",
+  "Her recruitment begins after both earlier victims were already dead."
+ ],
+ [
+  "ช่วงเวลาที่เธอถูกว่าจ้างเริ่มขึ้นหลังจาก Kawin และ Daniel เสียชีวิตแล้ว",
+  "อิกาถูกจ้างหลังเหยื่อทั้งสองรายเสียชีวิตไปแล้ว"
+ ],
+ [
+  "Ika ถูกจ้างหลัง Kawin กับ Daniel เสียชีวิตไปแล้ว",
+  "อิกาถูกจ้างหลังเหยื่อทั้งสองรายเสียชีวิตไปแล้ว"
+ ]
+]);
+
+const THAI_SPEAKER_NAMES=new Map([
+ ["Arman Suryadi","อามาน"],
+ ["Arman","อามาน"],
+ ["ARMAN","อามาน"],
+ ["อามาน สุริยาดี","อามาน"],
+ ["Dimas Wibowo","ดิมาส"],
+ ["Dimas","ดิมาส"],
+ ["DIMAS","ดิมาส"],
+ ["Ika Prameswari","อิกา"],
+ ["Ika","อิกา"],
+ ["IKA","อิกา"],
+ ["อิกา ปราเมสวารี","อิกา"]
+]);
+
+const THAI_NAME_PATTERNS=[
+ ["Arman Suryadi","อามาน สุริยาดี"],
+ ["ARMAN SURYADI","อามาน สุริยาดี"],
+ ["Ika Prameswari","อิกา ปราเมสวารี"],
+ ["IKA PRAMESWARI","อิกา ปราเมสวารี"],
+ ["Dimas Wibowo","ดิมาส"],
+ ["DIMAS WIBOWO","ดิมาส"],
+ ["ARMAN","อามาน"],
+ ["Arman","อามาน"],
+ ["DIMAS","ดิมาส"],
+ ["Dimas","ดิมาส"],
+ ["IKA","อิกา"],
+ ["Ika","อิกา"]
+];
+
 const CH4_CONTEXT_SELECTOR='[id^="ch4P"],[id^="chapter4"],[id^="jakarta"],[id^="arman"],[id^="aruna"]';
 const gs=()=>{try{return state}catch(_){return window.state||null}};
 const thai=()=>gs()?.language==="th"||document.documentElement.lang==="th";
 
-function replaceValue(value){
- if(typeof value!=="string"||!value)return value;
+function splitSpacing(value){
  const leading=value.match(/^\s*/)?.[0]||"";
  const trailing=value.match(/\s*$/)?.[0]||"";
  const end=Math.max(leading.length,value.length-trailing.length);
- const core=value.slice(leading.length,end);
- let next=REPLACEMENTS.get(core);
- if(!next){
-  const match=core.match(/^จังหวะที่\s+(\d+)\s+จาก\s+(\d+)$/);
-  if(match)next=`จังหวะ ${match[1]} / ${match[2]}`
- }
+ return {leading,trailing,core:value.slice(leading.length,end)}
+}
+
+function replaceCanonicalValue(value){
+ if(typeof value!=="string"||!value)return value;
+ const {leading,trailing,core}=splitSpacing(value);
+ const next=CANON_REPLACEMENTS.get(core);
  return next?leading+next+trailing:value
+}
+
+function replaceThaiNames(value,mode="body"){
+ if(typeof value!=="string"||!value)return value;
+ const {leading,trailing,core}=splitSpacing(value);
+ if(mode==="speaker"){
+  const short=THAI_SPEAKER_NAMES.get(core);
+  return short?leading+short+trailing:value
+ }
+ let next=core;
+ for(const [source,target] of THAI_NAME_PATTERNS)next=next.split(source).join(target);
+ return next===core?value:leading+next+trailing
+}
+
+function replaceValue(value,mode="body"){
+ if(typeof value!=="string"||!value)return value;
+ const canonical=replaceCanonicalValue(value);
+ const {leading,trailing,core}=splitSpacing(canonical);
+ let next=REPLACEMENTS.get(core)??core;
+ const match=next.match(/^จังหวะที่\s+(\d+)\s+จาก\s+(\d+)$/);
+ if(match)next=`จังหวะ ${match[1]} / ${match[2]}`;
+ next=replaceThaiNames(next,mode);
+ return next===core&&canonical===value?value:leading+next+trailing
 }
 
 function inChapter4Context(node){
@@ -1493,14 +1565,17 @@ function inChapter4Context(node){
 }
 
 function patchTextNode(node){
- if(!thai()||!node||node.nodeType!==Node.TEXT_NODE||!inChapter4Context(node))return 0;
- const next=replaceValue(node.nodeValue);
+ if(!node||node.nodeType!==Node.TEXT_NODE||!inChapter4Context(node))return 0;
+ const parent=node.parentElement;
+ const speaker=Boolean(parent?.closest?.(".speaker"));
+ let next=replaceCanonicalValue(node.nodeValue);
+ if(thai())next=replaceValue(next,speaker?"speaker":"body");
  if(next===node.nodeValue)return 0;
  node.nodeValue=next;return 1
 }
 
 function patchTree(root){
- if(!thai()||!root)return 0;
+ if(!root)return 0;
  let changed=0;
  if(root.nodeType===Node.TEXT_NODE)return patchTextNode(root);
  if(root.nodeType!==Node.ELEMENT_NODE&&root.nodeType!==Node.DOCUMENT_FRAGMENT_NODE)return 0;
@@ -1510,13 +1585,19 @@ function patchTree(root){
 }
 
 function patchHistory(){
- if(!thai())return 0;
  const history=gs()?.history;if(!Array.isArray(history))return 0;
  let changed=0;
  for(const item of history){
-  if(Number(item?.chapter)!==4||typeof item.text!=="string")continue;
-  const next=replaceValue(item.text);
-  if(next!==item.text){item.text=next;changed++}
+  if(Number(item?.chapter)!==4)continue;
+  if(typeof item.text==="string"){
+   let next=replaceCanonicalValue(item.text);
+   if(thai())next=replaceValue(next);
+   if(next!==item.text){item.text=next;changed++}
+  }
+  if(thai()&&typeof item.speaker==="string"){
+   const next=replaceThaiNames(item.speaker,"speaker");
+   if(next!==item.speaker){item.speaker=next;changed++}
+  }
  }
  return changed
 }
@@ -1533,12 +1614,23 @@ function patchThaiObject(value,seen=new WeakSet()){
  return changed
 }
 
+function enforceCharacterNames(characters){
+ if(!characters)return 0;let changed=0;
+ const names={arman:"อามาน สุริยาดี",ika:"อิกา ปราเมสวารี"};
+ for(const [id,name] of Object.entries(names)){
+  const entry=characters[id];if(!entry?.name)continue;
+  if(entry.name.th!==name){entry.name.th=name;changed++}
+ }
+ return changed
+}
+
 function patchRegistry(){
  if(!thai())return 0;
  const api=window.LastWitnessContentRegistry;let changed=0;
  for(const id of ["maya","arman","ika"]){
   if(api?.characters?.[id])changed+=patchThaiObject(api.characters[id])
  }
+ changed+=enforceCharacterNames(api?.characters);
  if(api?.evidence){
   for(const [id,data] of Object.entries(api.evidence)){
    if(String(id).startsWith("ch4_"))changed+=patchThaiObject(data)
@@ -1546,13 +1638,13 @@ function patchRegistry(){
  }
  try{
   const canon=window.LastWitnessCharacterCanon?.characters;
-  for(const id of ["maya","arman","ika"])if(canon?.[id])changed+=patchThaiObject(canon[id])
+  for(const id of ["maya","arman","ika"])if(canon?.[id])changed+=patchThaiObject(canon[id]);
+  changed+=enforceCharacterNames(canon)
  }catch(_){}
  return changed
 }
 
 function applyAll(){
- if(!thai())return 0;
  return patchRegistry()+patchHistory()+patchTree(document.querySelector("#game")||document.body)
 }
 
@@ -1560,7 +1652,7 @@ let observer=null;
 function installObserver(){
  const root=document.querySelector("#game")||document.body;if(!root||observer)return;
  observer=new MutationObserver(records=>{
-  if(!thai())return;
+  if(!thai()&&Number(gs()?.chapter)!==4)return;
   let touched=false;
   for(const record of records){
    if(record.type==="characterData")touched=Boolean(patchTextNode(record.target))||touched;
@@ -1574,13 +1666,16 @@ function installObserver(){
 
 function install(){
  installObserver();
- document.addEventListener("click",()=>setTimeout(()=>{patchHistory();patchRegistry()},0),true);
+ document.addEventListener("click",()=>setTimeout(()=>{
+  if(thai()||Number(gs()?.chapter)===4)applyAll()
+ },0),true);
  document.addEventListener("visibilitychange",()=>{if(!document.hidden)setTimeout(applyAll,0)});
  [0,80,280,760,1600].forEach(delay=>setTimeout(applyAll,delay))
 }
 
 window.LastWitnessChapter4NativeThai={
- installed:true,version:BUILD,apply:applyAll,replacementCount:REPLACEMENTS.size
+ installed:true,version:BUILD,apply:applyAll,
+ replacementCount:REPLACEMENTS.size+CANON_REPLACEMENTS.size+THAI_NAME_PATTERNS.length
 };
 if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",install,{once:true});else install();
 })();
