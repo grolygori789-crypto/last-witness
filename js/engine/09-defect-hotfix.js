@@ -1,4 +1,4 @@
-/* LAST WITNESS - Legacy Compatibility Shim + Runtime Bootstrap 0.18.16
+/* LAST WITNESS - Legacy Compatibility Shim + Runtime Bootstrap 0.18.17
  * Loads approved localization and targeted QC before dynamic Chapter IV modules.
  * Existing Phase I through Phase IV order is preserved. Phase V loads as one
  * isolated future module before the accepted handoff and Developer navigation.
@@ -7,7 +7,7 @@
 (function(){
 "use strict";
 window.LastWitnessLegacyHotfix={disabled:true,version:"0.5.0"};
-window.LastWitnessRuntimeBuild="0.18.16";
+window.LastWitnessRuntimeBuild="0.18.17";
 
 function stylesheet(href,id){
  if(document.getElementById(id))return;const link=document.createElement("link");link.id=id;link.rel="stylesheet";link.href=href;document.head.appendChild(link)
@@ -94,14 +94,14 @@ script("js/engine/15-thai-localization.js?v=0152","lwThaiLocalizationScript",()=
   ()=>Boolean(window.LastWitnessDeveloperPhaseNavigation?.version==="0.18.0-d1"&&window.LastWitnessDeveloperPhaseNavigation?.installed)
  ).catch(error=>console.error("LAST WITNESS Developer Phase Navigation failed to load",error)))
  .then(()=>script(
-  "js/engine/24-north-qa-access.js?v=01816",
+  "js/engine/24-north-qa-access.js?v=01817",
   "lwNorthQAAccessScript",
-  ()=>Boolean(window.LastWitnessNorthQA?.version==="0.18.16"&&window.LastWitnessNorthQA?.installed)
+  ()=>Boolean(window.LastWitnessNorthQA?.version==="0.18.17"&&window.LastWitnessNorthQA?.installed)
  ).catch(error=>console.error("LAST WITNESS North QA Access failed to load",error)))
  .then(()=>script(
-  "js/engine/25-runtime-build-label.js?v=01816",
+  "js/engine/25-runtime-build-label.js?v=01817",
   "lwRuntimeBuildLabelScript",
-  ()=>Boolean(window.LastWitnessRuntimeBuildLabel?.version==="0.18.16"&&window.LastWitnessRuntimeBuildLabel?.installed)
+  ()=>Boolean(window.LastWitnessRuntimeBuildLabel?.version==="0.18.17"&&window.LastWitnessRuntimeBuildLabel?.installed)
  ).catch(error=>console.error("LAST WITNESS Runtime Build Label failed to load",error)))
  .then(()=>stylesheet(
   "css/phase-action-standard.css?v=01718",
