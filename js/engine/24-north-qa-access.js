@@ -1,11 +1,11 @@
-/* LAST WITNESS - Limited North QA Access 0.18.15
+/* LAST WITNESS - Limited North QA Access 0.18.16
  * Session-scoped tester navigation using the existing BUILD x7 access door.
  * Owner Developer Mode, story state schema, saves, audio and gameplay owners
  * remain unchanged. Tester commands call approved existing entry APIs only.
  */
 (function(){
 "use strict";
-const VERSION="0.18.15";
+const VERSION="0.18.16";
 if(window.LastWitnessNorthQA?.version===VERSION&&window.LastWitnessNorthQA?.installed){
  try{window.LastWitnessNorthQA.install?.()}catch(_){}
  return
