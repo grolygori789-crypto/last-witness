@@ -1,4 +1,4 @@
-/* LAST WITNESS - Legacy Compatibility Shim + Runtime Bootstrap 0.18.13
+/* LAST WITNESS - Legacy Compatibility Shim + Runtime Bootstrap 0.18.14
  * Loads approved localization and targeted QC before dynamic Chapter IV modules.
  * Existing Phase I through Phase IV order is preserved. Phase V loads as one
  * isolated future module before the accepted handoff and Developer navigation.
@@ -92,6 +92,11 @@ script("js/engine/15-thai-localization.js?v=0152","lwThaiLocalizationScript",()=
   "lwDeveloperPhaseNavigationScript",
   ()=>Boolean(window.LastWitnessDeveloperPhaseNavigation?.version==="0.18.0-d1"&&window.LastWitnessDeveloperPhaseNavigation?.installed)
  ).catch(error=>console.error("LAST WITNESS Developer Phase Navigation failed to load",error)))
+ .then(()=>script(
+  "js/engine/24-north-qa-access.js?v=01814",
+  "lwNorthQAAccessScript",
+  ()=>Boolean(window.LastWitnessNorthQA?.version==="0.18.14"&&window.LastWitnessNorthQA?.installed)
+ ).catch(error=>console.error("LAST WITNESS North QA Access failed to load",error)))
  .then(()=>stylesheet(
   "css/phase-action-standard.css?v=01718",
   "lwPhaseActionStandardStyle"
