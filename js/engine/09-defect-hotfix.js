@@ -1,13 +1,12 @@
-/* LAST WITNESS - Legacy Compatibility Shim + Runtime Bootstrap 0.18.17
+/* LAST WITNESS - Legacy Compatibility Shim + Runtime Bootstrap 0.19.0
  * Loads approved localization and targeted QC before dynamic Chapter IV modules.
- * Existing Phase I through Phase IV order is preserved. Phase V loads as one
- * isolated future module before the accepted handoff and Developer navigation.
- * Shared 0.17.18 geometry remains unchanged and deliberately late.
+ * Existing Phase I through Phase V order is preserved. Phase VI loads as an
+ * isolated direct-handoff module before Developer navigation and QA surfaces.
  */
 (function(){
 "use strict";
 window.LastWitnessLegacyHotfix={disabled:true,version:"0.5.0"};
-window.LastWitnessRuntimeBuild="0.18.17";
+window.LastWitnessRuntimeBuild="0.19.0";
 
 function stylesheet(href,id){
  if(document.getElementById(id))return;const link=document.createElement("link");link.id=id;link.rel="stylesheet";link.href=href;document.head.appendChild(link)
@@ -20,92 +19,30 @@ function script(src,id,ready){
 }
 
 script("js/engine/15-thai-localization.js?v=0152","lwThaiLocalizationScript",()=>Boolean(window.LastWitnessThaiLocalization?.version==="0.15.2"&&window.LastWitnessThaiLocalization?.installed))
- .then(()=>script(
-  "js/engine/16-targeted-qc-fixes.js?v=0153",
-  "lwTargetedQCFixesScript",
-  ()=>Boolean(window.LastWitnessTargetedQCFixes?.version==="0.15.3"&&window.LastWitnessTargetedQCFixes?.installed)
- ).catch(error=>console.error("LAST WITNESS targeted QC failed to load",error)))
- .then(()=>script(
-  "js/engine/17-police-portrait-alignment.js?v=0154",
-  "lwPolicePortraitAlignmentScript",
-  ()=>Boolean(window.LastWitnessPolicePortraitAlignment?.version==="0.15.4"&&window.LastWitnessPolicePortraitAlignment?.installed)
- ).catch(error=>console.error("LAST WITNESS police portrait alignment failed to load",error)))
- .then(()=>script(
-  "js/engine/20-character-journal-story-gate.js?v=0177",
-  "lwCharacterJournalStoryGateScript",
-  ()=>Boolean(window.LastWitnessCharacterJournalStoryGate?.version==="0.17.7"&&window.LastWitnessCharacterJournalStoryGate?.installed)
- ).catch(error=>console.error("LAST WITNESS Character Journal story gate failed to load",error)))
- .then(()=>script(
-  "js/engine/21-character-notification-contract.js?v=01714",
-  "lwCharacterNotificationContractScript",
-  ()=>Boolean(window.LastWitnessCharacterNotificationContract?.version==="0.17.14"&&window.LastWitnessCharacterNotificationContract?.installed)
- ).catch(error=>console.error("LAST WITNESS Character notification contract failed to load",error)))
- .then(()=>script(
-  "js/engine/22-modal-scroll-experience.js?v=01715",
-  "lwModalScrollExperienceScript",
-  ()=>Boolean(window.LastWitnessModalScrollExperience?.version==="0.17.15"&&window.LastWitnessModalScrollExperience?.installed)
- ).catch(error=>console.error("LAST WITNESS Modal Scroll UX failed to load",error)))
+ .then(()=>script("js/engine/16-targeted-qc-fixes.js?v=0153","lwTargetedQCFixesScript",()=>Boolean(window.LastWitnessTargetedQCFixes?.version==="0.15.3"&&window.LastWitnessTargetedQCFixes?.installed)).catch(error=>console.error("LAST WITNESS targeted QC failed to load",error)))
+ .then(()=>script("js/engine/17-police-portrait-alignment.js?v=0154","lwPolicePortraitAlignmentScript",()=>Boolean(window.LastWitnessPolicePortraitAlignment?.version==="0.15.4"&&window.LastWitnessPolicePortraitAlignment?.installed)).catch(error=>console.error("LAST WITNESS police portrait alignment failed to load",error)))
+ .then(()=>script("js/engine/20-character-journal-story-gate.js?v=0177","lwCharacterJournalStoryGateScript",()=>Boolean(window.LastWitnessCharacterJournalStoryGate?.version==="0.17.7"&&window.LastWitnessCharacterJournalStoryGate?.installed)).catch(error=>console.error("LAST WITNESS Character Journal story gate failed to load",error)))
+ .then(()=>script("js/engine/21-character-notification-contract.js?v=01714","lwCharacterNotificationContractScript",()=>Boolean(window.LastWitnessCharacterNotificationContract?.version==="0.17.14"&&window.LastWitnessCharacterNotificationContract?.installed)).catch(error=>console.error("LAST WITNESS Character notification contract failed to load",error)))
+ .then(()=>script("js/engine/22-modal-scroll-experience.js?v=01715","lwModalScrollExperienceScript",()=>Boolean(window.LastWitnessModalScrollExperience?.version==="0.17.15"&&window.LastWitnessModalScrollExperience?.installed)).catch(error=>console.error("LAST WITNESS Modal Scroll UX failed to load",error)))
  .then(()=>script("js/chapters/chapter-04/01-afterimage.js?v=0132","lwChapter04Phase01Script",()=>Boolean(window.LastWitnessChapter4Phase1)))
- .then(()=>{
-  stylesheet("css/chapter-04-phase-02.css?v=0149","lwChapter04Phase02Style");
-  return script("js/chapters/chapter-04/02a-jakarta-portrait-guard.js?v=0150","lwChapter04Phase02PortraitGuard",()=>Boolean(window.LastWitnessJakartaPortraitGuard?.version==="0.15.0"&&window.LastWitnessJakartaPortraitGuard?.installed))
- })
+ .then(()=>{stylesheet("css/chapter-04-phase-02.css?v=0149","lwChapter04Phase02Style");return script("js/chapters/chapter-04/02a-jakarta-portrait-guard.js?v=0150","lwChapter04Phase02PortraitGuard",()=>Boolean(window.LastWitnessJakartaPortraitGuard?.version==="0.15.0"&&window.LastWitnessJakartaPortraitGuard?.installed))})
  .then(()=>script("js/chapters/chapter-04/02-jakarta-arrival.js?v=0164","lwChapter04Phase02Script",()=>Boolean(window.LastWitnessChapter4Phase2?.version==="0.14.9")))
+ .then(()=>{stylesheet("css/chapter-04-phase-03.css?v=0163","lwChapter04Phase03Style");return script("js/chapters/chapter-04/03-packet-provenance.js?v=0163d2","lwChapter04Phase03Script",()=>Boolean(window.LastWitnessChapter4Phase3?.version==="0.16.3")).catch(error=>console.error("LAST WITNESS Packet Provenance failed to load",error))})
+ .then(()=>{stylesheet("css/chapter-04-phase-04.css?v=0170","lwChapter04Phase04Style");return script("js/chapters/chapter-04/04-arman-encounter.js?v=0170","lwChapter04Phase04Script",()=>Boolean(window.LastWitnessChapter4Phase4?.version==="0.17.0")).catch(error=>console.error("LAST WITNESS The Man Behind the Alias failed to load",error))})
+ .then(()=>{stylesheet("css/chapter-04-phase-04-revision.css?v=0176","lwChapter04Phase04RevisionStyle");return script("js/chapters/chapter-04/04a-arman-encounter-revision.js?v=0178","lwChapter04Phase04RevisionScript",()=>Boolean(window.LastWitnessChapter4Phase4Revision?.version==="0.17.8"&&window.LastWitnessChapter4Phase4Revision?.installed)).catch(error=>console.error("LAST WITNESS Phase IV consistency repair failed to load",error))})
+ .then(()=>{stylesheet("css/chapter-04-phase-05.css?v=0188","lwChapter04Phase05Style");stylesheet("css/chapter-04-phase-05-revision.css?v=0190","lwChapter04Phase05RevisionStyle");return script("js/chapters/chapter-04/05-north-is-marked.js?v=0189","lwChapter04Phase05Script",()=>Boolean(window.LastWitnessChapter4Phase5?.version==="0.18.9")).catch(error=>console.error("LAST WITNESS North Is Marked failed to load",error))})
  .then(()=>{
-  stylesheet("css/chapter-04-phase-03.css?v=0163","lwChapter04Phase03Style");
-  return script("js/chapters/chapter-04/03-packet-provenance.js?v=0163d2","lwChapter04Phase03Script",()=>Boolean(window.LastWitnessChapter4Phase3?.version==="0.16.3"))
-   .catch(error=>console.error("LAST WITNESS Packet Provenance failed to load",error))
+  stylesheet("css/chapter-04-phase-06.css?v=0190","lwChapter04Phase06Style");
+  return script("js/chapters/chapter-04/06-false-success-visual-assets.js?v=0190","lwChapter04Phase06VisualAssets",()=>Boolean(window.LastWitnessPhase6VisualAssets))
  })
- .then(()=>{
-  stylesheet("css/chapter-04-phase-04.css?v=0170","lwChapter04Phase04Style");
-  return script("js/chapters/chapter-04/04-arman-encounter.js?v=0170","lwChapter04Phase04Script",()=>Boolean(window.LastWitnessChapter4Phase4?.version==="0.17.0"))
-   .catch(error=>console.error("LAST WITNESS The Man Behind the Alias failed to load",error))
- })
- .then(()=>{
-  stylesheet("css/chapter-04-phase-04-revision.css?v=0176","lwChapter04Phase04RevisionStyle");
-  return script(
-   "js/chapters/chapter-04/04a-arman-encounter-revision.js?v=0178",
-   "lwChapter04Phase04RevisionScript",
-   ()=>Boolean(window.LastWitnessChapter4Phase4Revision?.version==="0.17.8"&&window.LastWitnessChapter4Phase4Revision?.installed)
-  ).catch(error=>console.error("LAST WITNESS Phase IV consistency repair failed to load",error))
- })
- .then(()=>{
-  stylesheet("css/chapter-04-phase-05.css?v=0188","lwChapter04Phase05Style");
-  stylesheet("css/chapter-04-phase-05-revision.css?v=0190","lwChapter04Phase05RevisionStyle");
-  return script(
-   "js/chapters/chapter-04/05-north-is-marked.js?v=0189",
-   "lwChapter04Phase05Script",
-   ()=>Boolean(window.LastWitnessChapter4Phase5?.version==="0.18.9")
-  ).catch(error=>console.error("LAST WITNESS North Is Marked failed to load",error))
- })
- .then(()=>script(
-  "js/engine/23-chapter4-native-thai.js?v=01813",
-  "lwChapter4NativeThaiScript",
-  ()=>Boolean(window.LastWitnessChapter4NativeThai?.version==="0.18.13"&&window.LastWitnessChapter4NativeThai?.installed)
- ).catch(error=>console.error("LAST WITNESS Chapter IV Native Thai localization failed to load",error)))
- .then(()=>script(
-  "js/engine/19-ch4-phase3-direct-handoff.js?v=0170d2",
-  "lwChapter4Phase3DirectHandoffScript",
-  ()=>Boolean(window.LastWitnessPhase3DirectHandoff?.version==="0.17.0-d2"&&window.LastWitnessPhase3DirectHandoff?.installed)
- ).catch(error=>console.error("LAST WITNESS Phase III direct handoff failed to load",error)))
- .then(()=>script(
-  "js/engine/18-developer-phase-navigation.js?v=0180d1",
-  "lwDeveloperPhaseNavigationScript",
-  ()=>Boolean(window.LastWitnessDeveloperPhaseNavigation?.version==="0.18.0-d1"&&window.LastWitnessDeveloperPhaseNavigation?.installed)
- ).catch(error=>console.error("LAST WITNESS Developer Phase Navigation failed to load",error)))
- .then(()=>script(
-  "js/engine/24-north-qa-access.js?v=01817",
-  "lwNorthQAAccessScript",
-  ()=>Boolean(window.LastWitnessNorthQA?.version==="0.18.17"&&window.LastWitnessNorthQA?.installed)
- ).catch(error=>console.error("LAST WITNESS North QA Access failed to load",error)))
- .then(()=>script(
-  "js/engine/25-runtime-build-label.js?v=01817",
-  "lwRuntimeBuildLabelScript",
-  ()=>Boolean(window.LastWitnessRuntimeBuildLabel?.version==="0.18.17"&&window.LastWitnessRuntimeBuildLabel?.installed)
- ).catch(error=>console.error("LAST WITNESS Runtime Build Label failed to load",error)))
- .then(()=>stylesheet(
-  "css/phase-action-standard.css?v=01718",
-  "lwPhaseActionStandardStyle"
- ))
+ .then(()=>script("js/chapters/chapter-04/06-false-success-portrait-assets.js?v=0190","lwChapter04Phase06PortraitAssets",()=>Boolean(window.LastWitnessPhase6PortraitAssets)))
+ .then(()=>script("js/chapters/chapter-04/06-false-success-audio-assets.js?v=0190","lwChapter04Phase06AudioAssets",()=>Boolean(window.LastWitnessPhase6AudioAssets)))
+ .then(()=>script("js/chapters/chapter-04/06-false-success.js?v=0190","lwChapter04Phase06Script",()=>Boolean(window.LastWitnessChapter4Phase6?.version==="0.19.0")).catch(error=>console.error("LAST WITNESS The False Success failed to load",error)))
+ .then(()=>script("js/engine/23-chapter4-native-thai.js?v=01813","lwChapter4NativeThaiScript",()=>Boolean(window.LastWitnessChapter4NativeThai?.version==="0.18.13"&&window.LastWitnessChapter4NativeThai?.installed)).catch(error=>console.error("LAST WITNESS Chapter IV Native Thai localization failed to load",error)))
+ .then(()=>script("js/engine/19-ch4-phase3-direct-handoff.js?v=0170d2","lwChapter4Phase3DirectHandoffScript",()=>Boolean(window.LastWitnessPhase3DirectHandoff?.version==="0.17.0-d2"&&window.LastWitnessPhase3DirectHandoff?.installed)).catch(error=>console.error("LAST WITNESS Phase III direct handoff failed to load",error)))
+ .then(()=>script("js/engine/18-developer-phase-navigation.js?v=0180d1","lwDeveloperPhaseNavigationScript",()=>Boolean(window.LastWitnessDeveloperPhaseNavigation?.version==="0.18.0-d1"&&window.LastWitnessDeveloperPhaseNavigation?.installed)).catch(error=>console.error("LAST WITNESS Developer Phase Navigation failed to load",error)))
+ .then(()=>script("js/engine/24-north-qa-access.js?v=01817","lwNorthQAAccessScript",()=>Boolean(window.LastWitnessNorthQA?.version==="0.18.17"&&window.LastWitnessNorthQA?.installed)).catch(error=>console.error("LAST WITNESS North QA Access failed to load",error)))
+ .then(()=>script("js/engine/25-runtime-build-label.js?v=0190","lwRuntimeBuildLabelScript",()=>Boolean(window.LastWitnessRuntimeBuildLabel?.version==="0.19.0"&&window.LastWitnessRuntimeBuildLabel?.installed)).catch(error=>console.error("LAST WITNESS Runtime Build Label failed to load",error)))
+ .then(()=>stylesheet("css/phase-action-standard.css?v=01718","lwPhaseActionStandardStyle"))
  .catch(error=>console.error("LAST WITNESS runtime bootstrap failed",error));
 })();
