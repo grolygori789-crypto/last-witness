@@ -1,10 +1,10 @@
-/* LAST WITNESS - Authoritative Runtime Build Label 0.19.2
+/* LAST WITNESS - Authoritative Runtime Build Label 0.19.3
  * Keeps Settings, Owner Developer, North QA and Save Manager metadata on the
  * current Runtime build while historical phase modules retain their versions.
  */
 (function(){
 "use strict";
-const VERSION="0.19.2";
+const VERSION="0.19.3";
 const SETTINGS_TEXT=`LAST WITNESS · BUILD ${VERSION}`;
 const QA_TEXT=`BUILD ${VERSION}`;
 const DEV_TEXT=`BUILD ${VERSION}`;

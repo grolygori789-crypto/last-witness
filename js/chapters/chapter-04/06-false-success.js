@@ -1,12 +1,12 @@
-/* LAST WITNESS - Chapter IV / Phase VI: THE FALSE SUCCESS 0.19.2
+/* LAST WITNESS - Chapter IV / Phase VI: THE FALSE SUCCESS 0.19.3
  * Direct Phase V handoff, hotel character beat, controlled false-success hold,
  * read-only reaction-chain reconstruction and Phase VII relay-facility lead.
  */
 (function(){
 "use strict";
-if(window.LastWitnessChapter4Phase6?.version==="0.19.2")return;
+if(window.LastWitnessChapter4Phase6?.version==="0.19.3")return;
 
-const BUILD="0.19.2";
+const BUILD="0.19.3";
 const P5_COMPLETE="arunaPhase5Complete";
 const TITLE="falseSuccessPhase6Card";
 const HOTEL_CARD="falseSuccessHotelCard";
@@ -132,7 +132,7 @@ function scene(id,extra,image,labelId){return `<section id="${id}" class="screen
 function inject(){
  if($("#"+TITLE))return;const game=$("#game");if(!game)return;
  const v=A();game.insertAdjacentHTML("beforeend",`
- <section id="${TITLE}" class="screen ch4-p5-card ch4-p6-card"><div class="ch4-p5-title-card ch4-p5-card-enter"><div class="ch4-p5-title-mark"><i></i><i></i><i></i></div><div id="ch4P6TitleEye" class="eyebrow"></div><h2 id="ch4P6TitleText"></h2><div class="ch4-p5-rule"></div></div></section>
+ <section id="${TITLE}" class="screen ch4-p5-card ch4-p6-card"><div class="ch4-p5-title-card ch4-p6-continuity-card ch4-p5-card-enter"><div id="ch4P6TitleEye" class="eyebrow"></div><h2 id="ch4P6TitleText"></h2><div class="ch4-p5-rule"></div><p id="ch4P6TitleSub" class="ch4-p6-continuity-sub"></p></div></section>
  <section id="${HOTEL_CARD}" class="screen ch4-p5-card ch4-p6-card"><div class="ch4-p5-location-card ch4-p5-card-enter"><div id="ch4P6HotelTime" class="eyebrow"></div><div id="ch4P6HotelCity" class="ch4-p5-location-city"></div><h2 id="ch4P6HotelName"></h2><div class="ch4-p5-rule"></div><p id="ch4P6HotelBody"></p><button id="ch4P6HotelContinue" class="primary" type="button"></button></div></section>
  ${scene(BEDROOM,"ch4-p6-bedroom",v.hotelBedroom,"ch4P6BedroomLocation")}
  ${scene(LOUNGE,"ch4-p6-lounge",v.hotelLounge,"ch4P6LoungeLocation")}
@@ -148,10 +148,10 @@ function inject(){
 }
 
 const HOTEL_PORTRAITS={
- Benedict:{sheet:"benedict",map:{neutral:0,serious:1,thinking:2,suspicious:3,surprised:4,smirk:5,laugh:5,flustered:7}},
- North:{sheet:"north",map:{neutral:0,focused:1,serious:2,skeptical:3,dry:3,warm:4,soft:4,concerned:5,analyzing:6,annoyed:6,surprised:7}},
- "Inspector Cheryl Goh":{sheet:"cheryl",map:{neutral:0,serious:1,calm:2,thinking:3,smirk:4,speaking:5,skeptical:6,soft:7,downcast:7}},
- "Inspector Maya Pranoto":{sheet:"maya",map:{authoritative:0,serious:1,skeptical:2,analytical:3,thinking:3,smirk:4,playful:4,speaking:5,suspicious:6,concerned:7,soft:7,neutral:0}}
+ Benedict:{sheet:"benedict",map:{neutral:0,serious:1,thinking:2,smirk:5,flustered:7}},
+ North:{sheet:"north",map:{neutral:0,serious:1,focused:2,dry:3,warm:4,skeptical:6}},
+ "Inspector Cheryl Goh":{sheet:"cheryl",map:{neutral:0,calm:0,serious:1,smirk:4,soft:7}},
+ "Inspector Maya Pranoto":{sheet:"maya",map:{neutral:0,serious:1,playful:5,smirk:5,authoritative:7}}
 };
 const HOTEL_PORTRAIT_CLASS={Benedict:"benedict",North:"north","Inspector Cheryl Goh":"cheryl","Inspector Maya Pranoto":"maya"};
 function hotelPortraitMarkup(name,emotion){
@@ -282,11 +282,11 @@ function openCascade(){cascadeOpen=true;$("#ch4P6Cascade")?.classList.add("open"
 function closeCascade(){cascadeOpen=false;$("#ch4P6Cascade")?.classList.remove("open");$("#ch4P6Cascade")?.setAttribute("aria-hidden","true");syncAudio()}
 function resetCascade(){const p=ensure();p.cascadeAssignments={};p.cascadeAttempts=0;cascadeFocusId=CASCADE_IDS[0];save();renderCascade();$("#ch4P6CascadeStatus").textContent=tr("Assignments cleared.","ล้างการจัดหมวดแล้ว")}
 function confirmCascade(){const p=ensure();if(Object.keys(p.cascadeAssignments).length<CASCADE_IDS.length){$("#ch4P6CascadeStatus").textContent=tr("Classify all six items before confirming.","จัดหมวดให้ครบทั้งหกรายการก่อนยืนยัน");return}const wrong=CASCADE_IDS.filter(id=>p.cascadeAssignments[id]!==CASCADE_CORRECT[id]);p.cascadeAttempts++;if(wrong.length){wrong.forEach(id=>delete p.cascadeAssignments[id]);save();renderCascade();$("#ch4P6CascadeStatus").textContent=tr(`${wrong.length} ${wrong.length===1?"item needs":"items need"} another look. Correct assignments remain in place.`,`มี ${wrong.length} รายการที่ต้องทบทวน คำตอบที่ถูกต้องยังคงอยู่`);return}p.cascadeComplete=true;p.stage="evidence";gs().flags.ch4_p6_false_success_trusted=true;gs().flags.ch4_p6_downstream_reliance_observed=true;gs().flags.ch4_p6_18_07_archive_moving=true;setCheckpoint("ch4_phase6_evidence");closeCascade();tone("relay");transitionTimer=setTimeout(()=>openEvidence(0),300)}
-function openEvidence(index=0){const p=ensure();evidenceOpen=true;activeEvidenceIndex=clamp(index,0,EVIDENCE_IDS.length-1);const id=EVIDENCE_IDS[activeEvidenceIndex],d=evidenceData(id);collectEvidence(id);if(!p.evidenceViewed.includes(id))p.evidenceViewed.push(id);$("#ch4P6EvidenceCounter").textContent=`${activeEvidenceIndex+1} / ${EVIDENCE_IDS.length}`;$("#ch4P6EvidenceTitle").textContent=d.title;$("#ch4P6EvidenceBody").innerHTML=`<div class="ch4-p6-evidence-mark"><i></i><i></i><i></i></div><p>${d.body}</p><strong>${d.proof}</strong><small>${d.limit}</small>`;$("#ch4P6EvidenceNext").textContent=activeEvidenceIndex<EVIDENCE_IDS.length-1?tr("NEXT EVIDENCE","หลักฐานถัดไป"):tr("PRESERVE CHAIN","เก็บรักษาลำดับหลักฐาน");$("#ch4P6Evidence")?.classList.add("open");$("#ch4P6Evidence")?.setAttribute("aria-hidden","false");tone("seal");save();syncAudio()}
+function openEvidence(index=0){const p=ensure();evidenceOpen=true;activeEvidenceIndex=clamp(index,0,EVIDENCE_IDS.length-1);const id=EVIDENCE_IDS[activeEvidenceIndex],d=evidenceData(id);collectEvidence(id);if(!p.evidenceViewed.includes(id))p.evidenceViewed.push(id);$("#ch4P6EvidenceCounter").textContent=`${activeEvidenceIndex+1} / ${EVIDENCE_IDS.length}`;$("#ch4P6EvidenceTitle").textContent=d.title;$("#ch4P6EvidenceBody").innerHTML=`<p>${d.body}</p><strong>${d.proof}</strong><small>${d.limit}</small>`;$("#ch4P6EvidenceNext").textContent=activeEvidenceIndex<EVIDENCE_IDS.length-1?tr("NEXT EVIDENCE","หลักฐานถัดไป"):tr("PRESERVE CHAIN","เก็บรักษาลำดับหลักฐาน");$("#ch4P6Evidence")?.classList.add("open");$("#ch4P6Evidence")?.setAttribute("aria-hidden","false");tone("seal");save();syncAudio()}
 function nextEvidence(){if(activeEvidenceIndex<EVIDENCE_IDS.length-1){openEvidence(activeEvidenceIndex+1);return}evidenceOpen=false;$("#ch4P6Evidence")?.classList.remove("open");$("#ch4P6Evidence")?.setAttribute("aria-hidden","true");const p=ensure();p.relayConfirmed=true;p.stage="closing";const s=gs();Object.assign(s.flags,{ch4_p6_relay_route_supported:true,ch4_p6_maintenance_window_preserved:true,ch4_p6_false_success_hold_active:true,ch4_p6_north_active:true,ch4_p6_decision_owner_unresolved:true});setCheckpoint("ch4_phase6_route");syncAudio();setTimeout(()=>talk(D.closing,finishPhase),280)}
 
 function updateLanguage(){if(!$("#"+TITLE))return;const map={
- ch4P6TitleEye:tr("CHAPTER IV · PHASE VI","บทที่ IV · เฟส VI"),ch4P6TitleText:tr("THE FALSE SUCCESS","ความสำเร็จจอมปลอม"),
+ ch4P6TitleEye:tr("CHAPTER IV · PHASE VI","บทที่ IV · เฟส VI"),ch4P6TitleText:tr("SAME DAY · 22:18 WIB","วันเดียวกัน · 22:18 น."),ch4P6TitleSub:tr("THE FALSE SUCCESS","ความสำเร็จจอมปลอม"),
  ch4P6HotelTime:tr("DAY 5 · 22:18 WIB","วันที่ 5 · 22:18 WIB"),ch4P6HotelCity:tr("INDONESIA · COASTAL DISTRICT","อินโดนีเซีย · เขตชายฝั่ง"),ch4P6HotelName:"ARUNA COASTAL HOTEL",ch4P6HotelBody:tr("VIP SUITE · SECURED FLOOR","ห้องวีไอพี · ชั้นรักษาความปลอดภัย"),ch4P6HotelContinue:tr("ENTER THE SUITE","เข้าห้องพัก"),
  ch4P6BedroomLocation:tr("ARUNA COASTAL HOTEL · VIP SUITE","โรงแรมอรุณา โคสตัล · ห้องวีไอพี"),[BEDROOM+"Scene"]:tr("NIGHT SECURITY BRIEF","สรุปมาตรการยามค่ำ"),[BEDROOM+"Objective"]:tr("Confirm custody, evidence control and the team's immediate safety boundary.","ยืนยันการควบคุมตัว การดูแลหลักฐาน และขอบเขตความปลอดภัยของทีม"),[BEDROOM+"Action"]:tr("MOVE TO THE LOUNGE","ไปยังห้องรับรอง"),
  ch4P6LoungeLocation:tr("ARUNA COASTAL HOTEL · PRIVATE LOUNGE","โรงแรมอรุณา โคสตัล · ห้องรับรองส่วนตัว"),[LOUNGE+"Scene"]:tr("SECURE FLOOR · 22:31 WIB","ชั้นรักษาความปลอดภัย · 22:31 WIB"),[LOUNGE+"Objective"]:tr("Set the overnight watch without losing the team's sense of each other.","จัดเวรเฝ้าระวังยามค่ำ โดยไม่ปล่อยให้แรงกดดันกลืนความเป็นทีม"),[LOUNGE+"Action"]:tr("REVIEW THE TABLET","ตรวจข้อมูลในแท็บเล็ต"),
@@ -298,7 +298,7 @@ function updateLanguage(){if(!$("#"+TITLE))return;const map={
  ch4P6CompleteEye:tr("CHAPTER IV · PHASE VI COMPLETE","บทที่ IV · เฟส VI จบแล้ว"),ch4P6CompleteTitle:tr("THE DOOR THEY OPENED","ประตูที่พวกนั้นเปิดเอง"),ch4P6CompleteBody:tr("They believed North was gone. So they opened the door she had been looking for.","พวกนั้นเชื่อว่า North หายไปแล้ว จึงเปิดประตูที่เธอตามหามาตลอด"),ch4P6CompleteNext:tr("NEXT · RELAY FACILITY CLIMAX","ถัดไป · จุดเผชิญหน้าที่สถานี Relay"),ch4P6ReturnTitle:tr("RETURN TO TITLE","กลับหน้าหลัก")
  };Object.entries(map).forEach(([id,value])=>{const node=$("#"+id);if(node)node.textContent=value});if(dialogue)renderDialogue();if(cgDialogue){const box=$("#ch4P6CgDialogue");const line=cgDialogue.lines[cgDialogue.i];if(box&&line)box.innerHTML=`<div class="speaker">${speakerLabel(line[0])}</div><div class="line">${thai()?line[3]:line[2]}</div><div class="next">${tr("TAP TO CONTINUE","แตะเพื่อดำเนินต่อ")}</div>`}if(cascadeOpen)renderCascade();if(evidenceOpen)openEvidence(activeEvidenceIndex);syncProgress();setBuild()}
 
-async function showTitle(){const p=ensure();p.started=true;p.stage="title";setCheckpoint("ch4_phase6_title");stopForeignAudio();safeShow(TITLE);updateLanguage();await delay(p.titleSeen?120:1450);p.titleSeen=true;p.stage="hotel-card";setCheckpoint("ch4_phase6_hotel_card");safeShow(HOTEL_CARD);updateLanguage()}
+async function showTitle(){const p=ensure();p.started=true;p.stage="title";setCheckpoint("ch4_phase6_title");stopForeignAudio();safeShow(TITLE);updateLanguage();await delay(p.titleSeen?120:1350);p.titleSeen=true;p.hotelCardSeen=true;save();enterBedroom()}
 function enterBedroom(){unlockAudio();const p=ensure();p.hotelCardSeen=true;p.stage="bedroom";setCheckpoint("ch4_phase6_bedroom");safeShow(BEDROOM);updateLanguage();if(p.bedroomIntroComplete){showBedroomAction();return}setTimeout(()=>talk(D.bedroom,()=>{p.bedroomIntroComplete=true;save();showBedroomAction()}),320)}
 function showBedroomAction(){const b=$("#"+BEDROOM+"Action");if(b){b.hidden=false;b.onclick=enterLounge}}
 function enterLounge(){const p=ensure();p.stage="lounge";setCheckpoint("ch4_phase6_lounge");safeShow(LOUNGE);updateLanguage();const b=$("#"+BEDROOM+"Action");if(b)b.hidden=true;if(p.loungeBriefComplete){showLoungeAction();return}setTimeout(()=>talk(D.lounge,()=>{p.loungeBriefComplete=true;save();showLoungeAction()}),300)}
@@ -315,7 +315,7 @@ function showComplete(){const p=ensure();p.complete=true;p.stage="complete";safe
 function returnToTitle(){stopAudio(true);cascadeOpen=evidenceOpen=false;$("#ch4P6Cascade")?.classList.remove("open");$("#ch4P6Evidence")?.classList.remove("open");try{if(typeof window.LastWitnessChapter2Integration?.returnToTitle==="function")window.LastWitnessChapter2Integration.returnToTitle();else if(typeof show==="function")show("title")}catch(_){try{show("title")}catch(__){}}}
 function startFromPhase5(){inject();const p=ensure();if(!gs()?.chapter4?.phase5?.complete&&!gs()?.flags?.ch4_p5_false_success_basis)return false;stopForeignAudio();if(p.complete){showComplete();return true}if(p.started){resumeFromState();return true}showTitle();return true}
 function startFreshForDev(){inject();stopAudio(true);stopForeignAudio();const s=gs();s.chapter=4;s.chapter4=s.chapter4||{};s.chapter4.phase5=s.chapter4.phase5||{};Object.assign(s.chapter4.phase5,{started:true,complete:true,closingComplete:true,stage:"complete"});s.flags=s.flags||{};Object.assign(s.flags,{ch4_p5_false_success_basis:true,ch4_p5_north_active:true,ch4_p5_decision_owner_unresolved:true});s.chapter4.phase6=defaults();showTitle();return true}
-function resumeFromState(){inject();const p=ensure();if(p.complete){showComplete();return}switch(String(p.stage||"title")){case"hotel-card":safeShow(HOTEL_CARD);updateLanguage();break;case"bedroom":enterBedroom();break;case"lounge":enterLounge();break;case"team-cg":showTeamCg();break;case"alert":enterAlert();if(p.alertOpened&&!p.northConsentRecorded)setTimeout(()=>talk(D.consent,completeConsent),300);break;case"lab-card":showLabCard();break;case"lab":case"cascade":case"evidence":case"closing":enterLab();if(p.cascadeComplete&&!p.relayConfirmed)setTimeout(()=>openEvidence(p.evidenceViewed.length),350);else if(p.relayConfirmed&&!p.closingComplete)setTimeout(()=>talk(D.closing,finishPhase),350);break;default:showTitle()}}
+function resumeFromState(){inject();const p=ensure();if(p.complete){showComplete();return}switch(String(p.stage||"title")){case"hotel-card":enterBedroom();break;case"bedroom":enterBedroom();break;case"lounge":enterLounge();break;case"team-cg":showTeamCg();break;case"alert":enterAlert();if(p.alertOpened&&!p.northConsentRecorded)setTimeout(()=>talk(D.consent,completeConsent),300);break;case"lab-card":showLabCard();break;case"lab":case"cascade":case"evidence":case"closing":enterLab();if(p.cascadeComplete&&!p.relayConfirmed)setTimeout(()=>openEvidence(p.evidenceViewed.length),350);else if(p.relayConfirmed&&!p.closingComplete)setTimeout(()=>talk(D.closing,finishPhase),350);break;default:showTitle()}}
 
 function removePhase5EndCard(){const screen=$("#"+P5_COMPLETE);if(!screen)return;screen.classList.add("ch4-p6-handoff-source");$(".ch4-p5-complete-card",screen)?.remove()}
 function handoffReady(){const p5=gs()?.chapter4?.phase5;return Boolean(p5?.complete||gs()?.flags?.ch4_p5_false_success_basis)}
