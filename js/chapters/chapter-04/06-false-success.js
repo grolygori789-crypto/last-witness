@@ -1,4 +1,4 @@
-/* LAST WITNESS - Chapter IV / Phase VI: THE FALSE SUCCESS 0.19.5
+/* LAST WITNESS - Chapter IV / Phase VI: THE FALSE SUCCESS 0.19.6
  * Direct Phase V handoff, hotel character beat, controlled false-success hold,
  * read-only reaction-chain reconstruction and Phase VII relay-facility lead.
  * Thai presentation is native-authored subtitle copy: concise, spoken-natural,
@@ -6,9 +6,9 @@
  */
 (function(){
 "use strict";
-if(window.LastWitnessChapter4Phase6?.version==="0.19.5")return;
+if(window.LastWitnessChapter4Phase6?.version==="0.19.6")return;
 
-const BUILD="0.19.5";
+const BUILD="0.19.6";
 const P5_COMPLETE="arunaPhase5Complete";
 const TITLE="falseSuccessPhase6Card";
 const HOTEL_CARD="falseSuccessHotelCard";
@@ -301,7 +301,7 @@ function updateLanguage(){if(!$("#"+TITLE))return;const map={
  ch4P6CompleteEye:tr("CHAPTER IV · PHASE VI COMPLETE","บทที่ IV · จบเฟส VI"),ch4P6CompleteTitle:tr("THE DOOR THEY OPENED","ประตูที่พวกนั้นเปิดเอง"),ch4P6CompleteBody:tr("They believed North was gone. So they opened the door she had been looking for.","พวกนั้นเชื่อว่า North หายไปแล้ว จึงเปิดประตูที่เธอตามหามาตลอด"),ch4P6CompleteNext:tr("NEXT · RELAY FACILITY CLIMAX","ต่อไป · สถานี Relay JKT-R7"),ch4P6ReturnTitle:tr("RETURN TO TITLE","กลับหน้าหลัก")
  };Object.entries(map).forEach(([id,value])=>{const node=$("#"+id);if(node)node.textContent=value});if(dialogue)renderDialogue();if(cgDialogue){const box=$("#ch4P6CgDialogue");const line=cgDialogue.lines[cgDialogue.i];if(box&&line)box.innerHTML=`<div class="speaker">${speakerLabel(line[0])}</div><div class="line">${thai()?line[3]:line[2]}</div><div class="next">${tr("TAP TO CONTINUE","แตะเพื่อดำเนินต่อ")}</div>`}if(cascadeOpen)renderCascade();if(evidenceOpen)openEvidence(activeEvidenceIndex);syncProgress();setBuild()}
 
-async function showTitle(){const p=ensure();p.started=true;p.stage="title";setCheckpoint("ch4_phase6_title");stopForeignAudio();safeShow(TITLE);updateLanguage();await delay(p.titleSeen?120:1350);p.titleSeen=true;p.hotelCardSeen=true;save();enterBedroom()}
+async function showTitle(){const p=ensure();p.started=true;p.stage="title";setCheckpoint("ch4_phase6_title");stopForeignAudio();safeShow(TITLE);updateLanguage();await delay(p.titleSeen?120:2600);p.titleSeen=true;p.hotelCardSeen=true;save();enterBedroom()}
 function enterBedroom(){unlockAudio();const p=ensure();p.hotelCardSeen=true;p.stage="bedroom";setCheckpoint("ch4_phase6_bedroom");safeShow(BEDROOM);updateLanguage();if(p.bedroomIntroComplete){showBedroomAction();return}setTimeout(()=>talk(D.bedroom,()=>{p.bedroomIntroComplete=true;save();showBedroomAction()}),320)}
 function showBedroomAction(){const b=$("#"+BEDROOM+"Action");if(b){b.hidden=false;b.onclick=enterLounge}}
 function enterLounge(){const p=ensure();p.stage="lounge";setCheckpoint("ch4_phase6_lounge");safeShow(LOUNGE);updateLanguage();const b=$("#"+BEDROOM+"Action");if(b)b.hidden=true;if(p.loungeBriefComplete){showLoungeAction();return}setTimeout(()=>talk(D.lounge,()=>{p.loungeBriefComplete=true;save();showLoungeAction()}),300)}

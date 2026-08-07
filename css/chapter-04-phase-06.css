@@ -1,4 +1,4 @@
-/* LAST WITNESS - Chapter IV / Phase VI: THE FALSE SUCCESS 0.19.4 */
+/* LAST WITNESS - Chapter IV / Phase VI: THE FALSE SUCCESS 0.19.6 */
 :root{--p6-gold:#ddb56d;--p6-blue:#77a4b7;--p6-ink:#04070b;--p6-paper:#f5eee4;--p6-red:#c75d58;--p6-green:#88bd9d}
 .ch4-p6-handoff-source{display:none!important}
 .ch4-p6-card,.ch4-p6-screen,.ch4-p6-cg,.ch4-p6-alert,.ch4-p6-complete{background:#040609;color:var(--p6-paper)}
@@ -65,3 +65,18 @@
 }
 .ch4-p6-screen .ch4-p5-dialogue .portrait-wrap,
 .ch4-p6-alert .ch4-p5-dialogue .portrait-wrap{background:#000!important}
+
+
+/* 0.19.6 portrait edge cleanup: Phase VI only. */
+.ch4-p6-bedroom .ch4-p5-card-portrait.maya,
+.ch4-p6-lounge .ch4-p5-card-portrait.maya,
+.ch4-p6-alert .ch4-p5-card-portrait.maya{
+ transform:scale(1.035)!important;
+ transform-origin:center top!important;
+}
+.ch4-p6-bedroom .ch4-p5-card-portrait.cheryl,
+.ch4-p6-lounge .ch4-p5-card-portrait.cheryl,
+.ch4-p6-alert .ch4-p5-card-portrait.cheryl{
+ transform:translateX(-0.8%) scale(1.024)!important;
+ transform-origin:center top!important;
+}
