@@ -1,10 +1,10 @@
-/* LAST WITNESS - Isolated Chapter IV Developer Phase Navigation 0.18.0-d1
- * Provides reliable fresh-entry Developer Console jumps to every implemented
- * Chapter IV phase. This file changes Developer Mode only.
+/* LAST WITNESS - Isolated Chapter IV Developer Phase Navigation 0.19.2-d1
+ * Canonical Developer Console jumps for Chapter IV Phases I-VI.
+ * Phase VI is owned here, not by the Phase VI scene module.
  */
 (function(){
 "use strict";
-const VERSION="0.18.0-d1";
+const VERSION="0.19.2-d1";
 if(window.LastWitnessDeveloperPhaseNavigation?.version===VERSION){
  try{window.LastWitnessDeveloperPhaseNavigation.install?.()}catch(_){}
  return
@@ -22,7 +22,8 @@ const PHASES=[
  {id:"chapter4Phase2",phase:2,en:"Chapter IV · Phase II · Jakarta Arrival",th:"บทที่ IV · เฟส II · เดินทางถึง Jakarta",api:"LastWitnessChapter4Phase2",screens:["jakartaFlight","jakartaAirport","jakartaCybercrimeOffice","jakartaVerificationLab","jakartaPhase2Complete"]},
  {id:"chapter4PacketProvenance",phase:3,en:"Chapter IV · Phase III · Packet Trail",th:"บทที่ IV · เฟส III · เส้นทางข้อมูล",api:"LastWitnessChapter4Phase3",screens:["jakartaVerificationLab","jakartaPacketProvenanceComplete"]},
  {id:"chapter4ArmanEncounter",phase:4,en:"Chapter IV · Phase IV · The Man Behind the Alias",th:"บทที่ IV · เฟส IV · ชายผู้อยู่หลังนามแฝง",api:"LastWitnessChapter4Phase4",screens:["armanVehicleApproach","armanLocationCard","armanStairwell","armanWorkshop","armanReveal","armanPhase4Complete"]},
- {id:"chapter4NorthMarked",phase:5,en:"Chapter IV · Phase V · North Is Marked",th:"บทที่ IV · เฟส V · North ถูกหมายหัว",api:"LastWitnessChapter4Phase5",screens:["arunaEstablishing","arunaPhase5Card","arunaLocationCard","arunaTeamReveal","arunaMainPool","arunaCabana","arunaPoolside","arunaServicePath","arunaBlindCorner","arunaNorthMarked","arunaCombat","arunaPhase5Complete"]}
+ {id:"chapter4NorthMarked",phase:5,en:"Chapter IV · Phase V · North Is Marked",th:"บทที่ IV · เฟส V · North ถูกหมายหัว",api:"LastWitnessChapter4Phase5",screens:["arunaEstablishing","arunaPhase5Card","arunaLocationCard","arunaTeamReveal","arunaMainPool","arunaCabana","arunaPoolside","arunaServicePath","arunaBlindCorner","arunaNorthMarked","arunaCombat","arunaPhase5Complete"]},
+ {id:"chapter4FalseSuccess",phase:6,en:"Chapter IV · Phase VI · The False Success",th:"บทที่ IV · เฟส VI · ความสำเร็จจอมปลอม",api:"LastWitnessChapter4Phase6",screens:["falseSuccessPhase6Card","falseSuccessHotelCard","falseSuccessBedroom","falseSuccessLounge","falseSuccessTeamCG","falseSuccessAlert","falseSuccessLabCard","falseSuccessLab","falseSuccessPhase6Complete"]}
 ];
 
 let running=false;
@@ -32,18 +33,19 @@ function closeDeveloperUI(){
  $("#developerModal")?.classList.remove("open")
 }
 function stopCurrentMedia(){
- ["LastWitnessChapter4Phase5","LastWitnessChapter4Phase4","LastWitnessChapter4Phase3","LastWitnessChapter4Phase2","LastWitnessChapter4Phase1"].forEach(name=>{
+ ["LastWitnessChapter4Phase6","LastWitnessChapter4Phase5","LastWitnessChapter4Phase4","LastWitnessChapter4Phase3","LastWitnessChapter4Phase2","LastWitnessChapter4Phase1"].forEach(name=>{
   try{window[name]?.stopAudio?.(true)}catch(error){console.warn("LAST WITNESS Dev navigation media stop skipped",name,error)}
  })
 }
 function resetPhaseContainers(item){
  const s=gs();if(!s)throw new Error("Game state unavailable");
  s.chapter4=s.chapter4||{};s.flags=s.flags||{};s.characters=s.characters||{};s.relationships=s.relationships||{};
- if(item.phase===1){delete s.chapter4.phase1;delete s.chapter4.phase2;delete s.chapter4.phase3;delete s.chapter4.phase4;delete s.chapter4.phase5}
- if(item.phase===2){delete s.chapter4.phase1;delete s.chapter4.phase2;delete s.chapter4.phase3;delete s.chapter4.phase4;delete s.chapter4.phase5}
- if(item.phase===3){delete s.chapter4.phase2;delete s.chapter4.phase3;delete s.chapter4.phase4;delete s.chapter4.phase5}
- if(item.phase===4){delete s.chapter4.phase3;delete s.chapter4.phase4;delete s.chapter4.phase5}
- if(item.phase===5){delete s.chapter4.phase4;delete s.chapter4.phase5}
+ if(item.phase===1){delete s.chapter4.phase1;delete s.chapter4.phase2;delete s.chapter4.phase3;delete s.chapter4.phase4;delete s.chapter4.phase5;delete s.chapter4.phase6}
+ if(item.phase===2){delete s.chapter4.phase1;delete s.chapter4.phase2;delete s.chapter4.phase3;delete s.chapter4.phase4;delete s.chapter4.phase5;delete s.chapter4.phase6}
+ if(item.phase===3){delete s.chapter4.phase2;delete s.chapter4.phase3;delete s.chapter4.phase4;delete s.chapter4.phase5;delete s.chapter4.phase6}
+ if(item.phase===4){delete s.chapter4.phase3;delete s.chapter4.phase4;delete s.chapter4.phase5;delete s.chapter4.phase6}
+ if(item.phase===5){delete s.chapter4.phase4;delete s.chapter4.phase5;delete s.chapter4.phase6}
+ if(item.phase===6){delete s.chapter4.phase6}
  if(item.phase===4&&s.flags.developer_character_unlock_all!==true){
   s.characters["Arman Suryadi"]=false;
   if(Array.isArray(s.lwCharactersUnlocked))s.lwCharactersUnlocked=s.lwCharactersUnlocked.filter(id=>id!=="arman");
@@ -88,7 +90,9 @@ async function run(id){
  if(button)button.disabled=true;
  try{
   const api=await waitForApi(item);
-  stopCurrentMedia();closeDeveloperUI();resetPhaseContainers(item);
+  stopCurrentMedia();
+  resetPhaseContainers(item);
+  closeDeveloperUI();
   const result=api.startFreshForDev();
   if(result&&typeof result.then==="function")await result;
   if(!await waitForEntry(item))throw new Error("Jump did not enter Chapter IV Phase "+item.phase);
@@ -106,12 +110,22 @@ function replaceButton(grid,item){
   event.preventDefault();event.stopPropagation();event.stopImmediatePropagation();
   void run(item.id)
  },true);
- if(current)current.replaceWith(button);else grid.appendChild(button);
+ if(current)current.replaceWith(button);
+ else if(item.phase===6){
+  const phase5=grid.querySelector('[data-dev-jump="chapter4NorthMarked"]');
+  if(phase5)phase5.insertAdjacentElement("afterend",button);else grid.appendChild(button)
+ }else grid.appendChild(button);
  return button
+}
+function enforcePhase6Order(grid){
+ const phase5=grid.querySelector('[data-dev-jump="chapter4NorthMarked"]');
+ const phase6=grid.querySelector('[data-dev-jump="chapter4FalseSuccess"]');
+ if(phase5&&phase6&&phase5.nextElementSibling!==phase6)phase5.insertAdjacentElement("afterend",phase6)
 }
 function install(){
  const grid=$("#developerModal .dev-grid");if(!grid)return false;
  PHASES.forEach(item=>replaceButton(grid,item));
+ enforcePhase6Order(grid);
  return true
 }
 function refreshLabels(){

@@ -1,12 +1,12 @@
-/* LAST WITNESS - Chapter IV / Phase VI: THE FALSE SUCCESS 0.19.1
+/* LAST WITNESS - Chapter IV / Phase VI: THE FALSE SUCCESS 0.19.2
  * Direct Phase V handoff, hotel character beat, controlled false-success hold,
  * read-only reaction-chain reconstruction and Phase VII relay-facility lead.
  */
 (function(){
 "use strict";
-if(window.LastWitnessChapter4Phase6?.version==="0.19.1")return;
+if(window.LastWitnessChapter4Phase6?.version==="0.19.2")return;
 
-const BUILD="0.19.1";
+const BUILD="0.19.2";
 const P5_COMPLETE="arunaPhase5Complete";
 const TITLE="falseSuccessPhase6Card";
 const HOTEL_CARD="falseSuccessHotelCard";
@@ -322,18 +322,7 @@ function handoffReady(){const p5=gs()?.chapter4?.phase5;return Boolean(p5?.compl
 function watchHandoff(){removePhase5EndCard();if(handoffObserver)handoffObserver.disconnect();const screen=$("#"+P5_COMPLETE);if(screen){handoffObserver=new MutationObserver(()=>{if(screen.classList.contains("active")&&handoffReady()){screen.classList.remove("active");startFromPhase5()}});handoffObserver.observe(screen,{attributes:true,attributeFilter:["class"]})}if(active()===P5_COMPLETE&&handoffReady())startFromPhase5()}
 function installSaveBridge(){if(saveBridgeInstalled||!window.LastWitnessSaveManager?.restore)return false;const api=window.LastWitnessSaveManager,base=api.restore;if(base.__lwPhase6Bridge){saveBridgeInstalled=true;return true}function owns(data){return Boolean(data?.chapter4?.phase6?.started||String(data?.checkpoint||"").startsWith("ch4_phase6_")||SCREENS.has(String(data?.screen||"")))}api.restore=function(data){if(!owns(data))return base.call(this,data);const p5=data?.chapter4?.phase5,started=p5?.started;if(p5)p5.started=false;let result;try{result=base.call(this,data)}finally{if(p5)p5.started=started}Promise.resolve(result).finally(()=>setTimeout(()=>resumeFromState(),0));return result};api.restore.__lwPhase6Bridge=true;saveBridgeInstalled=true;return true}
 function installDevJump(){
- const grid=$("#developerModal .dev-grid");if(!grid)return false;
- let b=grid.querySelector('[data-dev-jump="chapter4FalseSuccess"]');
- if(!b){b=document.createElement("button");b.className="dev-button";b.type="button";b.dataset.devJump="chapter4FalseSuccess"}
- b.textContent=tr("Chapter IV · Phase VI · The False Success","บทที่ IV · เฟส VI · ความสำเร็จจอมปลอม");
- const phase5=grid.querySelector('[data-dev-jump="chapter4NorthMarked"]');
- if(phase5){if(phase5.nextElementSibling!==b)phase5.insertAdjacentElement("afterend",b)}
- else if(!b.parentNode)grid.appendChild(b);
- if(b.dataset.lwBound0191!=="1"){
-  b.dataset.lwBound0191="1";
-  b.addEventListener("click",event=>{event.preventDefault();event.stopPropagation();event.stopImmediatePropagation();$("#developerModal")?.classList.remove("open");startFreshForDev()},true)
- }
- return true
+ try{return window.LastWitnessDeveloperPhaseNavigation?.install?.()===true}catch(_){return false}
 }
 function bindElements(){
  $("#ch4P6HotelContinue").onclick=enterBedroom;$("#ch4P6LabContinue").onclick=enterLab;$("#ch4P6CascadeReset").onclick=resetCascade;$("#ch4P6CascadeConfirm").onclick=confirmCascade;$("#ch4P6EvidenceNext").onclick=nextEvidence;$("#ch4P6ReturnTitle").onclick=returnToTitle;
