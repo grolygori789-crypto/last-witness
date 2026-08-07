@@ -1,4 +1,4 @@
-/* LAST WITNESS - Legacy Compatibility Shim + Runtime Bootstrap 0.19.6
+/* LAST WITNESS - Legacy Compatibility Shim + Runtime Bootstrap 0.19.7
  * Loads approved localization and targeted QC before dynamic Chapter IV modules.
  * Existing Phase I through Phase V order is preserved. Phase VI loads as an
  * isolated direct-handoff module before Developer navigation and QA surfaces.
@@ -6,7 +6,7 @@
 (function(){
 "use strict";
 window.LastWitnessLegacyHotfix={disabled:true,version:"0.5.0"};
-window.LastWitnessRuntimeBuild="0.19.6";
+window.LastWitnessRuntimeBuild="0.19.7";
 
 function stylesheet(href,id){
  if(document.getElementById(id))return;const link=document.createElement("link");link.id=id;link.rel="stylesheet";link.href=href;document.head.appendChild(link)
@@ -38,11 +38,12 @@ script("js/engine/15-thai-localization.js?v=0152","lwThaiLocalizationScript",()=
  .then(()=>script("js/chapters/chapter-04/06-false-success-portrait-assets.js?v=0194","lwChapter04Phase06PortraitAssets",()=>Boolean(window.LastWitnessPhase6PortraitAssets)))
  .then(()=>script("js/chapters/chapter-04/06-false-success-audio-assets.js?v=0190","lwChapter04Phase06AudioAssets",()=>Boolean(window.LastWitnessPhase6AudioAssets)))
  .then(()=>script("js/chapters/chapter-04/06-false-success.js?v=0196","lwChapter04Phase06Script",()=>Boolean(window.LastWitnessChapter4Phase6?.version==="0.19.6")).catch(error=>console.error("LAST WITNESS The False Success failed to load",error)))
+.then(()=>script("js/engine/26-c4-uniform-portrait-edge-repair.js?v=0197","lwC4UniformPortraitEdgeRepairScript",()=>Boolean(window.LastWitnessC4UniformPortraitEdgeRepair?.version==="0.19.7"&&window.LastWitnessC4UniformPortraitEdgeRepair?.installed)).catch(error=>console.error("LAST WITNESS Chapter IV uniform portrait edge repair failed to load",error)))
  .then(()=>script("js/engine/23-chapter4-native-thai.js?v=01813","lwChapter4NativeThaiScript",()=>Boolean(window.LastWitnessChapter4NativeThai?.version==="0.18.13"&&window.LastWitnessChapter4NativeThai?.installed)).catch(error=>console.error("LAST WITNESS Chapter IV Native Thai localization failed to load",error)))
  .then(()=>script("js/engine/19-ch4-phase3-direct-handoff.js?v=0170d2","lwChapter4Phase3DirectHandoffScript",()=>Boolean(window.LastWitnessPhase3DirectHandoff?.version==="0.17.0-d2"&&window.LastWitnessPhase3DirectHandoff?.installed)).catch(error=>console.error("LAST WITNESS Phase III direct handoff failed to load",error)))
  .then(()=>script("js/engine/18-developer-phase-navigation.js?v=0192d1","lwDeveloperPhaseNavigationScript",()=>Boolean(window.LastWitnessDeveloperPhaseNavigation?.version==="0.19.2-d1"&&window.LastWitnessDeveloperPhaseNavigation?.installed)).catch(error=>console.error("LAST WITNESS Developer Phase Navigation failed to load",error)))
  .then(()=>script("js/engine/24-north-qa-access.js?v=0195","lwNorthQAAccessScript",()=>Boolean(window.LastWitnessNorthQA?.version==="0.19.5"&&window.LastWitnessNorthQA?.installed)).catch(error=>console.error("LAST WITNESS North QA Access failed to load",error)))
- .then(()=>script("js/engine/25-runtime-build-label.js?v=0196","lwRuntimeBuildLabelScript",()=>Boolean(window.LastWitnessRuntimeBuildLabel?.version==="0.19.6"&&window.LastWitnessRuntimeBuildLabel?.installed)).catch(error=>console.error("LAST WITNESS Runtime Build Label failed to load",error)))
+ .then(()=>script("js/engine/25-runtime-build-label.js?v=0197","lwRuntimeBuildLabelScript",()=>Boolean(window.LastWitnessRuntimeBuildLabel?.version==="0.19.7"&&window.LastWitnessRuntimeBuildLabel?.installed)).catch(error=>console.error("LAST WITNESS Runtime Build Label failed to load",error)))
  .then(()=>stylesheet("css/phase-action-standard.css?v=01718","lwPhaseActionStandardStyle"))
  .catch(error=>console.error("LAST WITNESS runtime bootstrap failed",error));
 })();
