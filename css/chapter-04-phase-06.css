@@ -1,4 +1,4 @@
-/* LAST WITNESS - Chapter IV / Phase VI: THE FALSE SUCCESS 0.19.3 */
+/* LAST WITNESS - Chapter IV / Phase VI: THE FALSE SUCCESS 0.19.4 */
 :root{--p6-gold:#ddb56d;--p6-blue:#77a4b7;--p6-ink:#04070b;--p6-paper:#f5eee4;--p6-red:#c75d58;--p6-green:#88bd9d}
 .ch4-p6-handoff-source{display:none!important}
 .ch4-p6-card,.ch4-p6-screen,.ch4-p6-cg,.ch4-p6-alert,.ch4-p6-complete{background:#040609;color:var(--p6-paper)}
@@ -54,3 +54,14 @@
 
 .ch4-p6-evidence .modal-card>footer{display:flex!important;justify-content:center!important;align-items:center!important}
 .ch4-p6-evidence #ch4P6EvidenceNext{width:min(100%,330px);margin:0 auto}
+
+
+/* 0.19.4 portrait matte + dialogue legibility repair. Phase VI only. */
+.ch4-p6-screen .ch4-p5-dialogue,
+.ch4-p6-alert .ch4-p5-dialogue{
+ background:linear-gradient(145deg,#080b10 0%,#030407 78%,#010203 100%)!important;
+ backdrop-filter:none!important;
+ -webkit-backdrop-filter:none!important;
+}
+.ch4-p6-screen .ch4-p5-dialogue .portrait-wrap,
+.ch4-p6-alert .ch4-p5-dialogue .portrait-wrap{background:#000!important}

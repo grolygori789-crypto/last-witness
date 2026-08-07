@@ -1,12 +1,12 @@
-/* LAST WITNESS - Chapter IV / Phase VI: THE FALSE SUCCESS 0.19.3
+/* LAST WITNESS - Chapter IV / Phase VI: THE FALSE SUCCESS 0.19.4
  * Direct Phase V handoff, hotel character beat, controlled false-success hold,
  * read-only reaction-chain reconstruction and Phase VII relay-facility lead.
  */
 (function(){
 "use strict";
-if(window.LastWitnessChapter4Phase6?.version==="0.19.3")return;
+if(window.LastWitnessChapter4Phase6?.version==="0.19.4")return;
 
-const BUILD="0.19.3";
+const BUILD="0.19.4";
 const P5_COMPLETE="arunaPhase5Complete";
 const TITLE="falseSuccessPhase6Card";
 const HOTEL_CARD="falseSuccessHotelCard";
@@ -176,7 +176,7 @@ function renderDialogue(){
  box.innerHTML=`<div class="portrait-wrap">${portraitHtml}</div><div class="dialogue-copy"><div class="speaker">${label}</div><div class="line">${thai()?line[3]:line[2]}</div></div><div class="next">${tr("TAP TO CONTINUE","แตะเพื่อดำเนินต่อ")}</div>`;
  syncAudio()
 }
-function talk(lines,done){const box=dialogueBox();if(!box){done?.();return}dialogue={lines,i:0,done};box.classList.remove("hidden");renderDialogue();box.onclick=()=>{if(!dialogue)return;recordHistory(dialogue.lines[dialogue.i]);dialogue.i++;if(dialogue.i>=dialogue.lines.length){const fn=dialogue.done;dialogue=null;box.classList.add("hidden");box.onclick=null;syncAudio();fn?.();save()}else renderDialogue()}}
+function talk(lines,done){const box=dialogueBox();if(!box){done?.();return}const action=$("#"+active()+"Action");if(action)action.hidden=true;dialogue={lines,i:0,done};box.classList.remove("hidden");renderDialogue();box.onclick=()=>{if(!dialogue)return;recordHistory(dialogue.lines[dialogue.i]);dialogue.i++;if(dialogue.i>=dialogue.lines.length){const fn=dialogue.done;dialogue=null;box.classList.add("hidden");box.onclick=null;syncAudio();fn?.();save()}else renderDialogue()}}
 function talkCg(lines,done){const box=$("#ch4P6CgDialogue");cgDialogue={lines,i:0,done};box.classList.remove("hidden");const render=()=>{const line=cgDialogue.lines[cgDialogue.i];box.innerHTML=`<div class="speaker">${speakerLabel(line[0])}</div><div class="line">${thai()?line[3]:line[2]}</div><div class="next">${tr("TAP TO CONTINUE","แตะเพื่อดำเนินต่อ")}</div>`;syncAudio()};render();box.onclick=()=>{if(!cgDialogue)return;recordHistory(cgDialogue.lines[cgDialogue.i]);cgDialogue.i++;if(cgDialogue.i>=cgDialogue.lines.length){const fn=cgDialogue.done;cgDialogue=null;box.classList.add("hidden");box.onclick=null;syncAudio();fn?.();save()}else render()}}
 
 const D={
