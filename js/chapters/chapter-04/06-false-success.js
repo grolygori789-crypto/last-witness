@@ -148,10 +148,10 @@ function inject(){
 }
 
 const HOTEL_PORTRAITS={
- Benedict:{sheet:"benedict",map:{neutral:0,smirk:1,flustered:2,thinking:3,surprised:4,laugh:5,serious:6,suspicious:7}},
- North:{sheet:"north",map:{neutral:0,focused:2,serious:3,smile:4,warm:5,dry:6,thinking:8,surprised:9,concerned:10,annoyed:13,soft:19,skeptical:0}},
- "Inspector Cheryl Goh":{sheet:"cheryl",map:{neutral:0,serious:2,calm:3,downcast:4,smile:5,smirk:6,thinking:7,surprised:9,skeptical:12,annoyed:13,tired:14,soft:18}},
- "Inspector Maya Pranoto":{sheet:"maya",map:{neutral:6,authoritative:0,smirk:1,skeptical:2,thinking:3,serious:4,playful:8,suspicious:9,speaking:11,angry:12,concerned:13,arms:17,soft:19}}
+ Benedict:{sheet:"benedict",map:{neutral:0,serious:1,thinking:2,suspicious:3,surprised:4,smirk:5,laugh:5,flustered:7}},
+ North:{sheet:"north",map:{neutral:0,focused:1,serious:2,skeptical:3,dry:3,warm:4,soft:4,concerned:5,analyzing:6,annoyed:6,surprised:7}},
+ "Inspector Cheryl Goh":{sheet:"cheryl",map:{neutral:0,serious:1,calm:2,thinking:3,smirk:4,speaking:5,skeptical:6,soft:7,downcast:7}},
+ "Inspector Maya Pranoto":{sheet:"maya",map:{authoritative:0,serious:1,skeptical:2,analytical:3,thinking:3,smirk:4,playful:4,speaking:5,suspicious:6,concerned:7,soft:7,neutral:0}}
 };
 const HOTEL_PORTRAIT_CLASS={Benedict:"benedict",North:"north","Inspector Cheryl Goh":"cheryl","Inspector Maya Pranoto":"maya"};
 function hotelPortraitMarkup(name,emotion){
