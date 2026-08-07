@@ -1,12 +1,14 @@
-/* LAST WITNESS - Chapter IV / Phase VI: THE FALSE SUCCESS 0.19.4
+/* LAST WITNESS - Chapter IV / Phase VI: THE FALSE SUCCESS 0.19.5
  * Direct Phase V handoff, hotel character beat, controlled false-success hold,
  * read-only reaction-chain reconstruction and Phase VII relay-facility lead.
+ * Thai presentation is native-authored subtitle copy: concise, spoken-natural,
+ * canon-faithful and never a literal sentence-by-sentence translation.
  */
 (function(){
 "use strict";
-if(window.LastWitnessChapter4Phase6?.version==="0.19.4")return;
+if(window.LastWitnessChapter4Phase6?.version==="0.19.5")return;
 
-const BUILD="0.19.4";
+const BUILD="0.19.5";
 const P5_COMPLETE="arunaPhase5Complete";
 const TITLE="falseSuccessPhase6Card";
 const HOTEL_CARD="falseSuccessHotelCard";
@@ -140,7 +142,7 @@ function inject(){
  <section id="${ALERT}" class="screen ch4-p5-scene ch4-p6-alert"><img class="scene" src="${v.hotelLounge}" alt=""><div class="ch4-p5-shade ch4-p6-alert-shade"></div>${phaseHud("ch4P6AlertLocation")}<div id="ch4P6AlertScene" class="ch4-p5-label"></div><div id="ch4P6AlertObjective" class="ch4-p5-objective"></div><div class="ch4-p6-alert-panel"><div class="eyebrow">ASTER FIELD COMPLETION BUFFER</div><div class="ch4-p6-alert-grid"><span>SUBJECT</span><b>N-32</b><span>STATUS</span><strong>REMOVED</strong><span>RESULT</span><strong>CONFIRMED</strong></div><button id="ch4P6OpenAlert" class="primary" type="button"></button></div><div id="${ALERT}Dialogue" class="dialogue ch4-p5-dialogue hidden"></div>${progressMarkup()}</section>
  <section id="${LAB_CARD}" class="screen ch4-p5-card ch4-p6-card"><div class="ch4-p5-location-card ch4-p5-card-enter"><div id="ch4P6LabTime" class="eyebrow"></div><div id="ch4P6LabCity" class="ch4-p5-location-city"></div><h2 id="ch4P6LabName"></h2><div class="ch4-p5-rule"></div><p id="ch4P6LabBody"></p><button id="ch4P6LabContinue" class="primary" type="button"></button></div></section>
  ${scene(LAB,"ch4-p6-lab","assets/images/chapter-04/phase-02/jakarta-verification-lab.png?v=0146","ch4P6LabLocation")}
- <section id="${COMPLETE}" class="screen ch4-p5-complete ch4-p6-complete"><div class="ch4-p5-complete-card"><div id="ch4P6CompleteEye" class="eyebrow"></div><h2 id="ch4P6CompleteTitle"></h2><div class="ch4-p5-rule"></div><p id="ch4P6CompleteBody"></p><div class="ch4-p6-complete-grid"><div><span>FALSE RESULT</span><b>TRUSTED</b></div><div><span>18-07 ARCHIVE</span><b>IN MOTION</b></div><div><span>RELAY ROUTE</span><b>JKT-R7</b></div><div><span>DECISION OWNER</span><b>UNRESOLVED</b></div></div><strong id="ch4P6CompleteNext"></strong><button id="ch4P6ReturnTitle" class="primary" type="button"></button></div>${progressMarkup()}</section>
+ <section id="${COMPLETE}" class="screen ch4-p5-complete ch4-p6-complete"><div class="ch4-p5-complete-card"><div id="ch4P6CompleteEye" class="eyebrow"></div><h2 id="ch4P6CompleteTitle"></h2><div class="ch4-p5-rule"></div><p id="ch4P6CompleteBody"></p><div class="ch4-p6-complete-grid"><div><span id="ch4P6CompleteFalseLabel">FALSE RESULT</span><b id="ch4P6CompleteFalseValue">TRUSTED</b></div><div><span id="ch4P6CompleteArchiveLabel">18-07 ARCHIVE</span><b id="ch4P6CompleteArchiveValue">IN MOTION</b></div><div><span id="ch4P6CompleteRelayLabel">RELAY ROUTE</span><b>JKT-R7</b></div><div><span id="ch4P6CompleteOwnerLabel">DECISION OWNER</span><b id="ch4P6CompleteOwnerValue">UNRESOLVED</b></div></div><strong id="ch4P6CompleteNext"></strong><button id="ch4P6ReturnTitle" class="primary" type="button"></button></div>${progressMarkup()}</section>
  <div id="ch4P6Cascade" class="modal ch4-p5-modal ch4-p6-cascade" aria-hidden="true"><div class="modal-card"><header><div><div id="ch4P6CascadeEye" class="eyebrow"></div><h3 id="ch4P6CascadeTitle"></h3></div><span id="ch4P6CascadeCounter" class="ch4-p5-counter">0 / 6</span></header><div class="ch4-p6-cascade-body"><div id="ch4P6CascadeTrack" class="ch4-p6-cascade-track" aria-label="Cascade items"></div><div id="ch4P6CascadeFocus" class="ch4-p6-cascade-focus"></div><div id="ch4P6CascadeGroups" class="ch4-p6-cascade-groups"></div></div><div id="ch4P6CascadeStatus" class="ch4-p5-status"></div><footer><button id="ch4P6CascadeReset" class="ghost" type="button"></button><button id="ch4P6CascadeConfirm" class="primary" type="button"></button></footer></div></div>
  <div id="ch4P6Evidence" class="modal ch4-p5-modal ch4-p6-evidence" aria-hidden="true"><div class="modal-card"><header><div><div id="ch4P6EvidenceEye" class="eyebrow"></div><h3 id="ch4P6EvidenceTitle"></h3></div><span id="ch4P6EvidenceCounter" class="ch4-p5-counter"></span></header><div id="ch4P6EvidenceBody" class="ch4-p6-evidence-body"></div><footer><button id="ch4P6EvidenceNext" class="primary" type="button"></button></footer></div></div>
  `);
@@ -181,82 +183,82 @@ function talkCg(lines,done){const box=$("#ch4P6CgDialogue");cgDialogue={lines,i:
 
 const D={
  bedroom:[
-  ["Inspector Maya Pranoto","authoritative","Ika is in local custody. This floor is sealed, and nobody leaves alone.","Ika อยู่ในการควบคุมตัวของฝ่ายอินโดนีเซียแล้ว ชั้นนี้ถูกปิดพื้นที่ และห้ามใครออกไปคนเดียว"],
-  ["Inspector Cheryl Goh","serious","Her devices are bagged. The original chain stays with Maya's team; Singapore receives only the authorised mirror.","อุปกรณ์ของเธอถูกเก็บเข้าถุงหลักฐานแล้ว ต้นฉบับอยู่ในสายการครอบครองของทีม Maya ฝั่งสิงคโปร์รับเฉพาะ Mirror ที่ได้รับอนุญาต"],
-  ["North","focused","The buffer on the service token is still waiting for a completion receipt.","Buffer ใน Service Token ยังรอใบตอบรับว่างานเสร็จสมบูรณ์"],
-  ["Benedict","thinking","So the people behind her still don't know the attempt failed.","แปลว่าคนที่อยู่เบื้องหลังยังไม่รู้ว่าแผนนี้พลาด"],
-  ["Inspector Maya Pranoto","serious","For the moment. We decide what happens to that moment before it decides for us.","ตอนนี้ยังไม่รู้ เราต้องตัดสินใจกับช่วงเวลานี้ ก่อนที่มันจะตัดสินแทนเรา"]
+  ["Inspector Maya Pranoto","authoritative","Ika is in local custody. This floor is sealed, and nobody leaves alone.","Ika อยู่ในการควบคุมตัวของตำรวจอินโดนีเซียแล้ว ชั้นนี้ปิดพื้นที่ทั้งหมด ห้ามแยกกันไปไหนคนเดียว"],
+  ["Inspector Cheryl Goh","serious","Her devices are bagged. The original chain stays with Maya's team; Singapore receives only the authorised mirror.","อุปกรณ์ของเธอถูกเก็บเป็นหลักฐานหมดแล้ว ของจริงอยู่กับทีม Maya สิงคโปร์รับแค่สำเนาที่ได้รับอนุญาต"],
+  ["North","focused","The buffer on the service token is still waiting for a completion receipt.","บัฟเฟอร์ใน Service Token ยังรอใบยืนยันว่างานเสร็จอยู่"],
+  ["Benedict","thinking","So the people behind her still don't know the attempt failed.","งั้นคนที่อยู่เบื้องหลังก็ยังไม่รู้ว่าแผนล้มเหลว"],
+  ["Inspector Maya Pranoto","serious","For the moment. We decide what happens to that moment before it decides for us.","ตอนนี้ยังไม่รู้ เราต้องใช้ช่องว่างนี้ให้เป็นประโยชน์ ก่อนมันจะย้อนเล่นงานเรา"]
  ],
  lounge:[
-  ["Benedict","neutral","Four people, one secure floor. We could save time and use one room.","สี่คน หนึ่งชั้นที่ปิดพื้นที่ เพื่อประหยัดเวลา เราใช้ห้องเดียวกันก็ได้นะ"],
-  ["North","dry","Efficient. You can monitor the door from the floor.","มีประสิทธิภาพดี คุณเฝ้าประตูจากพื้นได้เลย"],
-  ["Inspector Maya Pranoto","playful","The sofa is available. Pending a risk assessment.","โซฟายังว่าง รอประเมินความเสี่ยงก่อนว่าจะอนุญาตให้ใช้ไหม"],
-  ["Inspector Cheryl Goh","smirk","His confidence was listed as an operational asset. We should stress-test it.","ในรายงานระบุว่าความมั่นใจของเขาเป็นทรัพยากรเชิงปฏิบัติการ เราควรทดสอบภายใต้แรงกดดัน"],
-  ["North","skeptical","That sounded rehearsed.","ฟังเหมือนเตรียมประโยคนี้มาแล้ว"],
-  ["Inspector Maya Pranoto","smirk","Very rehearsed.","เตรียมมาดีมากด้วย"],
-  ["Inspector Cheryl Goh","calm","I document patterns. This one was overdue.","ฉันบันทึกรูปแบบพฤติกรรม ประโยคนี้ถึงเวลาต้องใช้แล้ว"],
-  ["Benedict","smirk","I'm glad morale survived the attack.","ดีใจที่ขวัญกำลังใจของทีมรอดจากการโจมตีมาได้"]
+  ["Benedict","neutral","Four people, one secure floor. We could save time and use one room.","สี่คน ชั้นเดียวกัน ปิดพื้นที่หมดแล้ว... ใช้ห้องเดียวกันน่าจะง่ายกว่านะ"],
+  ["North","dry","Efficient. You can monitor the door from the floor.","ประหยัดดี คุณนอนเฝ้าประตูบนพื้นไปเลย"],
+  ["Inspector Maya Pranoto","playful","The sofa is available. Pending a risk assessment.","โซฟายังว่างนะ ถ้าผ่านการประเมินความเสี่ยง"],
+  ["Inspector Cheryl Goh","smirk","His confidence was listed as an operational asset. We should stress-test it.","ในรายงานบอกว่าความมั่นใจของเขาเป็นข้อได้เปรียบ งั้นลองกดดูหน่อยว่ารับแรงได้แค่ไหน"],
+  ["North","skeptical","That sounded rehearsed.","ฟังเหมือนเตรียมมา"],
+  ["Inspector Maya Pranoto","smirk","Very rehearsed.","เตรียมมาดีด้วย"],
+  ["Inspector Cheryl Goh","calm","I document patterns. This one was overdue.","ฉันจดพฤติกรรมไว้ตลอด อันนี้ถึงคิวสักที"],
+  ["Benedict","smirk","I'm glad morale survived the attack.","อย่างน้อยขวัญกำลังใจของทีมก็ยังไม่ตาย"]
  ],
  cg:[
-  ["Benedict","flustered","There is an entire sofa around us.","โซฟาตัวนี้มีพื้นที่เหลืออีกเยอะนะ"],
-  ["North","dry","This angle shows the tablet better.","มุมนี้เห็นหน้าจอชัดกว่า"],
-  ["Inspector Maya Pranoto","playful","Much better.","ชัดขึ้นมาก"],
-  ["Inspector Cheryl Goh","smirk","Your pulse suggests the display is not the problem.","ชีพจรของคุณบอกว่าปัญหาไม่น่าจะอยู่ที่หน้าจอ"],
-  ["Benedict","flustered","Are we reviewing evidence or conducting an experiment?","เรากำลังตรวจหลักฐาน หรือกำลังทำการทดลองกับผมกันแน่"],
-  ["North","warm","Both can be true.","เป็นได้ทั้งสองอย่าง"]
+  ["Benedict","flustered","There is an entire sofa around us.","โซฟาก็กว้างตั้งเยอะนะ"],
+  ["North","dry","This angle shows the tablet better.","มุมนี้เห็นแท็บเล็ตชัดกว่า"],
+  ["Inspector Maya Pranoto","playful","Much better.","ชัดขึ้นเยอะ"],
+  ["Inspector Cheryl Goh","smirk","Your pulse suggests the display is not the problem.","ชีพจรคุณบอกว่าปัญหาไม่น่าจะใช่หน้าจอนะ"],
+  ["Benedict","flustered","Are we reviewing evidence or conducting an experiment?","นี่เรากำลังดูหลักฐาน หรือทดลองอะไรกับผมอยู่กันแน่"],
+  ["North","warm","Both can be true.","ทำสองอย่างพร้อมกันก็ได้"]
  ],
  consent:[
-  ["North","serious","It already says I'm gone.","ระบบบันทึกว่าฉันหายไปแล้ว"],
-  ["Inspector Cheryl Goh","serious","We did not create that record. We can observe what it triggers, but only with your consent and a fixed stop condition.","เราไม่ได้สร้างบันทึกนั้น เราสังเกตสิ่งที่มันกระตุ้นต่อได้ แต่ต้องได้รับความยินยอมจากคุณและมีเงื่อนไขยุติที่ชัดเจน"],
-  ["Inspector Maya Pranoto","authoritative","I own the local operation. If your safety changes or the record reaches a public system, I terminate the hold.","ฉันรับผิดชอบปฏิบัติการในอินโดนีเซีย ถ้าความปลอดภัยของคุณเปลี่ยนไป หรือข้อมูลนี้ไหลเข้าสู่ระบบสาธารณะ ฉันจะยุติการเฝ้าดูทันที"],
-  ["North","focused","No public record. No fake death report. We watch the existing buffer, preserve every reaction, and stop on Maya's order.","ไม่มีการสร้างบันทึกสาธารณะ ไม่มีรายงานการเสียชีวิตปลอม เราเฝ้าดู Buffer ที่มีอยู่ เก็บทุกการตอบสนอง และหยุดเมื่อ Maya สั่ง"],
-  ["Benedict","serious","Your call, North.","การตัดสินใจเป็นของคุณ North"],
-  ["North","serious","Hold it. Read-only. I stay active, and I see every step.","คงสถานะไว้ ใช้สิทธิ์อ่านอย่างเดียว ฉันยังทำงานต่อ และต้องเห็นทุกขั้นตอน"],
-  ["Inspector Cheryl Goh","soft","Recorded.","บันทึกไว้แล้ว"]
+  ["North","serious","It already says I'm gone.","ในระบบ ฉันหายไปแล้ว"],
+  ["Inspector Cheryl Goh","serious","We did not create that record. We can observe what it triggers, but only with your consent and a fixed stop condition.","บันทึกนั้นไม่ใช่ฝีมือเรา เราดูต่อได้ว่ามันจะกระตุ้นอะไร แต่ต้องได้ความยินยอมจากคุณ และตกลงกันก่อนว่าจะหยุดเมื่อไหร่"],
+  ["Inspector Maya Pranoto","authoritative","I own the local operation. If your safety changes or the record reaches a public system, I terminate the hold.","ปฏิบัติการในอินโดนีเซียฉันคุมเอง ถ้าคุณเริ่มไม่ปลอดภัย หรือข้อมูลนี้หลุดเข้าไปในระบบสาธารณะ ฉันหยุดทันที"],
+  ["North","focused","No public record. No fake death report. We watch the existing buffer, preserve every reaction, and stop on Maya's order.","ไม่สร้างบันทึกสาธารณะ ไม่ทำรายงานตายปลอม เราแค่เฝ้าดู Buffer เดิม เก็บทุกปฏิกิริยา แล้วหยุดทันทีที่ Maya สั่ง"],
+  ["Benedict","serious","Your call, North.","คุณตัดสินใจเอง North"],
+  ["North","serious","Hold it. Read-only. I stay active, and I see every step.","ปล่อยไว้แบบนั้น อ่านอย่างเดียว ฉันยังทำงานตามปกติ และต้องเห็นทุกขั้นตอน"],
+  ["Inspector Cheryl Goh","soft","Recorded.","บันทึกแล้ว"]
  ],
  lab:[
-  ["Farid Rahman","tablet_read","The false completion receipt was accepted at 05:43. The mirror hash still matches Singapore.","ใบตอบรับความสำเร็จปลอมถูกยอมรับตอน 05:43 น. ค่าแฮชของ Mirror ยังตรงกับสำเนาที่สิงคโปร์"],
-  ["North","analyzing","One minute later, my attribution-watch subscription closed itself.","หนึ่งนาทีต่อมา ระบบปิดการติดตาม Attribution ของฉันเอง"],
-  ["Inspector Cheryl Goh","serious","That proves reliance on the record. It does not prove who authored it.","นี่พิสูจน์ว่าระบบนำบันทึกนั้นไปใช้ แต่ยังไม่พิสูจน์ว่าใครเป็นผู้สร้าง"],
-  ["Inspector Maya Pranoto","analytical","At 05:46, the 18-07 archive entered a continuity-transfer queue. At 05:51, it opened a one-time handshake to JKT-R7.","เวลา 05:46 น. คลังข้อมูล 18-07 ถูกส่งเข้าแถวรอโอนย้ายเพื่อความต่อเนื่อง และเวลา 05:51 น. ระบบเปิด Handshake แบบใช้ครั้งเดียวไปยัง JKT-R7"],
-  ["Benedict","thinking","The lie stayed digital. The reaction gave it a physical address.","คำโกหกยังอยู่ในระบบดิจิทัล แต่การตอบสนองของระบบทิ้งที่อยู่จริงไว้"],
-  ["North","focused","Let's separate what the record claims from what the system actually did.","แยกสิ่งที่บันทึกกล่าวอ้าง ออกจากสิ่งที่ระบบทำจริงกัน"]
+  ["Farid Rahman","tablet_read","The false completion receipt was accepted at 05:43. The mirror hash still matches Singapore.","ระบบรับใบยืนยันปลอมตอน 05:43 แฮชของสำเนายังตรงกับฝั่งสิงคโปร์"],
+  ["North","analyzing","One minute later, my attribution-watch subscription closed itself.","อีกหนึ่งนาที ระบบติดตามต้นทางของฉันก็ปิดตัวเอง"],
+  ["Inspector Cheryl Goh","serious","That proves reliance on the record. It does not prove who authored it.","แปลว่าระบบเชื่อบันทึกนั้น แต่ยังบอกไม่ได้ว่าใครเป็นคนสร้าง"],
+  ["Inspector Maya Pranoto","analytical","At 05:46, the 18-07 archive entered a continuity-transfer queue. At 05:51, it opened a one-time handshake to JKT-R7.","05:46 คลัง 18-07 เข้าคิวโอนย้ายเพื่อให้ระบบทำงานต่อ แล้ว 05:51 มันเปิดการเชื่อมต่อครั้งเดียวไปที่ JKT-R7"],
+  ["Benedict","thinking","The lie stayed digital. The reaction gave it a physical address.","เรื่องโกหกยังอยู่ในระบบ แต่ปฏิกิริยาของมันกลับชี้ไปถึงสถานที่จริง"],
+  ["North","focused","Let's separate what the record claims from what the system actually did.","แยกให้ชัด บันทึกอ้างว่าอะไร กับระบบทำอะไรจริง"]
  ],
  closing:[
-  ["Farid Rahman","serious","Maintenance slot confirmed: 07:30 to 07:45. Aster Recovery is listed as the service contractor.","ยืนยันช่วงเวลาบำรุงรักษาแล้ว 07:30 ถึง 07:45 น. ผู้รับเหมาที่ระบุคือ Aster Recovery"],
-  ["Inspector Maya Pranoto","authoritative","I can secure the perimeter and obtain the local warrant. Nobody enters before my team.","ฉันจัดกำลังควบคุมพื้นที่และขอหมายในเขตอำนาจได้ ไม่มีใครเข้าไปก่อนทีมของฉัน"],
-  ["Inspector Cheryl Goh","serious","Singapore will preserve the remote mirror. No live credential crosses the border.","สิงคโปร์จะเก็บรักษา Remote Mirror ไม่มี Live Credential ถูกส่งข้ามพรมแดน"],
-  ["North","focused","The route opened because the system believed I was gone.","เส้นทางเปิดขึ้น เพราะระบบเชื่อว่าฉันหายไปแล้ว"],
-  ["Benedict","smirk","Then let's be polite and use the door it opened.","งั้นก็ควรรักษามารยาท ใช้ประตูที่มันเปิดไว้ให้เรา"],
-  ["Inspector Cheryl Goh","smirk","Try not to look too pleased with yourself.","พยายามอย่าทำหน้าภูมิใจในตัวเองขนาดนั้น"],
+  ["Farid Rahman","serious","Maintenance slot confirmed: 07:30 to 07:45. Aster Recovery is listed as the service contractor.","ยืนยันช่วงบำรุงรักษาแล้ว 07:30 ถึง 07:45 ผู้รับเหมาคือ Aster Recovery"],
+  ["Inspector Maya Pranoto","authoritative","I can secure the perimeter and obtain the local warrant. Nobody enters before my team.","ฉันปิดพื้นที่และขอหมายในอินโดนีเซียได้ ไม่มีใครเข้าไปก่อนทีมฉัน"],
+  ["Inspector Cheryl Goh","serious","Singapore will preserve the remote mirror. No live credential crosses the border.","สิงคโปร์จะเก็บสำเนาไว้ฝั่งนั้น และจะไม่มีการส่ง Credential ที่ยังใช้งานได้ข้ามพรมแดน"],
+  ["North","focused","The route opened because the system believed I was gone.","เส้นทางนี้เปิด เพราะระบบเชื่อว่าฉันหายไปแล้ว"],
+  ["Benedict","smirk","Then let's be polite and use the door it opened.","งั้นก็อย่าเสียมารยาท ใช้ประตูที่มันเปิดให้เรา"],
+  ["Inspector Cheryl Goh","smirk","Try not to look too pleased with yourself.","อย่าเพิ่งทำหน้าภูมิใจขนาดนั้น"],
   ["Inspector Maya Pranoto","playful","Too late.","สายไปแล้ว"],
-  ["North","dry","Documented.","บันทึกไว้แล้ว"]
+  ["North","dry","Documented.","จดไว้แล้ว"]
  ]
 };
 
 function evidenceData(id){const map={
- ch4_p6_controlled_observation_consent:{title:tr("Controlled Observation Consent","ความยินยอมให้เฝ้าสังเกตแบบควบคุม"),body:tr("North authorises a read-only hold on an adversary-created completion record under Maya's local stop authority.","North ยินยอมให้คงสถานะบันทึกความสำเร็จที่ฝ่ายตรงข้ามสร้างไว้เพื่อเฝ้าสังเกตแบบอ่านอย่างเดียว ภายใต้อำนาจสั่งยุติของ Maya"),proof:tr("Supports: lawful, bounded observation with North still active.","สนับสนุนว่า: การเฝ้าสังเกตมีขอบเขต ถูกควบคุม และ North ยังปฏิบัติงานอยู่"),limit:tr("Does not prove: who created the record or ordered the removal.","ไม่พิสูจน์ว่า: ใครสร้างบันทึกหรือออกคำสั่งให้นำตัวออก")},
- ch4_p6_false_success_receipt_chain:{title:tr("False Success Receipt Chain","ลำดับใบตอบรับความสำเร็จปลอม"),body:tr("The N-32 removal result is accepted, followed by automatic closure of the attribution-watch subscription.","ผลการนำ N-32 ออกจากระบบถูกยอมรับ ก่อนระบบปิดการติดตาม Attribution โดยอัตโนมัติ"),proof:tr("Supports: downstream systems relied on the false result.","สนับสนุนว่า: ระบบปลายทางนำผลลัพธ์ปลอมไปใช้จริง"),limit:tr("Does not prove: the identity of the author or Decision Owner.","ไม่พิสูจน์ว่า: ผู้สร้างบันทึกหรือเจ้าของการตัดสินใจเป็นใคร")},
- ch4_p6_relay_activation_trace:{title:tr("Relay Activation Trace","ร่องรอยการเปิดใช้งาน Relay"),body:tr("The 18-07 archive enters continuity transfer and opens a one-time handshake to JKT-R7.","คลังข้อมูล 18-07 เข้าสู่การโอนย้ายเพื่อความต่อเนื่อง และเปิด Handshake แบบใช้ครั้งเดียวไปยัง JKT-R7"),proof:tr("Supports: a system reaction connected the archive to a physical relay route.","สนับสนุนว่า: การตอบสนองของระบบเชื่อมคลังข้อมูลเข้ากับเส้นทาง Relay ที่มีสถานที่จริง"),limit:tr("Does not prove: that the credential holder is the mastermind.","ไม่พิสูจน์ว่า: ผู้ถือ Credential คือผู้วางแผนทั้งหมด")},
- ch4_p6_jktr7_maintenance_manifest:{title:tr("JKT-R7 Maintenance Manifest","รายการบำรุงรักษา JKT-R7"),body:tr("Aster Recovery reserves a 07:30–07:45 physical maintenance window at the relay facility.","Aster Recovery จองช่วงบำรุงรักษาสถานที่ Relay เวลา 07:30–07:45 น."),proof:tr("Supports: a time-bounded physical lead for Phase VII.","สนับสนุนว่า: มีเบาะแสทางกายภาพพร้อมกรอบเวลาสำหรับ Phase VII"),limit:tr("Does not prove: Ika committed the earlier murders or selected the victims.","ไม่พิสูจน์ว่า: Ika ก่อคดีฆาตกรรมก่อนหน้า หรือเป็นผู้เลือกเหยื่อ")}
+ ch4_p6_controlled_observation_consent:{title:tr("Controlled Observation Consent","ข้อตกลงเฝ้าดูแบบจำกัดขอบเขต"),body:tr("North authorises a read-only hold on an adversary-created completion record under Maya's local stop authority.","North ยินยอมให้คงบันทึก “งานเสร็จ” ที่อีกฝ่ายสร้างไว้ตามเดิม เปิดดูได้อย่างเดียว และ Maya สั่งหยุดได้ทุกเมื่อ"),proof:tr("Supports: lawful, bounded observation with North still active.","ยืนยันได้ว่า: การเฝ้าดูได้รับความยินยอม มีขอบเขตชัด และ North ยังปฏิบัติงานอยู่"),limit:tr("Does not prove: who created the record or ordered the removal.","ยังยืนยันไม่ได้ว่า: ใครสร้างบันทึก หรือใครสั่งให้ N-32 ถูกนำออก")},
+ ch4_p6_false_success_receipt_chain:{title:tr("False Success Receipt Chain","ลำดับใบยืนยันผลลัพธ์ปลอม"),body:tr("The N-32 removal result is accepted, followed by automatic closure of the attribution-watch subscription.","ระบบรับผลว่า N-32 ถูกนำออก จากนั้นระบบติดตามต้นทางก็ปิดเอง"),proof:tr("Supports: downstream systems relied on the false result.","ยืนยันได้ว่า: ระบบปลายทางเชื่อและนำผลลัพธ์ปลอมไปใช้"),limit:tr("Does not prove: the identity of the author or Decision Owner.","ยังยืนยันไม่ได้ว่า: ใครสร้างบันทึก หรือใครคือคนสั่งการ")},
+ ch4_p6_relay_activation_trace:{title:tr("Relay Activation Trace","ร่องรอยการเปิด Relay"),body:tr("The 18-07 archive enters continuity transfer and opens a one-time handshake to JKT-R7.","คลัง 18-07 เข้าคิวโอนย้ายเพื่อให้ระบบทำงานต่อ ก่อนเปิดการเชื่อมต่อครั้งเดียวไปยัง JKT-R7"),proof:tr("Supports: a system reaction connected the archive to a physical relay route.","ยืนยันได้ว่า: ปฏิกิริยาของระบบเชื่อมคลังข้อมูลไปถึงเส้นทาง Relay ที่มีสถานที่จริง"),limit:tr("Does not prove: that the credential holder is the mastermind.","ยังยืนยันไม่ได้ว่า: ผู้ถือ Credential คือคนบงการ")},
+ ch4_p6_jktr7_maintenance_manifest:{title:tr("JKT-R7 Maintenance Manifest","บันทึกช่วงบำรุงรักษา JKT-R7"),body:tr("Aster Recovery reserves a 07:30–07:45 physical maintenance window at the relay facility.","Aster Recovery จองช่วงเข้าบำรุงรักษาที่สถานี Relay เวลา 07:30–07:45"),proof:tr("Supports: a time-bounded physical lead for Phase VII.","ยืนยันได้ว่า: มีเบาะแสในโลกจริงที่ระบุสถานที่และเวลาได้ชัดเจน"),limit:tr("Does not prove: Ika committed the earlier murders or selected the victims.","ยังยืนยันไม่ได้ว่า: Ika ก่อคดีฆาตกรรมก่อนหน้า หรือเป็นคนเลือกเหยื่อ")}
  };return map[id]}
-function registerContent(){if(registryInstalled)return true;const api=window.LastWitnessContentRegistry;if(!api?.evidence)return false;api.evidence.ch4_p6_controlled_observation_consent={phase:"Chapter IV · The False Success",title:{en:"Controlled Observation Consent",th:"ความยินยอมให้เฝ้าสังเกตแบบควบคุม"}};api.evidence.ch4_p6_false_success_receipt_chain={phase:"Chapter IV · The False Success",title:{en:"False Success Receipt Chain",th:"ลำดับใบตอบรับความสำเร็จปลอม"}};api.evidence.ch4_p6_relay_activation_trace={phase:"Chapter IV · The False Success",title:{en:"Relay Activation Trace",th:"ร่องรอยการเปิดใช้งาน Relay"}};api.evidence.ch4_p6_jktr7_maintenance_manifest={phase:"Chapter IV · The False Success",title:{en:"JKT-R7 Maintenance Manifest",th:"รายการบำรุงรักษา JKT-R7"}};registryInstalled=true;if(gs()?.flags?.developer_evidence_unlock_all===true)EVIDENCE_IDS.forEach(id=>api.unlockEvidence?.(id));return true}
+function registerContent(){if(registryInstalled)return true;const api=window.LastWitnessContentRegistry;if(!api?.evidence)return false;api.evidence.ch4_p6_controlled_observation_consent={phase:"Chapter IV · The False Success",title:{en:"Controlled Observation Consent",th:"ข้อตกลงเฝ้าดูแบบจำกัดขอบเขต"}};api.evidence.ch4_p6_false_success_receipt_chain={phase:"Chapter IV · The False Success",title:{en:"False Success Receipt Chain",th:"ลำดับใบยืนยันผลลัพธ์ปลอม"}};api.evidence.ch4_p6_relay_activation_trace={phase:"Chapter IV · The False Success",title:{en:"Relay Activation Trace",th:"ร่องรอยการเปิด Relay"}};api.evidence.ch4_p6_jktr7_maintenance_manifest={phase:"Chapter IV · The False Success",title:{en:"JKT-R7 Maintenance Manifest",th:"บันทึกช่วงบำรุงรักษา JKT-R7"}};registryInstalled=true;if(gs()?.flags?.developer_evidence_unlock_all===true)EVIDENCE_IDS.forEach(id=>api.unlockEvidence?.(id));return true}
 function collectEvidence(id){const p=ensure();if(!p||!EVIDENCE_IDS.includes(id)||p.evidenceCollected.includes(id))return false;p.evidenceCollected.push(id);registerContent();try{window.LastWitnessContentRegistry?.unlockEvidence?.(id)}catch(_){}try{gs()?.found?.add?.(id)}catch(_){}save();return true}
 function appendCaseEvidence(){const list=$("#caseList"),p=phaseState();if(!list)return;$('[data-ch4-p6-case-section]',list)?.remove();$$('[data-ch4-p6-case-entry]',list).forEach(n=>n.remove());if(!p?.evidenceCollected?.length)return;const head=document.createElement("div");head.className="case-section-title";head.dataset.ch4P6CaseSection="1";head.textContent=tr("CHAPTER IV · THE FALSE SUCCESS","บทที่ IV · ความสำเร็จจอมปลอม");list.appendChild(head);p.evidenceCollected.forEach(id=>{const d=evidenceData(id);if(!d)return;const row=document.createElement("div");row.className="case-row";row.dataset.ch4P6CaseEntry=id;row.innerHTML=`<b>${d.title}</b><div>${d.body}<br><strong>${d.proof}</strong><br><small>${d.limit}</small></div>`;list.appendChild(row)})}
 
 function cascadeCardData(){return{
- receipt:{title:tr("N-32 removal receipt accepted","ใบตอบรับการนำ N-32 ออกจากระบบถูกยอมรับ"),detail:"05:43"},
- watch_closed:{title:tr("Attribution-watch subscription closed","ระบบปิดการติดตาม Attribution"),detail:"05:44"},
- archive_queued:{title:tr("18-07 archive queued for continuity transfer","คลังข้อมูล 18-07 ถูกส่งเข้าคิวโอนย้าย"),detail:"05:46"},
- handshake:{title:tr("One-time handshake opened to JKT-R7","เปิด Handshake แบบใช้ครั้งเดียวไปยัง JKT-R7"),detail:"05:51"},
- maintenance:{title:tr("Aster maintenance slot reserved","Aster จองช่วงเวลาบำรุงรักษา"),detail:"07:30–07:45"},
- owner_claim:{title:tr("Credential holder equals Decision Owner","ผู้ถือ Credential คือเจ้าของการตัดสินใจ"),detail:tr("ASSUMPTION","ข้อสันนิษฐาน")}
+ receipt:{title:tr("N-32 removal receipt accepted","ระบบรับผลว่า N-32 ถูกนำออก"),detail:"05:43"},
+ watch_closed:{title:tr("Attribution-watch subscription closed","ระบบปิดการติดตามต้นทาง"),detail:"05:44"},
+ archive_queued:{title:tr("18-07 archive queued for continuity transfer","คลัง 18-07 เข้าคิวส่งต่อ"),detail:"05:46"},
+ handshake:{title:tr("One-time handshake opened to JKT-R7","เปิดการเชื่อมต่อครั้งเดียวไปยัง JKT-R7"),detail:"05:51"},
+ maintenance:{title:tr("Aster maintenance slot reserved","Aster จองช่วงบำรุงรักษา"),detail:"07:30–07:45"},
+ owner_claim:{title:tr("Credential holder equals Decision Owner","ผู้ถือ Credential คือคนสั่งการ"),detail:tr("ASSUMPTION","ข้อสันนิษฐาน")}
 }}
 function groupData(){return{
- claim:{title:tr("RECORD CLAIM","สิ่งที่บันทึกกล่าวอ้าง"),desc:tr("What the report says happened","สิ่งที่รายงานระบุว่าเกิดขึ้น")},
- reaction:{title:tr("SYSTEM REACTION","การตอบสนองของระบบ"),desc:tr("What the system did because it trusted the report","สิ่งที่ระบบทำเพราะเชื่อรายงาน")},
- physical:{title:tr("PHYSICAL LEAD","เบาะแสทางกายภาพ"),desc:tr("A place, time or movement in the real world","สถานที่ เวลา หรือการเคลื่อนไหวในโลกจริง")},
- unproven:{title:tr("NOT PROVEN","ยังพิสูจน์ไม่ได้"),desc:tr("A conclusion the evidence cannot support","ข้อสรุปที่หลักฐานยังรองรับไม่ได้")}
+ claim:{title:tr("RECORD CLAIM","คำอ้างในบันทึก"),desc:tr("What the report says happened","สิ่งที่บันทึกระบุว่าเกิดขึ้น")},
+ reaction:{title:tr("SYSTEM REACTION","การตอบสนองของระบบ"),desc:tr("What the system did because it trusted the report","สิ่งที่ระบบทำหลังเชื่อบันทึกนั้น")},
+ physical:{title:tr("PHYSICAL LEAD","เบาะแสในโลกจริง"),desc:tr("A place, time or movement in the real world","สถานที่ เวลา หรือการเคลื่อนไหวที่เกิดขึ้นจริง")},
+ unproven:{title:tr("NOT PROVEN","ยังสรุปไม่ได้"),desc:tr("A conclusion the evidence cannot support","ข้อสรุปที่หลักฐานตอนนี้ยังไม่พอรองรับ")}
 }}
 function renderCascade(){
  const p=ensure(),cards=cascadeCardData(),groups=groupData(),selected=Object.keys(p.cascadeAssignments).length;
@@ -267,7 +269,7 @@ function renderCascade(){
  $("#ch4P6CascadeTrack").innerHTML=CASCADE_IDS.map((id,index)=>`<button type="button" class="ch4-p6-cascade-node${id===cascadeFocusId?" active":""}${p.cascadeAssignments[id]?" done":""}" data-chain-nav="${id}" aria-label="${index+1}"><span>${index+1}</span></button>`).join("");
  $$("[data-chain-nav]").forEach(button=>button.onclick=()=>{cascadeFocusId=button.dataset.chainNav;renderCascade()});
  const current=cards[cascadeFocusId],assigned=p.cascadeAssignments[cascadeFocusId]||"";
- $("#ch4P6CascadeFocus").innerHTML=`<div class="ch4-p6-focus-time">${current.detail}</div><div class="ch4-p6-focus-copy"><span>${tr("CLASSIFY THIS EVENT","จัดหมวดเหตุการณ์นี้")}</span><b>${current.title}</b>${assigned?`<small>${groups[assigned].title}</small>`:""}</div>`;
+ $("#ch4P6CascadeFocus").innerHTML=`<div class="ch4-p6-focus-time">${current.detail}</div><div class="ch4-p6-focus-copy"><span>${tr("CLASSIFY THIS EVENT","เหตุการณ์นี้อยู่หมวดไหน")}</span><b>${current.title}</b>${assigned?`<small>${groups[assigned].title}</small>`:""}</div>`;
  $("#ch4P6CascadeGroups").innerHTML=CASCADE_GROUPS.map(id=>`<button class="ch4-p6-chain-group${assigned===id?" selected":""}" type="button" data-chain-group="${id}"><b>${groups[id].title}</b><span>${groups[id].desc}</span></button>`).join("");
  $$("[data-chain-group]").forEach(button=>button.onclick=()=>{
   p.cascadeAssignments[cascadeFocusId]=button.dataset.chainGroup;
@@ -275,27 +277,28 @@ function renderCascade(){
   const next=CASCADE_IDS.slice(currentIndex+1).find(id=>!p.cascadeAssignments[id])||CASCADE_IDS.find(id=>!p.cascadeAssignments[id]);
   if(next)cascadeFocusId=next;
   save();renderCascade();
-  $("#ch4P6CascadeStatus").textContent=Object.keys(p.cascadeAssignments).length===CASCADE_IDS.length?tr("All six events are classified. Confirm the reconstruction.","จัดหมวดครบทั้งหกรายการแล้ว ยืนยันการสร้างลำดับเหตุการณ์ได้เลย"):tr("Classification recorded. Continue through the chain.","บันทึกหมวดแล้ว ดำเนินต่อในลำดับเหตุการณ์")
+  $("#ch4P6CascadeStatus").textContent=Object.keys(p.cascadeAssignments).length===CASCADE_IDS.length?tr("All six events are classified. Confirm the reconstruction.","ครบทั้งหกเหตุการณ์แล้ว ยืนยันลำดับได้เลย"):tr("Classification recorded. Continue through the chain.","บันทึกแล้ว ไปเหตุการณ์ถัดไป")
  })
 }
 function openCascade(){cascadeOpen=true;$("#ch4P6Cascade")?.classList.add("open");$("#ch4P6Cascade")?.setAttribute("aria-hidden","false");renderCascade();syncAudio()}
 function closeCascade(){cascadeOpen=false;$("#ch4P6Cascade")?.classList.remove("open");$("#ch4P6Cascade")?.setAttribute("aria-hidden","true");syncAudio()}
-function resetCascade(){const p=ensure();p.cascadeAssignments={};p.cascadeAttempts=0;cascadeFocusId=CASCADE_IDS[0];save();renderCascade();$("#ch4P6CascadeStatus").textContent=tr("Assignments cleared.","ล้างการจัดหมวดแล้ว")}
-function confirmCascade(){const p=ensure();if(Object.keys(p.cascadeAssignments).length<CASCADE_IDS.length){$("#ch4P6CascadeStatus").textContent=tr("Classify all six items before confirming.","จัดหมวดให้ครบทั้งหกรายการก่อนยืนยัน");return}const wrong=CASCADE_IDS.filter(id=>p.cascadeAssignments[id]!==CASCADE_CORRECT[id]);p.cascadeAttempts++;if(wrong.length){wrong.forEach(id=>delete p.cascadeAssignments[id]);save();renderCascade();$("#ch4P6CascadeStatus").textContent=tr(`${wrong.length} ${wrong.length===1?"item needs":"items need"} another look. Correct assignments remain in place.`,`มี ${wrong.length} รายการที่ต้องทบทวน คำตอบที่ถูกต้องยังคงอยู่`);return}p.cascadeComplete=true;p.stage="evidence";gs().flags.ch4_p6_false_success_trusted=true;gs().flags.ch4_p6_downstream_reliance_observed=true;gs().flags.ch4_p6_18_07_archive_moving=true;setCheckpoint("ch4_phase6_evidence");closeCascade();tone("relay");transitionTimer=setTimeout(()=>openEvidence(0),300)}
-function openEvidence(index=0){const p=ensure();evidenceOpen=true;activeEvidenceIndex=clamp(index,0,EVIDENCE_IDS.length-1);const id=EVIDENCE_IDS[activeEvidenceIndex],d=evidenceData(id);collectEvidence(id);if(!p.evidenceViewed.includes(id))p.evidenceViewed.push(id);$("#ch4P6EvidenceCounter").textContent=`${activeEvidenceIndex+1} / ${EVIDENCE_IDS.length}`;$("#ch4P6EvidenceTitle").textContent=d.title;$("#ch4P6EvidenceBody").innerHTML=`<p>${d.body}</p><strong>${d.proof}</strong><small>${d.limit}</small>`;$("#ch4P6EvidenceNext").textContent=activeEvidenceIndex<EVIDENCE_IDS.length-1?tr("NEXT EVIDENCE","หลักฐานถัดไป"):tr("PRESERVE CHAIN","เก็บรักษาลำดับหลักฐาน");$("#ch4P6Evidence")?.classList.add("open");$("#ch4P6Evidence")?.setAttribute("aria-hidden","false");tone("seal");save();syncAudio()}
+function resetCascade(){const p=ensure();p.cascadeAssignments={};p.cascadeAttempts=0;cascadeFocusId=CASCADE_IDS[0];save();renderCascade();$("#ch4P6CascadeStatus").textContent=tr("Assignments cleared.","ล้างคำตอบแล้ว")}
+function confirmCascade(){const p=ensure();if(Object.keys(p.cascadeAssignments).length<CASCADE_IDS.length){$("#ch4P6CascadeStatus").textContent=tr("Classify all six items before confirming.","จัดให้ครบทั้งหกเหตุการณ์ก่อน");return}const wrong=CASCADE_IDS.filter(id=>p.cascadeAssignments[id]!==CASCADE_CORRECT[id]);p.cascadeAttempts++;if(wrong.length){wrong.forEach(id=>delete p.cascadeAssignments[id]);save();renderCascade();$("#ch4P6CascadeStatus").textContent=tr(`${wrong.length} ${wrong.length===1?"item needs":"items need"} another look. Correct assignments remain in place.`,`มี ${wrong.length} รายการยังไม่ถูก ลองดูใหม่ ส่วนที่ถูกเก็บไว้แล้ว`);return}p.cascadeComplete=true;p.stage="evidence";gs().flags.ch4_p6_false_success_trusted=true;gs().flags.ch4_p6_downstream_reliance_observed=true;gs().flags.ch4_p6_18_07_archive_moving=true;setCheckpoint("ch4_phase6_evidence");closeCascade();tone("relay");transitionTimer=setTimeout(()=>openEvidence(0),300)}
+function openEvidence(index=0){const p=ensure();evidenceOpen=true;activeEvidenceIndex=clamp(index,0,EVIDENCE_IDS.length-1);const id=EVIDENCE_IDS[activeEvidenceIndex],d=evidenceData(id);collectEvidence(id);if(!p.evidenceViewed.includes(id))p.evidenceViewed.push(id);$("#ch4P6EvidenceCounter").textContent=`${activeEvidenceIndex+1} / ${EVIDENCE_IDS.length}`;$("#ch4P6EvidenceTitle").textContent=d.title;$("#ch4P6EvidenceBody").innerHTML=`<p>${d.body}</p><strong>${d.proof}</strong><small>${d.limit}</small>`;$("#ch4P6EvidenceNext").textContent=activeEvidenceIndex<EVIDENCE_IDS.length-1?tr("NEXT EVIDENCE","หลักฐานถัดไป"):tr("PRESERVE CHAIN","เก็บหลักฐานครบชุด");$("#ch4P6Evidence")?.classList.add("open");$("#ch4P6Evidence")?.setAttribute("aria-hidden","false");tone("seal");save();syncAudio()}
 function nextEvidence(){if(activeEvidenceIndex<EVIDENCE_IDS.length-1){openEvidence(activeEvidenceIndex+1);return}evidenceOpen=false;$("#ch4P6Evidence")?.classList.remove("open");$("#ch4P6Evidence")?.setAttribute("aria-hidden","true");const p=ensure();p.relayConfirmed=true;p.stage="closing";const s=gs();Object.assign(s.flags,{ch4_p6_relay_route_supported:true,ch4_p6_maintenance_window_preserved:true,ch4_p6_false_success_hold_active:true,ch4_p6_north_active:true,ch4_p6_decision_owner_unresolved:true});setCheckpoint("ch4_phase6_route");syncAudio();setTimeout(()=>talk(D.closing,finishPhase),280)}
 
 function updateLanguage(){if(!$("#"+TITLE))return;const map={
  ch4P6TitleEye:tr("CHAPTER IV · PHASE VI","บทที่ IV · เฟส VI"),ch4P6TitleText:tr("SAME DAY · 22:18 WIB","วันเดียวกัน · 22:18 น."),ch4P6TitleSub:tr("THE FALSE SUCCESS","ความสำเร็จจอมปลอม"),
- ch4P6HotelTime:tr("DAY 5 · 22:18 WIB","วันที่ 5 · 22:18 WIB"),ch4P6HotelCity:tr("INDONESIA · COASTAL DISTRICT","อินโดนีเซีย · เขตชายฝั่ง"),ch4P6HotelName:"ARUNA COASTAL HOTEL",ch4P6HotelBody:tr("VIP SUITE · SECURED FLOOR","ห้องวีไอพี · ชั้นรักษาความปลอดภัย"),ch4P6HotelContinue:tr("ENTER THE SUITE","เข้าห้องพัก"),
- ch4P6BedroomLocation:tr("ARUNA COASTAL HOTEL · VIP SUITE","โรงแรมอรุณา โคสตัล · ห้องวีไอพี"),[BEDROOM+"Scene"]:tr("NIGHT SECURITY BRIEF","สรุปมาตรการยามค่ำ"),[BEDROOM+"Objective"]:tr("Confirm custody, evidence control and the team's immediate safety boundary.","ยืนยันการควบคุมตัว การดูแลหลักฐาน และขอบเขตความปลอดภัยของทีม"),[BEDROOM+"Action"]:tr("MOVE TO THE LOUNGE","ไปยังห้องรับรอง"),
- ch4P6LoungeLocation:tr("ARUNA COASTAL HOTEL · PRIVATE LOUNGE","โรงแรมอรุณา โคสตัล · ห้องรับรองส่วนตัว"),[LOUNGE+"Scene"]:tr("SECURE FLOOR · 22:31 WIB","ชั้นรักษาความปลอดภัย · 22:31 WIB"),[LOUNGE+"Objective"]:tr("Set the overnight watch without losing the team's sense of each other.","จัดเวรเฝ้าระวังยามค่ำ โดยไม่ปล่อยให้แรงกดดันกลืนความเป็นทีม"),[LOUNGE+"Action"]:tr("REVIEW THE TABLET","ตรวจข้อมูลในแท็บเล็ต"),
- ch4P6AlertLocation:tr("ARUNA COASTAL HOTEL · PRIVATE LOUNGE","โรงแรมอรุณา โคสตัล · ห้องรับรองส่วนตัว"),ch4P6AlertScene:tr("UNEXPECTED SYSTEM RECEIPT","ใบตอบรับจากระบบที่ไม่ควรเกิดขึ้น"),ch4P6AlertObjective:tr("Determine whether the team can lawfully observe the existing false result.","ตัดสินใจว่าจะเฝ้าสังเกตผลลัพธ์ปลอมที่มีอยู่ได้อย่างชอบธรรมหรือไม่"),ch4P6OpenAlert:tr("OPEN SECURE RECEIPT","เปิดใบตอบรับที่เข้ารหัส"),
- ch4P6LabTime:tr("DAY 6 · 05:40 WIB","วันที่ 6 · 05:40 WIB"),ch4P6LabCity:tr("JAKARTA · CYBERCRIME DIRECTORATE","จาการ์ตา · กองบังคับการตำรวจไซเบอร์"),ch4P6LabName:tr("VERIFICATION LAB","ห้องปฏิบัติการตรวจสอบ"),ch4P6LabBody:tr("READ-ONLY MIRROR · CONTROLLED OBSERVATION","Mirror แบบอ่านอย่างเดียว · การเฝ้าสังเกตแบบควบคุม"),ch4P6LabContinue:tr("ENTER THE LAB","เข้าห้องปฏิบัติการ"),
- ch4P6LabLocation:tr("JAKARTA CYBERCRIME · VERIFICATION LAB","ตำรวจไซเบอร์จาการ์ตา · ห้องตรวจสอบ"),[LAB+"Scene"]:tr("FALSE SUCCESS REACTION CHAIN","ลูกโซ่การตอบสนองต่อความสำเร็จปลอม"),[LAB+"Objective"]:tr("Separate the record's claim, the system's reaction, the physical lead and what remains unproven.","แยกสิ่งที่บันทึกกล่าวอ้าง การตอบสนองของระบบ เบาะแสทางกายภาพ และสิ่งที่ยังพิสูจน์ไม่ได้"),[LAB+"Action"]:tr("RECONSTRUCT REACTION CHAIN","ประกอบลูกโซ่การตอบสนอง"),
- ch4P6CascadeEye:tr("READ-ONLY ANALYSIS · REACTION CHAIN","การวิเคราะห์แบบอ่านอย่างเดียว · ลูกโซ่การตอบสนอง"),ch4P6CascadeTitle:tr("FALSE SUCCESS CASCADE","ลูกโซ่แห่งความสำเร็จจอมปลอม"),ch4P6CascadeReset:tr("RESET","เริ่มใหม่"),ch4P6CascadeConfirm:tr("CONFIRM ANALYSIS","ยืนยันการวิเคราะห์"),
- ch4P6EvidenceEye:tr("CASE EVIDENCE · PRESERVED COPY","หลักฐานในคดี · สำเนาที่เก็บรักษาแล้ว"),
- ch4P6CompleteEye:tr("CHAPTER IV · PHASE VI COMPLETE","บทที่ IV · เฟส VI จบแล้ว"),ch4P6CompleteTitle:tr("THE DOOR THEY OPENED","ประตูที่พวกนั้นเปิดเอง"),ch4P6CompleteBody:tr("They believed North was gone. So they opened the door she had been looking for.","พวกนั้นเชื่อว่า North หายไปแล้ว จึงเปิดประตูที่เธอตามหามาตลอด"),ch4P6CompleteNext:tr("NEXT · RELAY FACILITY CLIMAX","ถัดไป · จุดเผชิญหน้าที่สถานี Relay"),ch4P6ReturnTitle:tr("RETURN TO TITLE","กลับหน้าหลัก")
+ ch4P6HotelTime:tr("DAY 5 · 22:18 WIB","วันที่ 5 · 22:18 น."),ch4P6HotelCity:tr("INDONESIA · COASTAL DISTRICT","อินโดนีเซีย · เขตชายฝั่ง"),ch4P6HotelName:"ARUNA COASTAL HOTEL",ch4P6HotelBody:tr("VIP SUITE · SECURED FLOOR","ห้องวีไอพี · ชั้นรักษาความปลอดภัย"),ch4P6HotelContinue:tr("ENTER THE SUITE","เข้าห้องพัก"),
+ ch4P6BedroomLocation:tr("ARUNA COASTAL HOTEL · VIP SUITE","โรงแรมอรุณา โคสตัล · ห้องวีไอพี"),[BEDROOM+"Scene"]:tr("NIGHT SECURITY BRIEF","สรุปความปลอดภัยก่อนพัก"),[BEDROOM+"Objective"]:tr("Confirm custody, evidence control and the team's immediate safety boundary.","เช็กการควบคุมตัว หลักฐาน และความปลอดภัยของทีมให้เรียบร้อย"),[BEDROOM+"Action"]:tr("MOVE TO THE LOUNGE","ไปยังห้องรับรอง"),
+ ch4P6LoungeLocation:tr("ARUNA COASTAL HOTEL · PRIVATE LOUNGE","โรงแรมอรุณา โคสตัล · ห้องรับรองส่วนตัว"),[LOUNGE+"Scene"]:tr("SECURE FLOOR · 22:31 WIB","ชั้นรักษาความปลอดภัย · 22:31 น."),[LOUNGE+"Objective"]:tr("Set the overnight watch without losing the team's sense of each other.","จัดเวรคืนนี้ โดยอย่าให้แรงกดดันทำทีมเสียจังหวะ"),[LOUNGE+"Action"]:tr("REVIEW THE TABLET","ตรวจข้อมูลในแท็บเล็ต"),
+ ch4P6AlertLocation:tr("ARUNA COASTAL HOTEL · PRIVATE LOUNGE","โรงแรมอรุณา โคสตัล · ห้องรับรองส่วนตัว"),ch4P6AlertScene:tr("UNEXPECTED SYSTEM RECEIPT","ใบยืนยันจากระบบที่ไม่ควรเกิดขึ้น"),ch4P6AlertObjective:tr("Determine whether the team can lawfully observe the existing false result.","หาทางเฝ้าดูผลลัพธ์ปลอมนี้ต่อโดยไม่ข้ามเส้นกฎหมาย"),ch4P6OpenAlert:tr("OPEN SECURE RECEIPT","เปิดใบยืนยันที่เข้ารหัส"),
+ ch4P6LabTime:tr("DAY 6 · 05:40 WIB","วันที่ 6 · 05:40 น."),ch4P6LabCity:tr("JAKARTA · CYBERCRIME DIRECTORATE","จาการ์ตา · กองบังคับการตำรวจไซเบอร์"),ch4P6LabName:tr("VERIFICATION LAB","ห้องปฏิบัติการตรวจสอบ"),ch4P6LabBody:tr("READ-ONLY MIRROR · CONTROLLED OBSERVATION","สำเนาแบบอ่านอย่างเดียว · เฝ้าดูภายใต้การควบคุม"),ch4P6LabContinue:tr("ENTER THE LAB","เข้าห้องปฏิบัติการ"),
+ ch4P6LabLocation:tr("JAKARTA CYBERCRIME · VERIFICATION LAB","ตำรวจไซเบอร์จาการ์ตา · ห้องตรวจสอบ"),[LAB+"Scene"]:tr("FALSE SUCCESS REACTION CHAIN","ลำดับปฏิกิริยาจากผลลัพธ์ปลอม"),[LAB+"Objective"]:tr("Separate the record's claim, the system's reaction, the physical lead and what remains unproven.","แยกให้ชัดว่าอะไรคือคำอ้างในบันทึก อะไรคือปฏิกิริยาของระบบ อะไรคือเบาะแสในโลกจริง และอะไรยังสรุปไม่ได้"),[LAB+"Action"]:tr("RECONSTRUCT REACTION CHAIN","ไล่ลำดับปฏิกิริยา"),
+ ch4P6CascadeEye:tr("READ-ONLY ANALYSIS · REACTION CHAIN","วิเคราะห์แบบอ่านอย่างเดียว · ไล่ลำดับปฏิกิริยา"),ch4P6CascadeTitle:tr("FALSE SUCCESS CASCADE","ลูกโซ่จากผลลัพธ์ปลอม"),ch4P6CascadeReset:tr("RESET","เริ่มใหม่"),ch4P6CascadeConfirm:tr("CONFIRM ANALYSIS","ยืนยันลำดับ"),
+ ch4P6EvidenceEye:tr("CASE EVIDENCE · PRESERVED COPY","หลักฐานคดี · สำเนาที่เก็บรักษา"),
+ ch4P6CompleteFalseLabel:tr("FALSE RESULT","ผลลัพธ์ปลอม"),ch4P6CompleteFalseValue:tr("TRUSTED","ระบบเชื่อแล้ว"),ch4P6CompleteArchiveLabel:tr("18-07 ARCHIVE","คลัง 18-07"),ch4P6CompleteArchiveValue:tr("IN MOTION","กำลังถูกส่งต่อ"),ch4P6CompleteRelayLabel:tr("RELAY ROUTE","เส้นทาง Relay"),ch4P6CompleteOwnerLabel:tr("DECISION OWNER","ผู้สั่งการ"),ch4P6CompleteOwnerValue:tr("UNRESOLVED","ยังไม่ระบุตัว"),
+ ch4P6CompleteEye:tr("CHAPTER IV · PHASE VI COMPLETE","บทที่ IV · จบเฟส VI"),ch4P6CompleteTitle:tr("THE DOOR THEY OPENED","ประตูที่พวกนั้นเปิดเอง"),ch4P6CompleteBody:tr("They believed North was gone. So they opened the door she had been looking for.","พวกนั้นเชื่อว่า North หายไปแล้ว จึงเปิดประตูที่เธอตามหามาตลอด"),ch4P6CompleteNext:tr("NEXT · RELAY FACILITY CLIMAX","ต่อไป · สถานี Relay JKT-R7"),ch4P6ReturnTitle:tr("RETURN TO TITLE","กลับหน้าหลัก")
  };Object.entries(map).forEach(([id,value])=>{const node=$("#"+id);if(node)node.textContent=value});if(dialogue)renderDialogue();if(cgDialogue){const box=$("#ch4P6CgDialogue");const line=cgDialogue.lines[cgDialogue.i];if(box&&line)box.innerHTML=`<div class="speaker">${speakerLabel(line[0])}</div><div class="line">${thai()?line[3]:line[2]}</div><div class="next">${tr("TAP TO CONTINUE","แตะเพื่อดำเนินต่อ")}</div>`}if(cascadeOpen)renderCascade();if(evidenceOpen)openEvidence(activeEvidenceIndex);syncProgress();setBuild()}
 
 async function showTitle(){const p=ensure();p.started=true;p.stage="title";setCheckpoint("ch4_phase6_title");stopForeignAudio();safeShow(TITLE);updateLanguage();await delay(p.titleSeen?120:1350);p.titleSeen=true;p.hotelCardSeen=true;save();enterBedroom()}
