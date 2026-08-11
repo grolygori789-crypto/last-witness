@@ -1,10 +1,10 @@
-/* LAST WITNESS - Isolated Chapter IV Developer Phase Navigation 0.20.5-d1
+/* LAST WITNESS - Isolated Chapter IV Developer Phase Navigation 0.20.6-d1
  * Canonical Developer Console jumps for Chapter IV Phases I-VII.
  * All Chapter IV test jumps share one modal lifecycle, media boundary and state reset path.
  */
 (function(){
 "use strict";
-const VERSION="0.20.5-d1";
+const VERSION="0.20.6-d1";
 if(window.LastWitnessDeveloperPhaseNavigation?.version===VERSION){
  try{window.LastWitnessDeveloperPhaseNavigation.install?.()}catch(_){}
  return
@@ -42,10 +42,18 @@ function stopCurrentMedia(){
 function resetPhaseContainers(item){
  const s=gs();if(!s)throw new Error("Game state unavailable");
  s.chapter4=s.chapter4||{};s.flags=s.flags||{};s.characters=s.characters||{};s.relationships=s.relationships||{};
- const from=Math.max(1,Number(item.phase)||1);
- for(let phase=Math.max(2,from);phase<=7;phase++)delete s.chapter4["phase"+phase];
- if(from<=2)delete s.chapter4.phase1;
- if(item.phase===1)delete s.chapter4.phase1;
+ const phase=Number(item.phase)||1;
+ /* Preserve the exact reset contract used by the accepted Phase I-VI navigator,
+    extending it only to clear Phase VII when a jump starts at/before it. */
+ if(phase===1||phase===2){for(let n=1;n<=7;n++)delete s.chapter4["phase"+n]}
+ if(phase===3){for(let n=2;n<=7;n++)delete s.chapter4["phase"+n]}
+ if(phase===4){for(let n=3;n<=7;n++)delete s.chapter4["phase"+n]}
+ if(phase===5){for(let n=4;n<=7;n++)delete s.chapter4["phase"+n]}
+ if(phase===6){delete s.chapter4.phase6;delete s.chapter4.phase7}
+ if(phase===7){delete s.chapter4.phase7}
+ if(phase<=7){
+  ["ch4_p7_facility_lawfully_inspected","ch4_p7_reader_clock_normalized","ch4_p7_r18_correlated","ch4_p7_isolation_order_authorized","ch4_p7_residual_path_observed","ch4_p7_secondary_continuity_supported","ch4_p7_decision_owner_unresolved","ch4_p7_phase8_handoff_ready"].forEach(key=>delete s.flags[key])
+ }
  if(item.phase===4&&s.flags.developer_character_unlock_all!==true){
   s.characters["Arman Suryadi"]=false;
   if(Array.isArray(s.lwCharactersUnlocked))s.lwCharactersUnlocked=s.lwCharactersUnlocked.filter(id=>id!=="arman");
