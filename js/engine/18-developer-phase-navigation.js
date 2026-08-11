@@ -1,10 +1,10 @@
-/* LAST WITNESS - Isolated Chapter IV Developer Phase Navigation 0.19.2-d1
- * Canonical Developer Console jumps for Chapter IV Phases I-VI.
- * Phase VI is owned here, not by the Phase VI scene module.
+/* LAST WITNESS - Isolated Chapter IV Developer Phase Navigation 0.20.5-d1
+ * Canonical Developer Console jumps for Chapter IV Phases I-VII.
+ * All Chapter IV test jumps share one modal lifecycle, media boundary and state reset path.
  */
 (function(){
 "use strict";
-const VERSION="0.19.2-d1";
+const VERSION="0.20.5-d1";
 if(window.LastWitnessDeveloperPhaseNavigation?.version===VERSION){
  try{window.LastWitnessDeveloperPhaseNavigation.install?.()}catch(_){}
  return
@@ -23,29 +23,29 @@ const PHASES=[
  {id:"chapter4PacketProvenance",phase:3,en:"Chapter IV · Phase III · Packet Trail",th:"บทที่ IV · เฟส III · เส้นทางข้อมูล",api:"LastWitnessChapter4Phase3",screens:["jakartaVerificationLab","jakartaPacketProvenanceComplete"]},
  {id:"chapter4ArmanEncounter",phase:4,en:"Chapter IV · Phase IV · The Man Behind the Alias",th:"บทที่ IV · เฟส IV · ชายผู้อยู่หลังนามแฝง",api:"LastWitnessChapter4Phase4",screens:["armanVehicleApproach","armanLocationCard","armanStairwell","armanWorkshop","armanReveal","armanPhase4Complete"]},
  {id:"chapter4NorthMarked",phase:5,en:"Chapter IV · Phase V · North Is Marked",th:"บทที่ IV · เฟส V · North ถูกหมายหัว",api:"LastWitnessChapter4Phase5",screens:["arunaEstablishing","arunaPhase5Card","arunaLocationCard","arunaTeamReveal","arunaMainPool","arunaCabana","arunaPoolside","arunaServicePath","arunaBlindCorner","arunaNorthMarked","arunaCombat","arunaPhase5Complete"]},
- {id:"chapter4FalseSuccess",phase:6,en:"Chapter IV · Phase VI · The False Success",th:"บทที่ IV · เฟส VI · ความสำเร็จจอมปลอม",api:"LastWitnessChapter4Phase6",screens:["falseSuccessPhase6Card","falseSuccessHotelCard","falseSuccessBedroom","falseSuccessLounge","falseSuccessTeamCG","falseSuccessAlert","falseSuccessLabCard","falseSuccessLab","falseSuccessPhase6Complete"]}
+ {id:"chapter4FalseSuccess",phase:6,en:"Chapter IV · Phase VI · The False Success",th:"บทที่ IV · เฟส VI · ความสำเร็จจอมปลอม",api:"LastWitnessChapter4Phase6",screens:["falseSuccessPhase6Card","falseSuccessHotelCard","falseSuccessBedroom","falseSuccessLounge","falseSuccessTeamCG","falseSuccessAlert","falseSuccessLabCard","falseSuccessLab","falseSuccessPhase6Complete"]},
+ {id:"chapter4RelayFacility",phase:7,en:"Chapter IV · Phase VII · Relay Facility Climax",th:"บทที่ IV · เฟส VII · สถานี Relay JKT-R7",api:"LastWitnessChapter4Phase7",screens:["relayFacilityOpening","relayFacilityPhase7Card","relayFacilityLocationCard","relayFacilityExterior","relayFacilityCorridor","relayFacilityCore","relayFacilityClimax","relayFacilityPostClimax","relayFacilityPhase7Complete"]}
 ];
 
 let running=false;
 function closeDeveloperUI(){
  $("#drawer")?.classList.remove("open");
  $$(".modal.open").forEach(node=>node.classList.remove("open"));
- $("#developerModal")?.classList.remove("open")
+ ["developerModal","northQaModal","devAccessModal"].forEach(id=>$("#"+id)?.classList.remove("open"))
 }
 function stopCurrentMedia(){
- ["LastWitnessChapter4Phase6","LastWitnessChapter4Phase5","LastWitnessChapter4Phase4","LastWitnessChapter4Phase3","LastWitnessChapter4Phase2","LastWitnessChapter4Phase1"].forEach(name=>{
+ ["LastWitnessChapter4Phase7","LastWitnessChapter4Phase6","LastWitnessChapter4Phase5","LastWitnessChapter4Phase4","LastWitnessChapter4Phase3","LastWitnessChapter4Phase2","LastWitnessChapter4Phase1"].forEach(name=>{
   try{window[name]?.stopAudio?.(true)}catch(error){console.warn("LAST WITNESS Dev navigation media stop skipped",name,error)}
- })
+ });
+ $$('video').forEach(video=>{try{video.pause();video.currentTime=0}catch(_){}})
 }
 function resetPhaseContainers(item){
  const s=gs();if(!s)throw new Error("Game state unavailable");
  s.chapter4=s.chapter4||{};s.flags=s.flags||{};s.characters=s.characters||{};s.relationships=s.relationships||{};
- if(item.phase===1){delete s.chapter4.phase1;delete s.chapter4.phase2;delete s.chapter4.phase3;delete s.chapter4.phase4;delete s.chapter4.phase5;delete s.chapter4.phase6}
- if(item.phase===2){delete s.chapter4.phase1;delete s.chapter4.phase2;delete s.chapter4.phase3;delete s.chapter4.phase4;delete s.chapter4.phase5;delete s.chapter4.phase6}
- if(item.phase===3){delete s.chapter4.phase2;delete s.chapter4.phase3;delete s.chapter4.phase4;delete s.chapter4.phase5;delete s.chapter4.phase6}
- if(item.phase===4){delete s.chapter4.phase3;delete s.chapter4.phase4;delete s.chapter4.phase5;delete s.chapter4.phase6}
- if(item.phase===5){delete s.chapter4.phase4;delete s.chapter4.phase5;delete s.chapter4.phase6}
- if(item.phase===6){delete s.chapter4.phase6}
+ const from=Math.max(1,Number(item.phase)||1);
+ for(let phase=Math.max(2,from);phase<=7;phase++)delete s.chapter4["phase"+phase];
+ if(from<=2)delete s.chapter4.phase1;
+ if(item.phase===1)delete s.chapter4.phase1;
  if(item.phase===4&&s.flags.developer_character_unlock_all!==true){
   s.characters["Arman Suryadi"]=false;
   if(Array.isArray(s.lwCharactersUnlocked))s.lwCharactersUnlocked=s.lwCharactersUnlocked.filter(id=>id!=="arman");
@@ -88,11 +88,12 @@ async function run(id){
  running=true;
  const button=$(`[data-dev-jump="${item.id}"][data-lw-dev-phase-nav="1"]`);
  if(button)button.disabled=true;
+ /* UX contract: the developer/QA overlay disappears immediately on selection. */
+ closeDeveloperUI();
  try{
   const api=await waitForApi(item);
   stopCurrentMedia();
   resetPhaseContainers(item);
-  closeDeveloperUI();
   const result=api.startFreshForDev();
   if(result&&typeof result.then==="function")await result;
   if(!await waitForEntry(item))throw new Error("Jump did not enter Chapter IV Phase "+item.phase);
@@ -108,24 +109,23 @@ function replaceButton(grid,item){
  button.textContent=thai()?item.th:item.en;
  button.addEventListener("click",event=>{
   event.preventDefault();event.stopPropagation();event.stopImmediatePropagation();
+  closeDeveloperUI();
   void run(item.id)
  },true);
- if(current)current.replaceWith(button);
- else if(item.phase===6){
-  const phase5=grid.querySelector('[data-dev-jump="chapter4NorthMarked"]');
-  if(phase5)phase5.insertAdjacentElement("afterend",button);else grid.appendChild(button)
- }else grid.appendChild(button);
+ if(current)current.replaceWith(button);else grid.appendChild(button);
  return button
 }
-function enforcePhase6Order(grid){
- const phase5=grid.querySelector('[data-dev-jump="chapter4NorthMarked"]');
- const phase6=grid.querySelector('[data-dev-jump="chapter4FalseSuccess"]');
- if(phase5&&phase6&&phase5.nextElementSibling!==phase6)phase5.insertAdjacentElement("afterend",phase6)
+function enforceChapter4Order(grid){
+ for(let i=1;i<PHASES.length;i++){
+  const prev=grid.querySelector(`[data-dev-jump="${PHASES[i-1].id}"]`);
+  const current=grid.querySelector(`[data-dev-jump="${PHASES[i].id}"]`);
+  if(prev&&current&&prev.nextElementSibling!==current)prev.insertAdjacentElement("afterend",current)
+ }
 }
 function install(){
  const grid=$("#developerModal .dev-grid");if(!grid)return false;
  PHASES.forEach(item=>replaceButton(grid,item));
- enforcePhase6Order(grid);
+ enforceChapter4Order(grid);
  return true
 }
 function refreshLabels(){
