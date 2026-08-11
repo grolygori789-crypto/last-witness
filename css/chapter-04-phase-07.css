@@ -1,17 +1,17 @@
-/* LAST WITNESS - Chapter IV / Phase VII: RELAY FACILITY CLIMAX 0.20.2
+/* LAST WITNESS - Chapter IV / Phase VII: RELAY FACILITY CLIMAX 0.20.3
  * Visual contract: reuse established Chapter IV cards/dialogue/progress; only minigame is bespoke.
  */
 :root{--p7-gold:#ddb56d;--p7-paper:#f5eee4;--p7-blue:#77a4b7;--p7-ink:#040609;--p7-red:#c75d58;--p7-green:#88bd9d}
 /* Phase VI end card is intentionally bypassed by Phase VII direct handoff. */
 #falseSuccessPhase6Complete{display:none!important}
 .ch4-p7-video,.ch4-p7-card,.ch4-p7-scene,.ch4-p7-complete{background:#040609;color:var(--p7-paper)}
-.ch4-p7-video{position:relative;overflow:hidden;background:#000}.ch4-p7-video-poster,.ch4-p7-video-canvas{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}.ch4-p7-video-poster{z-index:1}.ch4-p7-video-canvas{z-index:2;opacity:0;transition:opacity .12s linear;background:#000}.ch4-p7-video-canvas.frame-ready{opacity:1}.ch4-p7-video-source{position:absolute!important;z-index:-1!important;left:-4px!important;top:-4px!important;width:2px!important;height:2px!important;opacity:.001!important;pointer-events:none!important}.ch4-p7-video .ch4-p5-shade{z-index:3;pointer-events:none}
+.ch4-p7-video{position:relative;overflow:hidden;background:#000}.ch4-p7-cinematic-img{display:block!important;position:absolute;z-index:1;inset:0;width:100%!important;height:100%!important;object-fit:cover;object-position:center center;background:#000;opacity:1!important;visibility:visible!important}.ch4-p7-video .ch4-p5-shade{z-index:2;pointer-events:none}
 .ch4-p7-video-play{position:absolute;left:50%;bottom:calc(78px + env(safe-area-inset-bottom));transform:translateX(-50%);z-index:5;width:min(82vw,330px)}
 .ch4-p7-skip{position:absolute;right:16px;bottom:calc(20px + env(safe-area-inset-bottom));z-index:5}
 .ch4-p7-scene .scene{object-fit:cover;object-position:center center}.ch4-p7-scene .ch4-p5-shade{background:linear-gradient(180deg,rgba(3,5,8,.10),rgba(3,5,8,.02) 42%,rgba(3,5,8,.48) 100%)}
 .ch4-p7-progress .ch4-p7-progress-fill{background:linear-gradient(90deg,#b9853d,#e3bd72,#f1d79b)!important;box-shadow:0 0 12px rgba(221,181,109,.32)}
 .ch4-p7-action{width:min(calc(100% - 30px),360px)}
-.ch4-p7-climax video{filter:none}.ch4-p7-post .scene{object-position:center center}
+.ch4-p7-climax .ch4-p7-cinematic-img{filter:none}.ch4-p7-post .scene{object-position:center center}
 /* Premium exception: Relay Correlation minigame only. */
 .ch4-p7-minigame{z-index:380;background:rgba(2,4,7,.90);backdrop-filter:blur(9px)}
 .ch4-p7-minigame .modal-card{width:min(94vw,620px);max-height:min(88dvh,860px);overflow:hidden;padding:0;background:linear-gradient(155deg,#151b22,#070a0e 72%);border:1px solid rgba(221,181,109,.46);box-shadow:0 28px 82px rgba(0,0,0,.78)}
