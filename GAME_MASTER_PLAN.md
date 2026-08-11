@@ -1,2281 +1,1041 @@
-# LAST WITNESS - GAME MASTER PLAN
+# LAST WITNESS — GAME MASTER PLAN
 
 > **MASTER REFERENCE / CURRENT SOURCE OF TRUTH**
 >
-> **Document revision:** 2026-08-06 16:43 ICT
+> **Document revision:** 2026-08-12 01:00 ICT
 >
 > **Repository:** `grolygori789-crypto/last-witness`
 >
-> **Production and Default branch:** `production-rebuild`
+> **Production / default branch:** `production-rebuild`
 >
-> **Repository HEAD observed before this documentation update:** `1fd62e51039ebc35b5e0713ce2e25582f81ae079`
+> **Runtime code/assets baseline observed before this documentation update:** `a810e4d582c03ca1df08163ab6c47f725dc15c8f`
 >
-> **Observed HEAD message:** `Sync build labels across QA tools`
+> **Observed baseline commit:** `Fix canonical Chapter IV Dev and QA phases`
 >
-> **Current Runtime code/assets HEAD:** `1fd62e51039ebc35b5e0713ce2e25582f81ae079`
+> **Authoritative Runtime build:** `0.20.9`
 >
-> **Current Runtime build:** `0.18.17`
+> **Current playable boundary:** `CHAPTER IV · PHASE VII · RELAY FACILITY CLIMAX`
 >
-> **Current playable boundary:** `CHAPTER IV · PHASE V · NORTH IS MARKED`
+> **Owner-reported current status:** `QUICK OVERALL REAL-DEVICE REVIEW ACCEPTED · PHASE VII TESTED THROUGH OWNER DEV MODE · RESULT SATISFACTORY / ACCEPTABLE FOR FORWARD DEVELOPMENT`
 >
-> **Current owner-reported status:** `CHAPTERS I–III AND CHAPTER IV PHASES I–V ARE WITHIN THE OWNER'S ACCEPTABLE RANGE; NORTH QA AND AUTHORITATIVE BUILD SYNCHRONIZATION 0.18.17 ARE OWNER-TESTED AND ACCEPTED ON THE OBSERVED PATH`
+> **Acceptance limitation:** `NOT A FULL REGRESSION · NOT ALL ROUTES / SAVES / LANGUAGES / VIEWPORTS / BROWSERS / DEVICES CERTIFIED`
 >
-> **Known active Production defect:** `NONE REPORTED AFTER THE OWNER'S 0.18.17 VERIFICATION`
+> **Next production objective:** `CHAPTER IV · PHASE VIII · SHADOW OF THE TRUTH`
 >
-> **Acceptance limitation:** `OWNER-OBSERVED REAL-DEVICE ACCEPTANCE · NOT AN EXHAUSTIVE ALL-ROUTE, ALL-SAVE, ALL-BROWSER OR ALL-DEVICE REGRESSION`
+> **Chapter IV phase count:** `EXACTLY 8 PHASES`
 >
-> **Last fully accepted pre-Phase-V no-regression baseline:** `f4a7a1df997cddc0d2b53da23cd5c9f0b7cdba99` · build `0.17.18`
+> **Phase VIII status:** `FINAL PHASE OF CHAPTER IV`
 >
-> **Previous canonical planning blob replaced by this file:** `9b490f1d601dc6a00507157dace3b63b65f9e8db`
+> **Chapter IV Phase IX:** `DOES NOT EXIST WITHOUT EXPLICIT OWNER APPROVAL`
 >
-> **Next production objective:** `CHAPTER IV · PHASE VI · THE FALSE SUCCESS`
->
-> **Document status:** `CURRENT CANONICAL HANDOFF · PHASE V MAINTENANCE LOCK · NORTH QA AND BUILD SYNC 0.18.17 ACCEPTED · PHASE VI PRODUCTION GATE`
+> **Document status:** `CURRENT CANONICAL HANDOFF · PHASE VII ACCEPTED WITHIN OWNER-OBSERVED QUICK REVIEW · PHASE VIII PRODUCTION GATE`
 
-This file supersedes the current canonical `GAME_MASTER_PLAN.md` revision dated `2026-08-05 18:00 ICT`.
+This document supersedes the previous `GAME_MASTER_PLAN.md` revision.
 
-The owner's latest real-device results are the highest-priority operational facts:
+This is a documentation-only replacement. Uploading this file under the same exact filename changes documentation only. Unless Runtime code or assets are changed separately, the Runtime code/assets baseline remains:
 
-- Chapters I–III and Chapter IV Phases I–V are currently within the owner's acceptable range after a quick overall review.
-- Chapter IV Phase V remains the current playable endpoint.
-- Phase V is maintenance-locked except for reproducible defects, Phase VI blockers or explicit narrow owner authorization.
-- Phase IV background audio lifecycle repair is owner-tested and accepted.
-- Chapter IV native Thai localization is installed through Phase V.
-- Thai display names and Character Journal names for Arman, Dimas and Ika have been repaired.
-- North QA Access is present, limited to approved test navigation and session tools.
-- The North QA `RETURN TO TITLE` Phase V audio leak was reproduced, repaired and then accepted by the owner on the deployed build.
-- Runtime build labels are now synchronized across Settings, Owner Developer Mode, North QA, Copy Test Info, Save Manager metadata and Runtime diagnostics.
-- The owner tested Runtime `0.18.17` and confirmed the synchronized Build presentation is correct.
-- No active Production defect is currently reported after Runtime build `0.18.17`.
-- These results must not be inflated into a claim that every route, save state, language, browser, device, audio condition, viewport or edge case has passed.
-
-This is a documentation-only replacement file. It changes no Runtime code, binary asset or GitHub Pages deployment. The owner uploads it personally under the exact filename:
-
-`GAME_MASTER_PLAN.md`
-
-After the owner uploads this document, the repository HEAD will advance through a documentation-only commit. Unless Runtime code or assets are changed separately, the Runtime code/assets baseline remains:
-
-`1fd62e51039ebc35b5e0713ce2e25582f81ae079`
+`a810e4d582c03ca1df08163ab6c47f725dc15c8f`
 
 ---
 
-# 0. CURRENT OWNER-RESULT OVERRIDE
+# 0. OWNER-RESULT OVERRIDE — LATEST STATUS
 
 ## 0.1 Latest owner result
 
-The owner reports that the game from Chapter I through Chapter IV Phase V is within an acceptable range after a quick overall review.
+The owner performed a quick overall play review using Owner Developer Mode to jump directly through the currently implemented Chapter IV phases, with the latest focus on:
 
-The owner separately tested the new North QA route on the deployed build and confirmed the repaired path:
+`CHAPTER IV · PHASE VII · RELAY FACILITY CLIMAX`
 
-1. unlock tester access
-2. open North QA Access
-3. jump to Chapter IV Phase V
-4. return to Title through the QA command
-5. confirm Phase V music and ambience stop
-6. confirm only Title-owned audio remains
+The owner reports that the current result is satisfactory and acceptable for forward development.
 
-The owner then reported the result as complete and correct.
+The project is therefore authorized to move into planning and production of:
+
+`CHAPTER IV · PHASE VIII · SHADOW OF THE TRUTH`
+
+Phase VIII is the final phase of Chapter IV.
 
 Allowed status language:
 
-`OWNER-TESTED AND ACCEPTED WITHIN THE OBSERVED REAL-DEVICE PATH`
+`OWNER-TESTED AND ACCEPTED WITHIN THE OBSERVED QUICK REAL-DEVICE PATH`
 
-Do not replace that with:
+Do not replace that with stronger claims such as:
 
 - fully regression-tested
 - bug-free
-- final on every device
-- Android-complete in all routes
-- cross-browser approved
-- every tester jump certified
-- every stale save certified
-- every audio slider combination certified
-- every Phase I–V exit route certified
+- certified on all iOS and Android devices
+- every Chapter IV save state verified
+- every Developer Mode route exhaustively replayed
+- every North QA path exhaustively replayed
+- every language and viewport certified
+- all audio lifecycle edge cases certified
 
-## 0.2 Current acceptance boundary
+## 0.2 Current accepted practical boundary
 
-The current observed acceptance includes:
+Within the owner's latest quick review:
 
-- Chapters I–III remain playable within the owner's current overall review
-- Chapter IV Phase I remains present
-- Chapter IV Phase II remains present
-- Chapter IV Phase III remains present
-- Chapter IV Phase IV remains present and protected
-- Chapter IV Phase V remains playable and acceptable within the owner's quick review
-- Phase IV background audio stops correctly under the reproduced mobile lifecycle condition
-- Chapter IV Thai localization is installed through Phase V
-- Thai display names for Arman, Dimas and Ika are repaired
-- Character Journal Thai names for Arman and Ika are repaired
-- Dialogue History speaker names are migrated for the repaired Thai names
-- the premature Chapter IV use of Kawin's identity was replaced with canon-safe wording
-- North QA tester authentication works
-- North QA Chapter IV Phase V entry works
-- North QA `RETURN TO TITLE` stops Phase V media correctly
-- Title music resumes correctly after the repaired QA exit
-- the limited tester access remains functional after the repair
-- Settings reports authoritative Runtime build `0.18.17`
-- Owner Developer Console reports authoritative Runtime build `0.18.17`
-- North QA reports authoritative Runtime build `0.18.17`
-- Copy Test Info reports authoritative Runtime build `0.18.17`
-- Save Manager and Runtime diagnostic metadata receive the authoritative Runtime build
-- historical Phase module versions no longer masquerade as the current Runtime build
+- Chapters I–III remain within the previously acceptable playable range.
+- Chapter IV Phases I–VII are present.
+- Owner Developer Mode can be used to jump into the canonical Chapter IV phases.
+- The latest Chapter IV Phase VII experience is acceptable to the owner for forward production.
+- The current mobile Phase VII minigame layout is acceptable after the mobile layout repair.
+- The Developer Mode Chapter IV list is expected to contain only canonical Phase I–VII entries.
+- The non-canonical internal Phase II `Token Verification` shortcut must not appear as a separate Chapter IV phase.
+- Chapter IV Phase II and Phase III shared-screen identification must remain state-aware so North QA does not confuse Packet Trail with Jakarta Arrival.
+- The project is ready to proceed to Phase VIII.
 
-These are accepted only to the extent observed by the owner.
+## 0.3 Current Runtime / QA navigation baseline
 
-## 0.3 No known active Production defect
+Runtime build:
 
-At this revision, no active Production defect is reported by the owner.
+`0.20.9`
 
-This means:
+The current canonical Developer Mode Chapter IV order is:
 
-- the last reproduced North QA title-audio leak was repaired
-- the owner verified the repaired path and accepted it
-- no additional repair is currently authorized by default
-- Phase V, North QA and the authoritative build-synchronization contract at `0.18.17` should remain maintenance-locked while Phase VI planning begins
+1. `Chapter IV · Phase I · Afterimage`
+2. `Chapter IV · Phase II · Jakarta Arrival`
+3. `Chapter IV · Phase III · Packet Trail`
+4. `Chapter IV · Phase IV · The Man Behind the Alias`
+5. `Chapter IV · Phase V · North Is Marked`
+6. `Chapter IV · Phase VI · The False Success`
+7. `Chapter IV · Phase VII · Relay Facility Climax`
 
-It does not mean:
+There must be exactly seven Chapter IV Dev buttons until Phase VIII is actually implemented.
 
-- no hidden defect exists
-- every stale save works
-- every route was replayed
-- every language was checked across the entire game
-- every Chapter or Phase tester jump was exercised on the owner device
-- every audio slider combination was checked
-- every screen width was checked
-- every browser was checked
-- every callback timing edge case was checked
+`Token Verification` is an internal Phase II checkpoint, not a separate phase.
 
-## 0.4 Phase V maintenance lock
+When Phase VIII is implemented and explicitly owner-approved for tester access, the canonical list will become exactly eight entries.
 
-Do not reopen Chapter IV Phase V for optional cleanup, refactoring, visual redesign or speculative polish.
+## 0.4 Maintenance posture before Phase VIII
 
-A Phase V modification now requires at least one of:
+Phases I–VII are now maintenance-locked against optional redesign.
+
+Modify an accepted phase only for:
 
 1. a reproducible owner-reported defect
-2. a Phase VI integration blocker
-3. State or Save corruption
-4. evidence, Journal or Case File failure
+2. a Phase VIII integration blocker
+3. State / Save corruption
+4. evidence / Journal / Case File failure
 5. material audio lifecycle failure
 6. critical mobile compatibility issue
 7. explicit owner authorization for a narrowly defined improvement
 
-Every future Phase V repair must identify:
-
-- exact reproduction
-- current Production owner of the behavior
-- smallest file scope
-- protected no-regression boundary
-- tests actually performed
-- tests not performed
-- owner-device result after upload
-
-## 0.5 North QA maintenance lock
-
-North QA Access `0.18.17` is accepted as the current limited tester baseline.
-
-Do not expand it into a second Developer Console.
-
-A North QA modification now requires at least one of:
-
-1. a reproducible tester-navigation defect
-2. a Phase VI tester-entry requirement after Phase VI State is implemented
-3. a tester-only audio or screen lifecycle defect
-4. an owner-tool exposure defect
-5. a tester-session authorization defect
-6. explicit owner authorization for a narrowly defined addition
-
-Preserve:
-
-- the existing BUILD ×7 access door
-- the existing Owner Developer Mode
-- the limited tester role
-- approved Chapter and Phase list only
-- command-level authorization checks
-- session-scoped tester authorization
-- no raw State editor
-- no Reset All Saves
-- no Unlock All Characters
-- no Unlock All Evidence
-- no future Phase access
-- the repaired Return-to-Title media boundary
-
-## 0.6 Runtime Build Synchronization Contract
-
-Runtime build numbering is a release-wide contract, not a decorative Settings label.
-
-Whenever the authoritative Runtime build changes, every applicable player-facing, owner-facing and tester-facing build reference must be updated and verified in the same release.
-
-Required synchronized surfaces:
-
-- Settings build label
-- Owner Developer Console build label
-- North QA Access build label
-- North QA Copy Test Info output
-- Save Manager version metadata
-- Runtime diagnostic metadata
-- Runtime bootstrap version and authoritative build value
-- cache-busting references for changed build-owner modules
-- current Master Plan Runtime snapshot after owner acceptance
-
-Rules:
-
-- one authoritative Runtime build must control all current surfaces
-- historical module versions may remain unchanged internally when they identify that specific module
-- a historical Phase or feature module must never overwrite or masquerade as the authoritative Runtime build
-- North QA diagnostic output must read the authoritative Runtime build rather than maintain an independent release number
-- Owner Developer and North QA surfaces must agree with Settings
-- a release must not be accepted while any current surface reports a stale, missing or conflicting Runtime build
-- every future build bump must include a build-surface audit before the Master Plan is updated
-
-Current owner result:
-
-- Runtime `0.18.17` build synchronization was tested by the owner on the deployed game
-- the owner reported the synchronized Build presentation as correct
-- no active Build-label defect is currently reported
-
-## 0.7 Portrait production rule going forward
-
-For future portrait work, owner-prepared transparent PNGs are the preferred and authoritative workflow.
-
-When the owner supplies a final PNG:
-
-- treat it as final visual authority
-- do not recut it
-- do not generatively repair it
-- do not redraw hair, face, body or clothing
-- do not replace the owner's edge treatment
-- do not alter identity
-- do not add broad glow, cyan aura or cosmetic masking
-- integrate through filename, path, canvas, scale, anchor and Runtime mapping only
-- make only the smallest technical adjustment required for correct in-game placement
-- test on the real dialogue well and mobile viewport
-
-The owner's manual cutout work takes priority over automated extraction.
+Do not reopen accepted scenes for speculative polishing.
 
 ---
 
-# 1. SOURCE OF TRUTH AND WORKFLOW
+# 1. PROJECT IDENTITY
 
-## 1.1 Source hierarchy
+## 1.1 Product
 
-1. owner's latest real-device result
-2. current Production Runtime on `production-rebuild`
-3. this exact `GAME_MASTER_PLAN.md`
-4. latest owner-approved binary assets
-5. current repository history and QA records
-6. older planning revisions
+**Game:** LAST WITNESS  
+**Studio:** BENEDICT INTERACTIVE  
+**Primary orientation:** Mobile-first portrait 9:16  
+**Primary practical test platform:** Android Chrome  
+**Additional mobile target:** Modern iOS Safari / iPhone viewport behavior
+
+## 1.2 Visual direction
+
+Core visual language:
+
+- neo-noir graphic novel
+- cel-shaded
+- strong ink contour
+- angular shadow shapes
+- cinematic crime-adventure framing
+- premium mobile readability
+- visual inspiration may evoke the dramatic readability of modern noir graphic-adventure games without copying proprietary assets or characters
+
+Normal game UI should remain coherent across chapters and phases.
+
+Only minigames may use a more bespoke premium interface, while preserving:
+
+- typography continuity
+- mobile readability
+- narrative mood
+- LAST WITNESS identity
+
+## 1.3 Runtime source hierarchy
+
+When sources conflict, use this priority:
+
+1. owner's latest real-device observation
+2. current Production Runtime
+3. this canonical Master Plan
+4. owner-approved binary assets
+5. repository history / QA notes
+6. older planning documents
 7. assistant memory
 
-When sources conflict:
+---
 
-- owner-observed behavior wins over automated QA
-- current Production wins over old implementation notes
-- locked Canon wins over a Runtime defect
-- latest owner-approved visual assets win over generated or extracted derivatives
-- a file that passes structural checks but fails visually is defective
-- a quick owner acceptance does not equal exhaustive regression
-- unverified assumptions must be labeled as such
+# 2. HARD PRODUCTION CONTRACTS
 
-## 1.2 Mandatory opening audit before implementation or repair
+## 2.1 No unintended redesign
 
-Before editing code or assets:
+Preserve established:
 
-1. fetch the latest `production-rebuild` HEAD
-2. identify the latest repository HEAD and latest Runtime code/assets HEAD separately when documentation-only commits exist
-3. fetch and read this file completely
-4. inspect `index.html`
-5. inspect static and dynamic load order
-6. inspect all files owning the affected behavior
-7. inspect State initialization and migration
-8. inspect Save/Load and completed-state bridges
-9. inspect Character Journal, unread and notification owners
-10. inspect Case File and Dialogue History owners
-11. inspect audio owners and exit cleanup
-12. inspect Owner Developer Mode phase navigation
-13. inspect North QA role, allowed commands and Return-to-Title boundary when relevant
-14. inventory every relevant binary asset
-15. verify actual image dimensions, alpha, crop and path
-16. prove the root cause before patching
-17. choose the smallest true owner
-18. avoid global wrappers, permanent polling or duplicate controllers
-19. test the real Runtime flow rather than only an isolated snippet
-20. report tested and untested scope honestly
-21. deliver locally unless the owner explicitly authorizes a GitHub write in the current turn
+- phase intro cards
+- location cards
+- date / time presentation
+- dialogue UI
+- HUD
+- progress bar language
+- Save / Menu controls
+- Case File
+- Character Journal
+- Dialogue History
+- evidence interaction language
 
-## 1.3 GitHub write rule
+The progress bar remains gold.
 
-Do not:
+100% progress must represent genuine completion / checkpoint completion, not visual approximation.
 
-- create a branch
-- push commits
-- update GitHub Pages directly
-- delete files
-- rename the Production branch
-- alter repository structure
+## 2.2 Portrait contract
 
-unless the owner explicitly authorizes that exact write in the current turn.
+Chapter IV normal dialogue should use the accepted Original / uniform character portrait system unless a specific cinematic or owner-approved special asset requires otherwise.
 
-Normal workflow:
+Do not silently reintroduce Phase V / VI custom portrait sheets into ordinary Phase VII / VIII dialogue.
 
-1. inspect GitHub
-2. repair locally
-3. test locally as far as tools allow
-4. package with repository-relative paths
-5. give the package to the owner
-6. the owner uploads to GitHub
+## 2.3 Save / Load
 
-## 1.4 Delivery rule
+Do not replace the current Save Manager with a parallel save system.
 
-For code or asset repairs, deliver one ZIP containing only changed files with repository-relative paths.
+Phase VIII must extend the existing State / Save architecture.
 
-Include:
+Before Phase VIII owner acceptance, specifically test:
 
-- manifest
-- upload instructions
-- base branch and commit
-- changed-file count
-- root cause
-- test report
-- untested scope
-- SHA-256 checksum
-- commit message no longer than 50 characters
+- manual Save inside Phase VIII
+- Load into Phase VIII
+- restart current Phase VIII
+- return to Title
+- resume from a Phase VII completion save
+- Chapter IV state persistence
+- `endingProfile` persistence
+- evidence / flags needed for the final deduction
 
-For a documentation-only replacement, deliver the complete file directly under its exact canonical filename. Do not bundle unrelated Runtime files.
+Quick owner acceptance of Phase VII must not be interpreted as exhaustive Save certification.
+
+## 2.4 Developer Mode / North QA
+
+Owner Developer Mode remains the authoritative unrestricted owner testing route.
+
+North QA remains limited tester access, not a second Developer Console.
+
+For Chapter IV:
+
+- use canonical Phase IDs only
+- no internal checkpoint may masquerade as a phase
+- shared screens must not be used as the sole authority for phase identity
+- story State is authoritative when Phase II / III share `jakartaVerificationLab`
+- Chapter IV navigation must not unnecessarily load unrelated Chapter III runtime before a Chapter IV jump
+- no old-screen flash should appear during a canonical Chapter IV test jump
 
 ---
 
-# 2. CURRENT VERIFIED PRODUCTION SNAPSHOT
+# 3. CHAPTER IV — CANONICAL STRUCTURE
 
-## 2.1 Repository state
+Chapter IV contains **exactly eight phases**.
 
-- Repository: `grolygori789-crypto/last-witness`
-- Production branch: `production-rebuild`
-- Default branch: `production-rebuild`
-- Repository HEAD observed before this documentation revision: `1fd62e51039ebc35b5e0713ce2e25582f81ae079`
-- HEAD message: `Sync build labels across QA tools`
-- Runtime code/assets HEAD: `1fd62e51039ebc35b5e0713ce2e25582f81ae079`
-- Current Runtime build: `0.18.17`
-- Current implemented endpoint: Chapter IV Phase V
-- Current Phase V acceptance: owner-acceptable within the observed quick review
-- Current North QA acceptance: owner-tested and accepted on the reproduced Phase V Return-to-Title path
-- Current Build Synchronization acceptance: owner-tested and accepted across the synchronized Runtime-label surfaces
-- Last fully accepted pre-Phase-V baseline: `f4a7a1df997cddc0d2b53da23cd5c9f0b7cdba99`
-- Pre-Phase-V baseline build: `0.17.18`
-- Previous canonical plan blob: `9b490f1d601dc6a00507157dace3b63b65f9e8db`
+## Phase I — AFTERIMAGE
 
-## 2.2 Current build chain
+Purpose:
 
-Relevant observed build history:
+- reopen the investigation after the Chapter III chain
+- separate the Jakarta tool route from the Bangkok deployment route
+- establish that access / token / wrapper evidence is not human identity
+- establish that the Decision Owner remains unresolved
+- position North as an increasingly important analyst in the adversary's attention
 
-- Chapter IV Phase I: `0.13.2`
-- Chapter IV Phase II: `0.14.9`
-- Phase II portrait guard: `0.15.0`
-- Thai localization base: `0.15.2`
-- targeted QC: `0.15.3`
-- police portrait alignment: `0.15.4`
-- Chapter IV Phase III: `0.16.3`
-- Chapter IV Phase IV base: `0.17.0`
-- Phase III direct handoff: `0.17.0-d2`
-- Character Journal contract: `0.17.7`
-- Character notification contract: `0.17.14`
-- Dialogue History and Case File scroll UX: `0.17.15`
-- shared action and Forensic geometry: `0.17.16`
-- Secure Mirror containment: `0.17.17`
-- Phase IV minigame containment: `0.17.18`
-- Phase V initial implementation: `0.18.0`
-- Phase V visual and continuity repair: `0.18.1`
-- Phase V presentation repair: `0.18.2`
-- Phase V HUD and combat repair: `0.18.3`
-- Phase V portrait and combat-direction repair: `0.18.4`
-- Phase V portrait and time repair: `0.18.5`
-- Phase V dialogue portrait repair: `0.18.6`
-- Phase V reveal, portrait, audio and combat repair: `0.18.7`
-- Phase V portrait grounding and Ika combat visibility repair: `0.18.8`
-- Phase V Kick and water-audio repair: `0.18.9`
-- Phase V Kick framing repair: `0.18.10` · commit `3a7a72298d6023778fc7c995d8130067f87caf33`
-- Phase IV background-audio lifecycle repair: `0.18.11` · commit `ca2e7fe65298d7deb483c17b0bbcc211bdc17a43`
-- Chapter IV native Thai localization: `0.18.12` · commit `1d4b49311428444737bf05335d200859746f0ca2`
-- Chapter IV Thai names and canon-safe wording: `0.18.13` · commit `92f4d0286a9adcfa737e7c46e054c76fc57641f0`
-- Limited North QA Access: `0.18.14` · commit `3554969a485a1113143ea26b115e78e3d3cc5798`
-- North QA Return-to-Title audio guard: `0.18.15` · commit `63606169e1b07445d59b5dae001f095e13e3d2b5`
-- Authoritative Runtime Build Label: `0.18.16` · commit `526b383a85cf755b817dd4b1961295f3ed60921e`
-- Runtime Build Synchronization Contract: `0.18.17` · commit `1fd62e51039ebc35b5e0713ce2e25582f81ae079`
+## Phase II — JAKARTA ARRIVAL
 
-## 2.3 Current Phase V owners
+Purpose:
 
-Primary Phase V Runtime owners include:
+- enter Indonesian jurisdiction lawfully
+- introduce Inspector Maya Pranoto as local operational authority
+- preserve Singapore evidence custody while examining a sanitized analysis copy
+- verify the rendezvous token through read-only, controlled procedure
+- demonstrate that a valid system response proves access / behavior, not physical identity
 
-- `js/chapters/chapter-04/05-north-is-marked.js`
-- `css/chapter-04-phase-05.css`
-- `css/chapter-04-phase-05-revision.css`
-- `js/engine/09-defect-hotfix.js`
-- `assets/images/chapter-04/phase-05/**`
-- `assets/video/chapter-04/phase-05/**`
-- `assets/audio/chapter-04/phase-05/**`
+Internal `Token Verification` is part of this phase and is not its own phase.
 
-Do not add a new Phase V controller merely to override these files.
+## Phase III — PACKET TRAIL
 
-## 2.4 Current post-Phase-V support owners
+Purpose:
 
-Approved support owners now include:
+- continue inside the Jakarta Verification Lab
+- reconstruct provenance layers
+- separate origin, route, broker, deployment and unresolved decision ownership
+- establish broker / handle direction without converting route evidence into a person
+- keep the Decision Owner unresolved
 
-- `js/chapters/chapter-04/04a-arman-encounter-revision.js`
-  - accepted Phase IV presentation and background-audio lifecycle behavior
-- `js/engine/23-chapter4-native-thai.js`
-  - Chapter IV Phase I–V native Thai display layer
-  - current module version `0.18.13`
-- `js/engine/18-developer-phase-navigation.js`
-  - existing Owner Developer navigation and approved Chapter IV fresh-entry APIs
-- `js/engine/24-north-qa-access.js`
-  - limited North QA role, UI, allowed navigation and Return-to-Title guard
-  - current module version `0.18.17`
-- `js/engine/25-runtime-build-label.js`
-  - authoritative Runtime build label across Settings, Owner Developer, North QA, Copy Test Info, Save Manager and diagnostics
-  - current module version `0.18.17`
-- `js/engine/09-defect-hotfix.js`
-  - Runtime bootstrap, authoritative Runtime build value and cache-busted load order
-  - current Runtime bootstrap version `0.18.17`
+## Phase IV — THE MAN BEHIND THE ALIAS
 
-Do not duplicate these responsibilities in a second overlay or controller.
+Purpose:
 
-## 2.5 Current implementation boundary
+- physically reach Arman Suryadi
+- distinguish proxy, access, knowledge and authorship
+- establish Arman's true role without falsely turning him into the mastermind
+- preserve lawful evidence handling under Maya's jurisdiction
+- strengthen the split between toolmaker / adapter and the party directing deployment
 
-Implemented and present:
+## Phase V — NORTH IS MARKED
 
-- Chapters I–III
-- Chapter IV Phase I
-- Chapter IV Phase II
-- Chapter IV Phase III
-- Chapter IV Phase IV
-- Chapter IV Phase V · `NORTH IS MARKED`
-- Owner Developer navigation for implemented content
-- Limited North QA navigation for Chapter I, Chapter II, Chapter III and Chapter IV Phases I–V
+Purpose:
 
-Not yet implemented:
+- convert the threat against North from abstract digital attention into physical operational danger
+- introduce Ika as a field / recovery operator
+- preserve that Ika is not the killer of Kawin or Daniel
+- prove that the recovery layer is separate from the Decision Owner
+- maintain North as an active investigator, not a passive victim
 
-- Chapter IV Phase VI · `THE FALSE SUCCESS`
-- Chapter IV Phase VII · `RELAY FACILITY CLIMAX`
-- Chapter IV Phase VIII · `SHADOW OF THE TRUTH`
-- North QA access to Phase VI or later
+## Phase VI — THE FALSE SUCCESS
 
-## 2.6 No-regression baseline
+Purpose:
 
-Preserve:
+- run the consensual false-success operation
+- make the adversary believe the North problem has been removed
+- observe what the system does after it believes the analyst is gone
+- reconstruct the reaction chain
+- identify JKT-R7 as the next lawful physical lead
+- preserve the rule that system reaction still does not prove Decision Owner identity
 
-- Chapter I Character Journal hidden
-- Chapter II Journal first appears after North's initial office conversation
-- one-time Character Added notification behavior
-- unread red-dot timing and read clearing
-- silent Developer unlock behavior
-- Adrian pre-verification gate
-- Arman card, unread state and Save/Load persistence
-- Maya profile switching
-- Dialogue History latest-position behavior
-- Case File scrolling
-- accepted action-button geometry
-- Forensic bottom stack
-- Secure Mirror containment
-- Phase IV minigame centering
-- Phase III direct handoff
-- Phase IV HUD, progress and title/location sequence
-- Phase IV background-audio lifecycle repair
-- Chapter IV Thai localization through Phase V
-- Thai speaker and Journal name repair for Arman and Ika
-- Thai speaker name repair for Dimas
-- canon-safe Chapter IV wording that does not reveal Kawin early
-- Phase V team-reveal final group frame
-- Phase V final portrait scale and grounding
-- Phase V combat face visibility
-- Phase V Guard/Punch/Kick mapping
-- Phase V eight-exchange balance
-- Phase V final water-audio level
-- Phase V evidence and role-separation flow
-- North QA limited-role boundary
-- North QA approved Chapter and Phase list
-- North QA Copy Test Info
-- North QA Restart Current Chapter / Phase
-- North QA Return-to-Title media cleanup
-- Owner Developer Mode remaining unchanged for the owner
+## Phase VII — RELAY FACILITY CLIMAX
+
+Purpose:
+
+- execute the lawful JKT-R7 inspection
+- correlate digital evidence with a physical relay bank
+- normalize reader timing correctly
+- isolate the supported relay without destroying unrelated evidence
+- observe that a residual continuity path remains active
+- prove that the operation can continue beyond a single visible operator
+- end with the Decision Owner still unresolved
+- deliver the final evidentiary bridge into Phase VIII
+
+**Current owner status:** satisfactory / acceptable within the latest quick Dev Mode real-device review.
+
+## Phase VIII — SHADOW OF THE TRUTH
+
+**FINAL PHASE OF CHAPTER IV**
+
+Phase VIII must not be expanded into Phase IX simply because it contains multiple dramatic beats.
+
+It is allowed to be longer and more structurally rich than earlier phases.
+
+Recommended internal rhythm:
+
+1. opening aftermath from JKT-R7
+2. final evidence consolidation
+3. final reconstruction / deduction
+4. Decision Owner proof
+5. Elena payoff / reveal
+6. confrontation or consequence appropriate to the evidence and jurisdiction
+7. emotional aftermath
+8. farewell / jurisdictional separation
+9. Chapter IV completion
+
+The exact cinematic implementation may change during production, but the narrative obligations below are locked.
 
 ---
 
-# 3. PROJECT IDENTITY
+# 4. CHAPTER IV — LOCKED HISTORICAL TRUTH
 
-- Game: **LAST WITNESS**
-- Studio: **BENEDICT INTERACTIVE**
-- Platform: mobile-first browser game
-- Primary owner test platform: Android Chrome
-- Orientation: portrait 9:16
-- Genre: Narrative Detective Adventure / Interactive Crime Investigation
-- Art direction: neo-noir graphic novel, cel-shaded, heavy ink, angular shadows, cinematic crime-adventure, readable on mobile
+These are author-level truths.
 
-Core investigative principle:
+Do not contradict them.
 
-> **A valid credential proves access, not identity.**
+## 4.1 Elena
 
-Always separate:
-
-1. physical event
-2. record claim
-3. credential, role or permission
-4. device or timestamp claim
-5. network route
-6. physical operator
-7. tool author
-8. broker or adapter
-9. deployer
-10. victim and timing selector
-11. Decision Owner
-
-Core ending principle:
-
-> **Historical truth is fixed. Legal truth, public truth and institutional truth depend on what survives and what can be proved.**
+Elena is the mastermind / Decision Owner behind the murder chain.
 
 Historical truth:
 
-- Elena is the mastermind
+- Elena selected the victims
+- Elena selected the room / timing conditions
+- Elena controlled discovery / cleanup priorities
 - Elena killed Kawin
 - Elena killed Daniel
 
----
+Earlier phases must not retroactively reveal this too soon.
 
-# 4. CHAPTER STRUCTURE
+Elena must remain plausibly useful, professional and surface-trustworthy until the Phase VIII payoff.
 
-## Season 1
+## 4.2 Kawin and Daniel
 
-1. Chapter I · `ROOM 1807`
-2. Chapter II · `THE PERFECT STRANGER`
-3. Chapter III · `THE BORROWED MINUTES`
+Room 1807 victim identity and prior reveal timing must remain consistent with established canon.
 
-Season 1 is complete and frozen.
+Do not rewrite Chapter IV evidence so that Kawin's identity appears prematurely at a point where the player should not yet know it.
 
-## Season 2
+Daniel remains part of the historical chain that makes the Bangkok / Singapore / Jakarta architecture meaningful.
 
-4. Chapter IV · `SHADOW OF THE TRUTH`
-5. Chapter V · `THE MISSING PIECE`
-6. Chapter VI · `THE FINAL MOVE`
-7. Chapter VII · `LAST WITNESS`
+## 4.3 R. / Rin
 
-## Chapter IV phase lock
+`R.` remains unresolved through Chapter IV unless the owner explicitly changes this.
 
-Exactly eight phases:
+Future identity:
 
-1. AFTERIMAGE
-2. JAKARTA ARRIVAL
-3. PACKET PROVENANCE / PACKET TRAIL
-4. THE MAN BEHIND THE ALIAS
-5. NORTH IS MARKED
-6. THE FALSE SUCCESS
-7. RELAY FACILITY CLIMAX
-8. SHADOW OF THE TRUTH
+`Rinrada "Rin" Sornchai`
 
-No ninth Phase without owner approval.
+Role concept:
 
-Current status:
+`Last Witness · former Identity and Access Registrar`
 
-- Phase I complete
-- Phase II complete
-- Phase III complete
-- Phase IV complete and protected
-- Phase V implemented and owner-acceptable within the observed scope
-- Phase VI is the next production objective
-- Phases VII–VIII remain planned
+Do not force Rin into Phase VIII solely to manufacture another twist.
+
+Chapter IV must be able to end cleanly without turning Rin into a required ninth-phase hook.
+
+## 4.4 Operational Profile 18-07
+
+Temporary Operational Profile 18-07 is an operational profile, not a person.
+
+Canonical principle:
+
+> **A valid credential proves access, not identity.**
+
+This principle remains one of the central logical safeguards of the entire investigation.
 
 ---
 
-# 5. CORE STORY CANON
-
-## 5.1 Daniel Voss
-
-- dead in Chapter II
-- never returns alive
-- continues only through prepared pre-death material
-
-## 5.2 Room 1807 victim
-
-- not Daniel
-- Kawin Nopparat
-- identity revealed in Chapter V
-- killed by Elena
-- Chapter IV must not reveal the name Kawin prematurely
-
-## 5.3 `R.`
-
-- unresolved to the player through Chapter IV
-- future identity is Rinrada “Rin” Sornchai
-- former Identity and Access Registrar
-- the Last Witness
-- not Ratchata
-
-## 5.4 Temporary Operational Profile 18-07
-
-- operational profile
-- not a person
-- proves accepted access
-- does not prove the physical operator
-
-## 5.5 Responsibility layers
-
-1. Adrian designed lawful architecture.
-2. Arman adapted the wrapper.
-3. Narin supplied or executed trusted Bangkok deployment.
-4. Ika handled later surveillance and recovery work.
-5. Elena selected victims, room, timing, discovery sequence and cleanup priority.
-
-## 5.6 North threat
-
-- North understands attribution
-- her capability threatens Elena's protective gap
-- Elena chooses neutralization
-- the attempt remains deniable
-- North remains alive and active
-- the attempt creates evidence
-- North later consents to the false-success plan
-
-## 5.7 Scientific truth
-
-- toxicology is genuine
-- samples are genuine
-- biological findings are genuine
-- the manipulation concerns chronology, attribution and record sequence
-- physical truth and recorded truth must remain separate
-
-## 5.8 Singapore infrastructure truth
-
-- Singapore is an infrastructure nexus
-- it enables valid records to be positioned inside a false chronology
-- the Reconciliation Window accepts signed delayed events within eleven minutes
-- Device Timestamp ordering can preserve two apparently valid histories
-- valid authentication does not prove physical attribution
-
-## 5.9 Owner-secret truth
-
-Do not reveal early:
-
-- Elena is the mastermind
-- Elena killed Kawin
-- Elena killed Daniel
-- Elena uses valid structures, intermediaries and timing control to make false attribution appear lawful
-- Adrian is not the mastermind
-- Arman is not the mastermind
-- Ika is not the earlier murderer
-- Narin is not the ultimate Decision Owner
-- `R.` is Rinrada Sornchai
-
-Elena must remain:
-
-- intelligent
-- professional
-- trustworthy on the surface
-- useful
-- factually accurate in selected ways
-- careful about timing and order
-- free of obvious villain coding before the proper reveal
-
----
-
-# 6. CHARACTER CANON AND DISPLAY CONTRACT
-
-## Benedict
-
-- age 42
-- independent detective
-- protagonist and primary decision-maker
-- calm, observant and evidence-led
-- dry humour
-- never accuses without proof
-- no police authority in Indonesia
-- works through local authority
-- can be briefly distracted by undercover appearances without becoming creepy or incompetent
-
-## North
-
-- age 32
-- Singaporean of Indian ethnicity
-- technical investigator
-- short wavy dark hair
-- warm medium-brown skin
-- analytical, witty and alert
-- Benedict's trusted long-term partner
-- no romance with Benedict
-- no romance with Farid
-- never a passive victim
-- must retain agency during danger and deception
-
-## Inspector Cheryl Goh
-
-- age 40
-- Singaporean Chinese
-- cross-border liaison
-- pixie hair
-- controlled and authoritative
-- protects admissibility and custody
-- does not command Maya in Indonesia
-- restrained teasing only
-
-## Inspector Maya Pranoto
-
-- age 37
-- Indonesian
-- Indonesian operational authority
-- dark bob
-- direct, confident and practical
-- owns local legal decisions
-- no romance triangle
-- foreign characters do not overrule her
-
-## Farid Rahman
-
-- Singaporean Malay man
-- digital forensics specialist
-- remote during the Aruna operation
-- works quickly and speaks quickly when excited by evidence
-- respects North
-- no romance with North
-- not comic relief
-
-## Adrian Tan Wei Ming
-
-- former System Architect
-- fugitive and complicit insider
-- knows the system was misused
-- guilty of concealment, obstruction or unlawful retention where supported
-- not the mastermind
-- does not select the murder victims
-
-## Arman Suryadi
-
-- adapter, broker and technical intermediary
-- may be guilty of cybercrime, concealment and obstruction
-- not the murder principal
-- no Bangkok victim-selection path
-- English internal identity remains `Arman Suryadi`
-- Thai dialogue speaker label: `อามาน`
-- Thai Dialogue History speaker label: `อามาน`
-- Thai Character Journal full name: `อามาน สุริยาดี`
-
-## Dimas Wibowo
-
-- English internal identity remains `Dimas Wibowo`
-- Thai dialogue speaker label: `ดิมาส`
-- Thai Dialogue History speaker label: `ดิมาส`
-- no new Character Journal card is created by the localization repair
-
-## Ratchata (Dr. Singh)
-
-- age 43
-- Senior Medical Examiner
-- supports genuine toxicology and physical chronology
-- Character Journal name must remain `Ratchata (Dr. Singh)` in English
-- Thai display remains the approved localized form
-- profile image must remain stable
-
-## Ika Prameswari
-
-- age 34
-- Indonesian
-- private security and recovery specialist
-- Aster Recovery field operator
-- surveils and attempts to remove North
-- capable of real violence, obstruction and evidence destruction
-- recruited after the earlier murders
-- cannot be Kawin or Daniel's killer
-- does not know Elena's identity directly
-- not Decision Owner
-- English internal identity remains `Ika Prameswari`
-- Thai dialogue speaker label: `อิกา`
-- Thai Dialogue History speaker label: `อิกา`
-- Thai Character Journal full name: `อิกา ปราเมสวารี`
-
-## Elena
-
-- hidden mastermind
-- true killer of Kawin and Daniel
-- remote ally on the surface
-- gives real information selectively
-- does not receive villain lighting, villain music or suspicious performance coding prematurely
-
-## Localization display rule
-
-- Internal character keys and English-mode identities remain unchanged.
-- Thai display repair must not mutate Save schema, registry IDs, portrait mapping, evidence ownership or story State.
-- Dialogue History from older saves may be normalized at display time or through the approved scoped migration.
-- English mode remains English.
-- The only English wording changed by the 0.18.13 canon guard is the premature Chapter IV sentence that named Kawin before the intended reveal.
-
----
-
-# 7. AUTHORITY AND RESPONSIBILITY MATRIX
-
-| Domain | Primary owner | Supporting role | Prohibited shortcut |
-|---|---|---|---|
-| Indonesian operation | Maya | Benedict, North, Cheryl | foreign character commanding Maya |
-| Singapore admissibility | Cheryl | Farid, North | technical result treated as automatically admissible |
-| technical analysis | North | Farid | Benedict solving system mechanics alone |
-| remote preservation | Farid | Cheryl | unlogged or unauthorized intrusion |
-| investigative synthesis | Benedict | North | accusation without evidentiary bridge |
-| medical truth | Ratchata | case team | chronology inferred from record alone |
-| Phase V field attack | Ika | Aster chain | Ika treated as earlier murderer |
-| Decision Ownership | unresolved through Phase V | all evidence owners | violence collapsed into authorship |
-
-Mandatory rule:
-
-> **Access, operation, authorship, victim selection and Decision Ownership are separate roles until corroborated.**
-
----
-
-# 8. CHAPTER IV PHASE I–IV CONTINUITY
-
-## Phase I · AFTERIMAGE
-
-- preserves aftermath of Chapter III
-- re-establishes Bangkok chain
-- carries the false chronology into Chapter IV
-
-## Phase II · JAKARTA ARRIVAL
-
-- establishes Indonesian jurisdiction
-- introduces Maya's authority
-- preserves international cooperation boundaries
-
-## Phase III · PACKET PROVENANCE / PACKET TRAIL
-
-- traces technical origin and route
-- keeps packet provenance separate from physical authorship
-- leads directly to Arman
-
-## Phase IV · THE MAN BEHIND THE ALIAS
-
-- proves Arman's technical role
-- does not prove Decision Ownership
-- ends with North marked as an attribution threat
-- provides the Aster Recovery / Aruna lead
-
-Locked threat beat:
-
-```text
-SUBJECT: N-32
-CAPABILITY: ATTRIBUTION
-STATUS: ESCALATED
-```
-
-Locked Phase IV lead:
-
-- Aster Recovery reserved three rooms
-- Aster Recovery reserved one poolside cabana
-- destination: Aruna Coastal Hotel, Indonesia
-- reservation time reference: 10:30 local
-- Maya moves the team after sunrise
-- no uniforms
-- no live credential
-
-## Phase IV accepted audio lifecycle
-
-The accepted `0.18.11` repair preserves:
-
-- Phase IV background audio stops when the app enters the reproduced background/folded-screen condition
-- delayed callbacks do not restart Phase IV audio behind another screen
-- foreground resume follows the current active scene
-- the repair must not be replaced by a broad duplicate controller
-
-The owner tested the reproduced condition on the normal Android device and accepted the result.
-
----
-
-# 9. CHAPTER IV PHASE V · NORTH IS MARKED
-
-## 9.1 Current status
-
-`IMPLEMENTED · PHASE V MODULE 0.18.9 · CURRENT RUNTIME 0.18.17 · OWNER-ACCEPTABLE WITHIN OBSERVED SCOPE`
-
-Phase V remains the current maintenance baseline.
-
-Post-Phase-V support patches `0.18.10` through `0.18.17` do not change the locked story outcome.
-
-## 9.2 Location and time
-
-- Aruna Coastal Hotel
-- Indonesia
-- Day 5
-- playable resort insertion shown at `14:30 WIB`
-- the Aster reservation remains tied to `10:30`
-- the later playable time reflects perimeter preparation and afternoon cover
-- do not collapse reservation time and playable scene time
-
-## 9.3 Physical team
-
-At Aruna:
-
-- Benedict
-- North
-- Cheryl
-- Maya
-
-Remote in Singapore:
-
-- Farid
-
-## 9.4 Phase function
-
-- public leisure cover
-- controlled operational perimeter
-- North deliberately selected
-- deniable removal attempt
-- North remains active
-- the attempt creates evidence
-- Ika becomes lawfully identifiable
-- violence remains separate from earlier murder ownership
-- false removal record creates the bridge to Phase VI
-
-## 9.5 Threat rhythm
-
-1. Aruna establishing clip
-2. location/time presentation
-3. undercover team reveal
-4. false calm
-5. operational briefing
-6. coverage mapping
-7. anomaly
-8. blind-corner confirmation
-9. North marked CG
-10. close-quarters response
-11. field evidence
-12. Ika identification
-13. role separation
-14. false-success bridge
-
-## 9.6 Team reveal contract
-
-Exactly two Phase V videos remain:
-
-1. Aruna establishing clip
-2. undercover team reveal
-
-The undercover reveal order:
-
-1. Benedict
-2. North
-3. Cheryl
-4. Maya
-5. approved group image
-
-The sequence must finish on the approved group image.
-
-It must not loop or jump back to Benedict before gameplay begins.
-
-Skip and natural completion must reach the same State.
-
-## 9.7 Dialogue portrait contract
-
-Current accepted assets:
-
-- Benedict, eight indexed PNG portraits
-- North, eight indexed PNG portraits
-- Cheryl, eight indexed PNG portraits
-- Maya, eight indexed PNG portraits
-- Ika, eight indexed PNG portraits
-
-Current Runtime path:
-
-`assets/images/chapter-04/phase-05/portraits/`
-
-Current mobile contract:
-
-- transparent PNG
-- black dialogue well
-- complete head and hairstyle
-- readable dark hair
-- lower edge visually grounded
-- no black shelf beneath the character
-- no broad glow
-- no gray plate
-- no cyan aura
-- no automatic recut of owner-prepared PNG
-- stable head scale and top anchor
-- portrait scale currently accepted in the owner's quick review
-
-Future replacement files must preserve existing filenames unless code mapping is deliberately updated.
-
-## 9.8 Coverage mapping
-
-Locations:
-
-- Main Pool
-- Service Path
-- West Cabana Blind Corner
-
-Correct functional mapping:
-
-- Main Pool → Public Cover
-- Service Path → Monitored Route
-- Blind Corner → Concealed Approach
-
-The puzzle is mobile-friendly and has no permanent fail state.
-
-## 9.9 North marked CG
-
-The CG proves:
-
-- anomaly
-- surveillance
-- North is being watched
-
-It does not prove:
-
-- watcher identity
-- Ika's legal identity
-- Decision Ownership
-- earlier murder ownership
-
-## 9.10 Combat contract
-
-Current combat length:
-
-- eight exchanges
-
-Current correct-action sequence:
-
-1. Guard
-2. Punch
-3. Guard
-4. Kick
-5. Punch
-6. Guard
-7. Punch
-8. Kick
-
-Current damage model:
-
-- Guard: 8%
-- Punch: 13% or 14%
-- Kick: 18%
-- total successful damage across the sequence: 100%
-- wrong response damages North by 14%
-- North cannot be permanently softlocked by failure
-
-Current visual rule:
-
-- Guard must read as Guard
-- Punch must read as Punch
-- Kick must read as Kick
-- Ika's face must remain visible and readable
-- the right side of the accepted Ika combat composition must not be removed
-- Kick uses the approved kick artwork on North's side while preserving the accepted Ika side
-- action image changes immediately from the actual pressed button
-- reaction must remain physically and narratively plausible
-
-Current combat asset family includes:
-
-- `exchange-0.webp`
-- `exchange-1.webp`
-- `exchange-2.webp`
-- `north-guard.webp`
-- `north-punch.webp`
-- `north-kick.webp`
-- Ika/unknown reaction assets retained in the package
-
-Do not return to the rejected split-panel implementation that removed Ika's face.
-
-## 9.11 Audio contract
-
-Phase V audio groups:
-
-- Music
-- Ocean ambience
-- Pool ambience
-- Palm ambience
-- Hotel ambience
-- Combat music
-- SFX
-
-Current `0.18.9` Ocean/Pool coefficients:
-
-| Scene | Ocean | Pool |
-|---|---:|---:|
-| Main Pool | 0.081 | 0.059 |
-| Cabana | 0.059 | 0.025 |
-| Poolside | 0.072 | 0.052 |
-| Service Path | 0.034 | 0.010 |
-| North Marked | 0.025 | 0.008 |
-| Combat | 0.011 | 0.004 |
-
-These values remain subject to the global SFX slider.
-
-Preserve:
-
-- dialogue dominance
-- music audibility
-- soft environmental presence
-- smooth fading
-- no stale audio after exit
-- no duplicate loop
-- no resort ambience on Title
-- no loud water masking the score
-- no delayed Phase V callback restarting media after a tester Return to Title
-
-## 9.12 Evidence
-
-Current evidence set:
-
-1. `ch4_p5_aster_service_token`
-2. `ch4_p5_removal_confirmation_buffer`
-3. `ch4_p5_ika_timeline_match`
-
-### Aster Service Token
-
-Supports:
-
-- Aster field presence
-- service-route access
-- physical operator in the resort
-
-Does not prove:
-
-- who selected North
-- who authored the objective
-- Decision Ownership
-
-### Removal Confirmation Buffer
-
-Supports:
-
-- attacker needed a record of removal
-- violence was part of a record-producing operation
-- credible accident was contemplated
-
-Does not prove:
-
-- identity of the Decision Owner
-- earlier murder ownership
-
-### Ika Timeline Match
-
-Supports:
-
-- Ika is the field operator
-- Ika committed the resort attack
-- Aster contractor timeline matches the later operation
-
-Does not prove:
-
-- Ika killed Kawin
-- Ika killed Daniel
-- Ika selected earlier victims
-- Ika is Decision Owner
-
-## 9.13 Ika Journal threshold
-
-Ika unlocks only after lawful or sufficiently supported identification.
-
-A silhouette does not unlock her.
-
-When unlocked:
-
-- one Character card
-- one Character Added notification
-- one unread dot
-- opening the card clears only Ika's unread state
-- Save/Load preserves read state
-- repeated encounters do not notify again
-- Developer unlock remains silent
-
-## 9.14 Phase V closing truth
-
-At Phase V completion:
-
-- North remains active
-- Ika is identified as field operator
-- Aster involvement is supported
-- the removal record reports false success
-- the system accepts that North has been removed
-- North is physically present despite the accepted record
-- Decision Owner remains unresolved
-
-Locked transition concept:
-
-> **The record says she is gone while she is standing in the room.**
-
-This creates Phase VI.
-
----
-
-# 10. CHAPTER IV PHASE VI · THE FALSE SUCCESS
-
-## 10.1 Status
-
-`NEXT PRODUCTION OBJECTIVE · NOT YET IMPLEMENTED`
-
-Do not call Phase VI playable, coded or tested until the owner has approved a complete implementation package and tested it.
-
-## 10.2 Core premise
-
-The false removal record has already been accepted.
-
-North remains alive and operational.
-
-The team may exploit the contradiction by allowing the false success to propagate under controlled conditions.
-
-The objective is not merely to correct the record immediately.
-
-The objective is to learn:
-
-- who trusts the false record
-- what process activates after the record is accepted
-- what evidence moves next
-- which actor assumes North can no longer interfere
-- which route opens toward the relay facility
-- who benefits from the institutional belief that North is gone
-
-## 10.3 Locked principles
-
-- North must knowingly consent to any false-success operation.
-- North remains an active planner, not bait without agency.
-- Maya owns Indonesian authority.
-- Cheryl protects cross-border admissibility.
-- Farid preserves remote technical evidence.
-- Benedict links behavior to motive and decision structure.
-- Ika's violence does not become proof of Elena.
-- the false record is evidence of system behavior, not automatic proof of authorship.
-- Elena remains hidden.
-- the team must preserve the distinction between operational reaction and Decision Ownership.
-
-## 10.4 Phase VI proof boundary
-
-Phase VI may support:
-
-- a downstream actor relied on the false removal record
-- a process was triggered by accepted success
-- a relay or control route became active
-- compartmentalized actors respond without knowing the full plan
-- the system prioritizes continuity over physical truth
-- North's apparent absence changes adversary behavior
-
-Phase VI must not automatically prove:
-
-- Elena authored every technical instruction
-- every actor knows the mastermind
-- the relay operator selected the victims
-- a network route proves physical presence
-- a valid credential proves human identity
-
-## 10.5 Required design work before implementation
-
-1. define exact opening checkpoint from Phase V completion
-2. define North's consent and operational role
-3. define what false-success signal propagates
-4. define observable downstream reaction
-5. define lawful evidence collection
-6. define Maya and Cheryl authority boundaries
-7. define Farid's remote preservation role
-8. define Benedict's investigative decision
-9. define minigame or interactive mechanic only if it advances proof
-10. define Phase VII relay-facility handoff
-11. inventory all required assets
-12. design State and Save/Load migration
-13. test direct Owner Developer entry and natural entry separately
-14. add North QA Phase VI access only after the Phase VI entry State is stable and owner-approved
-
----
-
-# 11. CHAPTER IV PHASE VII · RELAY FACILITY CLIMAX
-
-## Status
-
-`PLANNED · NOT IMPLEMENTED`
-
-Core role:
-
-- physical and technical convergence
-- relay infrastructure becomes inspectable
-- team confronts a live operational system
-- attribution layers remain separate
-- climax must not reveal Elena too early unless the Chapter IV ending blueprint explicitly requires it
-
-Preserve:
-
-- Maya's local authority
-- Cheryl's admissibility role
-- North and Farid technical cooperation
-- Benedict's synthesis
-- no convenience hacking
-- no illegal seizure without consequence
-- no single log becoming omniscient truth
-
----
-
-# 12. CHAPTER IV PHASE VIII · SHADOW OF THE TRUTH
-
-## Status
-
-`PLANNED · NOT IMPLEMENTED`
-
-Function:
-
-- conclude Chapter IV
-- state what is proved
-- state what remains unresolved
-- preserve the mastermind mystery
-- transition toward Chapter V
-- preserve `R.` for the later Last Witness reveal
-- do not collapse field operator, deployer and Decision Owner
-
----
-
-# 13. VISUAL IDENTITY AND ASSET CONTRACT
-
-## 13.1 Phase V resort identity
-
-### Benedict
-
-- shirtless
-- black sunglasses
-- black swim shorts
-- short black hair
-- athletic muscular build
-- mature and composed
-
-### North
-
-- short wavy dark hair
-- warm medium-brown skin
-- black patterned bikini
-- gold ring details
-- necklace and earrings
-- analytical and alert
-
-### Cheryl
-
-- pixie hair
-- burgundy/wine bikini
-- sunglasses
-- poised and authoritative
-- fairer warm skin tone than North
-
-### Maya
-
-- dark bob
-- coral/scarlet/red-orange bikini
-- sunglasses on head
-- fuller and curvier silhouette
-- confident Indonesian authority
-
-### Ika
-
-- long dark hair
-- sharp side part
-- low ponytail
-- mature and controlled
-- dark olive halter bikini
-- gold ring details
-- sheer olive cover-up
-- small gold hoops
-- subtle tattoo
-- visually distinct from Maya, North and Cheryl
-
-## 13.2 Environment contract
-
-Aruna backgrounds remain one continuous resort:
-
-- warm stone
-- dark timber
-- white curtains
-- turquoise pool
-- tropical greenery
-- ocean proximity
-- afternoon light
-- mobile-readable luminance
-
-Primary locations:
-
-1. Main Pool and Cabana
-2. Cabana Interior
-3. Poolside Deck
-4. Service Path
-5. Blind Corner
-
-## 13.3 Motion-comic contract
-
-Permitted:
-
-- slow push
-- restrained pan
-- 2.5D parallax
-- water reflection
-- palm or curtain shadow
-- subtle light sweep
-- controlled focus
-- mild heat haze
-- fine grain
-- short crossfade
-
-Prohibited:
-
-- face morph
-- body morph
-- pose interpolation
-- generated hand movement
-- clothing change
-- sexualized body scan
-- camera orbit around a still
-- identity drift
-- style transfer over approved characters
-
----
-
-# 14. AUDIO ARCHITECTURE
-
-Global audio remains divided into:
-
-- Music
-- Ambience
-- SFX
-
-Preserve current audio owners.
-
-Do not add another global audio controller.
-
-Required behavior:
-
-- one source owner per loop
-- no duplicate playback
-- smooth loop
-- smooth ducking
-- evidence cue plays once
-- puzzle cue is distinct from evidence cue
-- click responds promptly
-- scene audio stops on exit
-- Phase audio stops on Return to Title
-- visibility changes do not create duplicate loops
-- Save/Load does not stack ambience
-- dialogue remains intelligible
-- music remains audible beneath ambience
-
-## 14.1 North QA Return-to-Title audio boundary
-
-When North QA invokes `RETURN TO TITLE`:
-
-1. call existing Chapter and Phase media owners first
-2. stop and reset every non-Title `audio` and `video` element
-3. prevent delayed old-Phase callbacks from reclaiming the screen
-4. prevent delayed old-Phase callbacks from restarting audio
-5. keep the active screen on `title`
-6. allow only Title-owned media to remain
-7. restore Title audio only when sound and music settings permit it
-
-Allowed Title media IDs during the guard:
-
-- `themeAudio`
-- `rainAudio`
-- `clickAudio`
-
-The title boundary must disarm when the tester intentionally:
-
-- starts a new tester navigation command
-- starts New Game
-- continues a save
-- loads a save
-- locks tester access
-
-The guard is a scoped tester-exit repair. It must not become a permanent global audio loop or duplicate the Phase audio controllers.
-
-Future Phase VI audio must not reuse resort ambience when the location changes unless narratively justified.
-
----
-
-# 15. CHARACTER JOURNAL CONTRACT
-
-## Discovery rules
-
-- Chapter I: Journal hidden
-- Chapter II: Journal appears only after North's first office conversation
-- new character notification appears once
-- unread dot clears only when the relevant entry is read
-- Save/Load preserves discovered and unread state
-- Developer unlock is silent
-- aliases, systems and credentials do not receive Character cards
-
-## Existing protected behavior
-
-Preserve:
-
-- North unlock timing
-- Elena unlock timing
-- Adrian pre-verification gate
-- Maya profile switching
-- Arman card and unread state
-- Ika verified-introduction threshold
-- `Ratchata (Dr. Singh)` exact English display name
-- stable portrait paths
-- Thai Arman full name `อามาน สุริยาดี`
-- Thai Ika full name `อิกา ปราเมสวารี`
-- no Dimas card added merely for localization
-
----
-
-# 16. STATE, SAVE/LOAD, OWNER DEVELOPER MODE AND NORTH QA
-
-## 16.1 State rules
-
-- each phase owns a scoped State object
-- migration must preserve older saves where practical
-- completed Phase state must remain complete
-- stale values must not create impossible scene starts
-- minigames must not softlock
-- phase progress must match narrative State
-- one checkpoint must not masquerade as another
-
-## 16.2 Save/Load
-
-Test:
-
-- new clean save
-- stale save
-- pre-phase save
-- mid-dialogue save where supported
-- pre-minigame save
-- mid-minigame save where supported
-- post-minigame save
-- evidence unread/read
-- completed Phase
-- Return to Title
-- reload after completion
-
-Do not claim save compatibility without testing the relevant migration.
-
-## 16.3 Owner Developer Mode
-
-Owner Developer navigation must:
-
-- enter each implemented phase
-- prime only required prior State
-- remain silent for Character unlock
-- avoid stale audio
-- avoid duplicate UI
-- preserve normal New Game behavior after Developer testing
-
-Owner tools remain available only through the existing owner authorization path.
-
-North QA must not weaken, replace or relabel the owner's full Developer Mode.
-
-Phase VI must receive its own explicit Owner Developer entry only when its State contract is implemented.
-
-## 16.4 North QA Access contract
-
-### Purpose
-
-North QA exists for the real tester North, not the fictional in-game character.
-
-Its purpose is to let the tester return to an implemented Chapter or Phase after progress loss or to reproduce a defect without replaying the entire game.
-
-### Activation
-
-```text
-Settings
-→ tap BUILD 7 times
-→ Developer Access modal
-→ enter tester
-→ Authenticate
-```
-
-Tester access code:
-
-`tester`
-
-This code is client-side convenience, not server-grade authentication. The game is hosted on GitHub Pages and the JavaScript is public.
-
-### Authorization model
-
-- Owner code → full Owner Developer Mode
-- `tester` code → limited North QA role
-- tester authorization is session-scoped through `sessionStorage` with memory fallback
-- tester role hides Owner Developer UI
-- owner commands must also reject tester access at command level
-- opening UI through browser tools must not grant owner permissions
-
-### Approved navigation
-
-North QA may open only:
-
-- Chapter I
-- Chapter II
-- Chapter III
-- Chapter IV Phase I
-- Chapter IV Phase II
-- Chapter IV Phase III
-- Chapter IV Phase IV
-- Chapter IV Phase V
-
-North QA must not expose:
-
-- Phase VI or later before implementation and approval
-- arbitrary internal screens
-- arbitrary checkpoints
-- raw State
-- flag editor
-- relationship editor
-- Unlock All Characters
-- Unlock All Evidence
-- Reset All Saves
-- hidden Canon tools
-
-### Approved session commands
-
-- `RESTART CURRENT CHAPTER / PHASE`
-- `COPY TEST INFO`
-- `RETURN TO TITLE`
-- `LOCK TESTER ACCESS`
-- `CLOSE`
-
-### Existing entry owners
-
-North QA must call existing approved entry APIs rather than create a parallel progression system:
-
-- Chapter I → existing New Game / Chapter I start owner
-- Chapter II → existing Developer Chapter II entry owner
-- Chapter III → existing Production Runtime and Chapter III start owner
-- Chapter IV Phase I–V → `LastWitnessDeveloperPhaseNavigation.run()` and each Phase's approved `startFreshForDev` contract
-
-### Copy Test Info contract
-
-The copied report contains only practical diagnostic context:
-
-- Runtime build
-- access mode
-- chapter
-- phase where applicable
-- active screen
-- checkpoint
-- language
-- document visibility
-
-Do not expose hidden Canon or the full raw State in the copied report.
-
-### Session and save limitation
-
-Tester authorization itself is session-scoped.
-
-The existing entry APIs may still auto-save into the current browser storage because no separate tester Save namespace was introduced.
-
-Therefore:
-
-- Incognito is recommended for isolated testing
-- do not claim that North QA creates a separate persistent Save system
-- do not silently add a new Save schema without owner approval
-
-### Current owner acceptance
-
-Owner-confirmed on the deployed `0.18.17` path:
-
-- tester authentication works
-- North QA menu opens
-- Chapter IV Phase V jump works
-- Return to Title stops Phase V media
-- Title-owned music resumes correctly
-- tester access remains functional after the repair
-
-Not yet claimed:
-
-- every Chapter and Phase jump owner-tested on the real device
-- all stale-save combinations
-- all browser engines
-- all devices
-- all language and audio-slider combinations
-
----
-
-## 16.5 Authoritative Runtime Build synchronization
-
-The authoritative Runtime build is a shared release identity and must not be inferred from a historical Phase module's own version.
-
-Current synchronized surfaces:
-
-- Settings: `LAST WITNESS · BUILD 0.18.17`
-- Owner Developer Console: `BUILD 0.18.17`
-- North QA Access: `BUILD 0.18.17`
-- North QA Copy Test Info: `Build: 0.18.17`
-- Save Manager metadata: `0.18.17`
-- Runtime diagnostics: `0.18.17`
-- Runtime bootstrap: `0.18.17`
-
-Current owners:
-
-- `js/engine/09-defect-hotfix.js`
-  - establishes the authoritative Runtime build and loads current build owners with cache-busting references
-- `js/engine/25-runtime-build-label.js`
-  - synchronizes current user-, owner- and tester-facing Runtime labels and metadata
-- `js/engine/24-north-qa-access.js`
-  - reads the authoritative Runtime build for North QA presentation and copied diagnostics
-
-Future build-bump procedure:
-
-1. choose the new authoritative Runtime build
-2. update Runtime bootstrap identity
-3. update cache-busting references for changed modules
-4. update the central build-label owner
-5. update North QA to consume the authoritative value
-6. verify Settings
-7. verify Owner Developer Console
-8. verify North QA Access
-9. verify Copy Test Info
-10. verify Save Manager metadata
-11. verify Runtime diagnostic metadata
-12. verify no historical module rewrites the current label
-13. obtain owner acceptance
-14. update this Master Plan to the accepted Runtime HEAD and build
-
-Do not bump only one visible label.
-
-Do not use a Phase module version as the release-wide Runtime version.
-
-Current owner acceptance:
-
-- the owner tested the deployed `0.18.17` synchronization patch
-- the owner reported that the Build presentation changed correctly and passed
-- this is accepted within the observed owner-device path, not an exhaustive cross-browser certification
-
----
-
-# 17. EVIDENCE AND CUSTODY PRINCIPLES
-
-Every evidence item must record:
-
-- observation
-- source
-- collector
-- custodian
-- hash or seal where relevant
-- what it supports
-- what it does not prove
-- jurisdiction
-- transfer history
-
-Mandatory controls:
-
-- Elena never handles disputed digital evidence alone
-- Narin never deploys alone after compromise is known
-- Somchai never transports disputed evidence without seal and second acknowledgment
-- North's hidden outputs require Farid or authorized hash witness
-- final packages require jurisdiction-specific signatures and cross-reference manifest
-- a screenshot is not equivalent to raw evidence
-- a valid signature is not equivalent to human identity
-- a field operator is not equivalent to Decision Owner
-
----
-
-# 18. ENDING ARCHITECTURE
-
-Four major endings remain:
-
-1. TRUE CONVICTION
-2. RIGHT NAME, NO CASE
-3. FALSE CONVICTION
-4. THE PERFECT RECORD
-
-No single choice sets an ending.
-
-Ending variables include:
-
-- evidence integrity
-- attribution proof
-- chain of custody
-- witness protection
-- North safety
-- alliance strength
-- public-record control
-- role separation
-- institutional trust
-- corroboration breadth
-- alternative hypotheses preserved
-- final accusation
-- final case version
-
-## Elena
-
-True guilt:
-
-- mastermind
-- Kawin's killer
-- Daniel's killer
-
-A correct ending still requires admissible corroboration.
+# 5. RESPONSIBILITY LAYERS — DO NOT COLLAPSE THEM
+
+The story must continue to distinguish:
+
+1. physical event
+2. record claim
+3. credential / role / permission
+4. device / timestamp claim
+5. network route
+6. physical operator
+7. tool author
+8. broker / adapter
+9. deployer
+10. victim / timing selector
+11. Decision Owner
+
+Canonical responsibility split:
 
 ## Adrian
 
-Possible real charges:
-
-- enabling
-- concealment
-- obstruction
-- unlawful retention
-
-Fatal gap for mastermind attribution:
-
-- no victim selection
-- no physical murder path
+- lawful architecture layer
+- not automatically culpable because architecture was later abused
 
 ## Arman
 
-Possible real charges:
-
-- cybercrime
-- brokerage
-- metadata scrub
-- obstruction
-- concealment
-
-Fatal gap for murder-principal attribution:
-
-- no Bangkok presence
-- no victim selection
-- no Decision Ownership
+- adapted wrapper / toolmaker layer
+- technically important
+- not the Decision Owner
+- not the killer by default implication
 
 ## Narin
 
-Possible real charges:
-
-- unauthorized deployment
-- tampering
-- cleanup
-- obstruction
-- conspiracy
-
-Fatal gap for mastermind attribution:
-
-- receives priorities rather than originates them
+- supplied / executed the trusted Bangkok deployment layer
+- must remain distinct from the person who selected victims and timing
 
 ## Ika
 
-Possible real charges:
+- Aster Recovery field operator
+- recruited after the earlier murders
+- attacked North in Phase V
+- not Kawin's killer
+- not Daniel's killer
+- not the Decision Owner
+- does not know Elena directly
 
-- surveillance
-- attempted abduction or murder
-- evidence destruction
-- obstruction
+## Elena
 
-Fatal gap for earlier murder attribution:
+- Decision Owner
+- selected victims
+- selected room / timing
+- controlled discovery / cleanup priorities
+- historical killer of Kawin and Daniel
 
-- recruitment begins after the earlier murders
-
-Every False Conviction ending must distinguish:
-
-1. offences correctly proved
-2. murder attribution that was wrong
-
----
-
-# 19. TESTING STANDARD
-
-## 19.1 Static
-
-- JavaScript syntax
-- CSS parsing
-- HTML validity where practical
-- asset paths
-- media references
-- image dimensions
-- alpha
-- duplicate IDs
-- cache keys
-- changed-file scope
-- build labels
-- State schema
-- action-to-asset mapping
-- audio coefficient mapping
-- tester-role command allowlist
-- owner-tool deny boundary
-- Return-to-Title media allowlist
-
-## 19.2 Natural route
-
-1. Title
-2. New Game
-3. Chapter I
-4. Chapter II Journal gate
-5. Chapter III
-6. Chapter IV Phase I
-7. Phase II
-8. Phase III
-9. Phase IV
-10. natural Phase IV completion
-11. Phase V establishing
-12. location card
-13. team reveal
-14. dialogue
-15. coverage map
-16. anomaly
-17. North marked
-18. combat
-19. evidence
-20. Ika identification
-21. role separation
-22. Phase V completion
-23. Return to Title
-
-## 19.3 Phase V focused route
-
-Check:
-
-- team reveal ends on group
-- no Benedict loopback
-- every portrait touches the intended lower edge
-- full head remains visible
-- dark hair remains readable
-- Guard shows Guard
-- Punch shows Punch
-- Kick shows Kick
-- Ika face remains visible
-- eight exchanges complete
-- correct damage values
-- wrong response does not softlock
-- water ambience does not mask music
-- exit stops Phase V audio
-- evidence records correct proof limits
-- Ika unlocks once
-- completed State restores correctly
-
-## 19.4 North QA focused route
-
-For each approved entry where practical:
-
-1. open Settings
-2. tap BUILD seven times
-3. authenticate with the tester code
-4. confirm Owner Developer tools are not visible
-5. open the requested Chapter or Phase
-6. confirm the expected canonical entry screen and checkpoint
-7. confirm required prior State is primed
-8. confirm future evidence is not unlocked
-9. confirm Character notifications do not fire incorrectly
-10. use Copy Test Info
-11. restart the current Chapter or Phase
-12. return to Title
-13. wait at least five seconds for delayed callback leakage
-14. confirm only Title-owned audio remains
-15. start another Chapter or Phase and confirm the Title guard disarms
-16. lock tester access and confirm QA buttons disappear
-17. authenticate with the owner code and confirm full Owner Developer Mode remains unchanged
-
-## 19.5 Language
-
-Test both:
-
-- English
-- Thai
-
-Check:
-
-- labels
-- dialogue
-- evidence
-- buttons
-- role separation
-- completion card
-- Journal names
-- Dialogue History speaker names
-- no overflow at normal mobile width
-- Arman / อามาน display boundary
-- Dimas / ดิมาส display boundary
-- Ika / อิกา display boundary
-
-## 19.6 Owner-device honesty
-
-Current confirmed status:
-
-- owner performed a quick real-device review of the game through Chapter IV Phase V
-- owner considers the current game acceptable within that observed scope
-- owner tested the North QA Phase V Return-to-Title repair on the deployed build
-- owner reported the repaired result as complete and correct
-- owner tested Runtime `0.18.17` authoritative Build synchronization and reported that it passed
-- Settings, Owner Developer, North QA and copied QA diagnostics are accepted as synchronized within the observed path
-
-Not confirmed:
-
-- exhaustive Chapter I–Phase V regression after `0.18.17`
-- every Save/Load checkpoint
-- every North QA jump on the owner device
-- every Thai/English route
-- iPhone Safari
-- desktop browsers
-- tablet layouts
-- all audio hardware
-- all viewport widths
-- accessibility audit
-
-Never convert the current acceptance into those unperformed tests.
+Phase VIII must make this responsibility separation clearer, not blurrier.
 
 ---
 
-# 20. NO-REGRESSION LOCK
+# 6. CHARACTER / AUTHORITY CANON
 
-Do not disturb:
+## 6.1 Benedict
 
-- Chapters I–III
-- Chapter IV Phases I–V
-- Character Journal gates
-- notification timing
-- unread dots
-- Dialogue History
-- Case File
-- action geometry
-- Forensic bottom stack
-- Secure Mirror containment
-- Phase IV minigame centering
-- Phase IV background-audio lifecycle repair
-- Owner Developer Mode
-- North QA limited-role boundary
-- North QA approved navigation list
-- North QA tester code behavior
-- North QA Copy Test Info fields
-- North QA Restart behavior
-- North QA Return-to-Title audio and screen boundary
-- authoritative Runtime Build synchronization contract
-- Settings Build label
-- Owner Developer Build label
-- North QA Build label
-- North QA Copy Test Info Build value
-- Save Manager Runtime version metadata
-- Runtime diagnostic Build metadata
-- Runtime bootstrap and cache-busting build references
-- Save schema outside scoped need
-- current evidence
-- current audio owners
-- accepted portraits
-- accepted backgrounds
-- current handoffs
-- Chapter IV Thai localization
-- repaired Thai names
-- English-mode identities
-- canon-safe Chapter IV wording
-- Phase V final group-frame ending
-- Phase V portrait grounding
-- Ika face visibility
-- Guard/Punch/Kick mapping
-- Phase V combat balance
-- Phase V water-audio balance
+- synthesis lead
+- detective
+- should not accuse before evidence closes the logical gap
+- final Phase VIII deduction should feel earned through accumulated proof, not intuition alone
 
-Do not restore rejected historical builds.
+## 6.2 North
 
-Do not branch from an old repair package.
+- alive
+- active
+- technically capable investigator
+- not a passive victim
+- consented to the false-success operation
+- no romance with Benedict or Farid
+- must receive meaningful emotional payoff after being operationally targeted
 
-Do not remove accepted scoped layers without a tested authoritative replacement.
+## 6.3 Inspector Maya Pranoto
+
+Maya owns Indonesian operational / legal authority.
+
+During Indonesian operations:
+
+- Maya controls warrant scope
+- Maya controls physical access decisions
+- Maya controls local evidence custody
+- Maya can stop the team from exceeding lawful scope
+
+Maya is not subordinate to Cheryl in Indonesia.
+
+## 6.4 Inspector Cheryl Goh
+
+Cheryl owns the Singapore admissibility / custody side.
+
+She:
+
+- protects the Singapore mirror
+- protects cross-border evidentiary integrity
+- does not command Maya inside Indonesia
+- may coordinate closely with Farid
+
+## 6.5 Farid Rahman
+
+- remote digital forensics
+- maintains / validates the Singapore-side evidentiary mirror
+- supports technical verification without becoming the field authority
 
 ---
 
-# 21. EXACT NEXT-CHAT OPERATING INSTRUCTION
+# 7. PHASE VI → VII LOCKED HANDOFF
 
-A new assistant must behave as though the owner has said:
+Phase VI established:
 
-> Continue LAST WITNESS from the current Production branch.
->
-> Repository: `grolygori789-crypto/last-witness`.
->
-> Branch: `production-rebuild`.
->
-> Fetch the latest HEAD before editing.
->
-> The Runtime code/assets baseline observed before this Master Plan update is `1fd62e51039ebc35b5e0713ce2e25582f81ae079`, build `0.18.17`.
->
-> Read `GAME_MASTER_PLAN.md` completely.
->
-> Chapters I–III and Chapter IV Phases I–V are currently within the owner's acceptable range after a quick overall review.
->
-> Chapter IV Phase V, `NORTH IS MARKED`, remains the playable endpoint and is maintenance-locked.
->
-> The latest owner acceptance is real-device and path-specific, not exhaustive.
->
-> Phase IV background audio lifecycle repair is accepted.
->
-> Chapter IV native Thai localization and repaired Thai names are accepted.
->
-> Preserve `อามาน`, `อามาน สุริยาดี`, `ดิมาส`, `อิกา` and `อิกา ปราเมสวารี` in Thai mode without changing internal English identities.
->
-> Do not reveal Kawin's identity prematurely in Chapter IV.
->
-> North QA Access `0.18.17` is accepted as a limited tester system.
->
-> It opens through Settings → BUILD ×7 → code `tester`.
->
-> It may access only Chapter I, Chapter II, Chapter III and Chapter IV Phases I–V.
->
-> It must not expose Owner Developer tools, raw State, reset tools, unlock-all tools or future Phases.
->
-> Its Return-to-Title command must stop all old Chapter/Phase media and preserve only Title-owned audio.
->
-> Runtime Build synchronization `0.18.17` is owner-tested and accepted.
->
-> Settings, Owner Developer, North QA, Copy Test Info, Save Manager metadata and Runtime diagnostics must always report the same authoritative Runtime build.
->
-> Every future Runtime build bump must update and verify all synchronized surfaces in the same release. Historical module versions must never overwrite the current Runtime build label.
->
-> The next production objective is Chapter IV Phase VI, `THE FALSE SUCCESS`.
->
-> North remains alive and active while the accepted record says she has been removed.
->
-> North must consent to any false-success operation.
->
-> Maya owns Indonesian authority.
->
-> Cheryl protects cross-border admissibility.
->
-> Farid preserves remote technical evidence.
->
-> Benedict synthesizes evidence without overclaiming.
->
-> Ika is the Phase V field operator, not the earlier murderer or Decision Owner.
->
-> Elena remains hidden.
->
-> A valid credential proves access, not identity.
->
-> Fetch current code, State, Save/Load, Journal, audio, Owner Developer and North QA owners before designing Phase VI.
->
-> Build locally.
->
-> Test honestly.
->
-> Deliver files to the owner for manual GitHub upload.
->
-> Do not create a branch or push directly.
+- false completion receipt accepted at 05:43
+- 05:44 North attribution-watch closes
+- 05:46 archive 18-07 continuity-transfer queue
+- 05:51 one-time handshake to JKT-R7
+- maintenance window 07:30–07:45
+- contractor: Aster Recovery
+- lead: `JKT-R7 Relay Facility · North Jakarta`
+- Maya owns perimeter / warrant
+- no facility entry before Maya's team
+- Cheryl holds Singapore mirror
+- no live credential crosses the border
+- North's key interpretation: the route opened because the system believed she was gone
+- Decision Owner unresolved
 
 ---
 
-# 22. CURRENT BASELINE PRESERVATION LOCK
+# 8. PHASE VII — ACCEPTED PRODUCTION SUMMARY
 
-```text
-Repository:
-grolygori789-crypto/last-witness
+## 8.1 Timeline
 
-Branch:
-production-rebuild
+- Day 6
+- 07:22 WIB
+- North Jakarta · Indonesia
+- JKT-R7 Relay Facility
+- maintenance window: 07:30–07:45
+- exterior: approximately 07:22
+- corridor: approximately 07:27
+- relay core: approximately 07:30
 
-Runtime code/assets HEAD observed:
-1fd62e51039ebc35b5e0713ce2e25582f81ae079
+## 8.2 Visual / cinematic package
 
-Runtime build:
-0.18.17
+Current Phase VII contains:
 
-Current implemented endpoint:
-CHAPTER IV · PHASE V · NORTH IS MARKED
+- JKT-R7 exterior
+- security corridor
+- relay core
+- opening approach cinematic
+- climax anomaly cinematic
 
-Owner acceptance:
-REAL-DEVICE OWNER OBSERVATION
-ACCEPTABLE WITHIN OBSERVED SCOPE
-NORTH QA PHASE V RETURN-TO-TITLE PATH ACCEPTED
-AUTHORITATIVE BUILD SYNCHRONIZATION 0.18.17 ACCEPTED
-NOT EXHAUSTIVE
+Direct H.264 video playback is the accepted playback direction.
 
-Known active Production defect:
-NONE REPORTED
+Do not reintroduce the failed canvas / Animated WebP workaround unless a new reproducible defect requires a different solution.
 
-Last fully accepted pre-Phase-V baseline:
-f4a7a1df997cddc0d2b53da23cd5c9f0b7cdba99
-BUILD 0.17.18
+## 8.3 Phase VII minigame
 
-Current North QA baseline:
-0.18.17
-BUILD ×7
-TESTER CODE: tester
-CHAPTER I–III
-CHAPTER IV PHASE I–V
+`RELAY ISOLATION MATRIX`
 
-Next target:
-CHAPTER IV · PHASE VI · THE FALSE SUCCESS
+Three-step structure:
 
-Previous canonical planning blob:
-9b490f1d601dc6a00507157dace3b63b65f9e8db
-```
+### Step 1 — TIME NORMALISATION
 
-Preserve:
+- network handshake stored at 05:51:00
+- checkpoint reader clock is 14 seconds slow
+- correct normalized reader time: 05:50:46
 
-- complete Canon
-- owner-secret truth
-- authority boundaries
-- proof boundaries
-- evidence custody
-- ending architecture
-- Phase V accepted presentation
-- owner-prepared PNG authority
-- North's agency
-- Ika timeline contradiction
-- false-success bridge
-- Chapter IV native Thai localization
-- repaired Thai character names
-- Phase IV background-audio lifecycle
-- North QA limited-role contract
-- North QA Return-to-Title media boundary
-- Runtime Build Synchronization Contract
-- synchronized Settings, Owner Developer, North QA and Copy Test Info labels
-- synchronized Save Manager and Runtime diagnostic metadata
-- owner-upload workflow
+### Step 2 — PHYSICAL CORRELATION
 
----
+Only R-18 matches the complete evidentiary pattern:
 
-# 23. DOCUMENT UPDATE RECORD
+- Queue 18-07
+- one-time session
+- Aster maintenance 07:30–07:45
 
-This revision:
+### Step 3 — ISOLATION ORDER
 
-- updates the canonical Production snapshot from Runtime `0.18.9` to `0.18.17`
-- records Runtime code/assets HEAD `1fd62e51039ebc35b5e0713ce2e25582f81ae079`
-- records Phase V Kick framing repair `0.18.10`
-- records accepted Phase IV background-audio lifecycle repair `0.18.11`
-- records Chapter IV native Thai localization `0.18.12`
-- records Thai names and canon-safe wording repair `0.18.13`
-- records Limited North QA Access `0.18.14`
-- records North QA Return-to-Title audio guard `0.18.15`
-- records Authoritative Runtime Build Label `0.18.16`
-- records Runtime Build Synchronization Contract `0.18.17`
-- records the owner-tested and accepted North QA Phase V tester-exit path
-- records the owner-tested and accepted `0.18.17` Build synchronization result
-- defines synchronized Settings, Owner Developer, North QA, Copy Test Info, Save Manager and Runtime diagnostic surfaces
-- requires every future Runtime build bump to update and verify all applicable Build surfaces in the same release
-- preserves historical module versions as internal module identities only
-- prohibits historical modules from overwriting the authoritative Runtime build
-- records that no active Production defect is currently reported
-- preserves the limitation that owner acceptance is not exhaustive
-- maintenance-locks Phase V, North QA and the Build Synchronization Contract
-- keeps Phase VI `THE FALSE SUCCESS` as the next production objective
-- preserves core Canon, authority, evidence and ending rules
-- performs no Runtime change
-- performs no GitHub write
+Correct action:
 
-Recommended documentation commit message:
+- isolate R-18 only
+- preserve Singapore mirror
+- no live credential transfer
+- do not destroy unrelated banks
+- do not chase a live route outside warrant scope
 
-`Update Master Plan to Runtime 0.18.17`
+## 8.4 Phase VII conclusion
 
-Character count: 37.
+Phase VII supports:
+
+- lawful facility inspection
+- R-18 correlation
+- residual path observation
+- secondary continuity support
+- Decision Owner unresolved
+
+The chapter must now move from:
+
+`WHO TOUCHED / ROUTED THE RELAY?`
+
+to:
+
+`WHO NEEDED THE SYSTEM TO CONTINUE, AND WHO CHOSE THE HUMAN OUTCOME?`
+
+That is the narrative engine of Phase VIII.
 
 ---
 
-# 24. POST-UPLOAD VERIFICATION
+# 9. PHASE VIII — SHADOW OF THE TRUTH — LOCKED NARRATIVE INTENT
 
-After uploading this file:
+## 9.1 Core dramatic purpose
 
-1. fetch `GAME_MASTER_PLAN.md` from `production-rebuild`
-2. confirm revision `2026-08-06 16:43 ICT`
-3. confirm Runtime build `0.18.17`
-4. confirm Runtime code/assets HEAD `1fd62e51039ebc35b5e0713ce2e25582f81ae079`
-5. confirm the current playable boundary is Chapter IV Phase V
-6. confirm no active Production defect is reported
-7. confirm the acceptance limitation remains present
-8. confirm Phase V is maintenance-locked
-9. confirm North QA `0.18.17` is maintenance-locked
-10. confirm North QA uses BUILD ×7 and code `tester`
-11. confirm North QA is limited to Chapter I–III and Chapter IV Phase I–V
-12. confirm Owner Developer tools remain prohibited to the tester role
-13. confirm the Return-to-Title media boundary is present
-14. confirm only `themeAudio`, `rainAudio` and `clickAudio` are allowed during the Title guard
-15. confirm the Runtime Build Synchronization Contract is present
-16. confirm Settings, Owner Developer, North QA and Copy Test Info share the authoritative Build
-17. confirm Save Manager and Runtime diagnostic metadata share the authoritative Build
-18. confirm future build bumps require a synchronized-surface audit
-19. confirm historical module versions cannot overwrite the authoritative Runtime label
-20. confirm Chapter IV Thai name contracts are present
-21. confirm Kawin is not revealed prematurely in Chapter IV
-22. confirm Phase VI is the next production objective
-23. confirm Elena remains hidden
-24. confirm Ika is not the earlier murderer
-25. confirm North remains active
-26. confirm the owner-upload workflow remains locked
-27. confirm the GitHub upload changed documentation only
+Phase VIII is not another procedural lead hunt.
 
-Do not treat the new documentation commit as a new Runtime code/assets baseline.
+It is the payoff phase.
+
+The investigation has accumulated enough separated evidence layers. The final task is to combine them without violating the story's central evidentiary rule.
+
+The player should feel:
+
+`The answer was present across the records, relationships and choices all along, but no single earlier record was legally or logically sufficient.`
+
+## 9.2 Decision Owner reveal standard
+
+Elena must not be revealed because:
+
+- one magical file suddenly says her name
+- Benedict simply has a hunch
+- Arman suddenly confesses everything
+- Ika suddenly knows Elena directly
+- a relay IP is treated as a physical person
+- a credential is treated as identity
+
+The reveal must arise from a **multi-layer reconstruction**.
+
+The final proof chain should connect, at minimum:
+
+- victim selection
+- timing selection
+- room / discovery control
+- Bangkok deployment behavior
+- reaction-chain behavior after the false success
+- continuity behavior observed at JKT-R7
+- knowledge / access patterns that exclude or limit the roles of Arman, Ika and other intermediaries
+- a final Elena-linked fact or contradiction strong enough to close the Decision Owner gap
+
+The exact final evidentiary object is an implementation decision for Phase VIII production, but it must be earned and must preserve chain-of-custody logic.
+
+## 9.3 Elena payoff
+
+Elena has been useful and professionally credible on the surface.
+
+Phase VIII should exploit that history.
+
+The ideal emotional effect is not:
+
+`A new villain appeared.`
+
+It is:
+
+`The person the investigation trusted was positioned close enough to shape what everyone believed the case was.`
+
+Do not convert Elena into a theatrical supervillain.
+
+Keep her:
+
+- intelligent
+- controlled
+- plausible
+- operationally disciplined
+- human
+- dangerous because of choices and access, not supernatural omniscience
+
+## 9.4 Required responsibility resolution
+
+By the end of Phase VIII the player should understand the distinction between:
+
+- Adrian — architecture
+- Arman — wrapper / toolmaker adaptation
+- Narin — trusted deployment layer
+- Ika — recovery / field operation
+- Elena — victim / timing / discovery / cleanup selection and Decision Ownership
+
+The player does not need every future mystery in the LAST WITNESS universe solved.
+
+But Chapter IV's primary Decision Owner question must receive a genuine payoff.
+
+## 9.5 North payoff
+
+North must not be reduced to "the person who survived."
+
+Phase VIII should acknowledge that:
+
+- she was specifically searched for
+- she consented to the false-success operation
+- her analysis caused the hidden route to move
+- she remained operational under pressure
+- she materially helped expose the continuity layer
+
+Her final Chapter IV beat should show agency and professional equality.
+
+## 9.6 Benedict payoff
+
+Benedict's final deduction should complete his Chapter IV arc:
+
+- he resists the convenient suspect
+- he keeps layers separate
+- he refuses to turn access into identity
+- he finally accuses only when the evidence supports the person behind the choices
+
+The accusation / conclusion must feel like synthesis, not clairvoyance.
+
+---
+
+# 10. PHASE VIII — ENDING / FAREWELL LOCK
+
+## 10.1 Geography at the end of Chapter IV
+
+**Do not return all the way to Bangkok inside Phase VIII.**
+
+Chapter IV should end in Indonesia / during departure from Indonesia after the core truth and immediate consequences are resolved.
+
+Acceptable final geography:
+
+- Jakarta / JKT-R7 aftermath
+- departure staging
+- vehicle toward airport
+- airport departure beat
+- aircraft leaving Jakarta
+
+Do not show Benedict and North arriving back in Bangkok before Chapter IV completes.
+
+## 10.2 Chapter V opening geography
+
+The stronger transition is:
+
+`CHAPTER V · PHASE I → BANGKOK · THAILAND`
+
+Benedict and North return to Bangkok at the beginning of Chapter V.
+
+This gives Chapter IV a clean dramatic ending and lets the return home become the opening statement of a new chapter.
+
+## 10.3 Post-Phase-VIII jurisdictional separation
+
+After the Indonesian operation resolves:
+
+### Benedict + North
+
+Return to Bangkok.
+
+Their return is a Chapter V opening event, not a long Chapter IV epilogue.
+
+### Maya
+
+Remains in Jakarta / Indonesia to complete:
+
+- JKT-R7 local custody work
+- warrant return / reporting
+- local evidence handling
+- Indonesian operational closure
+
+Maya does not travel to Bangkok merely because Benedict and North are leaving.
+
+She may re-enter later only when a real case / jurisdictional reason justifies it.
+
+### Cheryl
+
+Returns to Singapore.
+
+She continues:
+
+- Singapore mirror custody
+- admissibility work
+- coordination with Farid
+- certified cross-border evidence handling
+
+Cheryl may later travel to Bangkok if Chapter V creates a legitimate evidentiary / joint-operation reason.
+
+### Farid
+
+Remains tied to the Singapore digital-forensics side unless future plot requires physical travel.
+
+## 10.4 Farewell physicality
+
+A farewell scene is desirable, but it must remain restrained and character-specific.
+
+Locked preferred beats:
+
+### Maya ↔ Benedict
+
+- professional handshake
+- firm but brief
+- direct eye contact
+- mutual professional respect
+- no melodramatic speech
+
+### Maya ↔ North
+
+- one brief genuine hug
+- short, earned, non-romantic
+- emotionally meaningful because Maya has watched North remain operational through targeted danger
+- the gesture should say more than the dialogue
+
+### Cheryl ↔ Benedict
+
+- handshake, forearm grip or brief shoulder touch
+- dry / understated line is appropriate
+- professional warmth, not sentimentality
+
+### Cheryl ↔ North
+
+- handshake, two-hand grip or brief arm touch
+- no second large hug is necessary
+- acknowledge the Singapore evidence package / continued cooperation
+
+Avoid:
+
+- group hug
+- romantic framing
+- farewell speeches implying they will never meet again
+- crying montage
+- excessive physical contact across every pairing
+
+The team is separating by jurisdiction, not permanently saying goodbye.
+
+## 10.5 Suggested final visual beat
+
+Preferred tonal direction:
+
+- luggage / departure vehicle ready
+- final restrained exchanges
+- Benedict and North leave
+- Maya remains behind under Indonesian operational responsibility
+- Cheryl's Singapore return is clear or implied
+- vehicle / airport / aircraft departure image
+- no Bangkok arrival
+- `CHAPTER IV COMPLETE`
+
+This should feel like completion, not a cliffhanger hiding unfinished Chapter IV business.
+
+---
+
+# 11. CHAPTER IV COMPLETION STANDARD
+
+Chapter IV is considered narratively complete at the end of Phase VIII only if all of the following are true:
+
+1. the primary Decision Owner question receives payoff
+2. Elena's role is revealed through earned evidence
+3. the responsibility layers remain separated
+4. Arman is not retroactively turned into the mastermind
+5. Ika is not retconned into the earlier murderer
+6. North receives agency-based payoff
+7. Benedict's accusation is evidence-led
+8. Maya / Cheryl jurisdictional roles remain credible
+9. the immediate Indonesian operation receives closure
+10. Chapter IV does not require a Phase IX to explain what Phase VIII should have resolved
+
+Phase VIII may intentionally leave future-world consequences, Rin, or broader institutional implications for later chapters.
+
+Leaving future possibilities is allowed.
+
+Leaving the central Chapter IV answer unpaid is not.
+
+---
+
+# 12. CHAPTER V HANDOFF — ONLY WHAT IS CURRENTLY LOCKED
+
+Chapter V full plot is **not yet defined by this document**.
+
+Only the transition below is currently locked:
+
+- Chapter IV ends before arrival in Bangkok.
+- Benedict and North return to Bangkok.
+- Their Bangkok arrival / return becomes the opening territory of Chapter V Phase I.
+- Maya remains in Indonesia at the immediate handoff.
+- Cheryl returns to Singapore at the immediate handoff.
+- Farid remains Singapore-side unless future planning changes this for a concrete reason.
+
+Do not invent the rest of Chapter V merely to fill documentation.
+
+---
+
+# 13. PHASE VIII PRODUCTION GATE
+
+Before coding Phase VIII, production should define:
+
+## 13.1 Final proof architecture
+
+Write the exact evidence chain that closes the Decision Owner gap.
+
+For every final clue specify:
+
+- source
+- custodian
+- what it proves
+- what it does not prove
+- how it connects to existing evidence
+- why it could not justify the accusation earlier
+- why the combined set is now sufficient
+
+## 13.2 Final interaction design
+
+Phase VIII should contain meaningful player participation.
+
+Recommended direction:
+
+- final reconstruction / synthesis rather than another simple evidence carousel
+- moderate cognitive difficulty
+- reversible errors
+- no arbitrary fail state
+- the player should be rewarded for preserving distinctions between access, operator, deployer and Decision Owner
+
+## 13.3 Confrontation format
+
+Do not lock a physical confrontation solely because "finale needs a fight."
+
+Choose confrontation type based on story logic:
+
+- physical
+- interview
+- controlled intercept
+- remote confrontation
+- evidence-led exposure
+
+Whatever form is chosen must respect:
+
+- Maya's jurisdiction
+- Cheryl's admissibility concerns
+- evidence chain
+- character intelligence
+- established tone
+
+## 13.4 Chapter ending
+
+Design the final Chapter IV completion sequence before production begins so the phase does not become overloaded at the end.
+
+Required beats:
+
+- truth payoff
+- immediate consequence
+- breathing room
+- restrained farewell
+- departure
+- Chapter IV Complete
+
+---
+
+# 14. PHASE VIII NO-REGRESSION CHECKLIST
+
+Before owner review, verify:
+
+## Narrative
+
+- no contradiction with Elena historical truth
+- no premature Kawin identity contradiction
+- no R. / Rin forced reveal unless explicitly approved
+- no access=identity mistake
+- no route=operator mistake
+- no Arman=Decision Owner regression
+- no Ika=earlier killer regression
+- Maya remains Indonesian authority
+- Cheryl remains Singapore custody/admissibility authority
+- North remains active and non-romantic with Benedict / Farid
+
+## State / Save
+
+- Phase VII completion → Phase VIII entry
+- fresh Dev Phase VIII entry
+- North QA Phase VIII entry if/when owner authorizes it
+- manual Save / Load
+- restart current Phase VIII
+- return to Title
+- ending flags survive Save / Load
+- `chapter4.phase8` isolated from previous phase state
+- no duplicate Developer Mode Phase entries
+
+## Mobile
+
+- portrait viewport
+- short Android viewport
+- modern iPhone viewport
+- safe-area bottom
+- modal scrolling
+- dialogue clipping
+- action buttons always visible
+- cinematic controls reachable
+- no overflow beyond viewport
+
+## Audio
+
+- no previous phase audio leak
+- correct scene ownership
+- cinematic audio ducking / pause behavior
+- visibility background / foreground behavior
+- Return to Title boundary
+
+## Completion
+
+- progress reaches 100 only after true completion
+- Chapter IV completion State is explicit
+- no automatic hidden Phase IX creation
+- Chapter V handoff remains separate
+
+---
+
+# 15. CURRENT NEXT ACTION
+
+**NEXT PRODUCTION TASK**
+
+`CHAPTER IV · PHASE VIII · SHADOW OF THE TRUTH`
+
+**ROLE**
+
+`FINAL PHASE OF CHAPTER IV`
+
+**PRIMARY STORY JOB**
+
+`Close the Decision Owner question through an earned evidence-led Elena reveal, resolve the Indonesian operation, give the core team emotional payoff, separate jurisdictions cleanly, and end Chapter IV before Benedict and North arrive back in Bangkok.`
+
+**POST-CHAPTER HANDOFF**
+
+`CHAPTER V · PHASE I opens the Bangkok return.`
+
+---
+
+# 16. FINAL CANON LOCK
+
+For all future work, remember:
+
+> **Chapter IV has exactly eight phases.**
+>
+> **Phase VIII — SHADOW OF THE TRUTH — is the final phase.**
+>
+> **Do not create Chapter IV Phase IX without explicit owner authorization.**
+>
+> **The end of Phase VIII closes Chapter IV in Indonesia / during departure.**
+>
+> **Benedict and North return to Bangkok at the beginning of Chapter V.**
+>
+> **Maya remains in Indonesia for jurisdictional closure.**
+>
+> **Cheryl returns to Singapore for evidence custody / admissibility work.**
+>
+> **The final reveal must be evidence-led, not a magical confession or a single convenient file.**
