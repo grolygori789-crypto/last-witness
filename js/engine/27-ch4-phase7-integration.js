@@ -1,7 +1,7 @@
-/* LAST WITNESS - Phase VII Developer / North QA integration 0.20.0 */
+/* LAST WITNESS - Phase VII Developer / North QA integration 0.20.1 */
 (function(){
 "use strict";
-const VERSION="0.20.0";
+const VERSION="0.20.1";
 if(window.LastWitnessPhase7Integration?.version===VERSION&&window.LastWitnessPhase7Integration?.installed)return;
 const $=(s,r=document)=>r.querySelector(s);const gs=()=>{try{return state}catch(_){return window.state||null}};
 const thai=()=>gs()?.language==="th"||document.documentElement.lang==="th";
