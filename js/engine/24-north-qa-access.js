@@ -1,11 +1,11 @@
-/* LAST WITNESS - Limited North QA Access 0.20.6
+/* LAST WITNESS - Limited North QA Access 0.20.9
  * Session-scoped tester navigation using the existing BUILD x7 access door.
  * Chapter IV Phases I-VII route through the same canonical Developer Phase
  * Navigation owner so modal lifecycle, media cleanup and state reset stay identical.
  */
 (function(){
 "use strict";
-const VERSION="0.20.6";
+const VERSION="0.20.9";
 if(window.LastWitnessNorthQA?.version===VERSION&&window.LastWitnessNorthQA?.installed){
  try{window.LastWitnessNorthQA.install?.()}catch(_){}
  return
@@ -56,9 +56,14 @@ function setBusy(value){running=value;$$('#northQaModal button[data-north-qa-act
 function requireTester(){if(testerAuthorized())return true;status("Tester access is no longer active.","error");syncAccessButtons();return false}
 function waitFor(predicate,timeout=5000){return new Promise(resolve=>{const started=performance.now();const check=()=>{let passed=false;try{passed=Boolean(predicate())}catch(_){}if(passed){resolve(true);return}if(performance.now()-started>=timeout){resolve(false);return}setTimeout(check,45)};check()})}
 function chapter4Phase(){
- const nav=window.LastWitnessDeveloperPhaseNavigation,screen=activeScreen();
- const byScreen=nav?.phases?.find?.(item=>Array.isArray(item.screens)&&item.screens.includes(screen));if(byScreen)return Number(byScreen.phase)||null;
- const chapter4=gs()?.chapter4||{};for(let phase=7;phase>=1;phase--){if(chapter4["phase"+phase]?.started)return phase}return null
+ const nav=window.LastWitnessDeveloperPhaseNavigation;
+ const canonical=Number(nav?.currentPhase?.());if(canonical>=1&&canonical<=7)return canonical;
+ const s=gs(),chapter4=s?.chapter4||{};
+ /* State is authoritative. Phase II and Phase III intentionally share
+    jakartaVerificationLab, so screen-first detection can misidentify Phase III. */
+ for(let phase=7;phase>=1;phase--){if(chapter4["phase"+phase]?.started)return phase}
+ const screen=activeScreen(),matches=(nav?.phases||[]).filter(item=>Array.isArray(item.screens)&&item.screens.includes(screen));
+ return matches.length===1?(Number(matches[0].phase)||null):null
 }
 function phaseLabel(){const chapter=Number(gs()?.chapter)||1;return chapter===4?String(chapter4Phase()||"UNRESOLVED"):"N/A"}
 function syncAccessButtons(){const active=testerAuthorized(),menu=$("#northQaMenuButton"),title=$("#northQaTitleButton"),owner=$("#developerMenuButton");if(menu)menu.style.display=active?"block":"none";if(title)title.style.display=active?"inline-flex":"none";if(active&&owner)owner.style.display="none"}
@@ -75,13 +80,17 @@ async function enterChapter3(){const integration=window.LastWitnessChapter2Integ
 async function enterChapter4(phase){const nav=window.LastWitnessDeveloperPhaseNavigation,id=CHAPTER4_IDS[phase];if(!id||typeof nav?.run!=="function")throw new Error("Chapter IV phase navigation unavailable");return await nav.run(id)}
 async function runNavigation(action){
  if(!requireTester()||running)return false;
- disarmTitleBoundary();setBusy(true);closeOverlays();
+ const chapter4Action=/^chapter4phase[1-7]$/.test(action);
+ disarmTitleBoundary();setBusy(true);
+ /* Chapter IV uses the canonical navigator, which owns the no-flash modal
+    lifecycle and closes QA/Dev overlays only when the target API is ready. */
+ if(!chapter4Action)closeOverlays();
  try{
   let success=false;
   if(action==="chapter1")success=await enterChapter1();
   else if(action==="chapter2")success=await enterChapter2();
   else if(action==="chapter3")success=await enterChapter3();
-  else if(/^chapter4phase[1-7]$/.test(action))success=await enterChapter4(Number(action.slice(-1)));
+  else if(chapter4Action)success=await enterChapter4(Number(action.slice(-1)));
   else throw new Error("Unknown tester navigation action");
   if(!success)throw new Error("The requested entry did not confirm its canonical checkpoint");
   notify("North QA test entry opened");return true

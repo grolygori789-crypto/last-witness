@@ -1,10 +1,10 @@
-/* LAST WITNESS - Isolated Chapter IV Developer Phase Navigation 0.20.8-d1
+/* LAST WITNESS - Isolated Chapter IV Developer Phase Navigation 0.20.9-d1
  * Canonical Developer Console jumps for Chapter IV Phases I-VII.
  * All Chapter IV test jumps share one modal lifecycle, media boundary and state reset path.
  */
 (function(){
 "use strict";
-const VERSION="0.20.8-d1";
+const VERSION="0.20.9-d1";
 if(window.LastWitnessDeveloperPhaseNavigation?.version===VERSION){
  try{window.LastWitnessDeveloperPhaseNavigation.install?.()}catch(_){}
  return
@@ -27,7 +27,50 @@ const PHASES=[
  {id:"chapter4RelayFacility",phase:7,en:"Chapter IV · Phase VII · Relay Facility Climax",th:"บทที่ IV · เฟส VII · สถานี Relay JKT-R7",api:"LastWitnessChapter4Phase7",screens:["relayFacilityOpening","relayFacilityPhase7Card","relayFacilityLocationCard","relayFacilityExterior","relayFacilityCorridor","relayFacilityCore","relayFacilityClimax","relayFacilityPostClimax","relayFacilityPhase7Complete"]}
 ];
 
-let running=false;
+const CANONICAL_IDS=new Set(PHASES.map(item=>item.id));
+let running=false,gridObserver=null,normalizing=false,normalizeQueued=false;
+
+function chapter4Buttons(grid){return Array.from(grid?.querySelectorAll?.("[data-dev-jump]")||[]).filter(button=>String(button.dataset?.devJump||"").startsWith("chapter4"))}
+function needsNormalization(grid){
+ const buttons=chapter4Buttons(grid),seen=new Set(),order=[];
+ for(const button of buttons){
+  const id=String(button.dataset?.devJump||"");
+  if(!CANONICAL_IDS.has(id)||seen.has(id))return true;
+  seen.add(id);order.push(id)
+ }
+ if(PHASES.some(item=>!seen.has(item.id)))return true;
+ const canonicalOrder=order.filter(id=>CANONICAL_IDS.has(id));
+ return canonicalOrder.length!==PHASES.length||canonicalOrder.some((id,index)=>id!==PHASES[index].id)
+}
+function purgeNonCanonicalChapter4Jumps(grid){
+ const seen=new Set();
+ chapter4Buttons(grid).forEach(button=>{
+  const id=String(button.dataset?.devJump||"");
+  if(!CANONICAL_IDS.has(id)||seen.has(id)){button.remove();return}
+  seen.add(id)
+ })
+}
+function scheduleNormalize(grid){
+ if(normalizeQueued)return;normalizeQueued=true;
+ queueMicrotask(()=>{normalizeQueued=false;if(!grid?.isConnected)return;if(needsNormalization(grid))install()})
+}
+function observeGrid(grid){
+ if(gridObserver?.__lwTarget===grid)return;
+ try{gridObserver?.disconnect?.()}catch(_){}
+ gridObserver=new MutationObserver(()=>{if(!normalizing&&needsNormalization(grid))scheduleNormalize(grid)});
+ gridObserver.__lwTarget=grid;gridObserver.observe(grid,{childList:true,subtree:false,attributes:true,attributeFilter:["data-dev-jump"]})
+}
+
+function currentPhase(){
+ const s=gs();if(Number(s?.chapter)!==4)return null;
+ const chapter4=s?.chapter4||{};
+ for(let phase=7;phase>=1;phase--){if(chapter4["phase"+phase]?.started)return phase}
+ const screen=$(".screen.active")?.id||s?.screen||"";
+ const matches=PHASES.filter(item=>item.screens.includes(screen));
+ return matches.length===1?matches[0].phase:null
+}
+
+
 function closeDeveloperUI(){
  $("#drawer")?.classList.remove("open");
  $$(".modal.open").forEach(node=>node.classList.remove("open"));
@@ -136,9 +179,15 @@ function enforceChapter4Order(grid){
 }
 function install(){
  const grid=$("#developerModal .dev-grid");if(!grid)return false;
- PHASES.forEach(item=>replaceButton(grid,item));
- enforceChapter4Order(grid);
- return true
+ normalizing=true;
+ try{
+  purgeNonCanonicalChapter4Jumps(grid);
+  PHASES.forEach(item=>replaceButton(grid,item));
+  purgeNonCanonicalChapter4Jumps(grid);
+  enforceChapter4Order(grid);
+ }finally{normalizing=false}
+ observeGrid(grid);
+ return !needsNormalization(grid)
 }
 function refreshLabels(){
  PHASES.forEach(item=>{const button=$(`[data-dev-jump="${item.id}"][data-lw-dev-phase-nav="1"]`);if(button)button.textContent=thai()?item.th:item.en})
@@ -149,6 +198,6 @@ document.addEventListener("click",event=>{
  if(event.target.closest?.("#developerMenuButton,#settingsVersion"))setTimeout(install,0)
 },true);
 
-window.LastWitnessDeveloperPhaseNavigation={version:VERSION,installed:true,install,run,phases:PHASES.map(({id,phase,api,screens})=>({id,phase,api,screens:[...screens]}))};
+window.LastWitnessDeveloperPhaseNavigation={version:VERSION,installed:true,install,run,currentPhase,phases:PHASES.map(({id,phase,api,screens})=>({id,phase,api,screens:[...screens]}))};
 if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",install,{once:true});else install();
 })();
