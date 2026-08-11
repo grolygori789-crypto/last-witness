@@ -1,10 +1,10 @@
-/* LAST WITNESS - Isolated Chapter IV Developer Phase Navigation 0.20.6-d1
+/* LAST WITNESS - Isolated Chapter IV Developer Phase Navigation 0.20.8-d1
  * Canonical Developer Console jumps for Chapter IV Phases I-VII.
  * All Chapter IV test jumps share one modal lifecycle, media boundary and state reset path.
  */
 (function(){
 "use strict";
-const VERSION="0.20.6-d1";
+const VERSION="0.20.8-d1";
 if(window.LastWitnessDeveloperPhaseNavigation?.version===VERSION){
  try{window.LastWitnessDeveloperPhaseNavigation.install?.()}catch(_){}
  return
@@ -68,7 +68,9 @@ function resetPhaseContainers(item){
  }
 }
 async function waitForApi(item,timeout=8000){
- try{await window.LastWitnessChapter2Integration?.ensureProductionRuntime?.()}catch(error){console.warn("LAST WITNESS production runtime preflight skipped",error)}
+ /* Chapter IV modules are loaded by the Chapter IV bootstrap before this navigator.
+    Do not invoke the Chapter III production loader here: that can expose the
+    underlying story screen while an unrelated runtime loads. */
  const started=performance.now();
  while(performance.now()-started<timeout){
   const api=window[item.api];
@@ -96,12 +98,15 @@ async function run(id){
  running=true;
  const button=$(`[data-dev-jump="${item.id}"][data-lw-dev-phase-nav="1"]`);
  if(button)button.disabled=true;
- /* UX contract: the developer/QA overlay disappears immediately on selection. */
- closeDeveloperUI();
  try{
-  const api=await waitForApi(item);
+  /* Fast path: in the normal bootstrap contract every Chapter IV API is already
+     available. This path performs no await before the target phase is activated,
+     so the browser cannot paint the old story screen between modal close and jump. */
+  let api=window[item.api];
+  if(typeof api?.startFreshForDev!=="function")api=await waitForApi(item);
   stopCurrentMedia();
   resetPhaseContainers(item);
+  closeDeveloperUI();
   const result=api.startFreshForDev();
   if(result&&typeof result.then==="function")await result;
   if(!await waitForEntry(item))throw new Error("Jump did not enter Chapter IV Phase "+item.phase);
@@ -117,7 +122,6 @@ function replaceButton(grid,item){
  button.textContent=thai()?item.th:item.en;
  button.addEventListener("click",event=>{
   event.preventDefault();event.stopPropagation();event.stopImmediatePropagation();
-  closeDeveloperUI();
   void run(item.id)
  },true);
  if(current)current.replaceWith(button);else grid.appendChild(button);
