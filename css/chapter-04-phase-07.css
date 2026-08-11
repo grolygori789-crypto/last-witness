@@ -1,0 +1,24 @@
+/* LAST WITNESS - Chapter IV / Phase VII: RELAY FACILITY CLIMAX 0.20.0
+ * Visual contract: reuse established Chapter IV cards/dialogue/progress; only minigame is bespoke.
+ */
+:root{--p7-gold:#ddb56d;--p7-paper:#f5eee4;--p7-blue:#77a4b7;--p7-ink:#040609;--p7-red:#c75d58;--p7-green:#88bd9d}
+/* Phase VI end card is intentionally bypassed by Phase VII direct handoff. */
+#falseSuccessPhase6Complete{display:none!important}
+.ch4-p7-video,.ch4-p7-card,.ch4-p7-scene,.ch4-p7-complete{background:#040609;color:var(--p7-paper)}
+.ch4-p7-video{position:relative;overflow:hidden;background:#000}.ch4-p7-video video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;background:#000}.ch4-p7-video .ch4-p5-shade{pointer-events:none}
+.ch4-p7-video-play{position:absolute;left:50%;bottom:calc(78px + env(safe-area-inset-bottom));transform:translateX(-50%);z-index:5;width:min(82vw,330px)}
+.ch4-p7-skip{position:absolute;right:16px;bottom:calc(20px + env(safe-area-inset-bottom));z-index:5}
+.ch4-p7-scene .scene{object-fit:cover;object-position:center center}.ch4-p7-scene .ch4-p5-shade{background:linear-gradient(180deg,rgba(3,5,8,.10),rgba(3,5,8,.02) 42%,rgba(3,5,8,.48) 100%)}
+.ch4-p7-progress .ch4-p7-progress-fill{background:linear-gradient(90deg,#b9853d,#e3bd72,#f1d79b)!important;box-shadow:0 0 12px rgba(221,181,109,.32)}
+.ch4-p7-action{width:min(calc(100% - 30px),360px)}
+.ch4-p7-climax video{filter:none}.ch4-p7-post .scene{object-position:center center}
+/* Premium exception: Relay Correlation minigame only. */
+.ch4-p7-minigame{z-index:380;background:rgba(2,4,7,.90);backdrop-filter:blur(9px)}
+.ch4-p7-minigame .modal-card{width:min(94vw,620px);max-height:min(88dvh,860px);overflow:hidden;padding:0;background:linear-gradient(155deg,#151b22,#070a0e 72%);border:1px solid rgba(221,181,109,.46);box-shadow:0 28px 82px rgba(0,0,0,.78)}
+.ch4-p7-mini-head{padding:18px 18px 13px;border-bottom:1px solid rgba(255,255,255,.08)}.ch4-p7-mini-head .eyebrow{color:var(--p7-gold);font-size:9px;font-weight:850;letter-spacing:.18em}.ch4-p7-mini-head h3{margin:5px 0 0;color:#f4ede3;font-size:21px;letter-spacing:.03em}.ch4-p7-mini-head p{margin:8px 0 0;color:#aeb8bd;font-size:11px;line-height:1.45}
+.ch4-p7-mini-body{padding:14px 15px 8px;overflow:auto;overscroll-behavior:contain}.ch4-p7-mini-clues{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-bottom:12px}.ch4-p7-mini-clue{min-height:66px;padding:9px;border:1px solid rgba(119,164,183,.22);background:rgba(119,164,183,.045)}.ch4-p7-mini-clue span{display:block;color:#7f929b;font-size:7.5px;font-weight:850;letter-spacing:.12em}.ch4-p7-mini-clue b{display:block;margin-top:5px;color:#d8e2e5;font-size:10px;line-height:1.3}
+.ch4-p7-relay-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}.ch4-p7-relay{position:relative;min-height:78px;padding:11px;text-align:left;border:1px solid rgba(255,255,255,.11);background:linear-gradient(145deg,rgba(255,255,255,.035),rgba(255,255,255,.015));color:#cfd6d7}.ch4-p7-relay strong{display:block;color:#f0e8dc;font-size:14px}.ch4-p7-relay small{display:block;margin-top:5px;color:#829198;font-size:9px;line-height:1.35}.ch4-p7-relay i{position:absolute;right:10px;top:11px;width:8px;height:8px;border-radius:50%;background:#6d8d76;box-shadow:0 0 9px rgba(109,141,118,.36)}.ch4-p7-relay.selected{border-color:rgba(221,181,109,.82);background:linear-gradient(145deg,rgba(221,181,109,.13),rgba(119,164,183,.05));box-shadow:inset 0 0 0 1px rgba(221,181,109,.08)}.ch4-p7-relay.selected i{background:#ddb56d;box-shadow:0 0 12px rgba(221,181,109,.55)}
+.ch4-p7-mini-status{min-height:42px;padding:11px 15px 0;color:#c7a15e;font-size:11px;font-weight:700;line-height:1.45}.ch4-p7-mini-status.error{color:#df9b95}.ch4-p7-mini-status.success{color:#9fd0ad}.ch4-p7-mini-foot{display:flex;gap:8px;padding:12px 15px max(14px,env(safe-area-inset-bottom));border-top:1px solid rgba(255,255,255,.08)}.ch4-p7-mini-foot button{flex:1;min-height:44px}
+.ch4-p7-evidence .modal-card{width:min(94vw,600px);max-height:86dvh;overflow:hidden}.ch4-p7-evidence .ch4-p5-scroll{max-height:56dvh;overflow:auto}.ch4-p7-evidence footer{display:flex;gap:8px}.ch4-p7-evidence footer button{flex:1}
+@media(max-width:520px){.ch4-p7-mini-clues{grid-template-columns:1fr}.ch4-p7-mini-clue{min-height:0}.ch4-p7-relay-grid{grid-template-columns:1fr 1fr}.ch4-p7-mini-head{padding-top:15px}.ch4-p7-mini-body{padding-top:11px}}
+@media(max-height:690px){.ch4-p7-minigame .modal-card{max-height:94dvh}.ch4-p7-mini-clue{min-height:50px}.ch4-p7-mini-head p{display:none}}
