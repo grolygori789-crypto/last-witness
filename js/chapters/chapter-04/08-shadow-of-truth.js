@@ -1,11 +1,11 @@
-/* LAST WITNESS - Chapter IV / Phase VIII: SHADOW OF THE TRUTH 0.21.0
+/* LAST WITNESS - Chapter IV / Phase VIII: SHADOW OF THE TRUTH 0.21.1
  * Direct Phase VII handoff. Shared Chapter IV UI language is preserved.
  * Phase VIII is the CALCULATE bridge into the hidden-case architecture:
  * player-visible story remains shared while hidden case state is derived idempotently.
  */
 (function(){
 "use strict";
-const BUILD="0.21.0";
+const BUILD="0.21.1";
 if(window.LastWitnessChapter4Phase8?.version===BUILD)return;
 
 const BASE="assets/images/chapter-04/phase-08/";
@@ -27,7 +27,7 @@ const tr=(en,th)=>thai()?th:en;
 const clone=v=>JSON.parse(JSON.stringify(v));
 const clamp=(v,a=0,b=1)=>Math.max(a,Math.min(b,Number(v)||0));
 const active=()=>$(".screen.active")?.id||gs()?.screen||"";
-let dialogue=null,transitionTimer=0,matrixOpen=false,evidenceOpen=false,choiceOpen=false,bangkokChoiceOpen=false,evidenceIndex=0,handoffObserver=null,saveBridgeInstalled=false,registryInstalled=false,internalRouting=false,takeoffStartedAt=0,takeoffFinishing=false;
+let dialogue=null,transitionTimer=0,matrixOpen=false,evidenceOpen=false,choiceOpen=false,bangkokChoiceOpen=false,evidenceIndex=0,handoffObserver=null,saveBridgeInstalled=false,registryInstalled=false,internalRouting=false,takeoffStartedAt=0,takeoffFinishing=false,openingWatchdog=0;
 const fadeFrames=new Map();
 
 function defaults(){return{
@@ -55,7 +55,7 @@ function save(){try{typeof autoSave==="function"&&autoSave()}catch(_){} }
 function setCheckpoint(v){const s=gs();if(s)s.checkpoint=v;save()}
 function recomputeCase(){try{return window.LastWitnessHiddenCase?.recompute?.()}catch(error){console.warn("LAST WITNESS P8 hidden-case recompute skipped",error);return null}}
 function stopElement(m,reset=false){if(!m)return;try{m.pause();if(reset)m.currentTime=0}catch(_){} }
-function clearTimer(){clearTimeout(transitionTimer);transitionTimer=0}
+function clearTimer(){clearTimeout(transitionTimer);transitionTimer=0;clearTimeout(openingWatchdog);openingWatchdog=0}
 function stopForeignAudio(){["LastWitnessChapter4Phase7","LastWitnessChapter4Phase6","LastWitnessChapter4Phase5","LastWitnessChapter4Phase4","LastWitnessChapter4Phase3","LastWitnessChapter4Phase2","LastWitnessChapter4Phase1"].forEach(n=>{try{window[n]?.stopAudio?.(true)}catch(_){}})}
 function safeShow(id){internalRouting=true;try{typeof show==="function"&&show(id)}catch(_){};if(!$("#"+id)?.classList.contains("active")){$$(".screen.active").forEach(n=>n.classList.remove("active"));$("#"+id)?.classList.add("active");if(gs())gs().screen=id}internalRouting=false;syncProgress();syncAudio();try{window.LastWitnessRuntimeBuildLabel?.sync?.()}catch(_){}}
 function openSave(){try{if(window.LastWitnessSaveManager?.open)return window.LastWitnessSaveManager.open("save");typeof manualSave==="function"&&manualSave()}catch(_){} }
@@ -222,8 +222,21 @@ function appendCaseEvidence(){const list=$("#caseList"),p=phaseState();if(!list)
 function progressValue(){const p=phaseState();if(!p?.started)return 0;if(p.complete)return 100;switch(p.stage){case"opening":case"location":return 0;case"debrief":return p.debriefIntroComplete?18:8;case"matrix":return 22+Math.round((p.matrixSubject/3)*18);case"theory-choice":return 43;case"arman":return p.armanBoundaryReviewed?52:46;case"ika":return p.ikaPreAsterReviewed?62:55;case"bangkok":case"bangkok-choice":return p.bangkokChoiceComplete?73:66;case"registrar":return p.registrarTraceReviewed?84:77;case"closing":return 87;case"departure":return p.northRemovalPreserved?94:90;case"takeoff":return 97;default:return 0}}
 function syncProgress(){const n=Math.round(clamp(progressValue(),0,100));$$('.ch4-p8-progress-text').forEach(x=>x.textContent=n+"%");$$('.ch4-p8-progress-fill').forEach(x=>x.style.width=n+"%");if(gs())gs().progress=n}
 
-function playOpening(){inject();stopForeignAudio();stopAudio(true);const p=ensure();p.started=true;p.stage="opening";gs().chapter=4;setCheckpoint("ch4_phase8_opening");safeShow(OPENING);updateLanguage();const v=$("#ch4P8OpeningVideo");if(!v){finishOpening();return}try{v.currentTime=0;v.play().catch(()=>{$("#ch4P8OpeningPlay").hidden=false})}catch(_){finishOpening()}syncAudio()}
-function finishOpening(){const p=ensure();if(p.openingSeen&&p.stage!=="opening")return;stopElement($("#ch4P8OpeningVideo"),true);$("#ch4P8OpeningPlay")&&( $("#ch4P8OpeningPlay").hidden=true );p.openingSeen=true;p.stage="location";setCheckpoint("ch4_phase8_location");showLocation();save()}
+function playOpening(){
+ inject();stopForeignAudio();stopAudio(true);const p=ensure();p.started=true;p.stage="opening";gs().chapter=4;setCheckpoint("ch4_phase8_opening");safeShow(OPENING);updateLanguage();
+ const v=$("#ch4P8OpeningVideo"),playButton=$("#ch4P8OpeningPlay");
+ if(!v){finishOpening();return}
+ clearTimeout(openingWatchdog);
+ const failSafe=()=>{if(active()===OPENING&&!ensure()?.openingSeen){console.warn("LAST WITNESS P8 opening media unavailable; continuing to location card.");finishOpening()}};
+ openingWatchdog=setTimeout(()=>{if(v.readyState<2&&!v.currentTime)failSafe()},4500);
+ try{
+  v.currentTime=0;v.load();
+  const result=v.play();
+  if(result?.catch)result.catch(()=>{if(playButton)playButton.hidden=false;openingWatchdog=setTimeout(failSafe,3200)});
+ }catch(_){failSafe()}
+ syncAudio()
+}
+function finishOpening(){clearTimeout(openingWatchdog);openingWatchdog=0;const p=ensure();if(p.openingSeen&&p.stage!=="opening")return;stopElement($("#ch4P8OpeningVideo"),true);$("#ch4P8OpeningPlay")&&( $("#ch4P8OpeningPlay").hidden=true );p.openingSeen=true;p.stage="location";setCheckpoint("ch4_phase8_location");showLocation();save()}
 function showLocation(){const p=ensure();p.titleSeen=true;p.stage="location";setCheckpoint("ch4_phase8_location");safeShow(LOCATION);updateLanguage();clearTimer();transitionTimer=setTimeout(enterDebrief,2700);save()}
 function enterDebrief(){const p=ensure();p.locationSeen=true;p.stage=p.matrixComplete?(p.theoryChoiceComplete?(p.armanBoundaryReviewed?(p.ikaPreAsterReviewed?(p.bangkokChoiceComplete?(p.registrarTraceReviewed?"closing":"registrar"):"bangkok"):"ika"):"arman"):"theory-choice"):"debrief";setCheckpoint("ch4_phase8_debrief");safeShow(DEBRIEF);updateLanguage();syncAudio();if(!p.debriefIntroComplete){setTimeout(()=>talk(D.debriefIntro,()=>{p.debriefIntroComplete=true;p.stage="matrix";save();openMatrix()}),360);return}resumeDebriefStage()}
 function resumeDebriefStage(){const p=ensure();switch(p.stage){case"matrix":setTimeout(openMatrix,180);break;case"theory-choice":setTimeout(openTheoryChoice,180);break;case"arman":setTimeout(()=>talk(D.arman,()=>openEvidence("arman")),200);break;case"ika":setTimeout(()=>talk(D.ika,()=>openEvidence("ika")),200);break;case"bangkok":playOne("ch4P8SecureNotice",.30);setTimeout(()=>talk(D.bangkokNotice,()=>openEvidence("bangkok")),220);break;case"bangkok-choice":setTimeout(openBangkokChoice,180);break;case"registrar":playOne("ch4P8TraceStinger",.24);setTimeout(()=>talk(D.registrar,()=>openEvidence("registrar")),220);break;case"closing":setTimeout(()=>talk(D.closing,finishDebrief),220);break;default:if(!p.matrixComplete)openMatrix()}}
@@ -252,7 +265,11 @@ function updateLanguage(){if(!$("#"+OPENING))return;const map={
 
 function bindUi(){
  $$('.ch4-p8-save').forEach(b=>b.onclick=openSave);$$('.ch4-p8-menu').forEach(b=>b.onclick=openMenu);
- const ov=$("#ch4P8OpeningVideo");ov?.addEventListener("ended",finishOpening);ov?.addEventListener("error",finishOpening);$("#ch4P8OpeningPlay")?.addEventListener("click",()=>{ov?.play().then(()=>{$("#ch4P8OpeningPlay").hidden=true}).catch(()=>{})});$("#ch4P8OpeningSkip")?.addEventListener("click",finishOpening);
+ const ov=$("#ch4P8OpeningVideo"),ovSource=ov?.querySelector("source");
+ const openingMediaError=()=>{if(active()===OPENING)finishOpening()};
+ ov?.addEventListener("ended",finishOpening);ov?.addEventListener("error",openingMediaError);ovSource?.addEventListener("error",openingMediaError);
+ ov?.addEventListener("playing",()=>{clearTimeout(openingWatchdog);openingWatchdog=0;const b=$("#ch4P8OpeningPlay");if(b)b.hidden=true});
+ $("#ch4P8OpeningPlay")?.addEventListener("click",()=>{if(!ov){finishOpening();return}ov.play().then(()=>{$("#ch4P8OpeningPlay").hidden=true}).catch(openingMediaError)});$("#ch4P8OpeningSkip")?.addEventListener("click",finishOpening);
  const tv=$("#ch4P8TakeoffVideo");tv?.addEventListener("ended",finishTakeoff);tv?.addEventListener("error",finishTakeoff);
  $("#ch4P8MatrixReset")?.addEventListener("click",resetMatrixSubject);$("#ch4P8MatrixConfirm")?.addEventListener("click",confirmMatrix);$("#ch4P8EvidenceContinue")?.addEventListener("click",continueEvidence);$("#ch4P8ReturnTitle")?.addEventListener("click",returnTitle);
  $$('[data-p8-theory]').forEach(b=>b.addEventListener("click",()=>chooseTheory(b.dataset.p8Theory)));$$('[data-p8-bangkok]').forEach(b=>b.addEventListener("click",()=>chooseBangkok(b.dataset.p8Bangkok)));
