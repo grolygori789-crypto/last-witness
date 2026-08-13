@@ -1,10 +1,10 @@
-/* LAST WITNESS - Isolated Chapter IV Developer Phase Navigation 0.20.9-d1
- * Canonical Developer Console jumps for Chapter IV Phases I-VII.
+/* LAST WITNESS - Isolated Chapter IV Developer Phase Navigation 0.21.0-d1
+ * Canonical Developer Console jumps for Chapter IV Phases I-VIII.
  * All Chapter IV test jumps share one modal lifecycle, media boundary and state reset path.
  */
 (function(){
 "use strict";
-const VERSION="0.20.9-d1";
+const VERSION="0.21.0-d1";
 if(window.LastWitnessDeveloperPhaseNavigation?.version===VERSION){
  try{window.LastWitnessDeveloperPhaseNavigation.install?.()}catch(_){}
  return
@@ -24,7 +24,8 @@ const PHASES=[
  {id:"chapter4ArmanEncounter",phase:4,en:"Chapter IV · Phase IV · The Man Behind the Alias",th:"บทที่ IV · เฟส IV · ชายผู้อยู่หลังนามแฝง",api:"LastWitnessChapter4Phase4",screens:["armanVehicleApproach","armanLocationCard","armanStairwell","armanWorkshop","armanReveal","armanPhase4Complete"]},
  {id:"chapter4NorthMarked",phase:5,en:"Chapter IV · Phase V · North Is Marked",th:"บทที่ IV · เฟส V · North ถูกหมายหัว",api:"LastWitnessChapter4Phase5",screens:["arunaEstablishing","arunaPhase5Card","arunaLocationCard","arunaTeamReveal","arunaMainPool","arunaCabana","arunaPoolside","arunaServicePath","arunaBlindCorner","arunaNorthMarked","arunaCombat","arunaPhase5Complete"]},
  {id:"chapter4FalseSuccess",phase:6,en:"Chapter IV · Phase VI · The False Success",th:"บทที่ IV · เฟส VI · ความสำเร็จจอมปลอม",api:"LastWitnessChapter4Phase6",screens:["falseSuccessPhase6Card","falseSuccessHotelCard","falseSuccessBedroom","falseSuccessLounge","falseSuccessTeamCG","falseSuccessAlert","falseSuccessLabCard","falseSuccessLab","falseSuccessPhase6Complete"]},
- {id:"chapter4RelayFacility",phase:7,en:"Chapter IV · Phase VII · Relay Facility Climax",th:"บทที่ IV · เฟส VII · สถานี Relay JKT-R7",api:"LastWitnessChapter4Phase7",screens:["relayFacilityOpening","relayFacilityPhase7Card","relayFacilityLocationCard","relayFacilityExterior","relayFacilityCorridor","relayFacilityCore","relayFacilityClimax","relayFacilityPostClimax","relayFacilityPhase7Complete"]}
+ {id:"chapter4RelayFacility",phase:7,en:"Chapter IV · Phase VII · Relay Facility Climax",th:"บทที่ IV · เฟส VII · สถานี Relay JKT-R7",api:"LastWitnessChapter4Phase7",screens:["relayFacilityOpening","relayFacilityPhase7Card","relayFacilityLocationCard","relayFacilityExterior","relayFacilityCorridor","relayFacilityCore","relayFacilityClimax","relayFacilityPostClimax","relayFacilityPhase7Complete"]},
+ {id:"chapter4ShadowTruth",phase:8,en:"Chapter IV · Phase VIII · Shadow of the Truth",th:"บทที่ IV · เฟส VIII · Shadow of the Truth",api:"LastWitnessChapter4Phase8",screens:["shadowTruthOpening","shadowTruthLocationCard","shadowTruthDebrief","shadowTruthDeparture","shadowTruthTakeoff","shadowTruthComplete"]}
 ];
 
 const CANONICAL_IDS=new Set(PHASES.map(item=>item.id));
@@ -64,7 +65,7 @@ function observeGrid(grid){
 function currentPhase(){
  const s=gs();if(Number(s?.chapter)!==4)return null;
  const chapter4=s?.chapter4||{};
- for(let phase=7;phase>=1;phase--){if(chapter4["phase"+phase]?.started)return phase}
+ for(let phase=8;phase>=1;phase--){if(chapter4["phase"+phase]?.started)return phase}
  const screen=$(".screen.active")?.id||s?.screen||"";
  const matches=PHASES.filter(item=>item.screens.includes(screen));
  return matches.length===1?matches[0].phase:null
@@ -77,7 +78,7 @@ function closeDeveloperUI(){
  ["developerModal","northQaModal","devAccessModal"].forEach(id=>$("#"+id)?.classList.remove("open"))
 }
 function stopCurrentMedia(){
- ["LastWitnessChapter4Phase7","LastWitnessChapter4Phase6","LastWitnessChapter4Phase5","LastWitnessChapter4Phase4","LastWitnessChapter4Phase3","LastWitnessChapter4Phase2","LastWitnessChapter4Phase1"].forEach(name=>{
+ ["LastWitnessChapter4Phase8","LastWitnessChapter4Phase7","LastWitnessChapter4Phase6","LastWitnessChapter4Phase5","LastWitnessChapter4Phase4","LastWitnessChapter4Phase3","LastWitnessChapter4Phase2","LastWitnessChapter4Phase1"].forEach(name=>{
   try{window[name]?.stopAudio?.(true)}catch(error){console.warn("LAST WITNESS Dev navigation media stop skipped",name,error)}
  });
  $$('video').forEach(video=>{try{video.pause();video.currentTime=0}catch(_){}})
@@ -88,14 +89,16 @@ function resetPhaseContainers(item){
  const phase=Number(item.phase)||1;
  /* Preserve the exact reset contract used by the accepted Phase I-VI navigator,
     extending it only to clear Phase VII when a jump starts at/before it. */
- if(phase===1||phase===2){for(let n=1;n<=7;n++)delete s.chapter4["phase"+n]}
- if(phase===3){for(let n=2;n<=7;n++)delete s.chapter4["phase"+n]}
- if(phase===4){for(let n=3;n<=7;n++)delete s.chapter4["phase"+n]}
- if(phase===5){for(let n=4;n<=7;n++)delete s.chapter4["phase"+n]}
- if(phase===6){delete s.chapter4.phase6;delete s.chapter4.phase7}
- if(phase===7){delete s.chapter4.phase7}
- if(phase<=7){
-  ["ch4_p7_facility_lawfully_inspected","ch4_p7_reader_clock_normalized","ch4_p7_r18_correlated","ch4_p7_isolation_order_authorized","ch4_p7_residual_path_observed","ch4_p7_secondary_continuity_supported","ch4_p7_decision_owner_unresolved","ch4_p7_phase8_handoff_ready"].forEach(key=>delete s.flags[key])
+ if(phase===1||phase===2){for(let n=1;n<=8;n++)delete s.chapter4["phase"+n]}
+ if(phase===3){for(let n=2;n<=8;n++)delete s.chapter4["phase"+n]}
+ if(phase===4){for(let n=3;n<=8;n++)delete s.chapter4["phase"+n]}
+ if(phase===5){for(let n=4;n<=8;n++)delete s.chapter4["phase"+n]}
+ if(phase===6){delete s.chapter4.phase6;delete s.chapter4.phase7;delete s.chapter4.phase8}
+ if(phase===7){delete s.chapter4.phase7;delete s.chapter4.phase8}
+ if(phase===8){delete s.chapter4.phase8}
+ if(phase<=8){
+  ["ch4_p7_facility_lawfully_inspected","ch4_p7_reader_clock_normalized","ch4_p7_r18_correlated","ch4_p7_isolation_order_authorized","ch4_p7_residual_path_observed","ch4_p7_secondary_continuity_supported","ch4_p7_decision_owner_unresolved","ch4_p7_phase8_handoff_ready"].forEach(key=>delete s.flags[key]);
+  ["ch4_p8_cooperation_paradox_reconciled","ch4_p8_arman_boundary_preserved","ch4_p8_ika_pre_aster_open","ch4_p8_bangkok_handling_anomaly","ch4_p8_r_lead_preserved","ch4_p8_north_publicly_removed","ch4_p8_registrar_lead_ready","ch4_p8_chapter5_handoff_ready"].forEach(key=>delete s.flags[key])
  }
  if(item.phase===4&&s.flags.developer_character_unlock_all!==true){
   s.characters["Arman Suryadi"]=false;

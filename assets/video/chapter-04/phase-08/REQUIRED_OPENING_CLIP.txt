@@ -1,0 +1,13 @@
+LAST WITNESS · Chapter IV Phase VIII
+
+Place the owner's approved ~9-second Phase VII → Phase VIII continuity clip here with this exact runtime filename:
+
+opening-statement-return.mp4
+
+Story contract:
+- continues directly from Phase VII
+- team follows the officer for post-incident statements
+- they return inside before the Phase VIII title/location cards
+- no added Elena beat or antagonist reveal
+
+The Phase VIII runtime gracefully advances to the title card if this binary is unavailable, but the approved production build should include it.

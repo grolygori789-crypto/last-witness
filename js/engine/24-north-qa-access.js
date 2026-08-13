@@ -1,11 +1,11 @@
-/* LAST WITNESS - Limited North QA Access 0.20.9
+/* LAST WITNESS - Limited North QA Access 0.21.0
  * Session-scoped tester navigation using the existing BUILD x7 access door.
- * Chapter IV Phases I-VII route through the same canonical Developer Phase
+ * Chapter IV Phases I-VIII route through the same canonical Developer Phase
  * Navigation owner so modal lifecycle, media cleanup and state reset stay identical.
  */
 (function(){
 "use strict";
-const VERSION="0.20.9";
+const VERSION="0.21.0";
 if(window.LastWitnessNorthQA?.version===VERSION&&window.LastWitnessNorthQA?.installed){
  try{window.LastWitnessNorthQA.install?.()}catch(_){}
  return
@@ -17,7 +17,7 @@ const runtimeBuild=()=>String(window.LastWitnessRuntimeBuild||window.LastWitness
 const ROLE_KEY="last_witness_north_qa_role";
 const TESTER_ROLE="tester";
 const TESTER_CODE="tester";
-const CHAPTER4_IDS={1:"chapter4Phase1",2:"chapter4Phase2",3:"chapter4PacketProvenance",4:"chapter4ArmanEncounter",5:"chapter4NorthMarked",6:"chapter4FalseSuccess",7:"chapter4RelayFacility"};
+const CHAPTER4_IDS={1:"chapter4Phase1",2:"chapter4Phase2",3:"chapter4PacketProvenance",4:"chapter4ArmanEncounter",5:"chapter4NorthMarked",6:"chapter4FalseSuccess",7:"chapter4RelayFacility",8:"chapter4ShadowTruth"};
 const TITLE_MEDIA_ALLOW=new Set(["themeAudio","rainAudio","clickAudio"]);
 let running=false,installed=false,memoryRole="",titleExitGuard=false,titleGuardEpoch=0,titleGuardTimers=[];
 
@@ -30,7 +30,7 @@ function closeOverlays(){
  ["northQaModal","developerModal","devAccessModal"].forEach(id=>$("#"+id)?.classList.remove("open"))
 }
 function stopCurrentMedia(){
- ["LastWitnessChapter4Phase7","LastWitnessChapter4Phase6","LastWitnessChapter4Phase5","LastWitnessChapter4Phase4","LastWitnessChapter4Phase3","LastWitnessChapter4Phase2","LastWitnessChapter4Phase1","LastWitnessPhase9","LastWitnessPhase8","LastWitnessPhase7","LastWitnessPhase6","LastWitnessPhase5","LastWitnessPhase4","LastWitnessChangi"].forEach(name=>{try{window[name]?.stopAudio?.(true)}catch(_){}});
+ ["LastWitnessChapter4Phase8","LastWitnessChapter4Phase7","LastWitnessChapter4Phase6","LastWitnessChapter4Phase5","LastWitnessChapter4Phase4","LastWitnessChapter4Phase3","LastWitnessChapter4Phase2","LastWitnessChapter4Phase1","LastWitnessPhase9","LastWitnessPhase8","LastWitnessPhase7","LastWitnessPhase6","LastWitnessPhase5","LastWitnessPhase4","LastWitnessChangi"].forEach(name=>{try{window[name]?.stopAudio?.(true)}catch(_){}});
  try{window.LastWitnessChapter3?.stopPhase2Media?.()}catch(_){}
  $$("video").forEach(video=>{try{video.pause();video.currentTime=0}catch(_){}})
 }
@@ -57,11 +57,11 @@ function requireTester(){if(testerAuthorized())return true;status("Tester access
 function waitFor(predicate,timeout=5000){return new Promise(resolve=>{const started=performance.now();const check=()=>{let passed=false;try{passed=Boolean(predicate())}catch(_){}if(passed){resolve(true);return}if(performance.now()-started>=timeout){resolve(false);return}setTimeout(check,45)};check()})}
 function chapter4Phase(){
  const nav=window.LastWitnessDeveloperPhaseNavigation;
- const canonical=Number(nav?.currentPhase?.());if(canonical>=1&&canonical<=7)return canonical;
+ const canonical=Number(nav?.currentPhase?.());if(canonical>=1&&canonical<=8)return canonical;
  const s=gs(),chapter4=s?.chapter4||{};
  /* State is authoritative. Phase II and Phase III intentionally share
     jakartaVerificationLab, so screen-first detection can misidentify Phase III. */
- for(let phase=7;phase>=1;phase--){if(chapter4["phase"+phase]?.started)return phase}
+ for(let phase=8;phase>=1;phase--){if(chapter4["phase"+phase]?.started)return phase}
  const screen=activeScreen(),matches=(nav?.phases||[]).filter(item=>Array.isArray(item.screens)&&item.screens.includes(screen));
  return matches.length===1?(Number(matches[0].phase)||null):null
 }
@@ -80,7 +80,7 @@ async function enterChapter3(){const integration=window.LastWitnessChapter2Integ
 async function enterChapter4(phase){const nav=window.LastWitnessDeveloperPhaseNavigation,id=CHAPTER4_IDS[phase];if(!id||typeof nav?.run!=="function")throw new Error("Chapter IV phase navigation unavailable");return await nav.run(id)}
 async function runNavigation(action){
  if(!requireTester()||running)return false;
- const chapter4Action=/^chapter4phase[1-7]$/.test(action);
+ const chapter4Action=/^chapter4phase[1-8]$/.test(action);
  disarmTitleBoundary();setBusy(true);
  /* Chapter IV uses the canonical navigator, which owns the no-flash modal
     lifecycle and closes QA/Dev overlays only when the target API is ready. */
@@ -117,7 +117,7 @@ function createUi(){
  createStyle();
  if(!$("#northQaModal")){
   const modal=document.createElement("div");modal.id="northQaModal";modal.className="modal";
-  modal.innerHTML=`<div class="modal-card"><div class="north-qa-head"><strong>NORTH QA ACCESS</strong><div class="north-qa-build">BUILD ${runtimeBuild()}</div><div class="north-qa-module">QA MODULE ${VERSION}</div><p class="north-qa-note">Use an Incognito window for isolated testing. QA navigation changes only the current browser test session.</p></div><div class="north-qa-section">TEST NAVIGATION</div><div class="north-qa-grid"><button class="dev-button" type="button" data-north-qa-action="chapter1">CHAPTER I</button><button class="dev-button" type="button" data-north-qa-action="chapter2">CHAPTER II</button><button class="dev-button" type="button" data-north-qa-action="chapter3">CHAPTER III</button><button class="dev-button" type="button" data-north-qa-action="chapter4phase1">CHAPTER IV · PHASE I</button><button class="dev-button" type="button" data-north-qa-action="chapter4phase2">CHAPTER IV · PHASE II</button><button class="dev-button" type="button" data-north-qa-action="chapter4phase3">CHAPTER IV · PHASE III</button><button class="dev-button" type="button" data-north-qa-action="chapter4phase4">CHAPTER IV · PHASE IV</button><button class="dev-button" type="button" data-north-qa-action="chapter4phase5">CHAPTER IV · PHASE V</button><button class="dev-button" type="button" data-north-qa-action="chapter4phase6">CHAPTER IV · PHASE VI</button><button class="dev-button" type="button" data-north-qa-action="chapter4phase7">CHAPTER IV · PHASE VII</button></div><div class="north-qa-section">SESSION</div><div class="north-qa-session"><button class="ghost" type="button" data-north-qa-action="restart">RESTART CURRENT CHAPTER / PHASE</button><button class="ghost" type="button" data-north-qa-action="copy">COPY TEST INFO</button><button class="ghost" type="button" data-north-qa-action="title">RETURN TO TITLE</button><button class="ghost north-qa-lock" type="button" data-north-qa-action="lock">LOCK TESTER ACCESS</button><button class="ghost" type="button" data-north-qa-action="close">CLOSE</button></div><div id="northQaStatus" class="north-qa-status" aria-live="polite"></div></div>`;
+  modal.innerHTML=`<div class="modal-card"><div class="north-qa-head"><strong>NORTH QA ACCESS</strong><div class="north-qa-build">BUILD ${runtimeBuild()}</div><div class="north-qa-module">QA MODULE ${VERSION}</div><p class="north-qa-note">Use an Incognito window for isolated testing. QA navigation changes only the current browser test session.</p></div><div class="north-qa-section">TEST NAVIGATION</div><div class="north-qa-grid"><button class="dev-button" type="button" data-north-qa-action="chapter1">CHAPTER I</button><button class="dev-button" type="button" data-north-qa-action="chapter2">CHAPTER II</button><button class="dev-button" type="button" data-north-qa-action="chapter3">CHAPTER III</button><button class="dev-button" type="button" data-north-qa-action="chapter4phase1">CHAPTER IV · PHASE I</button><button class="dev-button" type="button" data-north-qa-action="chapter4phase2">CHAPTER IV · PHASE II</button><button class="dev-button" type="button" data-north-qa-action="chapter4phase3">CHAPTER IV · PHASE III</button><button class="dev-button" type="button" data-north-qa-action="chapter4phase4">CHAPTER IV · PHASE IV</button><button class="dev-button" type="button" data-north-qa-action="chapter4phase5">CHAPTER IV · PHASE V</button><button class="dev-button" type="button" data-north-qa-action="chapter4phase6">CHAPTER IV · PHASE VI</button><button class="dev-button" type="button" data-north-qa-action="chapter4phase7">CHAPTER IV · PHASE VII</button><button class="dev-button" type="button" data-north-qa-action="chapter4phase8">CHAPTER IV · PHASE VIII</button></div><div class="north-qa-section">SESSION</div><div class="north-qa-session"><button class="ghost" type="button" data-north-qa-action="restart">RESTART CURRENT CHAPTER / PHASE</button><button class="ghost" type="button" data-north-qa-action="copy">COPY TEST INFO</button><button class="ghost" type="button" data-north-qa-action="title">RETURN TO TITLE</button><button class="ghost north-qa-lock" type="button" data-north-qa-action="lock">LOCK TESTER ACCESS</button><button class="ghost" type="button" data-north-qa-action="close">CLOSE</button></div><div id="northQaStatus" class="north-qa-status" aria-live="polite"></div></div>`;
   document.body.appendChild(modal)
  }
  if(!$("#northQaFlash")){const flash=document.createElement("div");flash.id="northQaFlash";flash.className="dev-access-flash";flash.innerHTML="<div><strong>AUTHENTICATION SUCCESSFUL</strong><br><small>NORTH QA ACCESS UNLOCKED</small></div>";document.body.appendChild(flash)}
