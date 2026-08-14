@@ -1,11 +1,11 @@
-/* LAST WITNESS - Chapter IV / Phase VIII: SHADOW OF THE TRUTH 0.22.1
+/* LAST WITNESS - Chapter IV / Phase VIII: SHADOW OF THE TRUTH 0.22.2
  * Direct Phase VII handoff. Shared Chapter IV UI language is preserved.
  * Phase VIII is the CALCULATE bridge into the hidden-case architecture:
  * player-visible story remains shared while hidden case state is derived idempotently.
  */
 (function(){
 "use strict";
-const BUILD="0.22.1";
+const BUILD="0.22.2";
 if(window.LastWitnessChapter4Phase8?.version===BUILD)return;
 
 const BASE="assets/images/chapter-04/phase-08/";
@@ -310,7 +310,56 @@ function startFreshForDev(){inject();stopAudio(true);stopForeignAudio();const s=
 function installHandoff(){if(handoffObserver)return;const check=()=>{if(internalRouting)return;const s=gs();if(!s)return;const complete=$("#relayFacilityPhase7Complete");if((complete?.classList.contains("active")||s.screen==="relayFacilityPhase7Complete")&&(s.flags?.ch4_p7_phase8_handoff_ready||s.chapter4?.phase7?.complete))queueMicrotask(()=>startFromPhase7())};handoffObserver=new MutationObserver(check);handoffObserver.observe(document.body,{subtree:true,attributes:true,attributeFilter:["class"]});document.addEventListener("lw-state-restored",check);setTimeout(check,0)}
 function installSaveBridge(){if(saveBridgeInstalled)return;const baseSnapshot=window.snapshot,baseRestore=window.restore;if(typeof baseSnapshot==="function"){window.snapshot=function(){const data=baseSnapshot.apply(this,arguments);try{data.chapter4=clone(gs()?.chapter4||{});data.endingProfile=clone(gs()?.endingProfile||{});data.hiddenCase=clone(gs()?.hiddenCase||{})}catch(_){}return data};try{if(window.LastWitnessSaveManager)window.LastWitnessSaveManager.snapshot=window.snapshot}catch(_){}}if(typeof baseRestore==="function"){window.restore=function(data){const c4=data?.chapter4?clone(data.chapter4):null,ending=data?.endingProfile?clone(data.endingProfile):null,hidden=data?.hiddenCase?clone(data.hiddenCase):null,result=baseRestore.apply(this,arguments);try{if(c4)gs().chapter4=c4;if(ending)gs().endingProfile=ending;if(hidden)gs().hiddenCase=hidden;recomputeCase();document.dispatchEvent(new CustomEvent("lw-state-restored",{detail:{chapter:gs()?.chapter,screen:gs()?.screen}}));if(Number(gs()?.chapter)===4&&SCREENS.has(gs()?.screen))setTimeout(resumeFromState,150)}catch(_){}return result};try{if(window.LastWitnessSaveManager)window.LastWitnessSaveManager.restore=window.restore}catch(_){}}saveBridgeInstalled=true}
 
-function installOwnerInspector(){const grid=$("#developerModal .dev-grid");if(!grid||$("#ch4P8CaseInspectorButton"))return;const b=document.createElement("button");b.id="ch4P8CaseInspectorButton";b.className="dev-button";b.type="button";b.textContent="HIDDEN CASE INSPECTOR · OWNER";b.addEventListener("click",()=>{let modal=$("#ch4P8CaseInspector");if(!modal){modal=document.createElement("div");modal.id="ch4P8CaseInspector";modal.className="modal ch4-p8-inspector";modal.innerHTML='<div class="modal-card"><div class="eyebrow">OWNER ONLY · READ ONLY</div><h3>HIDDEN CASE INSPECTOR</h3><pre id="ch4P8InspectorText"></pre><button class="ghost" id="ch4P8InspectorClose" type="button">CLOSE</button></div>';document.body.appendChild(modal);$("#ch4P8InspectorClose")?.addEventListener("click",()=>modal.classList.remove("open"))}const d=window.LastWitnessHiddenCase?.snapshot?.();$("#ch4P8InspectorText").textContent=d?JSON.stringify({leader:d.leader,ranked:d.ranked,globals:d.globals,suspects:d.suspects,ledger:d.ledger},null,2):"Hidden case engine unavailable";$("#developerModal")?.classList.remove("open");modal.classList.add("open")});grid.appendChild(b)}
+const OWNER_CASE_SUSPECTS=["kittisak","narin","adrian","arman","ika","elena"];
+const OWNER_CASE_GLOBALS=["evidenceIntegrity","chainOfCustody","witnessProtection","northSafety","publicRecordControl","institutionalTrust","corroborationBreadth","alternativeHypothesesPreserved","physicalTruthIntegrity","chronologyIntegrity","originalRecordIntegrity"];
+const OWNER_CASE_META={
+ kittisak:{name:"KITTISAK SIRIWAT",portraitNames:["Kittisak","Kittisak Siriwat"]},
+ narin:{name:"NARIN",portraitNames:["Narin"]},
+ adrian:{name:"ADRIAN TAN WEI MING",fallback:"assets/images/chapter-03/phase-07/adrian/neutral.png?v=0111",portraitNames:["Adrian Tan","Adrian Tan Wei Ming"]},
+ arman:{name:"ARMAN SURYADI",fallback:"assets/images/chapter-04/phase-04/arman/neutral.png?v=0170",portraitNames:["Arman Suryadi"]},
+ ika:{name:"IKA PRAMESWARI",fallback:"assets/images/chapter-04/phase-05/portraits/ika-0.png?v=0188",portraitNames:["Ika Prameswari"]},
+ elena:{name:"ELENA",portraitNames:["Elena"]}
+};
+const OWNER_CASE_GLOBAL_LABELS={evidenceIntegrity:"EVIDENCE INTEGRITY",chainOfCustody:"CHAIN OF CUSTODY",witnessProtection:"WITNESS PROTECTION",northSafety:"NORTH SAFETY",publicRecordControl:"PUBLIC RECORD CONTROL",institutionalTrust:"INSTITUTIONAL TRUST",corroborationBreadth:"CORROBORATION BREADTH",alternativeHypothesesPreserved:"ALTERNATIVE HYPOTHESES",physicalTruthIntegrity:"PHYSICAL TRUTH INTEGRITY",chronologyIntegrity:"CHRONOLOGY INTEGRITY",originalRecordIntegrity:"ORIGINAL RECORD INTEGRITY"};
+let ownerCaseSandbox=null;
+function ownerCaseLive(){try{return window.LastWitnessHiddenCase?.snapshot?.()||null}catch(error){console.warn("LAST WITNESS owner case snapshot unavailable",error);return null}}
+function ownerCasePortrait(id){
+ const meta=OWNER_CASE_META[id]||{},registry=window.LastWitnessContentRegistry?.characters?.[id];
+ if(typeof registry?.src==="string"&&registry.src)return registry.src;
+ const names=[...(meta.portraitNames||[]),registry?.portrait,registry?.name?.en].filter(Boolean);
+ for(const name of names){try{const src=typeof portrait==="function"?portrait(name,"neutral"):"";if(src)return src}catch(_){}}
+ return meta.fallback||""
+}
+function ownerCaseNewSandbox(){
+ const live=ownerCaseLive();if(!live)return null;
+ ownerCaseSandbox={live,scoreOffsets:Object.fromEntries(OWNER_CASE_SUSPECTS.map(id=>[id,0])),globalOffsets:Object.fromEntries(OWNER_CASE_GLOBALS.map(id=>[id,0]))};return ownerCaseSandbox
+}
+function ownerCaseLiveScore(id){const ranked=ownerCaseSandbox?.live?.ranked||[];return Number(ranked.find(row=>row.id===id)?.value)||0}
+function ownerCaseScore(id){return ownerCaseLiveScore(id)+(Number(ownerCaseSandbox?.scoreOffsets?.[id])||0)}
+function ownerCaseGlobal(id){return (Number(ownerCaseSandbox?.live?.globals?.[id])||0)+(Number(ownerCaseSandbox?.globalOffsets?.[id])||0)}
+function ownerCaseClamp(value,min=-99,max=99){value=Number(value);return Number.isFinite(value)?Math.max(min,Math.min(max,value)):0}
+function ownerCaseRanked(){return OWNER_CASE_SUSPECTS.map(id=>({id,value:ownerCaseScore(id)})).sort((a,b)=>b.value-a.value||OWNER_CASE_SUSPECTS.indexOf(a.id)-OWNER_CASE_SUSPECTS.indexOf(b.id))}
+function ownerCaseScoreFill(value){return Math.max(0,Math.min(100,((Number(value)||0)+10)/25*100))}
+function ownerCaseGlobalFill(value){return Math.max(0,Math.min(100,(Number(value)||0)/20*100))}
+function ownerCaseInitials(id){return (OWNER_CASE_META[id]?.name||id).split(/\s+/).map(part=>part[0]).join("").slice(0,2)}
+function ownerCasePortraitMarkup(id){const src=ownerCasePortrait(id);return `<div class="ch4-p8-suspect-portrait">${src?`<img data-owner-case-portrait="${id}" src="${src}" alt="${OWNER_CASE_META[id]?.name||id}">`:""}<span>${ownerCaseInitials(id)}</span></div>`}
+function renderOwnerInspector(){
+ const modal=$("#ch4P8CaseInspector"),body=$("#ch4P8InspectorBody");if(!modal||!body)return;
+ if(!ownerCaseSandbox&&!ownerCaseNewSandbox()){body.innerHTML='<div class="ch4-p8-status error">Hidden Case engine unavailable.</div>';return}
+ const ranked=ownerCaseRanked(),leader=ranked[0]?.id||"unresolved",liveLeader=ownerCaseSandbox.live?.leader||"unresolved";
+ body.innerHTML=`<div class="ch4-p8-inspector-summary"><div><span>LIVE LEADER</span><strong>${OWNER_CASE_META[liveLeader]?.name||String(liveLeader).toUpperCase()}</strong></div><div class="simulated"><span>SIMULATED LEADER</span><strong>${OWNER_CASE_META[leader]?.name||String(leader).toUpperCase()}</strong></div></div><div class="ch4-p8-inspector-section">SUSPECT ATTRIBUTION · TEMPORARY OFFSETS</div><div class="ch4-p8-suspects">${ranked.map(row=>{const id=row.id,live=ownerCaseLiveScore(id),value=row.value;return `<div class="ch4-p8-suspect-card${id===leader?" is-leader":""}" data-owner-case-suspect="${id}">${ownerCasePortraitMarkup(id)}<div class="ch4-p8-suspect-main"><div class="ch4-p8-suspect-head"><strong>${OWNER_CASE_META[id]?.name||id.toUpperCase()}</strong><small>#${ranked.findIndex(r=>r.id===id)+1}</small></div><div class="ch4-p8-score-bar"><i style="--p8-owner-fill:${ownerCaseScoreFill(value).toFixed(1)}%"></i></div><div class="ch4-p8-score-control"><button type="button" data-owner-case-score="${id}" data-delta="-0.25" aria-label="Decrease ${id}">−</button><input type="number" inputmode="decimal" step="0.25" min="-99" max="99" value="${value.toFixed(2)}" data-owner-case-score-input="${id}" aria-label="Simulated score for ${id}"><button type="button" data-owner-case-score="${id}" data-delta="0.25" aria-label="Increase ${id}">+</button></div><div class="ch4-p8-live-score">LIVE ${live.toFixed(2)} · OFFSET ${(value-live)>=0?"+":""}${(value-live).toFixed(2)}</div></div></div>`}).join("")}</div><div class="ch4-p8-inspector-section">CASE DIMENSIONS · TEMPORARY</div><div class="ch4-p8-global-list">${OWNER_CASE_GLOBALS.map(id=>{const live=Number(ownerCaseSandbox.live?.globals?.[id])||0,value=ownerCaseGlobal(id);return `<div class="ch4-p8-global-row"><div class="ch4-p8-global-copy"><strong>${OWNER_CASE_GLOBAL_LABELS[id]||id}</strong><div class="ch4-p8-score-bar"><i style="--p8-owner-fill:${ownerCaseGlobalFill(value).toFixed(1)}%"></i></div><div class="ch4-p8-live-score">LIVE ${live.toFixed(0)} · OFFSET ${(value-live)>=0?"+":""}${(value-live).toFixed(0)}</div></div><div class="ch4-p8-global-control"><button type="button" data-owner-case-global="${id}" data-delta="-1" aria-label="Decrease ${id}">−</button><input type="number" inputmode="numeric" step="1" min="-99" max="99" value="${value.toFixed(0)}" data-owner-case-global-input="${id}" aria-label="Simulated value for ${id}"><button type="button" data-owner-case-global="${id}" data-delta="1" aria-label="Increase ${id}">+</button></div></div>`}).join("")}</div><div class="ch4-p8-inspector-section">ENDING DRY-RUN INPUT · NOT SAVED</div><div class="ch4-p8-inspector-summary"><div class="simulated"><span>TOP CASE WEIGHT</span><strong>${ranked[0]?.value?.toFixed?.(2)||"0.00"}</strong></div><div><span>CANONICAL STATE</span><strong>UNCHANGED</strong></div></div>`;
+ $$('[data-owner-case-portrait]',body).forEach(img=>img.addEventListener("error",()=>{img.remove()},{once:true}));
+ $$('[data-owner-case-score]',body).forEach(button=>button.addEventListener("click",()=>{const id=button.dataset.ownerCaseScore,delta=Number(button.dataset.delta)||0;ownerCaseSandbox.scoreOffsets[id]=ownerCaseClamp((Number(ownerCaseSandbox.scoreOffsets[id])||0)+delta);renderOwnerInspector()}));
+ $$('[data-owner-case-global]',body).forEach(button=>button.addEventListener("click",()=>{const id=button.dataset.ownerCaseGlobal,delta=Number(button.dataset.delta)||0;ownerCaseSandbox.globalOffsets[id]=ownerCaseClamp((Number(ownerCaseSandbox.globalOffsets[id])||0)+delta);renderOwnerInspector()}));
+ $$('[data-owner-case-score-input]',body).forEach(input=>input.addEventListener("change",()=>{const id=input.dataset.ownerCaseScoreInput,target=ownerCaseClamp(input.value),live=ownerCaseLiveScore(id);ownerCaseSandbox.scoreOffsets[id]=ownerCaseClamp(target-live);renderOwnerInspector()}));
+ $$('[data-owner-case-global-input]',body).forEach(input=>input.addEventListener("change",()=>{const id=input.dataset.ownerCaseGlobalInput,target=ownerCaseClamp(input.value),live=Number(ownerCaseSandbox.live?.globals?.[id])||0;ownerCaseSandbox.globalOffsets[id]=ownerCaseClamp(target-live);renderOwnerInspector()}));
+}
+function closeOwnerInspector(){ownerCaseSandbox=null;$("#ch4P8CaseInspector")?.classList.remove("open")}
+function resetOwnerInspector(){ownerCaseSandbox=null;ownerCaseNewSandbox();renderOwnerInspector()}
+function ensureOwnerInspectorModal(){
+ let modal=$("#ch4P8CaseInspector");if(modal)return modal;modal=document.createElement("div");modal.id="ch4P8CaseInspector";modal.className="modal ch4-p8-inspector";modal.innerHTML='<div class="modal-card"><header class="ch4-p8-inspector-head"><div class="eyebrow">OWNER DEV · SIMULATION SANDBOX</div><h3>HIDDEN CASE INSPECTOR</h3><p class="ch4-p8-inspector-note"><strong>Temporary only.</strong> Adjustments never write to the Hidden Case ledger, Save data or canonical case state.</p></header><div id="ch4P8InspectorBody" class="ch4-p8-inspector-scroll"></div><footer class="ch4-p8-inspector-foot"><button class="ghost ch4-p8-inspector-reset" id="ch4P8InspectorReset" type="button">RESET TO LIVE STATE</button><button class="ghost" id="ch4P8InspectorClose" type="button">CLOSE</button></footer></div>';document.body.appendChild(modal);$("#ch4P8InspectorReset")?.addEventListener("click",resetOwnerInspector);$("#ch4P8InspectorClose")?.addEventListener("click",closeOwnerInspector);modal.addEventListener("click",event=>{if(event.target===modal)closeOwnerInspector()});return modal
+}
+function installOwnerInspector(){const grid=$("#developerModal .dev-grid");if(!grid||$("#ch4P8CaseInspectorButton"))return;const b=document.createElement("button");b.id="ch4P8CaseInspectorButton";b.className="dev-button";b.type="button";b.textContent="HIDDEN CASE INSPECTOR · OWNER";b.addEventListener("click",()=>{const modal=ensureOwnerInspectorModal();ownerCaseNewSandbox();renderOwnerInspector();$("#developerModal")?.classList.remove("open");modal.classList.add("open")});grid.appendChild(b)}
 function install(){inject();registerContent();installSaveBridge();installHandoff();installAudioLifecycle();recomputeCase();updateLanguage();return true}
 window.LastWitnessChapter4Phase8={version:BUILD,installed:true,install,startFromPhase7,startFreshForDev,resumeFromState,stopAudio,phaseState,screens:[...SCREENS]};
 if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",install,{once:true});else install();
