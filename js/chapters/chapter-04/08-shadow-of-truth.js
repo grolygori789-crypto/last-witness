@@ -1,11 +1,11 @@
-/* LAST WITNESS - Chapter IV / Phase VIII: SHADOW OF THE TRUTH 0.21.7
+/* LAST WITNESS - Chapter IV / Phase VIII: SHADOW OF THE TRUTH 0.21.8
  * Direct Phase VII handoff. Shared Chapter IV UI language is preserved.
  * Phase VIII is the CALCULATE bridge into the hidden-case architecture:
  * player-visible story remains shared while hidden case state is derived idempotently.
  */
 (function(){
 "use strict";
-const BUILD="0.21.7";
+const BUILD="0.21.8";
 if(window.LastWitnessChapter4Phase8?.version===BUILD)return;
 
 const BASE="assets/images/chapter-04/phase-08/";
@@ -91,7 +91,7 @@ function scene(id,image,label,extra=""){return `<section id="${id}" class="scree
 function inject(){
  if($("#"+OPENING))return;const game=$("#game");if(!game)return;
  game.insertAdjacentHTML("beforeend",`
- <section id="${OPENING}" class="screen ch4-p5-video"><video id="ch4P8OpeningVideo" playsinline webkit-playsinline preload="auto" poster="${BASE}opening-poster.jpg?v=0217"><source src="${VIDEO}opening-statement-return.mp4?v=0217" type="video/mp4"></video><div class="ch4-p5-shade"></div><button id="ch4P8OpeningPlay" class="primary ch4-p5-video-play" type="button" hidden></button><button id="ch4P8OpeningSkip" class="ghost ch4-p5-skip" type="button"></button></section>
+ <section id="${OPENING}" class="screen ch4-p5-video"><video id="ch4P8OpeningVideo" playsinline webkit-playsinline preload="auto" poster="${BASE}opening-poster.jpg?v=0218"><source src="${VIDEO}opening-statement-return.mp4?v=0218" type="video/mp4"></video><div class="ch4-p5-shade"></div><button id="ch4P8OpeningPlay" class="primary ch4-p5-video-play" type="button" hidden></button><button id="ch4P8OpeningSkip" class="ghost ch4-p5-skip" type="button"></button></section>
  <section id="${LOCATION}" class="screen ch4-p4-location ch4-p8-card"><div id="ch4P8LocationCardInner" class="ch4-p4-location-card ch4-p8-card-inner"><div id="ch4P8LocationEye" class="eyebrow"></div><div id="ch4P8LocationCity" class="ch4-p4-location-city"></div><h2 id="ch4P8LocationName"></h2><div class="ch4-p4-location-rule"></div><p id="ch4P8LocationBody"></p></div></section>
  ${scene(DEBRIEF,BASE+"secure-debrief-room.png?v=0210","ch4P8DebriefLocation","ch4-p8-debrief")}
  ${scene(DEPARTURE,BASE+"jakarta-departure-corridor.png?v=0210","ch4P8DepartureLocation","ch4-p8-departure")}
