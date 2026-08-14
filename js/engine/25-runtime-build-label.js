@@ -1,6 +1,5 @@
 /* LAST WITNESS - Authoritative Runtime Build Label 0.22.0
- * Keeps Settings, Owner Developer, North QA and Save Manager metadata on the
- * current Runtime build while historical phase modules retain their versions.
+ * STARTUP RECOVERY 0220R2. Safe implementation; no Phase VIII repair loader.
  */
 (function(){
 "use strict";
