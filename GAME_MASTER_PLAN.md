@@ -2,22 +2,23 @@
 
 > **CANONICAL MASTER REFERENCE / ZERO-QUESTION ROOM HANDOFF**
 >
-> **Revision:** 2026-08-14 18:22 ICT  
+> **Revision:** 2026-08-15 01:55 ICT  
 > **Game:** LAST WITNESS  
 > **Studio:** BENEDICT INTERACTIVE  
 > **Repository:** `grolygori789-crypto/last-witness`  
 > **Production/default branch:** `production-rebuild`  
-> **Production HEAD observed before this documentation handoff:** `a3490e895a6147e2e675b5c392d3f5fb317d0977`  
-> **HEAD message:** `Fixed cached startup repaire loader`  
-> **Authoritative Runtime build:** `0.22.0`  
-> **Current playable boundary:** `CHAPTER IV · PHASE VIII · SHADOW OF THE TRUTH`  
+> **Production HEAD observed before this documentation update:** `42a677a4e84132bb19d4f58dd5b1d8cd607e46c3`  
+> **HEAD message:** `Fix P8 portraits and owner case inspector`  
+> **Authoritative Runtime build:** `0.22.2`  
+> **Current accepted playable boundary:** `CHAPTER IV COMPLETE · OWNER CURRENT-PASS ACCEPTED`  
 > **Chapter IV:** exactly 8 phases; no Phase IX without explicit owner approval  
-> **Phase VIII:** implemented/deployed; final owner real-device acceptance of recovered/polished 0.22.0 remains the immediate gate  
-> **Next story objective after acceptance:** `CHAPTER V · PHASE I · RETURN TO BANGKOK`  
-> **Hidden Case Architecture:** implemented base engine, module `0.21.0`, active from Phase VIII  
+> **Chapters I–IV status:** owner-reviewed by Dev Mode Jump / real-device spot checks and accepted for current continuation; later reproducible defects may still be repaired  
+> **Next story objective:** `CHAPTER V · PHASE I · RETURN TO BANGKOK`  
+> **Hidden Case Architecture:** base engine module `0.21.0`, active from Phase VIII  
+> **Owner Hidden Case Inspector:** visual, temporary simulation sandbox in Runtime `0.22.2`; synthetic adjustments never write canonical case state  
 > **Adaptive model:** `P8 CALCULATE → Ch V INFLUENCE → Ch VI DIVERGE → Ch VII RESOLVE`
 
-This file supersedes all older Master Plan revisions. It preserves the locked long-game mystery architecture while updating the actual Production status and all engineering/QA lessons established during Phase VIII development.
+This file supersedes all older Master Plan revisions. It preserves the locked long-game mystery architecture while updating actual Production status after the owner's current-pass review of Chapters I–IV.
 
 A documentation-only change to this file does **not** require a Runtime build increment.
 
@@ -37,6 +38,24 @@ When sources conflict, use this order:
 
 A real-device result overrides local confidence, mock tests, syntax checks and assumptions.
 
+## Current acceptance interpretation
+
+The owner has now reviewed Chapters I–IV at a practical continuation level using Owner Developer Mode jumps and real-device spot checks and considers the current state acceptable to move forward.
+
+This means:
+
+- Chapters I–IV are **accepted for current continuation**
+- Chapter IV Phase VIII is **owner-accepted for the current production pass**
+- Chapter V may begin
+- accepted systems should not be reopened for optional polishing without a real reason
+- later reproducible defects are still valid defects and may be repaired surgically
+- this acceptance is **not** a claim that every path, viewport, Save/Load permutation or full sequential playthrough has been exhaustively tested
+- later fixes do not invalidate the current acceptance unless they reveal a genuine regression or canonical conflict
+
+Use the rule:
+
+> **Accepted for continuation does not mean immune from future defect repair.**
+
 ## GitHub write rule
 
 Do not write GitHub without explicit authorization in the current turn. Normal workflow is:
@@ -49,13 +68,15 @@ Commit messages must be **50 characters or fewer**.
 
 ## Do not ask the owner to repeat locked decisions
 
-A new room must not ask again for project identity, chapter plans, hidden-case rules, Elena canon, UI reuse rules, Build linkage, Dev/North QA separation, Phase VIII structure or GitHub policy when those answers exist here or in current Production.
+A new room must not ask again for project identity, chapter plans, hidden-case rules, Elena canon, UI reuse rules, Build linkage, Dev/North QA separation, Phase VIII structure, Chapters I–IV acceptance status or GitHub policy when those answers exist here or in current Production.
 
 Ask only when a genuinely new owner decision is required.
 
 ## QA honesty
 
-Never call a patch Android-tested unless a physical Android device was used. Never call Node syntax, static checks, jsdom, mocked media or simulated playback “real-device E2E.” State exactly what ran. Owner Android Chrome is final acceptance truth.
+Never call a patch Android-tested unless a physical Android device was used. Never call Node syntax, static checks, jsdom, mocked media or simulated playback “real-device E2E.” State exactly what ran.
+
+Owner Android Chrome is final acceptance truth.
 
 When the owner asks for a fix and file: diagnose, fix, test, package, then explain. Do not make the owner wait through a long diagnostic monologue without a deliverable.
 
@@ -87,28 +108,26 @@ Before creating a normal scene, phase card, chapter card, location/time card, fl
 
 Examples:
 
-- normal Chapter IV scene → begin from proven Phase V / Phase VII shell
+- normal Chapter IV/V scene → begin from proven Phase V / Phase VII shell
 - flight → begin from proven Singapore → Jakarta flight structure
 - location/time card → begin from accepted location card
 - completion card → begin from accepted completion card
 
 ## Phase/chapter card symbol prohibition
 
-A repeated defect was adding square symbols, abstract boxed icons, novelty sigils or decorative symbol tiles that did not belong to LAST WITNESS.
+Do not invent square symbols, abstract icon blocks, novelty sigils or decorative symbol panels unless owner explicitly requests them.
 
-From now on:
+Use the closest accepted card as template. Preserve typography, spacing, rule lines, timing and transition behavior. Replace only chapter/phase/title/location/date/time/copy required by the new content.
 
-- **do not invent square symbols, abstract icon blocks, novelty sigils or decorative symbol panels unless owner explicitly requests them**
-- use the closest accepted card as template
-- preserve typography, spacing, rule lines, timing and transition behavior
-- replace only chapter/phase/title/location/date/time/copy required by the new content
-- do not add a phase-title card when accepted continuity is direct cinematic → location card
+Do not add a phase-title card when accepted continuity is direct cinematic → location card.
 
 A card is a continuity device, not an art-style experiment.
 
 ## Minigame exception
 
-Minigames may be bespoke, premium and highly professional. They must still clearly belong to LAST WITNESS through compatible palette, typography, modal language, safe-area behavior, mobile interaction and narrative tone. A minigame may be special; it may not look like a different game.
+Minigames may be bespoke, premium and highly professional. They must still clearly belong to LAST WITNESS through compatible palette, typography, modal language, safe-area behavior, mobile interaction and narrative tone.
+
+A minigame may be special; it may not look like a different game.
 
 ## Proven Chapter IV scene primitives
 
@@ -135,39 +154,50 @@ Progress reaches `100%` only at genuine completion.
 
 # 3. RUNTIME BUILD LINKAGE — EVERY RUNTIME RELEASE
 
-Current base build: **0.22.0**.
+Current base build: **0.22.2**.
 
 All player-facing, owner-facing, QA-facing and save-facing Runtime build identities must resolve to the same base build.
 
 ## Required endpoints when Runtime build changes
 
 ### `index.html`
+
 - Settings fallback `LAST WITNESS · BUILD X.Y.Z`
 - cache key for `js/engine/09-defect-hotfix.js`
 - any changed direct loader references
 
-Current index bootstrap generation: `0220r2`.
+Current index bootstrap generation: `0222r1`.
 
 ### `js/engine/09-defect-hotfix.js`
+
 Synchronize:
+
 - header build
 - `window.LastWitnessRuntimeBuild`
 - changed dynamic CSS/JS cache keys
-- expected P8 version when P8 changes
-- Dev cache / expected version
+- expected Phase VIII version when Phase VIII changes
+- Developer cache / expected version
 - North QA cache / expected version
 - Runtime Build Label cache / expected version
 
-Current bootstrap is Startup Recovery `0220R2`, Runtime `0.22.0`.
+Current bootstrap is Startup Recovery `0222R1`, Runtime `0.22.2`.
 
 ### `js/engine/18-developer-phase-navigation.js`
-Current `0.22.0-d1`. Suffix may differ, but base build must match current Runtime.
+
+Current `0.22.2-d1`.
+
+Suffix may differ, but base build must match current Runtime.
 
 ### `js/engine/24-north-qa-access.js`
-Current `0.22.0`.
+
+Current `0.22.2`.
 
 ### `js/engine/25-runtime-build-label.js`
-Current `0.22.0`. It synchronizes:
+
+Current `0.22.2`.
+
+It synchronizes:
+
 - `window.LastWitnessRuntimeBuild`
 - `document.documentElement.dataset.runtimeBuild`
 - Settings build
@@ -176,16 +206,22 @@ Current `0.22.0`. It synchronizes:
 - `LastWitnessSaveManager.version` where available
 
 ### changed phase modules
+
 If a phase JS/CSS changes, update its own version/cache and bootstrap expectations consistently.
 
-Current Phase VIII JS/CSS: `0.22.0`.
+Current Phase VIII JS/CSS generation: `0.22.2` / `v=0222`.
 
 ## Stable independent modules
 
-An unchanged module does not need a fake internal increment merely because Runtime changes. Example Hidden Case engine remains `0.21.0`. But no unchanged module may cause a visible Runtime build mismatch.
+An unchanged module does not need a fake internal increment merely because Runtime changes.
+
+Hidden Case engine remains `0.21.0`.
+
+No unchanged module may cause a visible Runtime build mismatch.
 
 ## Release artifact naming
-Use same base build in ZIP, QA report, manifest, checksum filename, upload instructions and release notes.
+
+Use the same base build in ZIP, QA report, manifest, checksum filename, upload instructions and release notes.
 
 ## Mandatory build release gate
 
@@ -211,17 +247,27 @@ Master Plan-only changes do not bump Runtime.
 
 # 4. STARTUP / LOADER SAFETY
 
-Current safe baseline before this document:
+Current Production runtime baseline observed before this documentation update:
+
+`42a677a4e84132bb19d4f58dd5b1d8cd607e46c3` — `Fix P8 portraits and owner case inspector`
+
+Historical safe startup recovery baseline:
 
 `a3490e895a6147e2e675b5c392d3f5fb317d0977` — `Fixed cached startup repaire loader`
 
-Current bootstrap is Startup Recovery `0220R2`.
+Current bootstrap generation is Startup Recovery `0222R1`.
 
-A temporary 0.22.0 Phase VIII repair loader was added and later reverted because it broke startup. **Do not resurrect it.**
+A temporary Phase VIII repair loader was previously added and later reverted because it broke startup.
 
-A prior broad MutationObserver watching/changing classes under `#game` caused startup/UI lock behavior. **Do not recreate this architecture.** Fix the source DOM/CSS/JS directly.
+**Do not resurrect it.**
 
-Every release must verify before deeper phase QA:
+A prior broad MutationObserver watching/changing classes under `#game` caused startup/UI lock behavior.
+
+**Do not recreate this architecture.**
+
+Fix source DOM/CSS/JS directly.
+
+Every Runtime release must verify before deeper phase QA:
 
 - Splash → Title
 - New Game
@@ -237,7 +283,9 @@ Every release must verify before deeper phase QA:
 
 # 5. SAVE / LOAD / STATE
 
-Do not create a parallel Save system. Preserve existing manual Save, Load, autosave and checkpoints.
+Do not create a parallel Save system.
+
+Preserve existing manual Save, Load, autosave and checkpoints.
 
 Persist as applicable:
 
@@ -264,7 +312,11 @@ Restore order:
 6. scene resume
 7. correct scene audio
 
-Hidden scoring must be idempotent across load, re-entry, backgrounding, restart and evidence revisit. Restart Current must not stack score. A changed replayed choice replaces the old contribution.
+Hidden scoring must be idempotent across load, re-entry, backgrounding, restart and evidence revisit.
+
+Restart Current must not stack score.
+
+A changed replayed choice replaces the old contribution.
 
 Unknown legacy choice = no invented score.
 
@@ -276,11 +328,15 @@ No accidental dead air when a continuous score bed is intended.
 
 Dialogue, evidence, choices and minigames should normally **duck** music rather than hard-stop it. Use smooth fades and restore automatically.
 
-When browser/app is hidden: pause phase media cleanly. On foreground return: resume appropriate scene audio automatically. Do not require an unrelated extra tap.
+When browser/app is hidden: pause phase media cleanly.
+
+On foreground return: resume appropriate scene audio automatically. Do not require an unrelated extra tap.
 
 Return to Title is a hard boundary: phase-specific music/ambience stops immediately and Title audio restores.
 
-Music must fit LAST WITNESS, not merely loop correctly. Avoid harsh airport noise, intrusive announcements or high-frequency ambience that competes with reading. Reuse a proven LAST WITNESS score when it fits better.
+Music must fit LAST WITNESS, not merely loop correctly.
+
+Avoid harsh airport noise, intrusive announcements or high-frequency ambience that competes with reading.
 
 ---
 
@@ -307,6 +363,10 @@ Repair order:
 5. preserve full important head/face
 6. if source cannot frame attractively, use another already-approved expression/portrait
 
+The Phase VIII Maya/Cheryl edge defect was repaired through scoped scale/crop behavior in Runtime `0.22.2`.
+
+Do not solve a local portrait defect by changing global portrait geometry unless the defect is proven global.
+
 Keep established Chapter IV dialogue shell unless owner asks for redesign.
 
 ---
@@ -314,6 +374,10 @@ Keep established Chapter IV dialogue shell unless owner asks for redesign.
 # 8. OWNER DEVELOPER MODE
 
 Owner Developer Mode is unrestricted owner test access and remains distinct from North QA.
+
+The owner has used Dev Mode Jump as the current practical review method for Chapters I–IV and considers those chapters acceptable for continuation as of this revision.
+
+That acceptance does not convert Dev Jump into exhaustive full-play E2E. Future reproducible defects remain repairable.
 
 Current Chapter IV list must contain exactly these eight canonical entries:
 
@@ -326,7 +390,9 @@ Current Chapter IV list must contain exactly these eight canonical entries:
 7. RELAY FACILITY CLIMAX
 8. SHADOW OF THE TRUTH
 
-No Phase IX without explicit owner approval. `Token Verification` is an internal Phase II checkpoint, never an extra phase button.
+No Phase IX without explicit owner approval.
+
+`Token Verification` is an internal Phase II checkpoint, never an extra phase button.
 
 A Dev jump must close Dev UI, stop foreign media, clear incompatible overlays, prime only canonical prerequisites, avoid unrelated chapter flashes and enter the requested phase deterministically.
 
@@ -347,13 +413,42 @@ Only Owner Developer Mode may expose Hidden Case internals:
 - legacy backfill ledger
 - deterministic ending dry-run
 
-Owner Inspector should be read-only unless a clearly labeled synthetic test action is deliberately invoked.
+## Owner Hidden Case Inspector — Runtime 0.22.2
+
+The old raw JSON/code-dump presentation is replaced by an Owner-only visual simulation sandbox.
+
+The inspector may display:
+
+- suspect portrait or approved fallback presentation
+- suspect name
+- live score/status
+- visual score bar
+- synthetic `− / +` adjustment controls
+- editable synthetic values where implemented
+- global case dimensions
+- live leader
+- simulated leader
+- reset-to-live-state control
+
+Synthetic adjustment rules are non-negotiable:
+
+- temporary only
+- no write to Hidden Case ledger
+- no write to Save data
+- no write to canonical case state
+- no autosave
+- no permanent route mutation
+- closing/resetting discards synthetic overrides
+
+This sandbox exists to accelerate Alternate Ending / eligibility testing without contaminating the real investigation state.
 
 ---
 
 # 9. NORTH QA
 
-North QA is limited blind-tester access. Current module: `0.22.0`.
+North QA is limited blind-tester access.
+
+Current module: `0.22.2`.
 
 It shares canonical Developer Phase Navigation for Chapter IV entry so reset/media/state behavior remains aligned.
 
@@ -382,6 +477,7 @@ North QA must **never** expose:
 - choice ledger
 - ending simulator
 - owner-only mystery diagnostics
+- Owner Hidden Case simulation controls
 
 Blind-test integrity is a product requirement.
 
@@ -391,7 +487,9 @@ Blind-test integrity is a product requirement.
 
 LAST WITNESS does **not** end by asking the player to choose the killer.
 
-Ordinary investigative decisions across Chapters I–VII quietly build legal/evidentiary case state. At the end, the backend reveals which case the entire investigation became capable of proving.
+Ordinary investigative decisions across Chapters I–VII quietly build legal/evidentiary case state.
+
+At the end, the backend reveals which case the entire investigation became capable of proving.
 
 > **The game does not ask who you think the killer is. It reveals which case your entire investigation became capable of proving.**
 
@@ -423,7 +521,7 @@ Canonical principal profiles:
 
 Somchai is high-suspicion conditional/support/cleaner route unless a future owner decision promotes him to a standalone false-conviction principal.
 
-Case dimensions:
+Case dimensions include:
 
 - attribution
 - motive
@@ -436,7 +534,7 @@ Case dimensions:
 - institutional support/prosecutability
 - contradiction pressure
 
-Global integrity concepts:
+Global integrity concepts include:
 
 - evidenceIntegrity
 - chainOfCustody
@@ -461,7 +559,7 @@ Visible relationship system remains frozen/separate:
 - Suspicion
 - Character Journal presentation
 
-No final killer-selection UI, visible suspect score, visible route percentage, visible ending meter or visible Elena-unlock meter.
+No final killer-selection UI, visible suspect score, visible route percentage, visible ending meter or visible Elena-unlock meter in normal gameplay.
 
 ---
 
@@ -491,21 +589,19 @@ Blind-play target:
 
 Practical target: roughly under 10% first-play suspicion for most blind testers until late Chapter VII.
 
-Elena is a fictional cognitive outlier far beyond ordinary genius calibration. Writer-room shorthand may imagine a scale vastly beyond Einstein and planning deeper than Moriarty, but those comparisons are not player-facing claims.
-
-Her major operations should later be auditable across:
-
-1. physical event
-2. record produced
-3. investigator interpretation
-4. suspect self-protective reaction
-5. Benedict belief update
-6. institutional/legal response
-7. fallback if expected branch fails
-
 Visible Elena remains ordinary, kind, credible, socially normal, harmlessly fallible, sometimes irrelevant and never villain-coded.
 
-Prohibited Elena tells include mysterious smiles, villain pauses, “she knows too much” framing, suspicious perfect intuition, conspicuous alibis, unique technical signature, secret operator calls, Elena-named pre-reveal phase and gendered unknown-principal clues.
+Prohibited Elena tells include:
+
+- mysterious smiles
+- villain pauses
+- “she knows too much” framing
+- suspicious perfect intuition
+- conspicuous alibis
+- unique technical signature
+- secret operator calls
+- Elena-named pre-reveal phase
+- gendered unknown-principal clues
 
 ---
 
@@ -521,11 +617,23 @@ Mandatory false-conviction-capable principals:
 
 Somchai remains mandatory high-suspicion cleaner/accomplice/conditional support.
 
-Each false principal must possess real serious wrongdoing, a real secret, plausible murder motive, means, opportunity/delegation, authentic obstruction, several evidence classes, reason for incomplete cooperation and a late contradiction.
+Each false principal must possess:
+
+- real serious wrongdoing
+- a real secret
+- plausible murder motive
+- means
+- opportunity/delegation
+- authentic obstruction
+- several evidence classes
+- reason for incomplete cooperation
+- a late contradiction
 
 The player's error is **causal attribution**, not fact recognition.
 
-The same true event can support different causal stories. No single clue uniquely proves Elena before late Chapter VII.
+The same true event can support different causal stories.
+
+No single clue uniquely proves Elena before late Chapter VII.
 
 Core technical principle:
 
@@ -535,11 +643,13 @@ Temporary Operational Profile `18-07` is a profile, not a person.
 
 Historical responsibility layers:
 
-- Adrian = lawful architecture
-- Arman = adapted wrapper / blind broker
-- Narin = trusted Bangkok deployment
-- Ika = later field/recovery layer + unresolved pre-Aster history
-- Elena = victim selection, murder decision, physical murders, timing/discovery/cleanup priority
+- Adrian = lawful architecture + concealed continuity liability
+- Arman = adapted wrapper / blind broker + deeper behavior/payment/ledger metadata
+- Narin = trusted Bangkok deployment + real wrongdoing/concealment/motive
+- Ika = later Aster field/recovery layer + unresolved pre-Aster history
+- Kittisak = off-book institutional continuity/containment
+- Somchai = off-book physical transfer/protected-source handling
+- Elena = murder decision, victim selection, physical murders, timing/discovery/cleanup priority
 
 Core Elena method:
 
@@ -613,7 +723,15 @@ Benedict:
 
 Do not over-explain afterward.
 
-Adrian disclosed authentic lawful architecture but not full continuity liability. Arman disclosed an authentic package but protected deeper broker metadata. Ika's later Aster timeline is true but not her complete earlier biography. Kittisak genuinely wants the murder solved while protecting an off-book containment program. Somchai cooperates until protected-source/off-book handling is threatened.
+Adrian disclosed authentic lawful architecture but not full continuity liability.
+
+Arman disclosed an authentic package but protected deeper broker metadata.
+
+Ika's later Aster timeline is true but not her complete earlier biography.
+
+Kittisak genuinely wants the murder solved while protecting an off-book containment program.
+
+Somchai cooperates until protected-source/off-book handling is threatened.
 
 ---
 
@@ -631,7 +749,9 @@ Role:
 
 Rin enters active mystery in Chapter V.
 
-She is not a magical exposition witness. She retained/copies material she should not possess, may have made an out-of-procedure credential action, hid for self-protection, distrusts institutions and withholds part of the Last Record until custody is trusted.
+She is not a magical exposition witness.
+
+She retained/copied material she should not possess, may have made an out-of-procedure credential action, hid for self-protection, distrusts institutions and withholds part of the Last Record until custody is trusted.
 
 ---
 
@@ -648,7 +768,16 @@ Exactly eight phases:
 7. RELAY FACILITY CLIMAX
 8. SHADOW OF THE TRUTH
 
-P1–P7 are maintenance locked except reproducible defects, integration blockers or backward-compatible persistence requirements.
+**Chapter IV is now owner-accepted for current continuation.**
+
+P1–P8 are maintenance locked except:
+
+- reproducible defects
+- integration blockers
+- backward-compatible persistence requirements
+- owner-requested changes
+
+Do not reopen accepted scenes merely to polish them.
 
 ## Phase VII locked handoff
 
@@ -693,16 +822,18 @@ Phase VII's reuse of established Phase V primitives is the engineering model for
 
 Phase VIII closes Jakarta operationally but does not solve the mastermind.
 
-It must consolidate JKT-R7 proof, expose Cooperation Paradox, preserve North public false removal/secret survival, keep Decision Owner unresolved, establish `R.` as next lead, strengthen non-Elena theories, seed Kittisak suspicion, close Indonesia lawfully and end before Bangkok arrival.
+It consolidates JKT-R7 proof, exposes Cooperation Paradox, preserves North public false removal/secret survival, keeps Decision Owner unresolved, establishes `R.` as next lead, strengthens non-Elena theories, seeds Kittisak suspicion, closes Indonesia lawfully and ends before Bangkok arrival.
 
-Current Runtime Phase VIII: `0.22.0`.
+Current Runtime Phase VIII: `0.22.2`.
 
 Files:
 
 - `js/chapters/chapter-04/08-shadow-of-truth.js`
 - `css/chapter-04-phase-08.css`
 
-Final owner acceptance of the recovered/polished 0.22.0 remains pending.
+**Owner current-pass acceptance is complete.**
+
+Later reproducible defects may still be repaired surgically.
 
 ## Opening
 
@@ -728,7 +859,19 @@ Approved image:
 
 `assets/images/chapter-04/phase-08/secure-debrief-room.png`
 
-Shows Benedict, North, Maya, Cheryl, and Farid remote on wall screen. Cheryl physically Jakarta; Farid remote Singapore. Do not replace with a darker alternative or crush owner-approved brightness with overlay.
+Shows Benedict, North, Maya, Cheryl, and Farid remote on wall screen.
+
+Cheryl is physically in Jakarta. Farid is remote in Singapore.
+
+### Secure Debrief composition freeze
+
+The current composition is accepted even though the objective overlay partially obscures Farid's face on the wall display.
+
+Do **not** vertically shift/reframe the entire scene merely to reveal more of Farid unless a later real-device defect demonstrates a genuine readability problem.
+
+Farid's remote presence remains understandable from the monitor composition and visible analyst labeling.
+
+Do not replace this image with a darker alternative or crush owner-approved brightness with overlay.
 
 ## Disclosure Matrix
 
@@ -748,24 +891,29 @@ Slots:
 Canonical answers:
 
 ### Adrian
+
 - Lawful continuity architecture
 - base architecture authentic/authorized
 - does not prove who used continuity outside documented deployment boundary
 - next: implementation / wrapper layer
 
 ### Arman
+
 - execution package / wrapper cache
 - delivery package authentic
 - does not prove who sat behind blind broker / deeper ledger
 - next: field deployment layer
 
 ### Ika
+
 - Aster employment timeline
 - Aster recruited her after the murders
 - does not prove operational history before Aster
 - next: earlier aliases / travel history
 
-Interaction is tap-to-place, mobile-first, safe-area aware. Footer/buttons must never fall outside viewport.
+Interaction is tap-to-place, mobile-first and safe-area aware.
+
+Footer/buttons must never fall outside viewport.
 
 Hidden method choice after Matrix:
 
@@ -802,7 +950,11 @@ It can be read as careful institutional protection or evidence control using cor
 
 ## R. lead
 
-Cross-map Room 1807, Profile 18-07, pier contact and registrar activity. `R.` becomes next lawful lead. Do not reveal Rin by name in Chapter IV.
+Cross-map Room 1807, Profile 18-07, pier contact and registrar activity.
+
+`R.` becomes next lawful lead.
+
+Do not reveal Rin by name in Chapter IV.
 
 ## Departure
 
@@ -833,19 +985,19 @@ Benedict:
 
 Gender-neutral unknown-principal language is mandatory.
 
-## Takeoff structure — copy Singapore → Jakarta
+The NORTH · REMOVED information card must remain readable and player-acknowledged rather than disappearing before the player can absorb it.
 
-Owner directive:
+## Takeoff structure — Singapore → Jakarta continuity
 
-**Jakarta → Bangkok must reuse the proven Singapore → Jakarta flight structure.**
+Jakarta → Bangkok reuses the proven Singapore → Jakarta flight language.
 
 Sequence:
 
-1. show takeoff video cleanly
-2. do not cover airplane with route card during most of video
-3. preserve proven header/skip behavior
-4. route card appears after natural end or intentional skip
-5. route card shows Jakarta → Bangkok
+1. reach `100%` before boarding/takeoff
+2. show takeoff video without phase progress UI
+3. preserve proven header/Skip behavior
+4. route card appears after natural end or intentional Skip
+5. route card shows Jakarta → Bangkok with premium mobile hierarchy
 6. Continue → Chapter IV Complete
 
 Current route:
@@ -862,23 +1014,26 @@ Video:
 
 Bangkok arrival belongs to Chapter V Phase I only.
 
-## P8 music
+## P8 music — dedicated Runtime 0.22.1+ mix
 
-Current 0.22.0 strategy deliberately reuses proven LAST WITNESS music rather than terminal noise.
+Opening/Location/Debrief uses the dedicated Investigation C4P8 score.
 
-Opening/Location/Debrief:
+Departure/Takeoff/Complete uses the dedicated Departure C4P8 score.
 
-`assets/audio/chapter-04/phase-05/music/phase-score-loop.*`
+Canonical assets:
 
-Departure/Takeoff/Complete:
+- `assets/audio/chapter-04/phase-08/investigation-c4p8.mp3`
+- `assets/audio/chapter-04/phase-08/departure-c4p8.mp3`
 
-`assets/audio/chapter-04/phase-02/jakarta-arrival-loop.*`
+Runtime balances their differing source loudness through controlled gain rather than flattening the masters.
 
-No normal airport-terminal ambience in current Phase VIII mix.
+Dialogue, Matrix, evidence and choices duck the score rather than hard-stop it.
 
-Travel music should continue Departure → takeoff → route card → Chapter IV Complete, then stop immediately on Return to Title.
+Departure score continues through Takeoff and Chapter IV Complete.
 
-## Portrait acceptance target
+Return to Title stops Phase VIII audio immediately and restores Title audio.
+
+## Portrait acceptance
 
 Historical defects:
 
@@ -886,12 +1041,23 @@ Historical defects:
 - Cheryl right white edge
 - North bad half-face/head crop
 
-Acceptance:
+Current acceptance target:
 
 - zero visible white edge
 - full readable head
 - balanced framing
-- another accepted North expression may be used if current source cannot frame well
+- local scale/crop correction before global repair
+- another accepted expression may be used if a source cannot frame cleanly
+
+Runtime `0.22.2` applies scoped Maya/Cheryl scale/crop correction.
+
+## Owner Hidden Case Inspector
+
+Runtime `0.22.2` replaces the raw code dump with an Owner Dev visual simulation sandbox.
+
+This is not normal player UI and is not North QA UI.
+
+Synthetic controls must remain temporary and non-persistent.
 
 ## Completion card
 
@@ -948,23 +1114,70 @@ Lesson: mocked playback is not real playback E2E.
 
 ## 0.21.8 playable milestone
 
-Owner physical Android confirmed opening, location, Debrief, Matrix and Departure were playable. This established the major black-screen geometry fix.
+Owner physical Android confirmed opening, location, Debrief, Matrix and Departure were playable.
+
+This established the major black-screen geometry fix.
 
 ## 0.21.9 polish feedback
 
-Owner then identified music mismatch, harsh airport sound, Maya/Cheryl matte edges, North crop and takeoff-card obstruction.
+Owner identified music mismatch, harsh airport sound, Maya/Cheryl matte edges, North crop and takeoff-card obstruction.
 
 ## 0.22.0 recovery
 
-0.22.0 introduced proven score reuse, no terminal ambience, portrait crop correction, Singapore→Jakarta-style flight and synchronized build. A later repair loader broke startup and was reverted. Current safe startup recovery HEAD is `a3490e895a6147e2e675b5c392d3f5fb317d0977`.
+Introduced recovered direct-core Phase VIII implementation and synchronized startup recovery after removal of the broken temporary repair loader.
+
+Historical safe recovery baseline:
+
+`a3490e895a6147e2e675b5c392d3f5fb317d0977`
 
 **Do not resurrect the reverted repair loader.**
 
+## 0.22.1 Phase VIII defect/polish pass
+
+Introduced:
+
+- dedicated Investigation C4P8 music
+- dedicated Departure C4P8 music
+- controlled music ducking/crossfade
+- Return-to-Title phase-audio hard boundary
+- stronger portrait crop correction
+- player-readable NORTH · REMOVED handling
+- `100%` completion before takeoff
+- no takeoff progress bar
+- improved Jakarta → Bangkok route hierarchy
+- synchronized Runtime build linkage
+
+## 0.22.2 portrait + Owner Inspector pass
+
+Introduced:
+
+- additional scoped Maya/Cheryl scale/crop correction
+- Owner Hidden Case Inspector visual presentation
+- temporary synthetic `− / +` controls
+- simulation state isolated from canonical Hidden Case / Save / ledger
+- synchronized Runtime `0.22.2`
+- Developer `0.22.2-d1`
+- North QA `0.22.2`
+
+Current Production HEAD at this documentation update:
+
+`42a677a4e84132bb19d4f58dd5b1d8cd607e46c3`
+
+Message:
+
+`Fix P8 portraits and owner case inspector`
+
+## Current owner acceptance
+
+After the above recovery and polish, the owner has performed a practical Dev Mode Jump / real-device review across Chapters I–IV and accepts the current result for continuation.
+
+Do not reinterpret this as an exhaustive guarantee that no future defect can exist.
+
 ---
 
-# 18. CHAPTER IV FINAL END STATE
+# 18. CHAPTER IV FINAL END STATE — OWNER ACCEPTED
 
-After the owner accepts current Phase VIII:
+Current canonical end-state:
 
 - Jakarta operation closed
 - Decision Owner unresolved
@@ -981,9 +1194,17 @@ After the owner accepts current Phase VIII:
 - Benedict/North depart Indonesia
 - Bangkok arrival reserved for Chapter V
 
-Only then mark:
+Status:
 
 `CHAPTER IV COMPLETE · PHASE VIII OWNER-ACCEPTED`
+
+Acceptance basis:
+
+`Owner Dev Mode Jump / real-device current-pass review`
+
+This state is frozen for story continuation.
+
+Only reproducible defects, integration blockers, backward-compatible persistence needs or explicit owner changes should modify Chapters I–IV.
 
 ---
 
@@ -1006,11 +1227,19 @@ Target roughly 75–85% shared canonical spine, 15–25% adaptive emphasis.
 
 ## Phase 1 — RETURN TO BANGKOK
 
+This is now the **immediate story-production objective**.
+
 Open on return flight/approach/landing/Bangkok arrival.
 
-Kittisak has already ordered selected files sealed or compartmentalized for source protection. Somchai physically moved a protected evidence package while Benedict returned from Jakarta. Kittisak has a reasonable explanation, but the timing is suspicious.
+Kittisak has already ordered selected files sealed or compartmentalized for source protection.
+
+Somchai physically moved a protected evidence package while Benedict returned from Jakarta.
+
+Kittisak has a reasonable explanation, but the timing is suspicious.
 
 Elena remains ordinary/background if present.
+
+Do not reopen Jakarta merely to create a new bridge. Chapter IV is closed.
 
 ## Phase 2 — NAME IN ROOM 1807
 
@@ -1018,7 +1247,11 @@ Reveal Room 1807 victim:
 
 **Kawin Nopparat**
 
-Raise Narin suspicion sharply. Narin may have known Kawin operationally/professionally, had reason to fear disclosure, deployment intersects Kawin access window, and a record changed after disappearance. Kittisak may also have known protected identity earlier than Benedict was told.
+Raise Narin suspicion sharply.
+
+Narin may have known Kawin operationally/professionally, had reason to fear disclosure, deployment intersects Kawin access window, and a record changed after disappearance.
+
+Kittisak may also have known protected identity earlier than Benedict was told.
 
 ## Phase 3 — ROOM / PROFILE CROSS-MAP
 
@@ -1033,25 +1266,41 @@ Build multi-theory board crossing:
 - custody
 - institutional access
 
-The same board must seriously support Narin, Kittisak, Adrian and Arman. Elena is not formal board focus.
+The same board must seriously support Narin, Kittisak, Adrian and Arman.
+
+Elena is not formal board focus.
 
 ## Phase 4 — DANIEL'S HANDOFF
 
-Daniel's prepared material contains an ambiguous warning about a gatekeeper/authority layer. It is authentic but role-based rather than name-based, and can plausibly implicate Kittisak, Adrian or Narin depending on causal interpretation.
+Daniel's prepared material contains an ambiguous warning about a gatekeeper/authority layer.
+
+It is authentic but role-based rather than name-based and can plausibly implicate Kittisak, Adrian or Narin depending on causal interpretation.
 
 ## Phase 5 — THE REGISTRAR
 
 Locate `R.` and reveal Rin.
 
-Rin is intelligent, frightened, evasive, procedurally compromised, distrustful of institutions and not fully cooperative. She reveals registrar anomalies and the distinction between accepted access and physical identity. She does not solve the case.
+Rin is intelligent, frightened, evasive, procedurally compromised, distrustful of institutions and not fully cooperative.
+
+She reveals registrar anomalies and the distinction between accepted access and physical identity.
+
+She does not solve the case.
 
 ## Phase 6 — PIER RECONSTRUCTION
 
-Reconstruct physical event connected to Kawin/Daniel. Reopen Ika through pre-Aster alias, travel gap, unlicensed field work or physical-capability evidence. Aster recruitment after murders remains true but no longer reads as full-biography exoneration.
+Reconstruct physical event connected to Kawin/Daniel.
+
+Reopen Ika through pre-Aster alias, travel gap, unlicensed field work or physical-capability evidence.
+
+Aster recruitment after murders remains true but no longer reads as full-biography exoneration.
 
 ## Phase 7 — WITNESS EXTRACTION
 
-A real threat forces emergency movement of Rin/protected source. Kittisak orders off-book protection through Somchai. Intent is protective; procedure is visibility-breaking and suspicious.
+A real threat forces emergency movement of Rin/protected source.
+
+Kittisak orders off-book protection through Somchai.
+
+Intent is protective; procedure is visibility-breaking and suspicious.
 
 At the same time:
 
@@ -1066,7 +1315,9 @@ Different suspects behave badly for different reasons.
 
 Prove multiple real concealment systems coexist.
 
-The missing piece is **not Elena**. It is recognition that several people are hiding different crimes inside the same evidence field.
+The missing piece is **not Elena**.
+
+It is recognition that several people are hiding different crimes inside the same evidence field.
 
 End-state:
 
@@ -1083,9 +1334,13 @@ Open Chapter VI with `CASE THEORY WITHOUT A CHARGE`.
 
 ## Chapter V adaptive rule
 
-Adaptive state may change pressure target, follow-up question, optional evidence context, which two/three theories North compares and minor scene emphasis. It may not change historical facts.
+Adaptive state may change pressure target, follow-up question, optional evidence context, which two/three theories North compares and minor scene emphasis.
 
-Use top two/top three viable theories, not only current leader. Elena hidden values never grant early Elena spotlight.
+It may not change historical facts.
+
+Use top two/top three viable theories, not only current leader.
+
+Elena hidden values never grant early Elena spotlight.
 
 ---
 
@@ -1105,15 +1360,23 @@ Nine planned phases:
 
 Adaptive mode: **DIVERGE**.
 
-Target roughly 60–70% shared spine, 30–40% adaptive variation. Do not create five entirely separate Chapter VIs.
+Target roughly 60–70% shared spine, 30–40% adaptive variation.
+
+Do not create five entirely separate Chapter VIs.
 
 ## CASE THEORY WITHOUT A CHARGE
 
-Construct five serious principal cases: Kittisak, Narin, Adrian, Arman, Ika. Each needs motive, means, opportunity, evidence, obstruction and unresolved contradiction. No UI tells player which is real.
+Construct five serious principal cases: Kittisak, Narin, Adrian, Arman, Ika.
+
+Each needs motive, means, opportunity, evidence, obstruction and unresolved contradiction.
+
+No UI tells player which is real.
 
 ## CONTROLLED LEAK
 
-Different controlled pieces travel through different channels. No uniquely identifiable Elena bait packet.
+Different controlled pieces travel through different channels.
+
+No uniquely identifiable Elena bait packet.
 
 Reactions:
 
@@ -1128,31 +1391,67 @@ All suspicious; none proves murder.
 
 ## ALLIANCE ASSIGNMENT
 
-Divide responsibility across witness, custody, technical verification, institutional warrant and field movement. Choices alter chain quality, witness safety, alliance strength and prosecutability.
+Divide responsibility across witness, custody, technical verification, institutional warrant and field movement.
+
+Choices alter chain quality, witness safety, alliance strength and prosecutability.
 
 ## CONTINUITY PROTOCOL
 
-Reveal a legitimate emergency protocol intersecting Adrian architecture, Arman wrapper compatibility, Narin deployment, Kittisak emergency use, Somchai transfers and Ika/Aster recovery touchpoints. Same protocol supports several false-principal theories. It does not identify Elena.
+Reveal a legitimate emergency protocol intersecting Adrian architecture, Arman wrapper compatibility, Narin deployment, Kittisak emergency use, Somchai transfers and Ika/Aster recovery touchpoints.
+
+Same protocol supports several false-principal theories.
+
+It does not identify Elena.
 
 ## ATTACK ON SAFE CHAIN
 
-Compromise protected chain. Evidence supports multiple readings: Ika physical tradecraft, Arman abstraction, Narin deployment, Adrian architecture, Kittisak/Somchai internal timing. Do not resolve initiator early.
+Compromise protected chain.
+
+Evidence supports multiple readings:
+
+- Ika physical tradecraft
+- Arman abstraction
+- Narin deployment
+- Adrian architecture
+- Kittisak/Somchai internal timing
+
+Do not resolve initiator early.
 
 ## EVIDENCE DIVISION BREACH
 
-Expose Somchai off-book movement and Kittisak containment program. This should create the strongest Kittisak suspicion spike. Kittisak controlling evidence can be true in a limited institutional sense without proving murder.
+Expose Somchai off-book movement and Kittisak containment program.
+
+This should create the strongest Kittisak suspicion spike.
+
+Kittisak controlling evidence can be true in a limited institutional sense without proving murder.
 
 ## THE QUIET CHANNEL
 
-This replaces any old `ELENA KNOWS` concept. Seed one/two Elena-compatible latent facts as mundane administrative details. No direct Elena confrontation. Chapter VII synthesis changes their meaning.
+This replaces any old `ELENA KNOWS` concept.
+
+Seed one/two Elena-compatible latent facts as mundane administrative details.
+
+No direct Elena confrontation.
+
+Chapter VII synthesis changes their meaning.
 
 ## TWO STAGING SITES
 
-Reveal near-simultaneous staging paths. Lone-operator theories weaken while mastermind/accomplice theories strengthen. Each false-principal theory can still explain the issue differently.
+Reveal near-simultaneous staging paths.
+
+Lone-operator theories weaken while mastermind/accomplice theories strengthen.
+
+Each false-principal theory can still explain the issue differently.
 
 ## THE FINAL MOVE
 
-High-stakes preservation/trust action. Do not reveal Elena. End Chapter VI with at least three strong principal theories, preferably all five in some states. Last Witness / Last Record becomes central.
+High-stakes preservation/trust action.
+
+Do not reveal Elena.
+
+End Chapter VI with at least three strong principal theories, preferably all five in some states.
+
+Last Witness / Last Record becomes central.
 
 ---
 
@@ -1171,33 +1470,72 @@ Eight planned phases:
 
 Adaptive mode: **RESOLVE**.
 
-Old `FINAL ACCUSATION` concept is revoked. No killer-choice list.
+Old `FINAL ACCUSATION` concept is revoked.
+
+No killer-choice list.
 
 ## THE ROOM REPEATS
 
-Pattern repeats in a way compatible with several theories. Not uniquely Elena.
+Pattern repeats in a way compatible with several theories.
+
+Not uniquely Elena.
 
 ## THE PIER
 
-Complete physical reconstruction and separate physical presence, prior knowledge, delegated access and decision ownership.
+Complete physical reconstruction and separate:
+
+- physical presence
+- prior knowledge
+- delegated access
+- decision ownership
 
 ## RESCUE / PRESERVE
 
-High-stakes evidence/witness preservation. Player choices determine survival of witness, physical evidence, clean custody, original record and technical corroboration. These choices may close legal gates but never change historical truth.
+High-stakes evidence/witness preservation.
+
+Player choices determine survival of witness, physical evidence, clean custody, original record and technical corroboration.
+
+These choices may close legal gates but never change historical truth.
 
 ## FIVE PRINCIPALS
 
-Present maximum-strength false principal cases for Kittisak, Narin, Adrian, Arman and Ika. Somchai may appear as cleaner/accomplice/conditional support. Do not ask player to choose.
+Present maximum-strength false principal cases for:
+
+- Kittisak
+- Narin
+- Adrian
+- Arman
+- Ika
+
+Somchai may appear as cleaner/accomplice/conditional support.
+
+Do not ask player to choose.
 
 ## THE LAST RECORD
 
-Rin / Last Record provides the first evidence class none of the five false principals can fully absorb. It must not simply say `Elena did it.` It exposes structural contradiction across sequence, physical event, accepted record, who could know what when, and decision selection vs later execution.
+Rin / Last Record provides the first evidence class none of the five false principals can fully absorb.
+
+It must not simply say `Elena did it.`
+
+It exposes structural contradiction across:
+
+- sequence
+- physical event
+- accepted record
+- who could know what when
+- decision selection vs later execution
 
 ## FINAL RECONSTRUCTION
 
 Only here may Elena become fully serious.
 
-Minimum convergence must include several independent classes, including physical/human, chronology/decision order and additional decision/motive/original-record support. No single clue/class is enough.
+Minimum convergence must include several independent classes, including:
+
+- physical/human
+- chronology/decision order
+- additional decision/motive/original-record support
+
+No single clue/class is enough.
 
 Backend states:
 
@@ -1222,7 +1560,18 @@ Player sees consequence, not arithmetic.
 
 ## RECORD OR RELEASE / ENDING
 
-Resolve legal case, public record, institutional record, witness fate, North fate, principal, Elena fate, false-principal consequences, Kittisak/Somchai consequences and Rin/Last Record consequences.
+Resolve:
+
+- legal case
+- public record
+- institutional record
+- witness fate
+- North fate
+- principal
+- Elena fate
+- false-principal consequences
+- Kittisak/Somchai consequences
+- Rin/Last Record consequences
 
 ---
 
@@ -1295,7 +1644,11 @@ Evidence classes:
 
 Each mandatory false principal should have at least three independent classes, authentic obstruction, dark secret, plausible motive, opportunity/delegation and surviving contradiction by late Chapter VI.
 
-Elena proof requires multiple independent classes including a physical/human bridge, chronology/decision-order bridge and at least one formerly innocuous latent clue.
+Elena proof requires multiple independent classes including:
+
+- physical/human bridge
+- chronology/decision-order bridge
+- at least one formerly innocuous latent clue
 
 Do not solve the mystery with one confession, email, CCTV frame, timestamp, recording, witness statement or database row.
 
@@ -1310,11 +1663,23 @@ Canonical progression:
 - Ch VI = DIVERGE
 - Ch VII = RESOLVE
 
-Adaptive variation may change emphasis, follow-up dialogue, optional scenes, pressure target, suspect response prominence, evidence foregrounding and legal theory viability.
+Adaptive variation may change:
+
+- emphasis
+- follow-up dialogue
+- optional scenes
+- pressure target
+- suspect response prominence
+- evidence foregrounding
+- legal theory viability
 
 It may not change historical murderer or established physical facts to satisfy score.
 
-Anti-snowball rule: a leader-focused sequence must preserve competition, reveal contradiction, strengthen another suspect or add legal risk. Prefer top-pair/top-three theory targeting over only `highestScore`.
+Anti-snowball rule:
+
+A leader-focused sequence must preserve competition, reveal contradiction, strengthen another suspect or add legal risk.
+
+Prefer top-pair/top-three theory targeting over only `highestScore`.
 
 No Elena hidden value may automatically generate early Elena screen time.
 
@@ -1345,6 +1710,8 @@ No Elena hidden value may automatically generate early Elena screen time.
 
 # 26. QA / RELEASE GATE
 
+Chapters I–IV are currently accepted for continuation, but every future Runtime release must still protect the following regression surface.
+
 ## Startup
 
 - Splash → Title
@@ -1357,7 +1724,7 @@ No Elena hidden value may automatically generate early Elena screen time.
 - Title audio
 - current build label
 
-## Phase VIII full regression
+## Phase VIII regression surface
 
 1. DEV → Ch IV → P8
 2. opening
@@ -1376,12 +1743,15 @@ No Elena hidden value may automatically generate early Elena screen time.
 15. registrar evidence
 16. closing debrief
 17. Departure
-18. North removed dialogue
-19. takeoff video unobstructed
-20. route card after natural end/skip
-21. Complete 100%
-22. Return Title
-23. P8 audio stops
+18. NORTH · REMOVED readability
+19. Departure reaches 100% before takeoff
+20. Takeoff has no phase progress UI
+21. takeoff video unobstructed
+22. route card after natural end/Skip
+23. Complete
+24. Return Title
+25. Phase VIII audio stops
+26. Title audio restores
 
 ## Save/Load
 
@@ -1398,11 +1768,12 @@ No Elena hidden value may automatically generate early Elena screen time.
 
 ## Audio
 
-- opening score
+- Investigation C4P8 starts with opening
 - location continuity
 - dialogue duck
 - Matrix duck
 - evidence/choice duck
+- crossfade to Departure C4P8
 - Departure
 - takeoff
 - Complete
@@ -1412,7 +1783,24 @@ No Elena hidden value may automatically generate early Elena screen time.
 
 ## Portraits
 
-Inspect every P8 expression actually used for Maya, Cheryl, North, Benedict and Farid. No white matte, bad crop or half-head.
+Inspect every P8 expression actually used for Maya, Cheryl, North, Benedict and Farid.
+
+No white matte, bad crop or half-head.
+
+## Owner Hidden Case Inspector
+
+Verify:
+
+- owner-only visibility
+- visual suspect presentation
+- status bars
+- synthetic `− / +`
+- Reset to Live State
+- no canonical ledger mutation
+- no Save mutation
+- no autosave from synthetic adjustment
+- closing/reopening returns to live state
+- North QA cannot access it
 
 ## Mobile viewports
 
@@ -1424,7 +1812,16 @@ At minimum:
 - 412×915
 - 430×932
 
-Check footer clipping, safe-area, route card, portrait framing, progress, horizontal overflow and primary-button reachability.
+Check:
+
+- footer clipping
+- safe-area
+- route card
+- portrait framing
+- progress
+- horizontal overflow
+- primary-button reachability
+- Owner Inspector controls where relevant
 
 ## Build linkage
 
@@ -1436,62 +1833,85 @@ Normal UI/North QA must not expose scores, deltas, routes, projected endings, El
 
 ---
 
-# 27. CURRENT PRODUCTION STATUS AT ROOM HANDOFF
+# 27. CURRENT PRODUCTION STATUS AT THIS REVISION
 
-Current Runtime: **0.22.0**.
+Current Runtime: **0.22.2**.
 
 Current Production HEAD before this documentation update:
 
-`a3490e895a6147e2e675b5c392d3f5fb317d0977`
+`42a677a4e84132bb19d4f58dd5b1d8cd607e46c3`
 
 Message:
 
-`Fixed cached startup repaire loader`
+`Fix P8 portraits and owner case inspector`
 
 Relevant recent history:
 
-- `234b1a2101123dd04f5fb29b642055acbbb3182b` — `PHASE8_0.22.0_FLIGHT_PORTRAIT_AUDIO_FIX`
-- `7b903c46e8c1fa82fb3ff487e00e749eac1529e2` — `Fix C4P8 transitions, audio, portraits, flight`
-- `b208a5b90e27735680447b59014d36401fb99d53` — attempted runtime repair loader
-- `8745af6a168b5cb9e5b9e71dea45b427b580fa5f` — reverted broken repair loader
-- `a3490e895a6147e2e675b5c392d3f5fb317d0977` — startup cache recovery
+- `a3490e895a6147e2e675b5c392d3f5fb317d0977` — `Fixed cached startup repaire loader`
+- `f40746a066ece657f85808fae10e36c4f5a07e8a` — `Update master plan for room handoff`
+- `7fccff4ebc9ee4e1eca6b5735febb196b985940b` — `Fix C4P8 defects and sync runtime 0.22.1`
+- `42a677a4e84132bb19d4f58dd5b1d8cd607e46c3` — `Fix P8 portraits and owner case inspector`
 
 Current modules:
 
-- Phase VIII: `0.22.0`
-- Developer Navigation: `0.22.0-d1`
-- North QA: `0.22.0`
-- Runtime Build Label: `0.22.0`
+- Phase VIII: `0.22.2`
+- Developer Navigation: `0.22.2-d1`
+- North QA: `0.22.2`
+- Runtime Build Label: `0.22.2`
 - Hidden Case engine: `0.21.0`
 
-Canonical rule:
+Canonical runtime rule:
 
-**Use recovered 0.22.0 direct core implementation. Do not re-enable the reverted repair loader.**
+**Use the direct core implementation. Do not re-enable the reverted repair loader.**
 
-Owner final real-device acceptance of recovered/polished 0.22.0 remains the immediate gate before Chapter V.
+## Chapters I–IV current status
+
+The owner has completed a practical current-pass review using Developer Mode jumps / real-device spot checks and considers Chapters I–IV acceptable to continue development.
+
+Status:
+
+- Chapter I: accepted for current continuation
+- Chapter II: accepted for current continuation
+- Chapter III: accepted for current continuation
+- Chapter IV: accepted for current continuation
+- Phase VIII: owner-accepted current pass
+- future reproducible defects: repair when actually observed
+- optional speculative polishing: do not reopen accepted systems by default
+
+This is the active handoff state.
 
 ---
 
 # 28. IMMEDIATE NEXT-ROOM PRIORITY
 
-Do not automatically start Chapter V until Phase VIII acceptance is clear.
+**Begin Chapter V Phase I.**
+
+Do not require another Chapter IV acceptance loop before starting Chapter V unless the owner reports a new reproducible defect.
 
 Sequence:
 
 1. read this Master Plan
-2. inspect current Production only if the task requires current repo truth
-3. use recovered 0.22.0 as baseline
-4. if the first new-room message already gives latest real-device P8 result, use it immediately
-5. otherwise ask for latest P8 result only if genuinely necessary
-6. do not reopen working systems
-7. fix only reproducible remaining defect
-8. synchronize all Build endpoints on any Runtime release
-9. obtain P8 owner acceptance
-10. mark Ch IV complete
-11. freeze Ch IV evidence/flags/state
-12. start Ch V Phase I
+2. inspect current Production when current repo truth matters
+3. use Runtime `0.22.2` / current Production as the baseline
+4. treat Chapters I–IV as accepted maintenance-locked content
+5. preserve Chapter IV final evidence/flags/state
+6. begin `CHAPTER V · PHASE I · RETURN TO BANGKOK`
+7. follow Chapter V canonical structure and INFLUENCE adaptive model
+8. reuse accepted UI and flight/location/dialogue primitives
+9. preserve Hidden Case determinism and secrecy
+10. synchronize every Runtime build endpoint on any future Runtime release
+11. if a genuine older-chapter defect appears later, isolate and repair only that reproducible defect
+12. do not reopen accepted content for optional redesign unless the owner asks
 
-If owner says P8 is accepted, do not reopen it for optional polishing unless owner asks.
+### Maintenance rule for Chapters I–IV
+
+A later defect report does **not** mean Chapters I–IV return to “unaccepted” status globally.
+
+Treat it as:
+
+`accepted baseline + isolated maintenance defect`
+
+unless the defect proves a wider regression.
 
 ---
 
@@ -1518,7 +1938,7 @@ Do not:
 - make Rin an exposition machine
 - use visible relationship as murderer score
 - create final killer-selection UI
-- rewrite accepted P1–P7 for scoring convenience
+- rewrite accepted Chapters I–IV for scoring convenience
 - create Ch IV Phase IX without approval
 - invent a new normal UI shell when a proven one fits
 - add square-symbol phase-card decoration without approval
@@ -1528,6 +1948,9 @@ Do not:
 - call mocked media a real playback test
 - release mismatched Build labels
 - claim Android acceptance without Android
+- expose Owner Hidden Case simulation controls to North QA
+- let synthetic Owner Inspector values write canonical case state
+- reopen accepted Chapters I–IV for speculative polish without owner request
 
 ---
 
@@ -1563,9 +1986,15 @@ Canonical final idea:
 # 31. FINAL NON-NEGOTIABLE SUMMARY
 
 - Owner real-device evidence is highest authority.
-- Current Runtime at handoff is 0.22.0.
-- Phase VIII is implemented; final recovered/polished owner acceptance is the immediate gate.
+- Current Runtime at this revision is `0.22.2`.
+- Current Production HEAD observed before this documentation update is `42a677a4e84132bb19d4f58dd5b1d8cd607e46c3`.
+- Chapters I–IV are owner-accepted for current continuation after practical Dev Mode Jump / real-device spot checks.
+- That acceptance is not a claim of exhaustive defect-free E2E coverage.
+- Later reproducible defects in Chapters I–IV may be repaired surgically without reopening the whole accepted baseline.
 - Chapter IV has exactly 8 phases.
+- Phase VIII is owner-accepted for the current pass.
+- Chapter IV final state is frozen for continuation.
+- Immediate story objective is `CHAPTER V · PHASE I · RETURN TO BANGKOK`.
 - Reuse proven normal UI before inventing structure.
 - Do not add novelty square-symbol cards.
 - Minigames may be premium but must remain LAST WITNESS.
@@ -1575,7 +2004,8 @@ Canonical final idea:
 - Build identity must synchronize across index/bootstrap/Settings/Dev/North QA/Runtime Label/save-facing metadata every Runtime release.
 - Relationship system remains separate from criminal attribution.
 - Hidden Case is deterministic, auditable, idempotent and player-invisible.
-- North QA never sees hidden scores/routes/gates.
+- Owner Hidden Case Inspector synthetic controls are temporary and must never mutate canonical ledger/Save state.
+- North QA never sees hidden scores/routes/gates or Owner simulation controls.
 - Player never chooses killer from a final list.
 - Five mandatory false principals: Kittisak, Narin, Adrian, Arman, Ika.
 - Somchai remains strongly suspicious.
@@ -1587,6 +2017,6 @@ Canonical final idea:
 - No single clue solves mystery.
 - No single ordinary choice decides ending.
 - Every ending must be traceable to the full investigation.
-- Do not call Chapter IV complete until owner accepts current Phase VIII on the real device.
+- Accepted content is maintenance locked, not permanently immune from future reproducible defect repair.
 
-This is the canonical continuation contract from the current Phase VIII production state through Chapter VII final resolution.
+This is the canonical continuation contract from the owner-accepted Chapters I–IV production baseline into Chapter V and through Chapter VII final resolution.
