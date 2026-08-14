@@ -1,11 +1,11 @@
-/* LAST WITNESS - Chapter IV / Phase VIII: SHADOW OF THE TRUTH 0.21.9
+/* LAST WITNESS - Chapter IV / Phase VIII: SHADOW OF THE TRUTH 0.22.0
  * Direct Phase VII handoff. Shared Chapter IV UI language is preserved.
  * Phase VIII is the CALCULATE bridge into the hidden-case architecture:
  * player-visible story remains shared while hidden case state is derived idempotently.
  */
 (function(){
 "use strict";
-const BUILD="0.21.9";
+const BUILD="0.22.0";
 if(window.LastWitnessChapter4Phase8?.version===BUILD)return;
 
 const BASE="assets/images/chapter-04/phase-08/";
@@ -27,7 +27,7 @@ const tr=(en,th)=>thai()?th:en;
 const clone=v=>JSON.parse(JSON.stringify(v));
 const clamp=(v,a=0,b=1)=>Math.max(a,Math.min(b,Number(v)||0));
 const active=()=>$(".screen.active")?.id||gs()?.screen||"";
-let dialogue=null,transitionTimer=0,takeoffRouteTimer=0,matrixOpen=false,evidenceOpen=false,choiceOpen=false,bangkokChoiceOpen=false,evidenceIndex=0,handoffObserver=null,saveBridgeInstalled=false,registryInstalled=false,audioLifecycleInstalled=false,internalRouting=false,takeoffStartedAt=0,takeoffFinishing=false,handoffStarting=false;
+let dialogue=null,transitionTimer=0,takeoffRouteTimer=0,matrixOpen=false,evidenceOpen=false,choiceOpen=false,bangkokChoiceOpen=false,evidenceIndex=0,handoffObserver=null,saveBridgeInstalled=false,registryInstalled=false,audioLifecycleInstalled=false,internalRouting=false,handoffStarting=false;
 const fadeFrames=new Map();
 
 function defaults(){return{
@@ -73,31 +73,29 @@ function overlayDuck(){return matrixOpen?0.48:(evidenceOpen||choiceOpen||bangkok
 function phaseScreenActive(){return SCREENS.has(active())}
 function syncAudio(){
  const s=gs(),screen=active(),on=s?.sound!==false,music=clamp(Number(s?.music??.33)),sfx=clamp(Number(s?.sfx??.55)),duck=dialogueDuck()*overlayDuck();
- const invest=$("#ch4P8InvestigationMusic"),depart=$("#ch4P8DepartureMusic"),takeoff=$("#ch4P8TakeoffCue"),room=$("#ch4P8RoomAmb"),roomBase=$("#ch4P8RoomBase"),airport=$("#ch4P8AirportAmb"),airportBase=$("#ch4P8AirportBase"),takeAmb=$("#ch4P8TakeoffAmb");
- const investigation=[OPENING,LOCATION,DEBRIEF].includes(screen),debrief=screen===DEBRIEF,departure=screen===DEPARTURE,take=screen===TAKEOFF,departureBed=departure||take;
- [invest,depart,room,roomBase,airport,airportBase].forEach(m=>{if(m)m.loop=true});
- /* Continuous score: investigation music starts under the opening cinematic and survives the location card.
-    Dialogue/minigame/evidence only duck the score; they never create dead air. */
- fade(invest,on&&investigation?music*.30*duck:0,screen===OPENING?760:440);
- fade(depart,on&&departureBed?music*(take?0.20:0.29)*duck:0,departure?720:520);
- fade(takeoff,on&&take?music*.12:0,take?900:420);
- fade(room,on&&debrief?sfx*.038*dialogueDuck():0,500);
- fade(roomBase,on&&debrief?sfx*.014*dialogueDuck():0,500);
- /* Airport bed deliberately uses one low-level layer. The previous Changi base layer was too busy. */
- fade(airport,on&&departure?sfx*.012*dialogueDuck():0,600);
- fade(airportBase,0,280);
- fade(takeAmb,on&&take?sfx*.085:0,720);
- const ov=$("#ch4P8OpeningVideo"),tv=$("#ch4P8TakeoffVideo");if(ov)ov.volume=on?clamp(sfx*.30,0,.34):0;if(tv)tv.volume=0
+ const investigate=$("#ch4P8InvestigationMusic"),travel=$("#ch4P8TravelMusic"),room=$("#ch4P8RoomAmb"),roomBase=$("#ch4P8RoomBase"),takeAmb=$("#ch4P8TakeoffAmb");
+ const investigation=[OPENING,LOCATION,DEBRIEF].includes(screen),debrief=screen===DEBRIEF,travelScene=[DEPARTURE,TAKEOFF,COMPLETE].includes(screen),take=screen===TAKEOFF;
+ [investigate,travel,room,roomBase].forEach(m=>{if(m)m.loop=true});
+ /* Two proven LAST WITNESS scores only:
+    - Phase V noir score under Opening/Location/Debrief.
+    - Phase II Jakarta travel score under Departure/Takeoff/Chapter Complete.
+    There is deliberately NO airport terminal ambience in Phase VIII. */
+ fade(investigate,on&&investigation?music*.255*duck:0,screen===OPENING?700:420);
+ fade(travel,on&&travelScene?music*(screen===COMPLETE?.245:take?.285:.265)*duck:0,screen===DEPARTURE?700:460);
+ fade(room,on&&debrief?sfx*.028*dialogueDuck():0,480);
+ fade(roomBase,on&&debrief?sfx*.010*dialogueDuck():0,480);
+ fade(takeAmb,on&&take&&!phaseState()?.takeoffSeen?sfx*.052:0,520);
+ const ov=$("#ch4P8OpeningVideo"),tv=$("#ch4P8TakeoffVideo");if(ov)ov.volume=on?clamp(sfx*.27,0,.30):0;if(tv)tv.volume=0
 }
 function pauseForBackground(){
- ["ch4P8InvestigationMusic","ch4P8DepartureMusic","ch4P8TakeoffCue","ch4P8RoomAmb","ch4P8RoomBase","ch4P8AirportAmb","ch4P8AirportBase","ch4P8TakeoffAmb"].forEach(id=>{try{$("#"+id)?.pause()}catch(_){}});
+ ["ch4P8InvestigationMusic","ch4P8TravelMusic","ch4P8RoomAmb","ch4P8RoomBase","ch4P8TakeoffAmb"].forEach(id=>{try{$("#"+id)?.pause()}catch(_){}});
  try{$("#ch4P8OpeningVideo")?.pause()}catch(_){}
  try{$("#ch4P8TakeoffVideo")?.pause()}catch(_){}
 }
 function resumeForegroundAudio(){
  if(document.visibilityState==="hidden"||!phaseScreenActive())return;
  syncAudio();setTimeout(syncAudio,80);
- const screen=active(),media=screen===OPENING?$("#ch4P8OpeningVideo"):screen===TAKEOFF?$("#ch4P8TakeoffVideo"):null;
+ const screen=active(),media=screen===OPENING?$("#ch4P8OpeningVideo"):screen===TAKEOFF&&!phaseState()?.takeoffSeen?$("#ch4P8TakeoffVideo"):null;
  if(media&&!media.ended){try{media.play().catch(()=>{})}catch(_){}}
 }
 function installAudioLifecycle(){
@@ -107,7 +105,7 @@ function installAudioLifecycle(){
  window.addEventListener("focus",resumeForegroundAudio);
  document.addEventListener("pointerdown",event=>{if(event.target.closest?.("#drawer,.modal,.screen"))setTimeout(resumeForegroundAudio,0)},{passive:true});
 }
-function stopAudio(reset=false){clearTimer();for(const frame of fadeFrames.values())cancelAnimationFrame(frame);fadeFrames.clear();["ch4P8InvestigationMusic","ch4P8DepartureMusic","ch4P8TakeoffCue","ch4P8RoomAmb","ch4P8RoomBase","ch4P8AirportAmb","ch4P8AirportBase","ch4P8TakeoffAmb","ch4P8MatrixPlace","ch4P8MatrixConfirmSfx","ch4P8MatrixError","ch4P8SecureNotice","ch4P8TraceStinger"].forEach(id=>stopElement($("#"+id),reset));stopElement($("#ch4P8OpeningVideo"),reset);stopElement($("#ch4P8TakeoffVideo"),reset)}
+function stopAudio(reset=false){clearTimer();for(const frame of fadeFrames.values())cancelAnimationFrame(frame);fadeFrames.clear();["ch4P8InvestigationMusic","ch4P8TravelMusic","ch4P8RoomAmb","ch4P8RoomBase","ch4P8TakeoffAmb","ch4P8MatrixPlace","ch4P8MatrixConfirmSfx","ch4P8MatrixError","ch4P8SecureNotice","ch4P8TraceStinger"].forEach(id=>stopElement($("#"+id),reset));stopElement($("#ch4P8OpeningVideo"),reset);stopElement($("#ch4P8TakeoffVideo"),reset)}
 function playOne(id,gain=.34){const m=$("#"+id),s=gs();if(!m||s?.sound===false)return;try{m.pause();m.currentTime=0;m.volume=clamp(Number(s?.sfx??.55)*gain,0,.48);m.play().catch(()=>{})}catch(_){} }
 
 function hud(label){return `<div class="topbar ch4-p5-topbar ch4-p8-topbar"><span id="${label}"></span><div class="hud"><button class="icon ch4-p8-save" type="button" aria-label="Save game">💾</button><button class="icon ch4-p8-menu" type="button" aria-label="Game menu">☰<i class="journal-alert" aria-hidden="true"></i></button></div></div>`}
@@ -116,19 +114,19 @@ function scene(id,image,label,extra=""){return `<section id="${id}" class="scree
 function inject(){
  if($("#"+OPENING))return;const game=$("#game");if(!game)return;
  game.insertAdjacentHTML("beforeend",`
- <section id="${OPENING}" class="screen ch4-p5-video"><video id="ch4P8OpeningVideo" playsinline webkit-playsinline preload="auto" poster="${BASE}opening-poster.jpg?v=0219"><source src="${VIDEO}opening-statement-return.mp4?v=0219" type="video/mp4"></video><div class="ch4-p5-shade"></div><button id="ch4P8OpeningPlay" class="primary ch4-p5-video-play" type="button" hidden></button><button id="ch4P8OpeningSkip" class="ghost ch4-p5-skip" type="button"></button></section>
+ <section id="${OPENING}" class="screen ch4-p5-video"><video id="ch4P8OpeningVideo" playsinline webkit-playsinline preload="auto" poster="${BASE}opening-poster.jpg?v=0220"><source src="${VIDEO}opening-statement-return.mp4?v=0220" type="video/mp4"></video><div class="ch4-p5-shade"></div><button id="ch4P8OpeningPlay" class="primary ch4-p5-video-play" type="button" hidden></button><button id="ch4P8OpeningSkip" class="ghost ch4-p5-skip" type="button"></button></section>
  <section id="${LOCATION}" class="screen ch4-p4-location ch4-p8-card"><div id="ch4P8LocationCardInner" class="ch4-p4-location-card ch4-p8-card-inner"><div id="ch4P8LocationEye" class="eyebrow"></div><div id="ch4P8LocationCity" class="ch4-p4-location-city"></div><h2 id="ch4P8LocationName"></h2><div class="ch4-p4-location-rule"></div><p id="ch4P8LocationBody"></p></div></section>
- ${scene(DEBRIEF,BASE+"secure-debrief-room.png?v=0219","ch4P8DebriefLocation","ch4-p8-debrief")}
- ${scene(DEPARTURE,BASE+"jakarta-departure-corridor.png?v=0219","ch4P8DepartureLocation","ch4-p8-departure")}
- <section id="${TAKEOFF}" class="screen ch4-p8-video ch4-p8-takeoff"><video id="ch4P8TakeoffVideo" playsinline webkit-playsinline preload="auto" poster="assets/video/chapter-03/phase-02/airplane-takeoff-poster.jpg?v=074"><source src="assets/video/chapter-03/phase-02/airplane-takeoff.mp4?v=074" type="video/mp4"></video><div class="ch4-p8-video-shade ch4-p8-takeoff-shade"></div><div id="ch4P8TakeoffRoute" class="ch4-p8-takeoff-route" aria-hidden="true"><div id="ch4P8TakeoffEye" class="eyebrow"></div><h2 id="ch4P8TakeoffTitle"></h2><div class="ch4-p8-route-line"><strong>JAKARTA</strong><span>→</span><strong>BANGKOK</strong></div><p id="ch4P8TakeoffTime"></p></div>${progressMarkup()}</section>
+ ${scene(DEBRIEF,BASE+"secure-debrief-room.png?v=0220","ch4P8DebriefLocation","ch4-p8-debrief")}
+ ${scene(DEPARTURE,BASE+"jakarta-departure-corridor.png?v=0220","ch4P8DepartureLocation","ch4-p8-departure")}
+ <section id="${TAKEOFF}" class="screen ch4-p8-flight"><video id="ch4P8TakeoffVideo" poster="assets/video/chapter-03/phase-02/airplane-takeoff-poster.jpg?v=074" preload="auto" playsinline webkit-playsinline muted><source src="assets/video/chapter-03/phase-02/airplane-takeoff.mp4?v=074" type="video/mp4"></video><div class="ch4-p8-flight-shade"></div><div class="ch4-p8-flight-head"><span id="ch4P8FlightHead"></span><span id="ch4P8FlightStatus"></span></div><div id="ch4P8TakeoffRoute" class="ch4-p8-flight-route" aria-hidden="true"><div id="ch4P8TakeoffEye" class="eyebrow"></div><h2 id="ch4P8TakeoffTitle"></h2><div class="ch4-p8-route-grid"><div><span id="ch4P8DepartLabel"></span><strong>JAKARTA<br>18:10 WIB</strong></div><div class="ch4-p8-route-arrow">→</div><div><span id="ch4P8DestinationLabel"></span><strong>BANGKOK<br>DIRECT</strong></div></div><p id="ch4P8TakeoffTime"></p><button id="ch4P8TakeoffContinue" class="primary" type="button"></button></div><button id="ch4P8TakeoffSkip" class="ghost ch4-p8-flight-skip" type="button"></button>${progressMarkup()}</section>
  <section id="${COMPLETE}" class="screen ch4-p4-complete ch4-p8-complete"><div class="ch4-p4-complete-card"><div id="ch4P8CompleteEye" class="eyebrow"></div><h2 id="ch4P8CompleteTitle"></h2><div class="ch4-p4-location-rule"></div><p id="ch4P8CompleteBody"></p><div class="ch4-p4-complete-grid"><div><span id="ch4P8ResultJakarta"></span><b id="ch4P8ValueJakarta"></b></div><div><span id="ch4P8ResultRecord"></span><b id="ch4P8ValueRecord"></b></div><div><span id="ch4P8ResultR"></span><b id="ch4P8ValueR"></b></div><div><span id="ch4P8ResultCase"></span><b id="ch4P8ValueCase"></b></div></div><strong id="ch4P8Next"></strong><button id="ch4P8ReturnTitle" class="primary" type="button"></button></div>${progressMarkup()}</section>
  <div id="ch4P8Matrix" class="modal ch4-p8-matrix" aria-hidden="true"><div class="modal-card"><header class="ch4-p8-matrix-head"><div class="eyebrow" id="ch4P8MatrixEye"></div><h3 id="ch4P8MatrixTitle"></h3><p id="ch4P8MatrixBody"></p><div class="ch4-p8-step"><span id="ch4P8MatrixStep"></span><div><i id="ch4P8MatrixStepFill"></i></div></div><div id="ch4P8SubjectTabs" class="ch4-p8-subject-tabs"></div></header><div class="ch4-p8-matrix-scroll"><div id="ch4P8MatrixSlots" class="ch4-p8-matrix-slots"></div><div class="ch4-p8-card-label" id="ch4P8CardLabel"></div><div id="ch4P8MatrixCards" class="ch4-p8-matrix-cards"></div><div id="ch4P8MatrixStatus" class="ch4-p8-status" aria-live="polite"></div></div><footer class="ch4-p8-matrix-foot"><button id="ch4P8MatrixReset" class="ghost" type="button"></button><button id="ch4P8MatrixConfirm" class="primary" type="button"></button></footer></div></div>
  <div id="ch4P8TheoryChoice" class="modal ch4-p8-choice" aria-hidden="true"><div class="modal-card"><div class="eyebrow" id="ch4P8TheoryEye"></div><h3 id="ch4P8TheoryTitle"></h3><p id="ch4P8TheoryBody"></p><div class="ch4-p8-choice-grid"><button type="button" data-p8-theory="boundaries"></button><button type="button" data-p8-theory="chronology"></button><button type="button" data-p8-theory="custody"></button></div></div></div>
  <div id="ch4P8Evidence" class="modal ch4-p8-evidence" aria-hidden="true"><div class="modal-card"><header><div><div id="ch4P8EvidenceEye" class="eyebrow"></div><h3 id="ch4P8EvidenceTitle"></h3></div><span id="ch4P8EvidenceCounter"></span></header><div class="ch4-p8-evidence-scroll"><div id="ch4P8EvidenceCode" class="ch4-p8-evidence-code"></div><p id="ch4P8EvidenceBody"></p><div class="ch4-p8-proof"><span id="ch4P8ProofLabel"></span><strong id="ch4P8EvidenceProof"></strong></div><div class="ch4-p8-limit"><span id="ch4P8LimitLabel"></span><small id="ch4P8EvidenceLimit"></small></div></div><footer><button id="ch4P8EvidenceContinue" class="primary" type="button"></button></footer></div></div>
  <div id="ch4P8BangkokChoice" class="modal ch4-p8-choice" aria-hidden="true"><div class="modal-card"><div class="eyebrow" id="ch4P8BangkokEye"></div><h3 id="ch4P8BangkokTitle"></h3><p id="ch4P8BangkokBody"></p><div class="ch4-p8-choice-grid"><button type="button" data-p8-bangkok="written"></button><button type="button" data-p8-bangkok="parallel"></button><button type="button" data-p8-bangkok="log"></button></div></div></div>
  <div id="ch4P8RemovalCard" class="ch4-p8-removal-card" aria-hidden="true"><span id="ch4P8RemovalEye"></span><strong>NORTH</strong><b id="ch4P8RemovalStatus"></b><small id="ch4P8RemovalNote"></small></div>
- <audio id="ch4P8InvestigationMusic" preload="auto" loop><source src="${AUDIO}investigation-loop.webm?v=0210" type="audio/webm"><source src="${AUDIO}investigation-loop.mp3?v=0210" type="audio/mpeg"></audio><audio id="ch4P8DepartureMusic" preload="auto" loop><source src="${AUDIO}departure-loop.webm?v=0210" type="audio/webm"><source src="${AUDIO}departure-loop.mp3?v=0210" type="audio/mpeg"></audio><audio id="ch4P8TakeoffCue" preload="auto"><source src="${AUDIO}departure-takeoff-cue.webm?v=0210" type="audio/webm"><source src="${AUDIO}departure-takeoff-cue.mp3?v=0210" type="audio/mpeg"></audio>
- <audio id="ch4P8RoomAmb" preload="auto" loop src="assets/audio/chapter-04/phase-02/jakarta-cybercrime-office-loop.mp3?v=0146"></audio><audio id="ch4P8RoomBase" preload="auto" loop src="assets/audio/chapter-03/phase-04/singapore-investigation-office-ambience.mp3?v=0920"></audio><audio id="ch4P8AirportAmb" preload="auto" loop src="assets/audio/chapter-04/phase-02/jakarta-airport-ops-loop.mp3?v=0146"></audio><audio id="ch4P8AirportBase" preload="auto" loop src="assets/audio/chapter-03/phase-03/changi-airport-ambience.mp3?v=0800"></audio><audio id="ch4P8TakeoffAmb" preload="auto" src="assets/audio/chapter-04/phase-02/airplane-takeoff-ambience.mp3?v=0146"></audio>
+ <audio id="ch4P8InvestigationMusic" preload="auto" loop><source src="assets/audio/chapter-04/phase-05/music/phase-score-loop.mp3?v=0189" type="audio/mpeg"><source src="assets/audio/chapter-04/phase-05/music/phase-score-loop.ogg?v=0189" type="audio/ogg"></audio><audio id="ch4P8TravelMusic" preload="auto" loop><source src="assets/audio/chapter-04/phase-02/jakarta-arrival-loop.webm?v=0146" type="audio/webm"><source src="assets/audio/chapter-04/phase-02/jakarta-arrival-loop.mp3?v=0146" type="audio/mpeg"></audio>
+ <audio id="ch4P8RoomAmb" preload="auto" loop src="assets/audio/chapter-04/phase-02/jakarta-cybercrime-office-loop.mp3?v=0146"></audio><audio id="ch4P8RoomBase" preload="auto" loop src="assets/audio/chapter-03/phase-04/singapore-investigation-office-ambience.mp3?v=0920"></audio><audio id="ch4P8TakeoffAmb" preload="auto" src="assets/audio/chapter-04/phase-02/airplane-takeoff-ambience.mp3?v=0146"></audio>
  <audio id="ch4P8MatrixPlace" preload="auto" src="${AUDIO}matrix-place.mp3?v=0210"></audio><audio id="ch4P8MatrixConfirmSfx" preload="auto" src="${AUDIO}matrix-confirm.mp3?v=0210"></audio><audio id="ch4P8MatrixError" preload="auto" src="${AUDIO}matrix-error.mp3?v=0210"></audio><audio id="ch4P8SecureNotice" preload="auto" src="${AUDIO}secure-notice.mp3?v=0210"></audio><audio id="ch4P8TraceStinger" preload="auto" src="${AUDIO}trace-stinger.mp3?v=0210"></audio>`);
  bindUi();updateLanguage();syncProgress();installOwnerInspector()
 }
@@ -137,8 +135,8 @@ function speakerLabel(name){if(name==="Farid Rahman")return thai()?"Farid Rahman
 function portraitSource(name,emotion){try{return typeof portrait==="function"?portrait(name,emotion||"neutral"):""}catch(_){return""}}
 function dialogueBox(){return $("#"+active()+"Dialogue")}
 function recordHistory(line){try{const s=gs();s.history=s.history||[];s.history.push({speaker:speakerLabel(line[0]),text:thai()?line[3]:line[2],chapter:4,phase:8})}catch(_){} }
-function renderDialogue(){const box=dialogueBox();if(!box||!dialogue)return;const line=dialogue.lines[dialogue.i],name=line[0],emotion=line[1],right=name!=="Benedict",src=portraitSource(name,emotion);const label=name==="Farid Rahman"?`Farid Rahman <span class="ch4-p8-remote">${thai()?"(ต่อสายจากสิงคโปร์)":"(Remote · Singapore)"}</span>`:speakerLabel(name),portraitKey=name==="Inspector Maya Pranoto"?"maya":name==="North"?"north":name==="Inspector Cheryl Goh"?"cheryl":name==="Farid Rahman"?"farid":"benedict";box.className="dialogue ch4-p4-dialogue ch4-p5-dialogue ch4-p8-dialogue"+(right?" right":"");box.dataset.p8Speaker=portraitKey;box.innerHTML=`<div class="portrait-wrap">${src?`<img class="portrait" src="${src}" alt="">`:""}</div><div class="dialogue-copy"><div class="speaker">${label}</div><div class="line">${thai()?line[3]:line[2]}</div></div><div class="next">${tr("TAP TO CONTINUE","แตะเพื่อดำเนินต่อ")}</div>`;syncAudio()}
-function talk(lines,done){const box=dialogueBox();if(!box){done?.();return}dialogue={lines,i:0,done};box.classList.remove("hidden");renderDialogue();box.onclick=()=>{if(!dialogue)return;recordHistory(dialogue.lines[dialogue.i]);dialogue.i++;if(dialogue.i>=dialogue.lines.length){const fn=dialogue.done;dialogue=null;box.classList.add("hidden");box.onclick=null;delete box.dataset.p8Speaker;syncAudio();fn?.();save()}else renderDialogue()}}
+function renderDialogue(){const box=dialogueBox();if(!box||!dialogue)return;const line=dialogue.lines[dialogue.i],name=line[0],emotion=line[1],right=name!=="Benedict",src=portraitSource(name,emotion);const label=name==="Farid Rahman"?`Farid Rahman <span class="ch4-p8-remote">${thai()?"(ต่อสายจากสิงคโปร์)":"(Remote · Singapore)"}</span>`:speakerLabel(name),portraitKey=name==="Inspector Maya Pranoto"?"maya":name==="North"?"north":name==="Inspector Cheryl Goh"?"cheryl":name==="Farid Rahman"?"farid":"benedict";box.className="dialogue ch4-p4-dialogue ch4-p5-dialogue ch4-p8-dialogue"+(right?" right":"");box.dataset.p8Speaker=portraitKey;box.dataset.p8Emotion=emotion;box.innerHTML=`<div class="portrait-wrap">${src?`<img class="portrait" src="${src}" alt="">`:""}</div><div class="dialogue-copy"><div class="speaker">${label}</div><div class="line">${thai()?line[3]:line[2]}</div></div><div class="next">${tr("TAP TO CONTINUE","แตะเพื่อดำเนินต่อ")}</div>`;syncAudio()}
+function talk(lines,done){const box=dialogueBox();if(!box){done?.();return}dialogue={lines,i:0,done};box.classList.remove("hidden");renderDialogue();box.onclick=()=>{if(!dialogue)return;recordHistory(dialogue.lines[dialogue.i]);dialogue.i++;if(dialogue.i>=dialogue.lines.length){const fn=dialogue.done;dialogue=null;box.classList.add("hidden");box.onclick=null;delete box.dataset.p8Speaker;delete box.dataset.p8Emotion;syncAudio();fn?.();save()}else renderDialogue()}}
 
 const D={
  debriefIntro:[
@@ -192,9 +190,9 @@ const D={
   ["Benedict","neutral","Deal.","ตกลง"]
  ],
  departure:[
-  ["North","pensive","They still have me listed as removed.","ในระบบยังขึ้นว่าฉันถูกถอดออกอยู่"],
+  ["North","neutral","They still have me listed as removed.","ในระบบยังขึ้นว่าฉันถูกถอดออกอยู่"],
   ["Benedict","neutral","Good.","ดี"],
-  ["North","skeptical","And if they check again?","แล้วถ้าพวกเขาเช็กซ้ำล่ะ"],
+  ["North","neutral","And if they check again?","แล้วถ้าพวกเขาเช็กซ้ำล่ะ"],
   ["Benedict","serious","Let them believe the record.","ก็ปล่อยให้เขาเชื่อในบันทึกนั้น"]
  ]
 };
@@ -255,16 +253,27 @@ function enterDebrief(){const p=ensure();p.locationSeen=true;p.stage=p.matrixCom
 function resumeDebriefStage(){const p=ensure();switch(p.stage){case"matrix":setTimeout(openMatrix,180);break;case"theory-choice":setTimeout(openTheoryChoice,180);break;case"arman":setTimeout(()=>talk(D.arman,()=>openEvidence("arman")),200);break;case"ika":setTimeout(()=>talk(D.ika,()=>openEvidence("ika")),200);break;case"bangkok":playOne("ch4P8SecureNotice",.30);setTimeout(()=>talk(D.bangkokNotice,()=>openEvidence("bangkok")),220);break;case"bangkok-choice":setTimeout(openBangkokChoice,180);break;case"registrar":playOne("ch4P8TraceStinger",.24);setTimeout(()=>talk(D.registrar,()=>openEvidence("registrar")),220);break;case"closing":setTimeout(()=>talk(D.closing,finishDebrief),220);break;default:if(!p.matrixComplete)openMatrix()}}
 function finishDebrief(){const p=ensure();p.closingDebriefComplete=true;p.stage="departure";setCheckpoint("ch4_phase8_departure");safeShow(DEPARTURE);updateLanguage();syncAudio();setTimeout(()=>showRemovalRecord(),450);save()}
 function showRemovalRecord(){const p=ensure();p.departureSeen=true;const card=$("#ch4P8RemovalCard");card?.classList.add("show");card?.setAttribute("aria-hidden","false");collectEvidence("ch4_p8_north_public_removal");setTimeout(()=>{card?.classList.remove("show");card?.setAttribute("aria-hidden","true");talk(D.departure,()=>{p.northRemovalPreserved=true;gs().flags.ch4_p8_north_publicly_removed=true;gs().flags.ch4_p8_registrar_lead_ready=true;p.stage="takeoff";recomputeCase();save();playTakeoff()})},1500)}
-function playTakeoff(){const p=ensure();p.stage="takeoff";takeoffStartedAt=performance.now();takeoffFinishing=false;setCheckpoint("ch4_phase8_takeoff");safeShow(TAKEOFF);updateLanguage();const route=$("#ch4P8TakeoffRoute"),v=$("#ch4P8TakeoffVideo");route?.classList.add("show");route?.setAttribute("aria-hidden","false");clearTimeout(takeoffRouteTimer);takeoffRouteTimer=setTimeout(()=>{route?.classList.remove("show");route?.setAttribute("aria-hidden","true")},3200);clearTimeout(transitionTimer);transitionTimer=setTimeout(finishTakeoff,9500);if(v){try{v.currentTime=0;v.playbackRate=.86;v.play().catch(()=>{clearTimeout(transitionTimer);transitionTimer=setTimeout(finishTakeoff,7600)})}catch(_){clearTimeout(transitionTimer);transitionTimer=setTimeout(finishTakeoff,7600)}}else{clearTimeout(transitionTimer);transitionTimer=setTimeout(finishTakeoff,7600)}syncAudio()}
-function finishTakeoff(){const p=ensure();if(takeoffFinishing||p.takeoffSeen&&p.stage!=="takeoff")return;const elapsed=takeoffStartedAt?performance.now()-takeoffStartedAt:7200;if(elapsed<7200){clearTimeout(transitionTimer);transitionTimer=setTimeout(finishTakeoff,Math.ceil(7200-elapsed));return}takeoffFinishing=true;$("#ch4P8TakeoffRoute")?.classList.remove("show");$("#ch4P8TakeoffRoute")?.setAttribute("aria-hidden","true");stopElement($("#ch4P8TakeoffVideo"),false);p.takeoffSeen=true;fade($("#ch4P8TakeoffCue"),0,950);fade($("#ch4P8TakeoffAmb"),0,950);clearTimer();setTimeout(()=>{takeoffFinishing=false;finishPhase()},920)}
-function finishPhase(){const p=ensure();p.complete=true;p.stage="complete";const s=gs();Object.assign(s.flags,{ch4_p8_cooperation_paradox_reconciled:true,ch4_p8_arman_boundary_preserved:true,ch4_p8_ika_pre_aster_open:true,ch4_p8_bangkok_handling_anomaly:true,ch4_p8_r_lead_preserved:true,ch4_p8_north_publicly_removed:true,ch4_p8_chapter5_handoff_ready:true});setCheckpoint("ch4_phase8_complete");recomputeCase();stopAudio(false);safeShow(COMPLETE);updateLanguage();syncProgress();save()}
+function playTakeoff(){
+ const p=ensure();p.stage="takeoff";p.takeoffSeen=false;setCheckpoint("ch4_phase8_takeoff");safeShow(TAKEOFF);updateLanguage();
+ const route=$("#ch4P8TakeoffRoute"),skip=$("#ch4P8TakeoffSkip"),continueButton=$("#ch4P8TakeoffContinue"),v=$("#ch4P8TakeoffVideo");
+ route?.classList.remove("show");route?.setAttribute("aria-hidden","true");if(skip){skip.hidden=false;skip.onclick=showTakeoffRoute}if(continueButton)continueButton.onclick=finishPhase;
+ clearTimer();if(v){try{v.currentTime=0;v.playbackRate=.94;v.load();v.play().catch(()=>{takeoffRouteTimer=setTimeout(showTakeoffRoute,1200)})}catch(_){takeoffRouteTimer=setTimeout(showTakeoffRoute,800)}}else takeoffRouteTimer=setTimeout(showTakeoffRoute,500);
+ syncAudio()
+}
+function showTakeoffRoute(event){
+ if(event){event.preventDefault?.();event.stopPropagation?.()}
+ const p=ensure();if(p.stage!=="takeoff")return;p.takeoffSeen=true;setCheckpoint("ch4_phase8_takeoff_route");
+ const route=$("#ch4P8TakeoffRoute"),skip=$("#ch4P8TakeoffSkip"),continueButton=$("#ch4P8TakeoffContinue"),v=$("#ch4P8TakeoffVideo");clearTimer();
+ try{v?.pause()}catch(_){};route?.classList.add("show");route?.setAttribute("aria-hidden","false");if(skip)skip.hidden=true;if(continueButton)continueButton.onclick=finishPhase;updateLanguage();syncAudio();save()
+}
+function finishPhase(){const p=ensure();p.complete=true;p.stage="complete";const s=gs();Object.assign(s.flags,{ch4_p8_cooperation_paradox_reconciled:true,ch4_p8_arman_boundary_preserved:true,ch4_p8_ika_pre_aster_open:true,ch4_p8_bangkok_handling_anomaly:true,ch4_p8_r_lead_preserved:true,ch4_p8_north_publicly_removed:true,ch4_p8_chapter5_handoff_ready:true});setCheckpoint("ch4_phase8_complete");recomputeCase();safeShow(COMPLETE);updateLanguage();syncProgress();syncAudio();save()}
 function returnTitle(){stopAudio(true);try{if(typeof window.LastWitnessChapter2Integration?.returnToTitle==="function")window.LastWitnessChapter2Integration.returnToTitle();else typeof show==="function"&&show("title")}catch(_){} }
 
 function updateLanguage(){if(!$("#"+OPENING))return;const map={
  ch4P8OpeningPlay:tr("PLAY OPENING","เล่นฉากเปิด"),ch4P8OpeningSkip:tr("SKIP","ข้าม"),
  ch4P8LocationEye:tr("DAY 6 · 09:18 WIB","วันที่ 6 · 09:18 น."),ch4P8LocationCity:tr("NORTH JAKARTA · INDONESIA","จาการ์ตาเหนือ · อินโดนีเซีย"),ch4P8LocationName:"JKT-R7 · SECURE DEBRIEF",ch4P8LocationBody:tr("POST-INCIDENT STATEMENT CLEARED · EVIDENCE RECONCILIATION","เสร็จสิ้นการให้ปากคำหลังเหตุการณ์ · ทบทวนความสอดคล้องของหลักฐาน"),
  ch4P8DebriefLocation:tr("JKT-R7 · SECURE DEBRIEF ROOM","JKT-R7 · ห้องสรุปปฏิบัติการ"),[DEBRIEF+"Scene"]:tr("COOPERATION PARADOX","ปริศนาของความร่วมมือ"),[DEBRIEF+"Objective"]:tr("Reconcile what each disclosure proved without turning omission into attribution.","ทบทวนว่าสิ่งที่แต่ละฝ่ายเปิดเผยพิสูจน์อะไร โดยไม่เปลี่ยนช่องว่างให้กลายเป็นการระบุตัวคนร้าย"),
- ch4P8DepartureLocation:tr("SOEKARNO-HATTA · INTERNATIONAL DEPARTURES","SOEKARNO-HATTA · อาคารผู้โดยสารขาออกระหว่างประเทศ"),[DEPARTURE+"Scene"]:tr("DAY 6 · 16:42 WIB","วันที่ 6 · 16:42 น."),[DEPARTURE+"Objective"]:tr("Leave Jakarta with the record intact and one lawful lead for Bangkok.","ออกจาก Jakarta โดยรักษาบันทึกเดิมไว้ และถือเบาะแสที่ชอบด้วยกฎหมายกลับกรุงเทพฯ"),ch4P8TakeoffEye:tr("RETURN FLIGHT · DAY 6","เที่ยวบินขากลับ · วันที่ 6"),ch4P8TakeoffTitle:"JAKARTA → BANGKOK",ch4P8TakeoffTime:tr("SOEKARNO-HATTA · TAKEOFF 18:10 WIB","SOEKARNO-HATTA · เครื่องขึ้น 18:10 WIB"),
+ ch4P8DepartureLocation:tr("SOEKARNO-HATTA · INTERNATIONAL DEPARTURES","SOEKARNO-HATTA · อาคารผู้โดยสารขาออกระหว่างประเทศ"),[DEPARTURE+"Scene"]:tr("DAY 6 · 16:42 WIB","วันที่ 6 · 16:42 น."),[DEPARTURE+"Objective"]:tr("Leave Jakarta with the record intact and one lawful lead for Bangkok.","ออกจาก Jakarta โดยรักษาบันทึกเดิมไว้ และถือเบาะแสที่ชอบด้วยกฎหมายกลับกรุงเทพฯ"),ch4P8FlightHead:tr("SOEKARNO-HATTA · RETURN FLIGHT","SOEKARNO-HATTA · เที่ยวบินขากลับ"),ch4P8FlightStatus:tr("TAKEOFF · 18:10 WIB","เครื่องขึ้น · 18:10 WIB"),ch4P8TakeoffEye:tr("RETURN FLIGHT · DAY 6","เที่ยวบินขากลับ · วันที่ 6"),ch4P8TakeoffTitle:"JAKARTA → BANGKOK",ch4P8DepartLabel:tr("DEPART","ออกเดินทาง"),ch4P8DestinationLabel:tr("DESTINATION","ปลายทาง"),ch4P8TakeoffTime:tr("SOEKARNO-HATTA · TAKEOFF 18:10 WIB · CASE TRANSFER CONTINUES","SOEKARNO-HATTA · เครื่องขึ้น 18:10 WIB · การสืบสวนเดินหน้าต่อ"),ch4P8TakeoffContinue:tr("CONTINUE","ดำเนินต่อ"),ch4P8TakeoffSkip:tr("SKIP","ข้าม"),
  ch4P8MatrixEye:tr("AUTHORIZED ANALYSIS · COOPERATION PARADOX","การวิเคราะห์ที่ได้รับอนุญาต · ปริศนาของความร่วมมือ"),ch4P8MatrixTitle:"DISCLOSURE MATRIX",ch4P8MatrixBody:tr("Match each disclosure to what it actually proved, what remained outside scope, and where the investigation moved next. Tap a card, then tap a slot.","จับคู่สิ่งที่แต่ละฝ่ายเปิดเผยกับสิ่งที่พิสูจน์ได้ สิ่งที่ยังอยู่นอกขอบเขต และจุดที่การสืบสวนเคลื่อนไปต่อ แตะการ์ดแล้วแตะช่องเพื่อวาง"),ch4P8CardLabel:tr("DISCLOSURE CARDS","การ์ดข้อมูล"),ch4P8MatrixReset:tr("RESET CURRENT","เริ่มชุดนี้ใหม่"),ch4P8MatrixConfirm:tr("CONFIRM CHAIN","ยืนยันลำดับ"),
  ch4P8TheoryEye:tr("INVESTIGATIVE METHOD · PHASE VIII","วิธีสืบสวน · เฟส VIII"),ch4P8TheoryTitle:tr("What do we preserve before narrowing the theory?","ก่อนบีบทฤษฎีให้แคบลง เราควรรักษาอะไรไว้ก่อน"),ch4P8TheoryBody:tr("This changes the investigation method, not the historical facts.","การเลือกนี้เปลี่ยนวิธีสืบสวน ไม่ได้เปลี่ยนข้อเท็จจริงที่เกิดขึ้น"),
  ch4P8EvidenceEye:tr("CASE REVIEW · AUTHENTIC / LIMITED","ทบทวนคดี · ของจริง / มีขอบเขต"),ch4P8ProofLabel:tr("WHAT IT SUPPORTS","สิ่งที่หลักฐานรองรับ"),ch4P8LimitLabel:tr("WHAT IT DOES NOT ESTABLISH","สิ่งที่หลักฐานยังพิสูจน์ไม่ได้"),
@@ -282,13 +291,13 @@ function bindUi(){
  ov?.addEventListener("ended",finishOpening);ov?.addEventListener("error",()=>$("#ch4P8OpeningPlay")?.removeAttribute("hidden"));ovSource?.addEventListener("error",()=>$("#ch4P8OpeningPlay")?.removeAttribute("hidden"));
  $("#ch4P8OpeningPlay")?.addEventListener("click",()=>{if(!ov)return;syncAudio();ov.play().then(()=>$("#ch4P8OpeningPlay")?.setAttribute("hidden","")).catch(()=>{})});
  $("#ch4P8OpeningSkip")?.addEventListener("click",finishOpening);
- const tv=$("#ch4P8TakeoffVideo");tv?.addEventListener("ended",finishTakeoff);tv?.addEventListener("error",finishTakeoff);
+ const tv=$("#ch4P8TakeoffVideo");tv?.addEventListener("ended",showTakeoffRoute);tv?.addEventListener("error",showTakeoffRoute);$("#ch4P8TakeoffSkip")?.addEventListener("click",showTakeoffRoute);$("#ch4P8TakeoffContinue")?.addEventListener("click",finishPhase);
  $("#ch4P8MatrixReset")?.addEventListener("click",resetMatrixSubject);$("#ch4P8MatrixConfirm")?.addEventListener("click",confirmMatrix);$("#ch4P8EvidenceContinue")?.addEventListener("click",continueEvidence);$("#ch4P8ReturnTitle")?.addEventListener("click",returnTitle);
  $$('[data-p8-theory]').forEach(b=>b.addEventListener("click",()=>chooseTheory(b.dataset.p8Theory)));$$('[data-p8-bangkok]').forEach(b=>b.addEventListener("click",()=>chooseBangkok(b.dataset.p8Bangkok)));
  document.addEventListener("click",e=>{if(e.target.closest?.("[data-lang]"))setTimeout(updateLanguage,0);if(e.target.closest?.("#caseButton"))setTimeout(appendCaseEvidence,0);if(e.target.closest?.("#soundToggle,#musicRange,#sfxRange"))setTimeout(syncAudio,0);if(e.target.closest?.("#resume,.closeModal,#charactersBack,#settingsButton,#historyButton,#charactersButton,#caseButton"))setTimeout(resumeForegroundAudio,40)},true)
 }
 
-function resumeFromState(){inject();const p=ensure();recomputeCase();switch(p.stage){case"opening":playOpening();break;case"title":case"location":safeShow(LOCATION);updateLanguage();transitionTimer=setTimeout(enterDebrief,1300);break;case"debrief":case"matrix":case"theory-choice":case"arman":case"ika":case"bangkok":case"bangkok-choice":case"registrar":case"closing":enterDebrief();break;case"departure":safeShow(DEPARTURE);updateLanguage();syncAudio();setTimeout(showRemovalRecord,360);break;case"takeoff":playTakeoff();break;case"complete":safeShow(COMPLETE);updateLanguage();break;default:playOpening()}}
+function resumeFromState(){inject();const p=ensure();recomputeCase();switch(p.stage){case"opening":playOpening();break;case"title":case"location":safeShow(LOCATION);updateLanguage();transitionTimer=setTimeout(enterDebrief,1300);break;case"debrief":case"matrix":case"theory-choice":case"arman":case"ika":case"bangkok":case"bangkok-choice":case"registrar":case"closing":enterDebrief();break;case"departure":safeShow(DEPARTURE);updateLanguage();syncAudio();setTimeout(showRemovalRecord,360);break;case"takeoff":p.takeoffSeen?showTakeoffRoute():playTakeoff();break;case"complete":safeShow(COMPLETE);updateLanguage();break;default:playOpening()}}
 function startFromPhase7(){if(handoffStarting)return true;handoffStarting=true;try{inject();const s=gs(),p=ensure();if(!s?.flags?.ch4_p7_phase8_handoff_ready&&!s?.chapter4?.phase7?.complete)return false;stopForeignAudio();if(p.complete){safeShow(COMPLETE);updateLanguage();return true}if(p.started){resumeFromState();return true}playOpening();return true}finally{setTimeout(()=>{handoffStarting=false},350)}}
 function startFreshForDev(){inject();stopAudio(true);stopForeignAudio();const s=gs();s.chapter=4;s.chapter4=s.chapter4||{};s.chapter4.phase7=s.chapter4.phase7||{};Object.assign(s.chapter4.phase7,{started:true,complete:true,closingComplete:true,stage:"complete"});s.flags=s.flags||{};Object.assign(s.flags,{ch4_p7_facility_lawfully_inspected:true,ch4_p7_reader_clock_normalized:true,ch4_p7_r18_correlated:true,ch4_p7_isolation_order_authorized:true,ch4_p7_residual_path_observed:true,ch4_p7_secondary_continuity_supported:true,ch4_p7_decision_owner_unresolved:true,ch4_p7_phase8_handoff_ready:true});s.chapter4.phase8=defaults();playOpening();return true}
 function installHandoff(){if(handoffObserver)return;const check=()=>{if(internalRouting)return;const s=gs();if(!s)return;const complete=$("#relayFacilityPhase7Complete");if((complete?.classList.contains("active")||s.screen==="relayFacilityPhase7Complete")&&(s.flags?.ch4_p7_phase8_handoff_ready||s.chapter4?.phase7?.complete))queueMicrotask(()=>startFromPhase7())};handoffObserver=new MutationObserver(check);handoffObserver.observe(document.body,{subtree:true,attributes:true,attributeFilter:["class"]});document.addEventListener("lw-state-restored",check);setTimeout(check,0)}
