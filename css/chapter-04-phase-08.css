@@ -1,15 +1,9 @@
-/* LAST WITNESS - Chapter IV / Phase VIII: SHADOW OF THE TRUTH 0.21.6
+/* LAST WITNESS - Chapter IV / Phase VIII: SHADOW OF THE TRUTH 0.21.7
  * Visual contract: preserve Chapter IV cards/dialogue/HUD/progress. Bespoke work is limited
  * to the Disclosure Matrix, evidence review and owner-only read-only diagnostics.
  */
 :root{--p8-gold:#d7ad62;--p8-paper:#f2ece3;--p8-muted:#9ea8ad;--p8-blue:#6f9caf;--p8-ink:#05070a;--p8-green:#7fb88d;--p8-red:#c87973;--p8-panel:#0a0e13}
-/* Phase VIII opening uses the proven Phase VII video shell plus a deterministic poster fallback. */
-#shadowTruthOpening{background:#05070a url("../assets/images/chapter-04/phase-08/opening-poster.jpg?v=0216") center/cover no-repeat!important}
-#shadowTruthOpening #ch4P8OpeningVideo{z-index:1;opacity:0;visibility:visible;transition:opacity .16s linear;background:transparent!important}
-#shadowTruthOpening.media-ready #ch4P8OpeningVideo{opacity:1}
-#shadowTruthOpening .ch4-p8-video-shade{z-index:2}
-#shadowTruthOpening .ch4-p8-video-play{z-index:32;top:50%;bottom:auto;left:50%;transform:translate(-50%,-50%);width:min(72vw,260px);min-height:48px}
-#shadowTruthOpening .ch4-p8-skip{z-index:31}
+/* Phase VIII opening uses the CURRENT production Phase VII contract: ch4-p5-video / ch4-p5-video-play / ch4-p5-skip. Do not add position:relative to the opening screen. */
 
 .ch4-p8-video,.ch4-p8-scene,.ch4-p8-card,.ch4-p8-complete{background:#040609;color:var(--p8-paper)}
 .ch4-p8-video{position:relative;overflow:hidden;background:#05070a}.ch4-p8-video video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;background:#000}.ch4-p8-video-shade{position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,rgba(3,5,8,.08),rgba(3,5,8,.02) 50%,rgba(3,5,8,.35) 100%)}
