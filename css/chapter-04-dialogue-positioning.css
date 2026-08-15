@@ -1,0 +1,41 @@
+/* LAST WITNESS - Chapter IV Dialogue Positioning Standard 0.22.4
+ * Presentation-only normalization for ordinary Chapter IV dialogue.
+ * No gameplay state, progress value, Save, Hidden Case, audio, puzzle or routing logic.
+ * Chapter I remains the visual reference: dialogue sits near the lower safe area and
+ * temporarily owns the lower HUD region while spoken text is active.
+ */
+
+/* Preserve every accepted phase's existing dialogue height, portrait well, grid,
+ * crop and typography. This patch changes vertical position only.
+ * P7 inherits the compact P4 dialogue shell; P6/P8 use the larger P5 shell.
+ */
+.ch4-p1-dialogue,
+.ch4-p2-dialogue,
+.ch4-p3-dialogue,
+.ch4-p4-dialogue,
+.ch4-p5-dialogue{
+ bottom:calc(18px + var(--bottom,14px));
+ z-index:32;
+}
+
+/* During ordinary dialogue the progress pill is informational, not interactive.
+ * Hide only the matching Chapter IV progress presentation while dialogue is
+ * visible, then restore it automatically when the dialogue box becomes hidden.
+ * The underlying progress value/state continues normally.
+ */
+.screen:has(.ch4-p1-dialogue:not(.hidden)) .ch4-p1-progress,
+.screen:has(.ch4-p2-dialogue:not(.hidden)) .ch4-p2-progress,
+.screen:has(.ch4-p3-dialogue:not(.hidden)) .ch4-p2-progress,
+.screen:has(.ch4-p4-dialogue:not(.hidden)) .ch4-p4-progress,
+.screen:has(.ch4-p7-dialogue:not(.hidden)) .ch4-p5-progress,
+.screen:has(.ch4-p5-dialogue:not(.hidden)) .ch4-p5-progress{
+ opacity:0!important;
+ visibility:hidden!important;
+}
+
+/* Intentional exclusions:
+ * - Chapter I-III global dialogue is untouched.
+ * - Phase VI cinematic CG dialogue (.ch4-p6-cg-dialogue) is untouched.
+ * - dialogue heights and portrait geometry are untouched.
+ * - combat, minigame, evidence, choice and completion surfaces are untouched.
+ */
