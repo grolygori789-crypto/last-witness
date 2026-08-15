@@ -2,25 +2,26 @@
 
 > **CANONICAL MASTER REFERENCE / ZERO-QUESTION ROOM HANDOFF**
 >
-> **Revision:** 2026-08-15 01:55 ICT  
+> **Revision:** 2026-08-15 20:22 ICT  
 > **Game:** LAST WITNESS  
 > **Studio:** BENEDICT INTERACTIVE  
 > **Repository:** `grolygori789-crypto/last-witness`  
 > **Production/default branch:** `production-rebuild`  
-> **Production HEAD observed before this documentation update:** `42a677a4e84132bb19d4f58dd5b1d8cd607e46c3`  
-> **HEAD message:** `Fix P8 portraits and owner case inspector`  
-> **Authoritative Runtime build:** `0.22.2`  
+> **Production HEAD observed before this Runtime/tooling update:** `05007557d2972df80cf8e615f5e4a7e32ba2059e`  
+> **HEAD message:** `Accept Chapters I-IV and advance to Chapter V`  
+> **Authoritative Runtime build:** `0.22.3`  
 > **Current accepted playable boundary:** `CHAPTER IV COMPLETE · OWNER CURRENT-PASS ACCEPTED`  
 > **Chapter IV:** exactly 8 phases; no Phase IX without explicit owner approval  
 > **Chapters I–IV status:** owner-reviewed by Dev Mode Jump / real-device spot checks and accepted for current continuation; later reproducible defects may still be repaired  
 > **Next story objective:** `CHAPTER V · PHASE I · RETURN TO BANGKOK`  
 > **Hidden Case Architecture:** base engine module `0.21.0`, active from Phase VIII  
-> **Owner Hidden Case Inspector:** visual, temporary simulation sandbox in Runtime `0.22.2`; synthetic adjustments never write canonical case state  
+> **Owner Hidden Case Inspector:** visual, temporary simulation sandbox; synthetic adjustments never write canonical case state
+> **Owner Walkthrough Mode:** Runtime `0.22.3-w1`; read-only guided walkthrough/verified solutions from Chapter I through Chapter IV Phase VIII; Owner-only  
 > **Adaptive model:** `P8 CALCULATE → Ch V INFLUENCE → Ch VI DIVERGE → Ch VII RESOLVE`
 
 This file supersedes all older Master Plan revisions. It preserves the locked long-game mystery architecture while updating actual Production status after the owner's current-pass review of Chapters I–IV.
 
-A documentation-only change to this file does **not** require a Runtime build increment.
+A documentation-only change to this file does **not** require a Runtime build increment. This revision accompanies Runtime `0.22.3` because the Owner Walkthrough and build-facing runtime modules change in the same release.
 
 ---
 
@@ -154,7 +155,7 @@ Progress reaches `100%` only at genuine completion.
 
 # 3. RUNTIME BUILD LINKAGE — EVERY RUNTIME RELEASE
 
-Current base build: **0.22.2**.
+Current base build: **0.22.3**.
 
 All player-facing, owner-facing, QA-facing and save-facing Runtime build identities must resolve to the same base build.
 
@@ -166,7 +167,7 @@ All player-facing, owner-facing, QA-facing and save-facing Runtime build identit
 - cache key for `js/engine/09-defect-hotfix.js`
 - any changed direct loader references
 
-Current index bootstrap generation: `0222r1`.
+Current index bootstrap generation: `0223r1`.
 
 ### `js/engine/09-defect-hotfix.js`
 
@@ -180,21 +181,21 @@ Synchronize:
 - North QA cache / expected version
 - Runtime Build Label cache / expected version
 
-Current bootstrap is Startup Recovery `0222R1`, Runtime `0.22.2`.
+Current bootstrap is Startup Recovery `0223R1`, Runtime `0.22.3`.
 
 ### `js/engine/18-developer-phase-navigation.js`
 
-Current `0.22.2-d1`.
+Current `0.22.3-d1`.
 
 Suffix may differ, but base build must match current Runtime.
 
 ### `js/engine/24-north-qa-access.js`
 
-Current `0.22.2`.
+Current `0.22.3`.
 
 ### `js/engine/25-runtime-build-label.js`
 
-Current `0.22.2`.
+Current `0.22.3`.
 
 It synchronizes:
 
@@ -205,11 +206,19 @@ It synchronizes:
 - Developer build
 - `LastWitnessSaveManager.version` where available
 
+### `js/engine/30-owner-walkthrough-mode.js` + `css/owner-walkthrough-mode.css`
+
+Current Owner Walkthrough module: `0.22.3-w1`.
+
+Bootstrap cache generation: `0223w1`.
+
+The module is Owner-only and read-only. It may read current screen/checkpoint/stage context but must not mutate gameplay, Save, Hidden Case, progress, evidence, choices, audio or North QA state.
+
 ### changed phase modules
 
 If a phase JS/CSS changes, update its own version/cache and bootstrap expectations consistently.
 
-Current Phase VIII JS/CSS generation: `0.22.2` / `v=0222`.
+Current Phase VIII JS/CSS generation remains `0.22.2` / `v=0222` (unchanged independent phase module).
 
 ## Stable independent modules
 
@@ -247,7 +256,11 @@ Master Plan-only changes do not bump Runtime.
 
 # 4. STARTUP / LOADER SAFETY
 
-Current Production runtime baseline observed before this documentation update:
+Production HEAD observed before this Runtime/tooling update:
+
+`05007557d2972df80cf8e615f5e4a7e32ba2059e` — `Accept Chapters I-IV and advance to Chapter V`
+
+Last Runtime-code baseline before Walkthrough:
 
 `42a677a4e84132bb19d4f58dd5b1d8cd607e46c3` — `Fix P8 portraits and owner case inspector`
 
@@ -255,7 +268,7 @@ Historical safe startup recovery baseline:
 
 `a3490e895a6147e2e675b5c392d3f5fb317d0977` — `Fixed cached startup repaire loader`
 
-Current bootstrap generation is Startup Recovery `0222R1`.
+Current bootstrap generation is Startup Recovery `0223R1`.
 
 A temporary Phase VIII repair loader was previously added and later reverted because it broke startup.
 
@@ -442,13 +455,45 @@ Synthetic adjustment rules are non-negotiable:
 
 This sandbox exists to accelerate Alternate Ending / eligibility testing without contaminating the real investigation state.
 
+## Owner Walkthrough Mode — Runtime 0.22.3-w1
+
+Owner Developer Mode includes a professional read-only Walkthrough covering the currently accepted playable content from Chapter I through Chapter IV Phase VIII.
+
+Purpose:
+
+- show the current walkthrough step
+- state the next action clearly
+- provide a restrained hint
+- reveal a verified solution when the Production logic has a deterministic answer
+- label narrative/relationship choices as `NO FAILURE PATH` when no single correct answer exists
+- allow manual Chapter/Phase browsing
+- allow `SYNC TO GAME` using current screen/checkpoint/stage context
+- minimize to a compact pill while gameplay continues
+
+Safety contract:
+
+- Owner-only
+- never available to North QA
+- read-only with respect to gameplay state
+- no Hidden Case write
+- no Save write
+- no checkpoint/progress/evidence/choice mutation
+- no automatic puzzle completion
+- no synthetic click injection
+- no audio control
+- no broad `MutationObserver`
+- polling/sync may update Walkthrough UI only
+- closing/minimizing the guide must not change gameplay
+
+Walkthrough answers are derived from current Production logic. Deterministic puzzle solutions must match the actual validators in source; narrative choices must not be falsely presented as objectively correct.
+
 ---
 
 # 9. NORTH QA
 
 North QA is limited blind-tester access.
 
-Current module: `0.22.2`.
+Current module: `0.22.3`.
 
 It shares canonical Developer Phase Navigation for Chapter IV entry so reset/media/state behavior remains aligned.
 
@@ -478,6 +523,7 @@ North QA must **never** expose:
 - ending simulator
 - owner-only mystery diagnostics
 - Owner Hidden Case simulation controls
+- Owner Walkthrough Mode, hints or verified solutions
 
 Blind-test integrity is a product requirement.
 
@@ -1167,6 +1213,29 @@ Message:
 
 `Fix P8 portraits and owner case inspector`
 
+## 0.22.3 Owner Walkthrough tooling
+
+Runtime `0.22.3` adds an isolated Owner-only Walkthrough module without changing accepted Chapter I–IV gameplay logic.
+
+Introduced:
+
+- professional read-only walkthrough overlay
+- Chapter I → Chapter IV Phase VIII coverage
+- context-sensitive sync to current screen/checkpoint/stage
+- exact Production-verified solutions for deterministic minigames
+- explicit `NO FAILURE PATH` labeling for non-failing narrative choices
+- hint / show-solution controls
+- manual Chapter/Phase browsing
+- minimized gameplay-safe guide pill
+- North QA exclusion
+- no canonical state or Save mutation
+- synchronized Runtime `0.22.3`
+- Developer `0.22.3-d1`
+- North QA `0.22.3`
+- Walkthrough module `0.22.3-w1`
+
+Phase VIII remains the accepted independent module `0.22.2`; Hidden Case remains `0.21.0`. Neither is bumped merely to match the Runtime shell because neither module changed.
+
 ## Current owner acceptance
 
 After the above recovery and polish, the owner has performed a practical Dev Mode Jump / real-device review across Chapters I–IV and accepts the current result for continuation.
@@ -1802,6 +1871,23 @@ Verify:
 - closing/reopening returns to live state
 - North QA cannot access it
 
+## Owner Walkthrough Mode
+
+Verify:
+
+- button appears only in Owner Developer tools
+- Chapter I–IV catalog opens
+- `SYNC TO GAME` follows the active context without changing state
+- deterministic minigames show the Production-correct solution
+- narrative choices display `NO FAILURE PATH` where appropriate
+- Hint and Show Solution are presentation-only
+- Prev/Next and Chapter/Phase browse do not alter gameplay
+- Minimize/restore does not interrupt gameplay or audio
+- closing the Walkthrough changes no gameplay state
+- no Save/autosave action from Walkthrough
+- no Hidden Case mutation
+- North QA cannot see or open Walkthrough
+
 ## Mobile viewports
 
 At minimum:
@@ -1835,15 +1921,15 @@ Normal UI/North QA must not expose scores, deltas, routes, projected endings, El
 
 # 27. CURRENT PRODUCTION STATUS AT THIS REVISION
 
-Current Runtime: **0.22.2**.
+Current Runtime: **0.22.3**.
 
-Current Production HEAD before this documentation update:
+Production HEAD before this Runtime/tooling update:
 
-`42a677a4e84132bb19d4f58dd5b1d8cd607e46c3`
+`05007557d2972df80cf8e615f5e4a7e32ba2059e`
 
 Message:
 
-`Fix P8 portraits and owner case inspector`
+`Accept Chapters I-IV and advance to Chapter V`
 
 Relevant recent history:
 
@@ -1851,14 +1937,16 @@ Relevant recent history:
 - `f40746a066ece657f85808fae10e36c4f5a07e8a` — `Update master plan for room handoff`
 - `7fccff4ebc9ee4e1eca6b5735febb196b985940b` — `Fix C4P8 defects and sync runtime 0.22.1`
 - `42a677a4e84132bb19d4f58dd5b1d8cd607e46c3` — `Fix P8 portraits and owner case inspector`
+- `05007557d2972df80cf8e615f5e4a7e32ba2059e` — `Accept Chapters I-IV and advance to Chapter V`
 
 Current modules:
 
-- Phase VIII: `0.22.2`
-- Developer Navigation: `0.22.2-d1`
-- North QA: `0.22.2`
-- Runtime Build Label: `0.22.2`
-- Hidden Case engine: `0.21.0`
+- Phase VIII: `0.22.2` (unchanged independent module)
+- Developer Navigation: `0.22.3-d1`
+- North QA: `0.22.3`
+- Runtime Build Label: `0.22.3`
+- Owner Walkthrough: `0.22.3-w1`
+- Hidden Case engine: `0.21.0` (unchanged independent module)
 
 Canonical runtime rule:
 
@@ -1892,7 +1980,7 @@ Sequence:
 
 1. read this Master Plan
 2. inspect current Production when current repo truth matters
-3. use Runtime `0.22.2` / current Production as the baseline
+3. use Runtime `0.22.3` / current Production as the baseline
 4. treat Chapters I–IV as accepted maintenance-locked content
 5. preserve Chapter IV final evidence/flags/state
 6. begin `CHAPTER V · PHASE I · RETURN TO BANGKOK`
@@ -1949,6 +2037,9 @@ Do not:
 - release mismatched Build labels
 - claim Android acceptance without Android
 - expose Owner Hidden Case simulation controls to North QA
+- expose Owner Walkthrough, hints or verified solutions to North QA
+- let Walkthrough mutate gameplay, Save, Hidden Case, checkpoints, evidence, choices or audio
+- use Walkthrough auto-completion as evidence that a gameplay path actually works
 - let synthetic Owner Inspector values write canonical case state
 - reopen accepted Chapters I–IV for speculative polish without owner request
 
@@ -1986,8 +2077,8 @@ Canonical final idea:
 # 31. FINAL NON-NEGOTIABLE SUMMARY
 
 - Owner real-device evidence is highest authority.
-- Current Runtime at this revision is `0.22.2`.
-- Current Production HEAD observed before this documentation update is `42a677a4e84132bb19d4f58dd5b1d8cd607e46c3`.
+- Current Runtime at this revision is `0.22.3`.
+- Production HEAD observed before this Runtime/tooling update is `05007557d2972df80cf8e615f5e4a7e32ba2059e`.
 - Chapters I–IV are owner-accepted for current continuation after practical Dev Mode Jump / real-device spot checks.
 - That acceptance is not a claim of exhaustive defect-free E2E coverage.
 - Later reproducible defects in Chapters I–IV may be repaired surgically without reopening the whole accepted baseline.
@@ -2005,7 +2096,9 @@ Canonical final idea:
 - Relationship system remains separate from criminal attribution.
 - Hidden Case is deterministic, auditable, idempotent and player-invisible.
 - Owner Hidden Case Inspector synthetic controls are temporary and must never mutate canonical ledger/Save state.
-- North QA never sees hidden scores/routes/gates or Owner simulation controls.
+- Owner Walkthrough `0.22.3-w1` is read-only and covers Chapter I through Chapter IV Phase VIII.
+- Deterministic Walkthrough solutions must come from actual Production validators; non-failing choices must be labeled accordingly.
+- North QA never sees hidden scores/routes/gates, Owner simulation controls or Owner Walkthrough content.
 - Player never chooses killer from a final list.
 - Five mandatory false principals: Kittisak, Narin, Adrian, Arman, Ika.
 - Somchai remains strongly suspicious.
