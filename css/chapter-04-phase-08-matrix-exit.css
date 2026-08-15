@@ -1,0 +1,10 @@
+/* LAST WITNESS - Phase VIII Disclosure Matrix Exit UX 0.22.7-m1
+ * Scoped to P8 Matrix only. No dialogue, Progress or global screen geometry changes.
+ */
+.ch4-p8-matrix-head{position:relative;padding-right:62px}
+.ch4-p8-matrix-close{position:absolute;z-index:6;top:12px;right:12px;display:grid;place-items:center;width:44px;height:44px;margin:0;padding:0;border:1px solid rgba(255,255,255,.16);border-radius:50%;background:rgba(5,8,12,.78);color:#d9c7a7;box-shadow:0 8px 24px rgba(0,0,0,.28);font-size:27px;font-weight:300;line-height:1;touch-action:manipulation}
+.ch4-p8-matrix-close:active{transform:scale(.96);border-color:rgba(215,173,98,.65);color:#f0d49a}
+.ch4-p8-matrix.lw-p8-matrix-paused{display:none!important}
+.ch4-p8-matrix-resume{position:absolute;z-index:9;left:50%;bottom:calc(64px + env(safe-area-inset-bottom));transform:translateX(-50%);display:flex;align-items:center;justify-content:center;gap:9px;width:min(calc(100% - 30px),390px);min-height:50px;margin:0;padding:10px 15px;border:1px solid rgba(215,173,98,.52);border-radius:9px;background:linear-gradient(145deg,rgba(18,24,32,.96),rgba(7,10,15,.97));box-shadow:0 14px 38px rgba(0,0,0,.42);color:#d9c7a7;letter-spacing:.08em;touch-action:manipulation}
+.ch4-p8-matrix-resume[hidden]{display:none!important}.ch4-p8-matrix-resume span{color:#9da6aa;font-size:9px;font-weight:850;letter-spacing:.14em}.ch4-p8-matrix-resume strong{color:#e1bc78;font-size:11px;font-weight:900;letter-spacing:.10em}.ch4-p8-matrix-resume:active{transform:translateX(-50%) scale(.985);border-color:rgba(215,173,98,.78)}
+@media(max-width:420px){.ch4-p8-matrix-head{padding-right:60px}.ch4-p8-matrix-close{top:10px;right:10px;width:44px;height:44px}.ch4-p8-matrix-resume{bottom:calc(62px + env(safe-area-inset-bottom));min-height:48px;padding:9px 12px}}

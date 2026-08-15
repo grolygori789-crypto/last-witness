@@ -2,14 +2,14 @@
 
 > **CANONICAL MASTER REFERENCE / ZERO-QUESTION ROOM HANDOFF**
 >
-> **Revision:** 2026-08-15 22:31 ICT  
+> **Revision:** 2026-08-15 22:49 ICT  
 > **Game:** LAST WITNESS  
 > **Studio:** BENEDICT INTERACTIVE  
 > **Repository:** `grolygori789-crypto/last-witness`  
 > **Production/default branch:** `production-rebuild`  
-> **Production HEAD observed before this Runtime/restore update:** `80c6b5c5189141c83887b81733ac6ee459a8c7d3`  
-> **HEAD message:** `Keep Chapter IV progress visible in dialogue`  
-> **Authoritative Runtime build:** `0.22.6`  
+> **Production HEAD observed before this Runtime/maintenance update:** `5e2dadb9faedbd86e26cdbe446e7e31d9de99381`  
+> **HEAD message:** `Restore pre-dialogue layout baseline 0.22.6`  
+> **Authoritative Runtime build:** `0.22.7`  
 > **Current accepted playable boundary:** `CHAPTER IV COMPLETE · OWNER CURRENT-PASS ACCEPTED`  
 > **Chapter IV:** exactly 8 phases; no Phase IX without explicit owner approval  
 > **Chapters I–IV status:** owner-reviewed by Dev Mode Jump / real-device spot checks and accepted for current continuation; later reproducible defects may still be repaired  
@@ -17,12 +17,13 @@
 > **Hidden Case Architecture:** base engine module `0.21.0`, active from Phase VIII  
 > **Owner Hidden Case Inspector:** visual, temporary simulation sandbox; synthetic adjustments never write canonical case state
 > **Owner Walkthrough Mode:** module `0.22.3-w1`; read-only guided walkthrough/verified solutions from Chapter I through Chapter IV Phase VIII; Owner-only  
-> **Dialogue presentation restore:** Runtime `0.22.6`; restores the pre-adjustment Runtime `0.22.3` dialogue/progress presentation baseline; the 0.22.4–0.22.5 positioning experiment is retired  
+> **Dialogue presentation restore:** Runtime `0.22.6`; restored pre-adjustment Runtime `0.22.3` dialogue/progress presentation remains the active frozen baseline  
+> **Phase VIII Matrix Exit:** module `0.22.7-m1`; Disclosure Matrix now supports explicit Close → Secure Debrief → Resume without canonical state mutation  
 > **Adaptive model:** `P8 CALCULATE → Ch V INFLUENCE → Ch VI DIVERGE → Ch VII RESOLVE`
 
 This file supersedes all older Master Plan revisions. It preserves the locked long-game mystery architecture while updating actual Production status after the owner's current-pass review of Chapters I–IV.
 
-A documentation-only change to this file does **not** require a Runtime build increment. This revision accompanies Runtime `0.22.6` because the experimental Chapter IV dialogue/progress presentation override is being retired and build-facing runtime modules are synchronized to the restore release.
+A documentation-only change to this file does **not** require a Runtime build increment. This revision accompanies Runtime `0.22.7` because the isolated Phase VIII Matrix Exit controller and build-facing runtime modules change in the same maintenance release. The restored dialogue/progress baseline from Runtime `0.22.6` remains frozen and unchanged.
 
 ---
 
@@ -172,7 +173,7 @@ Canonical restore contract:
 
 # 3. RUNTIME BUILD LINKAGE — EVERY RUNTIME RELEASE
 
-Current base build: **0.22.6**.
+Current base build: **0.22.7**.
 
 All player-facing, owner-facing, QA-facing and save-facing Runtime build identities must resolve to the same base build.
 
@@ -184,7 +185,7 @@ All player-facing, owner-facing, QA-facing and save-facing Runtime build identit
 - cache key for `js/engine/09-defect-hotfix.js`
 - any changed direct loader references
 
-Current index bootstrap generation: `0226r1`.
+Current index bootstrap generation: `0227r1`.
 
 ### `js/engine/09-defect-hotfix.js`
 
@@ -198,21 +199,21 @@ Synchronize:
 - North QA cache / expected version
 - Runtime Build Label cache / expected version
 
-Current bootstrap is Startup Recovery `0226R1`, Runtime `0.22.6`.
+Current bootstrap is Startup Recovery `0227R1`, Runtime `0.22.7`.
 
 ### `js/engine/18-developer-phase-navigation.js`
 
-Current `0.22.6-d1`.
+Current `0.22.7-d1`.
 
 Suffix may differ, but base build must match current Runtime.
 
 ### `js/engine/24-north-qa-access.js`
 
-Current `0.22.6`.
+Current `0.22.7`.
 
 ### `js/engine/25-runtime-build-label.js`
 
-Current `0.22.6`.
+Current `0.22.7`.
 
 It synchronizes:
 
@@ -236,6 +237,20 @@ The module is Owner-only and read-only. It may read current screen/checkpoint/st
 Retired in Runtime `0.22.6`. The file is inert and is not loaded by the bootstrap.
 
 This retired file must remain inert unless the owner explicitly approves a future replacement design. Runtime `0.22.6` does not load it.
+
+### `js/engine/31-p8-matrix-exit.js` + `css/chapter-04-phase-08-matrix-exit.css`
+
+Current Phase VIII Matrix Exit controller: `0.22.7-m1`, bootstrap cache `v=0227m1`.
+
+Contract:
+
+- scoped only to the Phase VIII Disclosure Matrix
+- provides explicit Close and Resume controls
+- Close returns visually to Secure Debrief without completing or resetting the Matrix
+- existing card placements and attempts remain intact
+- no checkpoint, Save, Hidden Case, evidence, progress, dialogue geometry or route mutation
+- the pause state is presentation-only and session-local; reloading while the canonical stage is `matrix` reopens the Matrix normally
+- no broad MutationObserver and no repair loader
 
 ### changed phase modules
 
@@ -291,7 +306,7 @@ Historical safe startup recovery baseline:
 
 `a3490e895a6147e2e675b5c392d3f5fb317d0977` — `Fixed cached startup repaire loader`
 
-Current bootstrap generation is Startup Recovery `0226R1`.
+Current bootstrap generation is Startup Recovery `0227R1`.
 
 A temporary Phase VIII repair loader was previously added and later reverted because it broke startup.
 
@@ -516,7 +531,7 @@ Walkthrough answers are derived from current Production logic. Deterministic puz
 
 North QA is limited blind-tester access.
 
-Current module: `0.22.6`.
+Current module: `0.22.7`.
 
 It shares canonical Developer Phase Navigation for Chapter IV entry so reset/media/state behavior remains aligned.
 
@@ -1322,6 +1337,22 @@ Retired:
 
 The retired stylesheet is left inert only so the owner can neutralize it through an upload-only GitHub replacement without a separate delete operation.
 
+## 0.22.7 Phase VIII Disclosure Matrix exit path
+
+Owner real-device review found that the Phase VIII Disclosure Matrix had no player-controlled exit: once opened, the player had to finish all three subjects or leave the game. Runtime `0.22.7` adds an isolated presentation controller without reopening dialogue geometry or the accepted investigation logic.
+
+Introduced:
+
+- explicit `×` close control in the Disclosure Matrix header
+- close returns to the existing Secure Debrief scene
+- visible `RESUME DISCLOSURE MATRIX` control while the Matrix is paused
+- current placements, subject index and attempts remain intact
+- resume returns to the same in-progress Matrix
+- no Matrix auto-completion, reset or evidence award
+- no Hidden Case, Save schema, checkpoint, route, Progress or dialogue-geometry mutation
+- audio returns to normal Secure Debrief level while visually paused and re-ducks when the Matrix resumes
+- Phase VIII core remains `0.22.2`; the exit controller is independent module `0.22.7-m1`
+
 ## Current owner acceptance
 
 After the above recovery and polish, the owner has performed a practical Dev Mode Jump / real-device review across Chapters I–IV and accepts the current result for continuation.
@@ -1881,6 +1912,20 @@ Chapters I–IV are currently accepted for continuation, but every future Runtim
 
 ## Phase VIII regression surface
 
+Disclosure Matrix exit-path maintenance checks:
+
+- Matrix header exposes a clear `×` close control on portrait mobile
+- Close never confirms, resets or advances the Matrix
+- Close returns to Secure Debrief with no modal overlay remaining visible
+- Resume control is visible only while the incomplete Matrix is presentation-paused
+- card placements, current subject and attempt counts are unchanged across Close → Resume
+- Resume reopens the same Matrix state
+- Matrix completion still follows the original validator and transition path
+- Save/Load while canonical stage is `matrix` remains canonical; reload may reopen the Matrix rather than persisting the temporary paused presentation
+- Hidden Case snapshot is unchanged by Close → Resume alone
+- dialogue geometry and Progress presentation remain byte-for-byte outside this new scoped module
+- North QA may use the normal player-facing Close/Resume controls; no Owner-only data is exposed
+
 1. DEV → Ch IV → P8
 2. opening
 3. Skip
@@ -2007,15 +2052,15 @@ Normal UI/North QA must not expose scores, deltas, routes, projected endings, El
 
 # 27. CURRENT PRODUCTION STATUS AT THIS REVISION
 
-Current Runtime: **0.22.6**.
+Current Runtime: **0.22.7**.
 
-Production HEAD before this Runtime/restore update:
+Production HEAD before this Runtime/maintenance update:
 
-`80c6b5c5189141c83887b81733ac6ee459a8c7d3`
+`5e2dadb9faedbd86e26cdbe446e7e31d9de99381`
 
 Message:
 
-`Keep Chapter IV progress visible in dialogue`
+`Restore pre-dialogue layout baseline 0.22.6`
 
 Relevant recent history:
 
@@ -2027,14 +2072,16 @@ Relevant recent history:
 - `88bb3bf3fea7af3fe823331556d0e29afad8d67b` — `Add owner walkthrough and sync runtime 0.22.3`
 - `ff378fc981c7b7a68305953b3ddf4b0be1b4b24f` — `Lower Chapter IV dialogue and sync 0.22.4`
 - `80c6b5c5189141c83887b81733ac6ee459a8c7d3` — `Keep Chapter IV progress visible in dialogue`
+- `5e2dadb9faedbd86e26cdbe446e7e31d9de99381` — `Restore pre-dialogue layout baseline 0.22.6`
 
 Current modules:
 
 - Phase VIII: `0.22.2` (unchanged independent module)
-- Developer Navigation: `0.22.6-d1`
-- North QA: `0.22.6`
-- Runtime Build Label: `0.22.6`
+- Developer Navigation: `0.22.7-d1`
+- North QA: `0.22.7`
+- Runtime Build Label: `0.22.7`
 - Owner Walkthrough: `0.22.3-w1` (unchanged independent module)
+- Phase VIII Matrix Exit: `0.22.7-m1` (isolated player-facing UX controller)
 - Chapter IV dialogue/progress presentation: restored to Runtime `0.22.3` behavior; retired override file inert and not loaded
 - Hidden Case engine: `0.21.0` (unchanged independent module)
 
@@ -2070,7 +2117,7 @@ Sequence:
 
 1. read this Master Plan
 2. inspect current Production when current repo truth matters
-3. use Runtime `0.22.6` / restored pre-adjustment presentation behavior as the baseline
+3. use Runtime `0.22.7` / restored pre-adjustment presentation behavior plus the scoped P8 Matrix Exit as the baseline
 4. treat Chapters I–IV as accepted maintenance-locked content
 5. preserve Chapter IV final evidence/flags/state
 6. begin `CHAPTER V · PHASE I · RETURN TO BANGKOK`
@@ -2167,8 +2214,8 @@ Canonical final idea:
 # 31. FINAL NON-NEGOTIABLE SUMMARY
 
 - Owner real-device evidence is highest authority.
-- Current Runtime at this revision is `0.22.6`.
-- Production HEAD observed before this Runtime/restore update is `80c6b5c5189141c83887b81733ac6ee459a8c7d3`.
+- Current Runtime at this revision is `0.22.7`.
+- Production HEAD observed before this Runtime/maintenance update is `5e2dadb9faedbd86e26cdbe446e7e31d9de99381`.
 - Chapters I–IV are owner-accepted for current continuation after practical Dev Mode Jump / real-device spot checks.
 - That acceptance is not a claim of exhaustive defect-free E2E coverage.
 - Later reproducible defects in Chapters I–IV may be repaired surgically without reopening the whole accepted baseline.
@@ -2184,6 +2231,7 @@ Canonical final idea:
 - Do not resurrect reverted P8 repair loader.
 - Build identity must synchronize across index/bootstrap/Settings/Dev/North QA/Runtime Label/save-facing metadata every Runtime release.
 - Runtime `0.22.6` restores dialogue/progress presentation to the pre-adjustment Runtime `0.22.3` behavior; the Runtime `0.22.4–0.22.5` presentation experiment is retired pending a fresh owner-approved redesign.
+- Runtime `0.22.7` adds only the isolated Phase VIII Disclosure Matrix Close → Resume path; dialogue/progress geometry remains frozen.
 - Dialogue positioning is presentation-only and must never mutate progress state, Save, Hidden Case, audio, evidence, choices or routing.
 - Relationship system remains separate from criminal attribution.
 - Hidden Case is deterministic, auditable, idempotent and player-invisible.
