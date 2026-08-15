@@ -1,12 +1,11 @@
-/* LAST WITNESS - Chapter IV Dialogue Positioning Standard 0.22.4
- * Presentation-only normalization for ordinary Chapter IV dialogue.
+/* LAST WITNESS - Chapter IV Dialogue + Progress Standard 0.22.5
+ * Presentation-only normalization for ordinary Chapter IV dialogue and its progress HUD.
  * No gameplay state, progress value, Save, Hidden Case, audio, puzzle or routing logic.
- * Chapter I remains the visual reference: dialogue sits near the lower safe area and
- * temporarily owns the lower HUD region while spoken text is active.
+ * Chapter I remains the visual reference: dialogue stays low while progress remains readable.
  */
 
 /* Preserve every accepted phase's existing dialogue height, portrait well, grid,
- * crop and typography. This patch changes vertical position only.
+ * crop and typography. The accepted Runtime 0.22.4 lower placement remains unchanged.
  * P7 inherits the compact P4 dialogue shell; P6/P8 use the larger P5 shell.
  */
 .ch4-p1-dialogue,
@@ -18,10 +17,23 @@
  z-index:32;
 }
 
-/* During ordinary dialogue the progress pill is informational, not interactive.
- * Hide only the matching Chapter IV progress presentation while dialogue is
- * visible, then restore it automatically when the dialogue box becomes hidden.
- * The underlying progress value/state continues normally.
+/*
+ * DIALOGUE-TIME PROGRESS RAIL
+ * ---------------------------
+ * Runtime 0.22.4 hid the matching progress HUD while ordinary dialogue was open.
+ * Owner Android review showed that this removed useful orientation feedback.
+ *
+ * Runtime 0.22.5 keeps the accepted low dialogue position and instead compacts the
+ * matching progress UI into the safe strip directly BELOW the dialogue box.
+ *
+ * Geometry:
+ *   dialogue lower edge = 18px + --bottom
+ *   progress lower edge =        --bottom
+ *   compact rail height = 16px
+ *   resulting clearance  =  2px
+ *
+ * Because both elements are anchored from the viewport bottom, the rail never depends
+ * on dialogue text height. Longer dialogue grows upward; the progress rail remains below.
  */
 .screen:has(.ch4-p1-dialogue:not(.hidden)) .ch4-p1-progress,
 .screen:has(.ch4-p2-dialogue:not(.hidden)) .ch4-p2-progress,
@@ -29,13 +41,97 @@
 .screen:has(.ch4-p4-dialogue:not(.hidden)) .ch4-p4-progress,
 .screen:has(.ch4-p7-dialogue:not(.hidden)) .ch4-p5-progress,
 .screen:has(.ch4-p5-dialogue:not(.hidden)) .ch4-p5-progress{
- opacity:0!important;
- visibility:hidden!important;
+ opacity:1!important;
+ visibility:visible!important;
+ display:flex!important;
+ align-items:center!important;
+ justify-content:flex-start!important;
+ gap:6px!important;
+ z-index:34!important;
+ left:auto!important;
+ right:14px!important;
+ bottom:var(--bottom,14px)!important;
+ width:min(132px,calc(100vw - 28px))!important;
+ min-width:0!important;
+ height:16px!important;
+ min-height:16px!important;
+ margin:0!important;
+ padding:2px 5px!important;
+ border:1px solid rgba(255,255,255,.10)!important;
+ border-radius:999px!important;
+ background:rgba(3,5,8,.82)!important;
+ box-shadow:0 3px 12px rgba(0,0,0,.34)!important;
+ -webkit-backdrop-filter:none!important;
+ backdrop-filter:none!important;
+ color:#e8dfd1!important;
+ font-size:9px!important;
+ font-weight:850!important;
+ line-height:1!important;
+ letter-spacing:.06em!important;
+ text-shadow:0 1px 5px rgba(0,0,0,.95)!important;
+ transform:none!important;
+ pointer-events:none!important;
+ box-sizing:border-box!important;
+}
+
+/* Convert the older stacked Phase I-IV progress pill to the same one-line rail used
+ * by later Chapter IV HUDs. Later phases already use a horizontal flex treatment,
+ * but these overrides keep every dialogue-time rail geometrically identical.
+ */
+.screen:has(.ch4-p1-dialogue:not(.hidden)) .ch4-p1-progress>span,
+.screen:has(.ch4-p2-dialogue:not(.hidden)) .ch4-p2-progress>span,
+.screen:has(.ch4-p3-dialogue:not(.hidden)) .ch4-p2-progress>span,
+.screen:has(.ch4-p4-dialogue:not(.hidden)) .ch4-p4-progress>span,
+.screen:has(.ch4-p7-dialogue:not(.hidden)) .ch4-p5-progress>span,
+.screen:has(.ch4-p5-dialogue:not(.hidden)) .ch4-p5-progress>span{
+ flex:0 0 auto!important;
+ min-width:28px!important;
+ margin:0!important;
+ padding:0!important;
+ font-size:9px!important;
+ line-height:1!important;
+ white-space:nowrap!important;
+}
+
+.screen:has(.ch4-p1-dialogue:not(.hidden)) .ch4-p1-progress>div,
+.screen:has(.ch4-p2-dialogue:not(.hidden)) .ch4-p2-progress>div,
+.screen:has(.ch4-p3-dialogue:not(.hidden)) .ch4-p2-progress>div,
+.screen:has(.ch4-p4-dialogue:not(.hidden)) .ch4-p4-progress>div,
+.screen:has(.ch4-p7-dialogue:not(.hidden)) .ch4-p5-progress>div,
+.screen:has(.ch4-p5-dialogue:not(.hidden)) .ch4-p5-progress>div{
+ flex:1 1 auto!important;
+ width:auto!important;
+ min-width:0!important;
+ height:3px!important;
+ margin:0!important;
+ padding:0!important;
+ border:0!important;
+ border-radius:999px!important;
+ overflow:hidden!important;
+ background:rgba(255,255,255,.17)!important;
+ box-shadow:none!important;
+}
+
+.screen:has(.ch4-p1-dialogue:not(.hidden)) .ch4-p1-progress>div>i,
+.screen:has(.ch4-p2-dialogue:not(.hidden)) .ch4-p2-progress>div>i,
+.screen:has(.ch4-p3-dialogue:not(.hidden)) .ch4-p2-progress>div>i,
+.screen:has(.ch4-p4-dialogue:not(.hidden)) .ch4-p4-progress>div>i,
+.screen:has(.ch4-p7-dialogue:not(.hidden)) .ch4-p5-progress>div>i,
+.screen:has(.ch4-p5-dialogue:not(.hidden)) .ch4-p5-progress>div>i,
+.screen:has(.ch4-p1-dialogue:not(.hidden)) .ch4-p1-progress .progress-fill,
+.screen:has(.ch4-p2-dialogue:not(.hidden)) .ch4-p2-progress .progress-fill,
+.screen:has(.ch4-p3-dialogue:not(.hidden)) .ch4-p2-progress .progress-fill,
+.screen:has(.ch4-p4-dialogue:not(.hidden)) .ch4-p4-progress .progress-fill{
+ display:block!important;
+ height:100%!important;
+ margin:0!important;
+ border-radius:inherit!important;
 }
 
 /* Intentional exclusions:
  * - Chapter I-III global dialogue is untouched.
- * - Phase VI cinematic CG dialogue (.ch4-p6-cg-dialogue) is untouched.
+ * - Phase VI cinematic CG dialogue (.ch4-p6-cg-dialogue) and its normal progress are untouched.
  * - dialogue heights and portrait geometry are untouched.
- * - combat, minigame, evidence, choice and completion surfaces are untouched.
+ * - combat/minigame/evidence/choice/completion surfaces without ordinary dialogue are untouched.
+ * - when ordinary dialogue closes, each phase's original progress geometry returns automatically.
  */

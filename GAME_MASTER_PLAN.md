@@ -2,14 +2,14 @@
 
 > **CANONICAL MASTER REFERENCE / ZERO-QUESTION ROOM HANDOFF**
 >
-> **Revision:** 2026-08-15 21:21 ICT  
+> **Revision:** 2026-08-15 21:47 ICT  
 > **Game:** LAST WITNESS  
 > **Studio:** BENEDICT INTERACTIVE  
 > **Repository:** `grolygori789-crypto/last-witness`  
 > **Production/default branch:** `production-rebuild`  
-> **Production HEAD observed before this Runtime/layout update:** `88bb3bf3fea7af3fe823331556d0e29afad8d67b`  
-> **HEAD message:** `Add owner walkthrough and sync runtime 0.22.3`  
-> **Authoritative Runtime build:** `0.22.4`  
+> **Production HEAD observed before this Runtime/presentation update:** `ff378fc981c7b7a68305953b3ddf4b0be1b4b24f`  
+> **HEAD message:** `Lower Chapter IV dialogue and sync 0.22.4`  
+> **Authoritative Runtime build:** `0.22.5`  
 > **Current accepted playable boundary:** `CHAPTER IV COMPLETE · OWNER CURRENT-PASS ACCEPTED`  
 > **Chapter IV:** exactly 8 phases; no Phase IX without explicit owner approval  
 > **Chapters I–IV status:** owner-reviewed by Dev Mode Jump / real-device spot checks and accepted for current continuation; later reproducible defects may still be repaired  
@@ -17,12 +17,12 @@
 > **Hidden Case Architecture:** base engine module `0.21.0`, active from Phase VIII  
 > **Owner Hidden Case Inspector:** visual, temporary simulation sandbox; synthetic adjustments never write canonical case state
 > **Owner Walkthrough Mode:** module `0.22.3-w1`; read-only guided walkthrough/verified solutions from Chapter I through Chapter IV Phase VIII; Owner-only  
-> **Chapter IV Dialogue Positioning:** Runtime `0.22.4`; scoped presentation-only normalization of ordinary Phase I–VIII dialogue; Phase VI cinematic CG dialogue excluded  
+> **Chapter IV Dialogue + Progress:** Runtime `0.22.5`; accepted low ordinary-dialogue baseline retained and matching Progress remains visible as a compact below-dialogue rail; Phase VI cinematic CG dialogue excluded  
 > **Adaptive model:** `P8 CALCULATE → Ch V INFLUENCE → Ch VI DIVERGE → Ch VII RESOLVE`
 
 This file supersedes all older Master Plan revisions. It preserves the locked long-game mystery architecture while updating actual Production status after the owner's current-pass review of Chapters I–IV.
 
-A documentation-only change to this file does **not** require a Runtime build increment. This revision accompanies Runtime `0.22.4` because the Chapter IV dialogue-layout stylesheet and build-facing runtime modules change in the same release.
+A documentation-only change to this file does **not** require a Runtime build increment. This revision accompanies Runtime `0.22.5` because the Chapter IV dialogue/progress presentation stylesheet and build-facing runtime modules change in the same release.
 
 ---
 
@@ -152,17 +152,17 @@ Do not casually override global `.screen` geometry, especially with `position:re
 
 Progress reaches `100%` only at genuine completion.
 
-## Chapter IV ordinary dialogue vertical standard — Runtime 0.22.4
+## Chapter IV ordinary dialogue + progress standard — Runtime 0.22.5
 
-Chapter I remains the visual reference for comfortable lower-screen dialogue placement. Runtime `0.22.4` normalizes **ordinary** Chapter IV dialogue without changing the global `.dialogue` contract or any gameplay logic.
+Chapter I remains the visual reference for comfortable lower-screen dialogue placement. Runtime `0.22.5` preserves the accepted Runtime `0.22.4` lower position for **ordinary** Chapter IV dialogue and corrects dialogue-time Progress visibility without changing the global `.dialogue` contract or any gameplay logic.
 
 Canonical Chapter IV presentation:
 
 - all ordinary Chapter IV dialogue: `bottom: calc(18px + var(--bottom,14px))`
-- every phase keeps its existing accepted dialogue height and portrait geometry; Runtime `0.22.4` changes vertical position only
+- every phase keeps its existing accepted dialogue height and portrait geometry; the accepted Runtime `0.22.4` lower dialogue position remains unchanged
 - preserved ordinary-dialogue heights: Phase I `148px`; Phase II–IV and Phase VII `154px`; Phase V, Phase VI ordinary dialogue and Phase VIII `170px`
-- while ordinary dialogue is visible, the matching Chapter IV progress pill is presentation-hidden and automatically returns when dialogue closes
-- progress value/state continues updating normally; only its visual presentation is hidden during speech
+- while ordinary dialogue is visible, the matching Chapter IV Progress remains visible as a compact one-line rail in the safe strip directly below the dialogue box
+- the compact rail retains both percentage text and the progress bar; it never overlaps the dialogue box and each phase's original Progress geometry returns automatically when dialogue closes
 - Phase VI cinematic CG dialogue (`.ch4-p6-cg-dialogue`) is intentionally excluded
 - combat, minigame, evidence, choice, completion and Chapter I–III dialogue layouts are untouched
 - no phase JS/state mutation is permitted for this layout standard
@@ -173,7 +173,7 @@ Implementation is isolated in `css/chapter-04-dialogue-positioning.css` so accep
 
 # 3. RUNTIME BUILD LINKAGE — EVERY RUNTIME RELEASE
 
-Current base build: **0.22.4**.
+Current base build: **0.22.5**.
 
 All player-facing, owner-facing, QA-facing and save-facing Runtime build identities must resolve to the same base build.
 
@@ -185,7 +185,7 @@ All player-facing, owner-facing, QA-facing and save-facing Runtime build identit
 - cache key for `js/engine/09-defect-hotfix.js`
 - any changed direct loader references
 
-Current index bootstrap generation: `0224r1`.
+Current index bootstrap generation: `0225r1`.
 
 ### `js/engine/09-defect-hotfix.js`
 
@@ -199,21 +199,21 @@ Synchronize:
 - North QA cache / expected version
 - Runtime Build Label cache / expected version
 
-Current bootstrap is Startup Recovery `0224R1`, Runtime `0.22.4`.
+Current bootstrap is Startup Recovery `0225R1`, Runtime `0.22.5`.
 
 ### `js/engine/18-developer-phase-navigation.js`
 
-Current `0.22.4-d1`.
+Current `0.22.5-d1`.
 
 Suffix may differ, but base build must match current Runtime.
 
 ### `js/engine/24-north-qa-access.js`
 
-Current `0.22.4`.
+Current `0.22.5`.
 
 ### `js/engine/25-runtime-build-label.js`
 
-Current `0.22.4`.
+Current `0.22.5`.
 
 It synchronizes:
 
@@ -234,7 +234,7 @@ The module is Owner-only and read-only. It may read current screen/checkpoint/st
 
 ### `css/chapter-04-dialogue-positioning.css`
 
-Current presentation standard: Runtime `0.22.4`, bootstrap cache `v=0224`.
+Current presentation standard: Runtime `0.22.5`, bootstrap cache `v=0225`.
 
 This stylesheet is a scoped Chapter IV presentation override only. It must not contain JS, state mutation, Save/Load hooks, Hidden Case hooks, audio control, puzzle logic or routing behavior.
 
@@ -280,9 +280,9 @@ Master Plan-only changes do not bump Runtime.
 
 # 4. STARTUP / LOADER SAFETY
 
-Production HEAD observed before this Runtime/layout update:
+Production HEAD observed before this Runtime/presentation update:
 
-`88bb3bf3fea7af3fe823331556d0e29afad8d67b` — `Add owner walkthrough and sync runtime 0.22.3`
+`ff378fc981c7b7a68305953b3ddf4b0be1b4b24f` — `Lower Chapter IV dialogue and sync 0.22.4`
 
 Last Runtime-code baseline before Walkthrough:
 
@@ -292,7 +292,7 @@ Historical safe startup recovery baseline:
 
 `a3490e895a6147e2e675b5c392d3f5fb317d0977` — `Fixed cached startup repaire loader`
 
-Current bootstrap generation is Startup Recovery `0224R1`.
+Current bootstrap generation is Startup Recovery `0225R1`.
 
 A temporary Phase VIII repair loader was previously added and later reverted because it broke startup.
 
@@ -517,7 +517,7 @@ Walkthrough answers are derived from current Production logic. Deterministic puz
 
 North QA is limited blind-tester access.
 
-Current module: `0.22.4`.
+Current module: `0.22.5`.
 
 It shares canonical Developer Phase Navigation for Chapter IV entry so reset/media/state behavior remains aligned.
 
@@ -1282,6 +1282,28 @@ Introduced:
 
 Owner Walkthrough remains independent module `0.22.3-w1`; Phase VIII remains `0.22.2`; Hidden Case remains `0.21.0`.
 
+## 0.22.5 Chapter IV dialogue-time Progress visibility
+
+Owner Android review accepted the lower Runtime `0.22.4` dialogue placement but showed that hiding Progress during speech removed useful orientation feedback. Runtime `0.22.5` corrects only that presentation defect.
+
+Introduced:
+
+- accepted ordinary-dialogue baseline remains `bottom: calc(18px + var(--bottom,14px))`
+- matching Progress remains visible during ordinary dialogue
+- dialogue-time Progress becomes a compact one-line rail below the dialogue box
+- percentage text and progress bar are both retained
+- rail uses the safe strip between the dialogue lower edge and device bottom safe area
+- rail geometry is independent of dialogue text height, so long dialogue can grow upward without collision
+- original per-phase Progress geometry returns automatically when dialogue closes
+- Phase VI cinematic CG dialogue / Progress behavior remains unchanged
+- no changes to phase JS, story, progress values, Save/Load, Hidden Case, audio, minigames, combat or Owner Walkthrough logic
+- synchronized Runtime `0.22.5`
+- Developer `0.22.5-d1`
+- North QA `0.22.5`
+- Runtime Build Label `0.22.5`
+
+Owner Walkthrough remains independent module `0.22.3-w1`; Phase VIII remains `0.22.2`; Hidden Case remains `0.21.0`.
+
 ## Current owner acceptance
 
 After the above recovery and polish, the owner has performed a practical Dev Mode Jump / real-device review across Chapters I–IV and accepts the current result for continuation.
@@ -1967,15 +1989,15 @@ Normal UI/North QA must not expose scores, deltas, routes, projected endings, El
 
 # 27. CURRENT PRODUCTION STATUS AT THIS REVISION
 
-Current Runtime: **0.22.4**.
+Current Runtime: **0.22.5**.
 
-Production HEAD before this Runtime/layout update:
+Production HEAD before this Runtime/presentation update:
 
-`88bb3bf3fea7af3fe823331556d0e29afad8d67b`
+`ff378fc981c7b7a68305953b3ddf4b0be1b4b24f`
 
 Message:
 
-`Add owner walkthrough and sync runtime 0.22.3`
+`Lower Chapter IV dialogue and sync 0.22.4`
 
 Relevant recent history:
 
@@ -1985,15 +2007,16 @@ Relevant recent history:
 - `42a677a4e84132bb19d4f58dd5b1d8cd607e46c3` — `Fix P8 portraits and owner case inspector`
 - `05007557d2972df80cf8e615f5e4a7e32ba2059e` — `Accept Chapters I-IV and advance to Chapter V`
 - `88bb3bf3fea7af3fe823331556d0e29afad8d67b` — `Add owner walkthrough and sync runtime 0.22.3`
+- `ff378fc981c7b7a68305953b3ddf4b0be1b4b24f` — `Lower Chapter IV dialogue and sync 0.22.4`
 
 Current modules:
 
 - Phase VIII: `0.22.2` (unchanged independent module)
-- Developer Navigation: `0.22.4-d1`
-- North QA: `0.22.4`
-- Runtime Build Label: `0.22.4`
+- Developer Navigation: `0.22.5-d1`
+- North QA: `0.22.5`
+- Runtime Build Label: `0.22.5`
 - Owner Walkthrough: `0.22.3-w1` (unchanged independent module)
-- Chapter IV Dialogue Positioning: Runtime `0.22.4` / `v=0224`
+- Chapter IV Dialogue + Progress: Runtime `0.22.5` / `v=0225`
 - Hidden Case engine: `0.21.0` (unchanged independent module)
 
 Canonical runtime rule:
@@ -2028,7 +2051,7 @@ Sequence:
 
 1. read this Master Plan
 2. inspect current Production when current repo truth matters
-3. use Runtime `0.22.4` / current Production as the baseline
+3. use Runtime `0.22.5` / current Production as the baseline
 4. treat Chapters I–IV as accepted maintenance-locked content
 5. preserve Chapter IV final evidence/flags/state
 6. begin `CHAPTER V · PHASE I · RETURN TO BANGKOK`
@@ -2125,8 +2148,8 @@ Canonical final idea:
 # 31. FINAL NON-NEGOTIABLE SUMMARY
 
 - Owner real-device evidence is highest authority.
-- Current Runtime at this revision is `0.22.4`.
-- Production HEAD observed before this Runtime/layout update is `88bb3bf3fea7af3fe823331556d0e29afad8d67b`.
+- Current Runtime at this revision is `0.22.5`.
+- Production HEAD observed before this Runtime/presentation update is `ff378fc981c7b7a68305953b3ddf4b0be1b4b24f`.
 - Chapters I–IV are owner-accepted for current continuation after practical Dev Mode Jump / real-device spot checks.
 - That acceptance is not a claim of exhaustive defect-free E2E coverage.
 - Later reproducible defects in Chapters I–IV may be repaired surgically without reopening the whole accepted baseline.
@@ -2141,7 +2164,7 @@ Canonical final idea:
 - Do not use broad repair observers.
 - Do not resurrect reverted P8 repair loader.
 - Build identity must synchronize across index/bootstrap/Settings/Dev/North QA/Runtime Label/save-facing metadata every Runtime release.
-- Chapter IV ordinary dialogue uses the Runtime `0.22.4` lower-screen positioning standard with existing dialogue heights/portrait geometry preserved; Phase VI cinematic CG dialogue remains excluded.
+- Chapter IV ordinary dialogue uses the accepted lower-screen positioning standard with existing dialogue heights/portrait geometry preserved; Runtime `0.22.5` keeps matching Progress visible in a compact below-dialogue rail; Phase VI cinematic CG dialogue remains excluded.
 - Dialogue positioning is presentation-only and must never mutate progress state, Save, Hidden Case, audio, evidence, choices or routing.
 - Relationship system remains separate from criminal attribution.
 - Hidden Case is deterministic, auditable, idempotent and player-invisible.
