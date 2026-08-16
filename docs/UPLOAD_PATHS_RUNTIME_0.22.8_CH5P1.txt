@@ -8,6 +8,9 @@ js/engine/24-north-qa-access.js
 js/engine/25-runtime-build-label.js
 js/engine/33-chapter-05-loader.js
 js/engine/34-chapter-05-owner-walkthrough.js
+assets/images/chapter-05/phase-01/north-concerned-full.png
+assets/images/chapter-05/phase-01/north-relieved-full.png
+assets/video/chapter-05/phase-01/bangkok-landing.mp4
 docs/QA_REPORT_RUNTIME_0.22.8_CH5P1.md
 docs/VALIDATION_RUNTIME_0.22.8_CH5P1.json
 docs/OWNER_QA_RUNTIME_0.22.8_CH5P1.md

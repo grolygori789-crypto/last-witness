@@ -1,11 +1,11 @@
-/* LAST WITNESS - Chapter V / Phase I: RETURN TO BANGKOK 0.22.8-c5p1r7
+/* LAST WITNESS - Chapter V / Phase I: RETURN TO BANGKOK 0.22.8-c5p1r9
  * Production Chapter V opening. Reuses the accepted Phase V/VII ordinary-scene
  * shell and Phase IV/VII location/completion language. Only CUSTODY WINDOW is
  * bespoke. No Hidden Case values are displayed or mutated here.
  */
 (function(){
 "use strict";
-const VERSION="0.22.8-c5p1r7";
+const VERSION="0.22.8-c5p1r9";
 if(window.LastWitnessChapter5Phase1?.version===VERSION){try{window.LastWitnessChapter5Phase1.install?.()}catch(_){}return}
 
 const BASE="assets/images/chapter-05/phase-01/";
@@ -13,7 +13,9 @@ const VIDEO="assets/video/chapter-05/phase-01/";
 const AUDIO="assets/audio/chapter-05/phase-01/";
 const POLICE_IMAGE="assets/images/b06c89de9255c034.png";
 const SOMCHAI_SHOCK=BASE+"somchai-shocked.png?v=0228c5p1r7";
-const SOMCHAI_SAD=BASE+"somchai-sad.png?v=0228c5p1r7";
+const SOMCHAI_SAD=BASE+"somchai-sad.png?v=0228c5p1r9";
+const NORTH_CONCERNED=BASE+"north-concerned-full.png?v=0228c5p1r9";
+const NORTH_RELIEVED=BASE+"north-relieved-full.png?v=0228c5p1r9";
 
 const LANDING="ch5P1Landing";
 const ARRIVAL="ch5P1ArrivalCard";
@@ -85,7 +87,7 @@ function positionSceneNotes(){
    if(!screen||!objective||!note)return;
    const screenRect=screen.getBoundingClientRect(),objectiveRect=objective.getBoundingClientRect();
    if(!objectiveRect.height)return;
-   note.style.top=Math.round(objectiveRect.bottom-screenRect.top+7)+"px";
+   note.style.top=Math.round(objectiveRect.bottom-screenRect.top+3)+"px";
   })
  })
 }
@@ -93,7 +95,7 @@ function positionSceneNotes(){
 function inject(){
  if($("#"+LANDING))return true;const game=$("#game");if(!game)return false;
  game.insertAdjacentHTML("beforeend",`
- <section id="${LANDING}" class="screen ch5-p1-video"><video id="ch5P1LandingVideo" playsinline webkit-playsinline preload="auto"><source src="${VIDEO}bangkok-landing.mp4?v=0228c5p1r7" type="video/mp4"></video><div class="ch4-p5-shade"></div><div id="ch5P1LandingStatus" class="ch5-p1-video-status"></div><button id="ch5P1LandingPlay" class="primary ch5-p1-video-play" type="button" hidden></button><button id="ch5P1LandingSkip" class="ghost ch5-p1-skip" type="button"></button></section>
+ <section id="${LANDING}" class="screen ch5-p1-video"><video id="ch5P1LandingVideo" playsinline webkit-playsinline preload="auto"><source src="${VIDEO}bangkok-landing.mp4?v=0228c5p1r9" type="video/mp4"></video><div class="ch4-p5-shade"></div><div id="ch5P1LandingStatus" class="ch5-p1-video-status"></div><button id="ch5P1LandingPlay" class="primary ch5-p1-video-play" type="button" hidden></button><button id="ch5P1LandingSkip" class="ghost ch5-p1-skip" type="button"></button></section>
  <section id="${ARRIVAL}" class="screen ch4-p4-location"><div id="ch5P1ArrivalCardInner" class="ch4-p4-location-card"><div id="ch5P1ArrivalEye" class="eyebrow"></div><div id="ch5P1ArrivalCity" class="ch4-p4-location-city"></div><h2 id="ch5P1ArrivalName"></h2><div class="ch4-p4-location-rule"></div><p id="ch5P1ArrivalBody"></p></div></section>
  ${scene(POLICE,POLICE_IMAGE,"ch5P1PoliceLocation")}
  ${scene(BRIEFING,BASE+"police-briefing-room.png?v=0228c5p1r7","ch5P1BriefingLocation")}
@@ -109,7 +111,7 @@ function inject(){
  bindUi();updateLanguage();syncProgress();return true
 }
 
-function originalPortrait(name,emotion){try{const mood=String(emotion||"neutral");if(name==="Somchai"){if(["shocked","surprised"].includes(mood))return SOMCHAI_SHOCK;if(["sad","rejected","serious"].includes(mood))return SOMCHAI_SAD}if(typeof portrait==="function")return portrait(name,mood);return PORTRAITS?.[name]?.[mood]||PORTRAITS?.[name]?.neutral||""}catch(_){return""}}
+function originalPortrait(name,emotion){try{const mood=String(emotion||"neutral");if(name==="Somchai"){if(["shocked","surprised"].includes(mood))return SOMCHAI_SHOCK;if(["sad","rejected","serious"].includes(mood))return SOMCHAI_SAD}if(name==="North"){if(mood==="concerned")return NORTH_CONCERNED;if(mood==="relieved")return NORTH_RELIEVED}if(typeof portrait==="function")return portrait(name,mood);return PORTRAITS?.[name]?.[mood]||PORTRAITS?.[name]?.neutral||""}catch(_){return""}}
 function dialogueBox(){return $("#"+activeScreen()+"Dialogue")}
 function recordLine(line){try{const s=gs();s.history=s.history||[];s.history.push({speaker:line.speaker,text:thai()?line.th:line.en,chapter:5,phase:1})}catch(_){} }
 function renderDialogue(){
@@ -121,7 +123,8 @@ function renderDialogue(){
  if(line.speaker==="Somchai")portraitClass.push("ch5-p1-somchai-portrait");
  if(line.speaker==="North")portraitClass.push("ch5-p1-north-portrait");
  if(line.speaker==="Benedict")portraitClass.push("ch5-p1-benedict-portrait");
- box.innerHTML=`<div class="portrait-wrap">${src?`<img class="${portraitClass.join(" ")}" src="${src}" alt="">`:""}</div><div class="dialogue-copy"><div class="speaker">${line.speaker}</div><div class="line">${thai()?line.th:line.en}</div></div><div class="next">${tr("Tap to continue","แตะเพื่อดำเนินต่อ")}</div>`;
+ const nextText=thai()?"แตะเพื่อดำเนินต่อ":"Tap&nbsp;to&nbsp;continue";
+ box.innerHTML=`<div class="portrait-wrap">${src?`<img class="${portraitClass.join(" ")}" src="${src}" alt="">`:""}</div><div class="dialogue-copy"><div class="speaker">${line.speaker}</div><div class="line">${thai()?line.th:line.en}</div></div><div class="next">${nextText}</div>`;
  dialogueActive=true;syncAudio()
 }
 function startDialogue(lines,onDone){dialogue={lines:clone(lines),i:0,onDone};recordLine(dialogue.lines[0]);renderDialogue()}
