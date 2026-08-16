@@ -1,19 +1,19 @@
-/* LAST WITNESS - Chapter V / Phase I: RETURN TO BANGKOK 0.22.7-c5p1r5
+/* LAST WITNESS - Chapter V / Phase I: RETURN TO BANGKOK 0.22.7-c5p1r6
  * Production Chapter V opening. Reuses the accepted Phase V/VII ordinary-scene
  * shell and Phase IV/VII location/completion language. Only CUSTODY WINDOW is
  * bespoke. No Hidden Case values are displayed or mutated here.
  */
 (function(){
 "use strict";
-const VERSION="0.22.7-c5p1r5";
+const VERSION="0.22.7-c5p1r6";
 if(window.LastWitnessChapter5Phase1?.version===VERSION){try{window.LastWitnessChapter5Phase1.install?.()}catch(_){}return}
 
 const BASE="assets/images/chapter-05/phase-01/";
 const VIDEO="assets/video/chapter-05/phase-01/";
 const AUDIO="assets/audio/chapter-05/phase-01/";
 const POLICE_IMAGE="assets/images/b06c89de9255c034.png";
-const SOMCHAI_SHOCK=BASE+"somchai-shocked.png?v=0227c5p1r5";
-const SOMCHAI_SAD=BASE+"somchai-sad.png?v=0227c5p1r5";
+const SOMCHAI_SHOCK=BASE+"somchai-shocked.png?v=0227c5p1r6";
+const SOMCHAI_SAD=BASE+"somchai-sad.png?v=0227c5p1r6";
 
 const LANDING="ch5P1Landing";
 const ARRIVAL="ch5P1ArrivalCard";
@@ -53,6 +53,8 @@ let arrivalAutoTimer=0;
 let arrivalAutoDeadline=0;
 let arrivalAutoRemaining=3000;
 const ARRIVAL_AUTO_MS=3000;
+let condoCardAutoTimer=0;
+const CONDO_CARD_AUTO_MS=3000;
 
 function defaults(){return{
  started:false,landingSeen:false,arrivalSeen:false,policeIntroComplete:false,briefingIntroComplete:false,northCoverPlayed:false,
@@ -80,19 +82,19 @@ function scene(id,image,labelId,extra=""){return `<section id="${id}" class="scr
 function inject(){
  if($("#"+LANDING))return true;const game=$("#game");if(!game)return false;
  game.insertAdjacentHTML("beforeend",`
- <section id="${LANDING}" class="screen ch5-p1-video"><video id="ch5P1LandingVideo" playsinline webkit-playsinline preload="auto"><source src="${VIDEO}bangkok-landing.mp4?v=0227c5p1r5" type="video/mp4"></video><div class="ch4-p5-shade"></div><div id="ch5P1LandingStatus" class="ch5-p1-video-status"></div><button id="ch5P1LandingPlay" class="primary ch5-p1-video-play" type="button" hidden></button><button id="ch5P1LandingSkip" class="ghost ch5-p1-skip" type="button"></button></section>
+ <section id="${LANDING}" class="screen ch5-p1-video"><video id="ch5P1LandingVideo" playsinline webkit-playsinline preload="auto"><source src="${VIDEO}bangkok-landing.mp4?v=0227c5p1r6" type="video/mp4"></video><div class="ch4-p5-shade"></div><div id="ch5P1LandingStatus" class="ch5-p1-video-status"></div><button id="ch5P1LandingPlay" class="primary ch5-p1-video-play" type="button" hidden></button><button id="ch5P1LandingSkip" class="ghost ch5-p1-skip" type="button"></button></section>
  <section id="${ARRIVAL}" class="screen ch4-p4-location"><div id="ch5P1ArrivalCardInner" class="ch4-p4-location-card"><div id="ch5P1ArrivalEye" class="eyebrow"></div><div id="ch5P1ArrivalCity" class="ch4-p4-location-city"></div><h2 id="ch5P1ArrivalName"></h2><div class="ch4-p4-location-rule"></div><p id="ch5P1ArrivalBody"></p></div></section>
  ${scene(POLICE,POLICE_IMAGE,"ch5P1PoliceLocation")}
- ${scene(BRIEFING,BASE+"police-briefing-room.png?v=0227c5p1r5","ch5P1BriefingLocation")}
- <section id="${WALK}" class="screen ch5-p1-video"><video id="ch5P1WalkVideo" playsinline webkit-playsinline preload="auto"><source src="${VIDEO}walk-to-condo.mp4?v=0227c5p1r5" type="video/mp4"></video><div class="ch4-p5-shade"></div><div id="ch5P1WalkStatus" class="ch5-p1-video-status"></div><button id="ch5P1WalkPlay" class="primary ch5-p1-video-play" type="button" hidden></button><button id="ch5P1WalkSkip" class="ghost ch5-p1-skip" type="button"></button></section>
+ ${scene(BRIEFING,BASE+"police-briefing-room.png?v=0227c5p1r6","ch5P1BriefingLocation")}
+ <section id="${WALK}" class="screen ch5-p1-video"><video id="ch5P1WalkVideo" playsinline webkit-playsinline preload="auto"><source src="${VIDEO}walk-to-condo.mp4?v=0227c5p1r6" type="video/mp4"></video><div class="ch4-p5-shade"></div><div id="ch5P1WalkStatus" class="ch5-p1-video-status"></div><button id="ch5P1WalkPlay" class="primary ch5-p1-video-play" type="button" hidden></button><button id="ch5P1WalkSkip" class="ghost ch5-p1-skip" type="button"></button></section>
  <section id="${CONDO_CARD}" class="screen ch4-p4-location"><div id="ch5P1CondoCardInner" class="ch4-p4-location-card"><div id="ch5P1CondoEye" class="eyebrow"></div><div id="ch5P1CondoCity" class="ch4-p4-location-city"></div><h2 id="ch5P1CondoName"></h2><div class="ch4-p4-location-rule"></div><p id="ch5P1CondoBody"></p><button id="ch5P1CondoContinue" class="primary" type="button"></button></div></section>
- ${scene(CONDO,BASE+"benedict-condo-interior.jpg?v=0227c5p1r5","ch5P1CondoLocation")}
- ${scene(REVEAL,BASE+"north-safehouse-reveal.jpg?v=0227c5p1r5","ch5P1RevealLocation","ch5-p1-reveal")}
+ ${scene(CONDO,BASE+"benedict-condo-interior.jpg?v=0227c5p1r6","ch5P1CondoLocation")}
+ ${scene(REVEAL,BASE+"north-safehouse-reveal.jpg?v=0227c5p1r6","ch5P1RevealLocation","ch5-p1-reveal")}
  <div id="ch5P1Custody" class="modal ch5-p1-custody" aria-hidden="true"><div class="modal-card"><header class="ch5-p1-custody-head"><div class="eyebrow" id="ch5P1CustodyEye"></div><h3 id="ch5P1CustodyTitle"></h3><p id="ch5P1CustodyBody"></p><button id="ch5P1CustodyClose" class="ghost ch5-p1-custody-close" type="button" aria-label="Close">×</button><div class="ch5-p1-step"><span id="ch5P1CustodyStepLabel"></span><div><i id="ch5P1CustodyStepFill"></i></div></div></header><div class="ch5-p1-custody-scroll"><div id="ch5P1CustodyAirborne" class="ch5-p1-airborne"></div><div id="ch5P1CustodyWork"></div></div><div id="ch5P1CustodyStatus" class="ch5-p1-custody-status" aria-live="polite"></div><footer class="ch5-p1-custody-foot"><button id="ch5P1CustodyReset" class="ghost" type="button"></button><button id="ch5P1CustodyConfirm" class="primary" type="button"></button></footer></div></div>
  <div id="ch5P1Influence" class="modal ch5-p1-influence" aria-hidden="true"><div class="modal-card"><div class="eyebrow" id="ch5P1InfluenceEye"></div><h3 id="ch5P1InfluenceTitle"></h3><p id="ch5P1InfluenceBody"></p><div id="ch5P1InfluenceGrid" class="ch5-p1-influence-grid"></div></div></div>
  <section id="${COMPLETE}" class="screen ch4-p4-complete ch5-p1-complete"><div class="ch4-p4-complete-card"><div id="ch5P1CompleteEye" class="eyebrow"></div><h2 id="ch5P1CompleteTitle"></h2><div class="ch4-p4-location-rule"></div><p id="ch5P1CompleteBody"></p><div class="ch4-p4-complete-grid"><div><span id="ch5P1ResultReturn"></span><b id="ch5P1ValueReturn"></b></div><div><span id="ch5P1ResultNorth"></span><b id="ch5P1ValueNorth"></b></div><div><span id="ch5P1ResultCustody"></span><b id="ch5P1ValueCustody"></b></div><div><span id="ch5P1ResultRoom"></span><b id="ch5P1ValueRoom"></b></div></div><strong id="ch5P1Next"></strong><button id="ch5P1ReturnTitle" class="primary" type="button"></button></div>${progressMarkup()}</section>
- <audio id="ch5P1OpeningScore" preload="auto" src="${AUDIO}opening-scene-c5p1.mp3?v=0227c5p1r5"></audio>
- <audio id="ch5P1WalkScore" preload="auto" src="${AUDIO}walk-to-condo-scene.mp3?v=0227c5p1r5"></audio>`);
+ <audio id="ch5P1OpeningScore" preload="auto" src="${AUDIO}opening-scene-c5p1.mp3?v=0227c5p1r6"></audio>
+ <audio id="ch5P1WalkScore" preload="auto" src="${AUDIO}walk-to-condo-scene.mp3?v=0227c5p1r6"></audio>`);
  bindUi();updateLanguage();syncProgress();return true
 }
 
@@ -101,14 +103,14 @@ function dialogueBox(){return $("#"+activeScreen()+"Dialogue")}
 function recordLine(line){try{const s=gs();s.history=s.history||[];s.history.push({speaker:line.speaker,text:thai()?line.th:line.en,chapter:5,phase:1})}catch(_){} }
 function renderDialogue(){
  const box=dialogueBox();if(!box||!dialogue)return;const line=dialogue.lines[dialogue.i];if(!line)return;
- const right=line.speaker!=="Benedict",src=originalPortrait(line.speaker,line.emotion||"neutral");
+ const right=true,src=originalPortrait(line.speaker,line.emotion||"neutral");
  const speakerKey=String(line.speaker||"character").toLowerCase().replace(/[^a-z0-9]+/g,"-");
  box.className="dialogue ch4-p5-dialogue ch5-p1-dialogue ch5-p1-speaker-"+speakerKey+(right?" right":"");
  const portraitClass=["portrait","ch5-p1-portrait","ch5-p1-speaker-"+speakerKey+"-portrait"];
  if(line.speaker==="Somchai")portraitClass.push("ch5-p1-somchai-portrait");
  if(line.speaker==="North")portraitClass.push("ch5-p1-north-portrait");
  if(line.speaker==="Benedict")portraitClass.push("ch5-p1-benedict-portrait");
- box.innerHTML=`<div class="portrait-wrap">${src?`<img class="${portraitClass.join(" ")}" src="${src}" alt="">`:""}</div><div class="dialogue-copy"><div class="speaker">${line.speaker}</div><div class="line">${thai()?line.th:line.en}</div><div class="next">${tr("Tap to continue","แตะเพื่อดำเนินต่อ")}</div></div>`;
+ box.innerHTML=`<div class="dialogue-copy"><div class="speaker">${line.speaker}</div><div class="line">${thai()?line.th:line.en}</div></div><div class="portrait-wrap">${src?`<img class="${portraitClass.join(" ")}" src="${src}" alt="">`:""}</div><div class="next">${tr("Tap to continue","แตะเพื่อดำเนินต่อ")}</div>`;
  dialogueActive=true;syncAudio()
 }
 function startDialogue(lines,onDone){dialogue={lines:clone(lines),i:0,onDone};recordLine(dialogue.lines[0]);renderDialogue()}
@@ -194,6 +196,7 @@ const debriefLines=()=>[
 function clearArrivalAuto(reset=false){
  clearTimeout(arrivalAutoTimer);arrivalAutoTimer=0;arrivalAutoDeadline=0;if(reset)arrivalAutoRemaining=ARRIVAL_AUTO_MS
 }
+function clearCondoCardAuto(){clearTimeout(condoCardAutoTimer);condoCardAutoTimer=0}
 function pauseArrivalAuto(){
  if(!arrivalAutoTimer)return;arrivalAutoRemaining=Math.max(80,arrivalAutoDeadline-performance.now());clearArrivalAuto(false)
 }
@@ -206,6 +209,7 @@ function scheduleArrivalAuto(reset=false){
 function resumeArrivalAuto(){if(activeScreen()===ARRIVAL&&!phaseState()?.arrivalSeen)scheduleArrivalAuto(false)}
 
 function safeShow(id){
+ clearCondoCardAuto();
  internalRouting=true;try{typeof show==="function"&&show(id)}catch(_){}
  if(!$("#"+id)?.classList.contains("active")){$$(".screen.active").forEach(n=>n.classList.remove("active"));$("#"+id)?.classList.add("active");if(gs())gs().screen=id}
  internalRouting=false;syncProgress();syncAudio()
@@ -259,8 +263,8 @@ function showCustodyResume(){const b=$("#"+BRIEFING+"Action");if(b){b.hidden=fal
 function finishBriefing(){const p=phaseState();startDialogue(postCustodyLines(),()=>{p.briefingClosed=true;p.stage="briefing_close";setProgress(74);save("ch5_p1_briefing_complete");showLeaveAction()})}
 function showLeaveAction(){const b=$("#"+BRIEFING+"Action");if(b){b.hidden=false;b.textContent=tr("LEAVE THE STATION","ออกจากสถานีตำรวจ")}}
 function showWalk(){const p=phaseState();p.stage="walk";safeShow(WALK);setProgress(77);save("ch5_p1_walk");revealDuckUntil=0;const v=walkVideo();if(!v)return;v.currentTime=0;v.onended=finishWalk;v.onerror=finishWalk;syncAudio();const result=v.play();if(result?.catch)result.catch(()=>{$("#ch5P1WalkPlay")?.removeAttribute("hidden")})}
-function finishWalk(){const p=phaseState();p.walkSeen=true;p.stage="condo_card";stopElement(walkVideo(),false);safeShow(CONDO_CARD);setProgress(81);save("ch5_p1_condo_card")}
-function showCondo(){const p=phaseState();p.condoCardSeen=true;p.stage="condo";safeShow(CONDO);setProgress(83);save("ch5_p1_condo");if(!p.condoIntroComplete){startDialogue(condoIntroLines(),()=>{p.condoIntroComplete=true;save("ch5_p1_condo_ready");const b=$("#"+CONDO+"Action");if(b){b.hidden=false;b.textContent=tr("CONTINUE","ดำเนินต่อ")}})}else{const b=$("#"+CONDO+"Action");if(b)b.hidden=false}}
+function finishWalk(){const p=phaseState();p.walkSeen=true;p.stage="condo_card";stopElement(walkVideo(),false);safeShow(CONDO_CARD);setProgress(81);save("ch5_p1_condo_card");const button=$("#ch5P1CondoContinue");if(button)button.hidden=true;condoCardAutoTimer=setTimeout(()=>{condoCardAutoTimer=0;if(activeScreen()===CONDO_CARD)showCondo()},CONDO_CARD_AUTO_MS)}
+function showCondo(){const p=phaseState();p.condoCardSeen=true;p.stage="condo";safeShow(CONDO);setProgress(83);save("ch5_p1_condo");const cardButton=$("#ch5P1CondoContinue");if(cardButton)cardButton.hidden=true;if(!p.condoIntroComplete){startDialogue(condoIntroLines(),()=>{p.condoIntroComplete=true;save("ch5_p1_condo_ready");const b=$("#"+CONDO+"Action");if(b){b.hidden=false;b.textContent=tr("CONTINUE","ดำเนินต่อ")}})}else{const b=$("#"+CONDO+"Action");if(b)b.hidden=false}}
 function showReveal(){const p=phaseState();p.stage="reveal";revealDuckUntil=performance.now()+2800;safeShow(REVEAL);setProgress(88);save("ch5_p1_north_reveal");setTimeout(()=>syncAudio(),2900);if(!p.revealSeen){startDialogue(revealLines(),()=>{p.revealSeen=true;setProgress(92);save("ch5_p1_reveal_complete");startDebrief()})}else if(!p.debriefComplete)startDebrief();else completePhase()}
 function startDebrief(){const p=phaseState();safeShow(CONDO);p.stage="debrief";setProgress(93);save("ch5_p1_debrief");startDialogue(debriefLines(),()=>{p.debriefComplete=true;setProgress(99);save("ch5_p1_debrief_complete");completePhase()})}
 function completePhase(){const p=phaseState();p.complete=true;p.stage="complete";const s=gs();if(s){s.flags=s.flags||{};s.flags.ch5_p1_complete=true;s.flags.ch5_p1_room1807_identity_reference=true;s.chapter=5}safeShow(COMPLETE);setProgress(100);save("ch5_phase1_complete")}
@@ -342,7 +346,7 @@ function start(){if(!prepareStart(false))return false;showLanding();return true}
 function startFreshForDev(){closeToolOverlays();if(!prepareStart(true))return false;showLanding();return true}
 function resumeFromState(target){
  inject();const s=gs();if(!s)return false;s.chapter=5;const p=phaseState();const known=SCREENS.has(target)?target:(p.complete?COMPLETE:p.stage==="reveal"?REVEAL:p.stage==="debrief"?CONDO:p.stage==="condo"?CONDO:p.stage==="condo_card"?CONDO_CARD:p.stage==="walk"?WALK:p.stage==="custody"||p.stage.startsWith("briefing")?BRIEFING:p.stage==="police"?POLICE:p.stage==="arrival"?ARRIVAL:LANDING);safeShow(known);setProgress(progressFor());
- if(known===ARRIVAL)showArrivalCard(true);else if(known===POLICE)showPolice();else if(known===BRIEFING)showBriefing();else if(known===CONDO){if(p.stage==="debrief"&&!p.debriefComplete)startDebrief();else showCondo()}else if(known===REVEAL)showReveal();else if(known===COMPLETE)completePhase();else syncAudio(true);return true
+ if(known===ARRIVAL)showArrivalCard(true);else if(known===POLICE)showPolice();else if(known===BRIEFING)showBriefing();else if(known===CONDO_CARD){finishWalk()}else if(known===CONDO){if(p.stage==="debrief"&&!p.debriefComplete)startDebrief();else showCondo()}else if(known===REVEAL)showReveal();else if(known===COMPLETE)completePhase();else syncAudio(true);return true
 }
 
 async function copyText(value){try{if(navigator.clipboard?.writeText){await navigator.clipboard.writeText(value);return true}}catch(_){}const a=document.createElement("textarea");a.value=value;a.setAttribute("readonly","");a.style.position="fixed";a.style.opacity="0";document.body.appendChild(a);a.select();const ok=document.execCommand?.("copy")===true;a.remove();return ok}

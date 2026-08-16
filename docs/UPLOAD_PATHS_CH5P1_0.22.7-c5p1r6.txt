@@ -1,0 +1,11 @@
+css/chapter-05-phase-01.css
+js/engine/33-chapter-05-loader.js
+js/chapters/chapter-05/01-return-to-bangkok.js
+assets/images/chapter-05/phase-01/benedict-condo-interior.jpg
+assets/images/chapter-05/phase-01/north-safehouse-reveal.jpg
+assets/images/chapter-05/phase-01/somchai-shocked.png
+assets/images/chapter-05/phase-01/somchai-sad.png
+docs/QA_REPORT_CH5P1_0.22.7-c5p1r6.md
+docs/MANIFEST_SHA256_CH5P1_0.22.7-c5p1r6.txt
+docs/CHAPTER_05_PHASE_01_REVISION_6.md
+docs/UPLOAD_PATHS_CH5P1_0.22.7-c5p1r6.txt

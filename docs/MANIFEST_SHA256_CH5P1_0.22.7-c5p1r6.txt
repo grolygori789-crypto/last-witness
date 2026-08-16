@@ -1,0 +1,11 @@
+ba1031eab4cc0e08d566b273f77f494b024e303055996eb7956ab8231985e155  assets/images/chapter-05/phase-01/benedict-condo-interior.jpg
+60bc7c12b5fe3687aedfe2ab7f094312019b017faba08723307ce356f3371a2b  assets/images/chapter-05/phase-01/north-safehouse-reveal.jpg
+cc3fa46cc85ef13a863e8d7982269dbf73fcb4bf2a8121e71f3bbf67231b0721  assets/images/chapter-05/phase-01/somchai-sad.png
+8d050af801c584d96810085193dc017bc71d9bb35f48b04fb36afad55ebec48e  assets/images/chapter-05/phase-01/somchai-shocked.png
+910bd67e0cde9f652e03afb87edaacb1d59a45f19737bd51c7cb920fd76d1144  css/chapter-05-phase-01.css
+2a1220bd2498d70ef03e21a48cad439305cd8c83f9047f0dd289e18381c884cb  docs/CHAPTER_05_PHASE_01_REVISION_6.md
+8cf1f9ef88c93511d49bd61d97ab6767426ad74a718fb78a1734d10c5cce7802  docs/QA_REPORT_CH5P1_0.22.7-c5p1r6.md
+7b31ef597134a704296889e506af9d5349d3bfc044da6ef6d3cba565f2a4fa01  docs/UPLOAD_PATHS_CH5P1_0.22.7-c5p1r6.txt
+5d152aab55c248b5ff7745ec6b760147cf3da5de179d25dcfce9c23d6eb930ed  js/chapters/chapter-05/01-return-to-bangkok.js
+693bc82866f7b5fa0371dc65d9deddf847df831a4af24cbf4c9f22eac7976442  js/engine/33-chapter-05-loader.js
+674904091111459c702e01d86c332feb9f438501880a2041b5dac0397f2857d3  js/engine/34-chapter-05-owner-walkthrough.js
