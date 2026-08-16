@@ -1,4 +1,4 @@
-/* LAST WITNESS - Chapter V / Phase I: RETURN TO BANGKOK 0.22.8-c5p1r9
+/* LAST WITNESS - Chapter V / Phase I: RETURN TO BANGKOK 0.22.8-c5p1r10
  * Reuse-first production surface. Ordinary scenes inherit the accepted
  * Chapter IV Phase V / VII shell; only CUSTODY WINDOW is bespoke.
  */
@@ -45,7 +45,7 @@
 .ch5-p1-dialogue.right .ch5-p1-portrait{transform:scale(1.045);transform-origin:center 15%}
 .ch5-p1-dialogue .ch5-p1-north-portrait{width:100%;height:100%;object-fit:contain;object-position:center bottom;transform:none!important;transform-origin:center bottom;background:#05070b;padding:0}
 .ch5-p1-dialogue .ch5-p1-benedict-portrait{object-position:50% 14%;transform:scale(1.04);transform-origin:center 14%}
-.ch5-p1-dialogue .ch5-p1-somchai-portrait{object-fit:cover;object-position:50% 8%;transform:scale(1.06);transform-origin:center 10%;background:#000;filter:brightness(.78)}
+.ch5-p1-dialogue .ch5-p1-somchai-portrait{object-fit:cover;object-position:50% 8%;transform:scale(1.06);transform-origin:center 10%;background:#000;filter:brightness(.88)}
 
 #ch5P1Condo .scene{object-position:center 27%}
 #ch5P1NorthReveal .scene{object-position:60% 26%}
@@ -118,7 +118,7 @@
  .ch5-p1-dialogue .dialogue-copy{padding:15px 16px 16px}
  .ch5-p1-dialogue .next{right:8px;bottom:10px;width:auto;white-space:nowrap!important;font-size:8.6px}
  .ch5-p1-dialogue .ch5-p1-north-portrait{object-fit:contain;object-position:center bottom;transform:none!important}
- .ch5-p1-dialogue .ch5-p1-somchai-portrait{transform:scale(1.04);object-position:50% 8%;filter:brightness(.78)}
+ .ch5-p1-dialogue .ch5-p1-somchai-portrait{transform:scale(1.04);object-position:50% 8%;filter:brightness(.88)}
  .ch5-p1-video-status{top:calc(54px + env(safe-area-inset-top))}
  #ch5P1WalkStatus{top:calc(38px + env(safe-area-inset-top))}
 }

@@ -1,0 +1,5 @@
+dd456e5509294c25dc8fcbae30121ca79a6816fb5f7c75dc84fa31ff6c312a46  ./assets/video/chapter-05/phase-01/bangkok-landing.mp4
+d87ecd5d04ba81b4e814f0c01abefb0a7481e963f05e87fde01363ee4f77f191  ./css/chapter-05-phase-01.css
+11c9a275c83480476d2ce2bc3a7af45da55c22f100ad63deb0f63238480b7144  ./docs/EMERGENCY_ROLLBACK_CH5P1_R10.md
+93e5768061bd587b7c73f4c957efd75949bf29952199d6e6a374334f644f5635  ./js/chapters/chapter-05/01-return-to-bangkok.js
+012e11eb92063c4eef62f538a4646b8b2242a37aee886d2873cf0dd93ad486c0  ./js/engine/33-chapter-05-loader.js
