@@ -1,0 +1,296 @@
+{
+  "status": "PASS",
+  "base_runtime": "0.22.8",
+  "chapter5_phase1": "0.22.8-c5p1r7",
+  "commit_name": "Fix CH5P1 layout and bump runtime 0.22.8",
+  "browser_qa": {
+    "ch5": {
+      "police_note_gap": 7,
+      "police_note_style": {
+        "bg": "none",
+        "bgc": "rgba(0, 0, 0, 0)",
+        "border": "0px"
+      },
+      "tap_police": {
+        "box": {
+          "x": 309.40625,
+          "y": 797.5,
+          "width": 99.59375,
+          "height": 9.5
+        },
+        "portrait": {
+          "x": 305,
+          "y": 650,
+          "width": 116,
+          "height": 166
+        },
+        "metrics": {
+          "text": "Tap to continue",
+          "whiteSpace": "nowrap",
+          "height": 9.5,
+          "lineHeight": "9.5px"
+        },
+        "inside_portrait_horizontal": true
+      },
+      "tap_briefing_positions": [
+        {
+          "speaker": "Kittisak",
+          "x": 309.41,
+          "y": 797.5,
+          "w": 99.59,
+          "h": 9.5,
+          "portrait_x": 305,
+          "portrait_w": 116,
+          "one_line": true
+        },
+        {
+          "speaker": "Benedict",
+          "x": 309.41,
+          "y": 797.5,
+          "w": 99.59,
+          "h": 9.5,
+          "portrait_x": 305,
+          "portrait_w": 116,
+          "one_line": true
+        },
+        {
+          "speaker": "Somchai",
+          "x": 309.41,
+          "y": 797.5,
+          "w": 99.59,
+          "h": 9.5,
+          "portrait_x": 305,
+          "portrait_w": 116,
+          "one_line": true
+        },
+        {
+          "speaker": "Benedict",
+          "x": 309.41,
+          "y": 797.5,
+          "w": 99.59,
+          "h": 9.5,
+          "portrait_x": 305,
+          "portrait_w": 116,
+          "one_line": true
+        },
+        {
+          "speaker": "Elena",
+          "x": 309.41,
+          "y": 797.5,
+          "w": 99.59,
+          "h": 9.5,
+          "portrait_x": 305,
+          "portrait_w": 116,
+          "one_line": true
+        }
+      ],
+      "tap_same_anchor": true,
+      "briefing_note_gap": 7,
+      "somchai_style": {
+        "filter": "brightness(0.88)",
+        "transform": "matrix(1.045, 0, 0, 1.045, 0, 0)",
+        "objectPosition": "50% 8%"
+      },
+      "north_portrait_style": {
+        "fit": "contain",
+        "pos": "50% 100%",
+        "transform": "none"
+      },
+      "reveal_note": {
+        "box": {
+          "x": 297.71875,
+          "y": 121,
+          "width": 118.28125,
+          "height": 14
+        },
+        "right_distance": 16.0,
+        "style": {
+          "bg": "none",
+          "bgc": "rgba(0, 0, 0, 0)",
+          "border": "0px",
+          "textAlign": "right"
+        }
+      },
+      "condo_card_initial_screen": "ch5P1CondoCard",
+      "condo_continue_button_count": 0,
+      "condo_card_after_3s_screen": "ch5P1Condo"
+    },
+    "walkthrough": {
+      "version": "0.22.8-c5w3",
+      "action": "Leave the station, watch/skip the condominium walk transition. The condominium card then holds for about three seconds and enters Benedict's private residence automatically before the North reveal.",
+      "hint": "There is no Continue button on the condominium card. The public story and private reality remain intentionally separated; the Somchai coffee beat pays off without changing the investigation facts.",
+      "build": "0.22.3-w1 · C5W 0.22.8-c5w3 · P1 0.22.8-c5p1r7",
+      "catalog_has_c5": true
+    },
+    "build_runtime": {
+      "runtime_label": {
+        "window": "0.22.8",
+        "dataset": "0.22.8",
+        "settings": "LAST WITNESS · BUILD 0.22.8",
+        "dev": "BUILD 0.22.8",
+        "qa": "BUILD 0.22.8",
+        "saveManager": "0.22.8"
+      },
+      "save": {
+        "version": "0.22.8",
+        "module": "0.7.10-s2",
+        "snapshot_build": "0.22.8"
+      }
+    }
+  },
+  "release_gate": {
+    "status": "PASS",
+    "build": "0.22.8",
+    "checks": {
+      "settings_build_0228": {
+        "pass": true
+      },
+      "save_build_0228": {
+        "pass": true
+      },
+      "bootstrap_build_0228": {
+        "pass": true
+      },
+      "dev_module_0228": {
+        "pass": true
+      },
+      "north_qa_0228": {
+        "pass": true
+      },
+      "runtime_label_0228": {
+        "pass": true
+      },
+      "ch5_module_0228": {
+        "pass": true
+      },
+      "ch5_loader_0228": {
+        "pass": true
+      },
+      "walkthrough_extension_0228": {
+        "pass": true
+      },
+      "owner_walkthrough_base_preserved": {
+        "pass": true
+      },
+      "index_cache_0228s2": {
+        "pass": true
+      },
+      "index_cache_0228r1": {
+        "pass": true
+      },
+      "index_cache_0228c5b5": {
+        "pass": true
+      },
+      "bootstrap_cache_0228d1": {
+        "pass": true
+      },
+      "bootstrap_cache_0228": {
+        "pass": true
+      },
+      "bootstrap_cache_0228r1": {
+        "pass": true
+      },
+      "loader_cache_0228c5p1r7": {
+        "pass": true
+      },
+      "loader_cache_0228c5w3": {
+        "pass": true
+      },
+      "no_stale_base_0227": {
+        "pass": true,
+        "detail": [
+          [
+            "index.html",
+            224,
+            "<script src=\"js/engine/32-c4-p7-p8-audio-lifecycle.js?v=0227a1\"></script>"
+          ],
+          [
+            "09",
+            33,
+            ".then(()=>{stylesheet(\"css/chapter-04-phase-08-matrix-exit.css?v=0227m1\",\"lwChapter04Phase08MatrixExitStyle\");return script(\"js/engine/31-p8-matrix-exit.js?v=0227m1\",\"lwChapter04Phase08MatrixExitScript\",()=>Boolean(window.LastWitnessP8MatrixExit?.version===\"0.22.7-m1\"&&window.LastWitnessP8MatrixExit?.installed)).catch(error=>console.error(\"LAST WITNESS P8 Matrix Exit failed to load\",error))})"
+          ]
+        ]
+      },
+      "no_condo_continue_element": {
+        "pass": true
+      },
+      "condo_auto_3s": {
+        "pass": true
+      },
+      "tap_single_line_css": {
+        "pass": true
+      },
+      "north_portrait_no_zoom": {
+        "pass": true
+      },
+      "somchai_brightness_12pct": {
+        "pass": true
+      },
+      "scene_notes_plain": {
+        "pass": true
+      },
+      "correct_reveal_note_selector": {
+        "pass": true
+      },
+      "correct_reveal_objective_selector": {
+        "pass": true
+      },
+      "dynamic_note_positioning": {
+        "pass": true
+      },
+      "asset_benedict-condo-interior.jpg": {
+        "pass": true,
+        "detail": "ba1031eab4cc0e08d566b273f77f494b024e303055996eb7956ab8231985e155"
+      },
+      "asset_north-safehouse-reveal.jpg": {
+        "pass": true,
+        "detail": "60bc7c12b5fe3687aedfe2ab7f094312019b017faba08723307ce356f3371a2b"
+      }
+    },
+    "normalized_source_proof": {
+      "index.html": {
+        "pass": true,
+        "normalized_git_blob_sha": "c4ec1c2f2ebd920c7847c25ad1d99a213949d5fb",
+        "production_git_blob_sha": "c4ec1c2f2ebd920c7847c25ad1d99a213949d5fb"
+      },
+      "js/engine/02-audio-save.js": {
+        "pass": true,
+        "normalized_git_blob_sha": "d52891325fb59f8ca291339d6544b87d5ca5d485",
+        "production_git_blob_sha": "d52891325fb59f8ca291339d6544b87d5ca5d485"
+      },
+      "js/engine/09-defect-hotfix.js": {
+        "pass": true,
+        "normalized_git_blob_sha": "57fdbc654f1625a539717011efacf33a8b727e33",
+        "production_git_blob_sha": "57fdbc654f1625a539717011efacf33a8b727e33"
+      },
+      "js/engine/18-developer-phase-navigation.js": {
+        "pass": true,
+        "normalized_git_blob_sha": "c6b0db7862d32eb403063c78c48ee1f1f3fbc6c8",
+        "production_git_blob_sha": "c6b0db7862d32eb403063c78c48ee1f1f3fbc6c8"
+      },
+      "js/engine/24-north-qa-access.js": {
+        "pass": true,
+        "normalized_git_blob_sha": "83a0fd26cb935c7aaf471647658307f20760fc00",
+        "production_git_blob_sha": "83a0fd26cb935c7aaf471647658307f20760fc00"
+      },
+      "js/engine/25-runtime-build-label.js": {
+        "pass": true,
+        "normalized_git_blob_sha": "16c7da5580688c872ee78b4d4e7bdd39e6e6d38f",
+        "production_git_blob_sha": "16c7da5580688c872ee78b4d4e7bdd39e6e6d38f"
+      }
+    },
+    "production_asset_identity": {
+      "somchai-sad.png": {
+        "local_git_blob_sha": "8ce223d2929491c6272cb59f444ccee48255e360",
+        "production_git_blob_sha": "8ce223d2929491c6272cb59f444ccee48255e360",
+        "pass": true
+      },
+      "somchai-shocked.png": {
+        "local_git_blob_sha": "e1fe5ccd294cc688ee9748dca4f820af96c033ae",
+        "production_git_blob_sha": "e1fe5ccd294cc688ee9748dca4f820af96c033ae",
+        "pass": true
+      }
+    }
+  },
+  "test_honesty": "Browser/static/package validation passed. Android physical-device acceptance not yet performed."
+}

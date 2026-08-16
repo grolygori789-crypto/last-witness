@@ -1,0 +1,16 @@
+index.html
+css/chapter-05-phase-01.css
+js/chapters/chapter-05/01-return-to-bangkok.js
+js/engine/02-audio-save.js
+js/engine/09-defect-hotfix.js
+js/engine/18-developer-phase-navigation.js
+js/engine/24-north-qa-access.js
+js/engine/25-runtime-build-label.js
+js/engine/33-chapter-05-loader.js
+js/engine/34-chapter-05-owner-walkthrough.js
+docs/QA_REPORT_RUNTIME_0.22.8_CH5P1.md
+docs/VALIDATION_RUNTIME_0.22.8_CH5P1.json
+docs/OWNER_QA_RUNTIME_0.22.8_CH5P1.md
+docs/RELEASE_GATE_RUNTIME_0.22.8.json
+docs/UPLOAD_PATHS_RUNTIME_0.22.8_CH5P1.txt
+docs/MANIFEST_SHA256_RUNTIME_0.22.8_CH5P1.txt

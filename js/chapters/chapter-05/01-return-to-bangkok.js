@@ -1,19 +1,19 @@
-/* LAST WITNESS - Chapter V / Phase I: RETURN TO BANGKOK 0.22.7-c5p1r6
+/* LAST WITNESS - Chapter V / Phase I: RETURN TO BANGKOK 0.22.8-c5p1r7
  * Production Chapter V opening. Reuses the accepted Phase V/VII ordinary-scene
  * shell and Phase IV/VII location/completion language. Only CUSTODY WINDOW is
  * bespoke. No Hidden Case values are displayed or mutated here.
  */
 (function(){
 "use strict";
-const VERSION="0.22.7-c5p1r6";
+const VERSION="0.22.8-c5p1r7";
 if(window.LastWitnessChapter5Phase1?.version===VERSION){try{window.LastWitnessChapter5Phase1.install?.()}catch(_){}return}
 
 const BASE="assets/images/chapter-05/phase-01/";
 const VIDEO="assets/video/chapter-05/phase-01/";
 const AUDIO="assets/audio/chapter-05/phase-01/";
 const POLICE_IMAGE="assets/images/b06c89de9255c034.png";
-const SOMCHAI_SHOCK=BASE+"somchai-shocked.png?v=0227c5p1r6";
-const SOMCHAI_SAD=BASE+"somchai-sad.png?v=0227c5p1r6";
+const SOMCHAI_SHOCK=BASE+"somchai-shocked.png?v=0228c5p1r7";
+const SOMCHAI_SAD=BASE+"somchai-sad.png?v=0228c5p1r7";
 
 const LANDING="ch5P1Landing";
 const ARRIVAL="ch5P1ArrivalCard";
@@ -78,23 +78,34 @@ function syncProgress(){const value=Math.max(Number(gs()?.progress)||0,progressF
 function progressMarkup(){return '<div class="ch4-p5-progress ch5-p1-progress" aria-label="Phase progress"><span class="ch5-p1-progress-text">0%</span><div><i class="ch4-p5-progress-fill ch5-p1-progress-fill"></i></div></div>'}
 function hud(labelId){return `<div class="topbar ch4-p5-topbar"><span id="${labelId}"></span><div class="hud"><button class="icon ch5-p1-save" type="button" aria-label="Save game">💾</button><button class="icon ch5-p1-menu" type="button" aria-label="Game menu">☰<i class="journal-alert" aria-hidden="true"></i></button></div></div>`}
 function scene(id,image,labelId,extra=""){return `<section id="${id}" class="screen ch4-p5-scene ch5-p1-scene ${extra}"><img class="scene" src="${image}" alt=""><div class="ch4-p5-shade"></div>${hud(labelId)}<div id="${id}Scene" class="ch4-p5-label"></div><div id="${id}Objective" class="ch4-p5-objective"></div><div id="${id}Note" class="ch5-p1-scene-note"></div><div id="${id}Dialogue" class="dialogue ch4-p5-dialogue ch5-p1-dialogue hidden"></div><button id="${id}Action" class="primary ch4-p5-action ch5-p1-action" type="button" hidden></button>${progressMarkup()}</section>`}
+function positionSceneNotes(){
+ requestAnimationFrame(()=>{
+  [POLICE,BRIEFING,CONDO].forEach(id=>{
+   const screen=$("#"+id),objective=$("#"+id+"Objective"),note=$("#"+id+"Note");
+   if(!screen||!objective||!note)return;
+   const screenRect=screen.getBoundingClientRect(),objectiveRect=objective.getBoundingClientRect();
+   if(!objectiveRect.height)return;
+   note.style.top=Math.round(objectiveRect.bottom-screenRect.top+7)+"px";
+  })
+ })
+}
 
 function inject(){
  if($("#"+LANDING))return true;const game=$("#game");if(!game)return false;
  game.insertAdjacentHTML("beforeend",`
- <section id="${LANDING}" class="screen ch5-p1-video"><video id="ch5P1LandingVideo" playsinline webkit-playsinline preload="auto"><source src="${VIDEO}bangkok-landing.mp4?v=0227c5p1r6" type="video/mp4"></video><div class="ch4-p5-shade"></div><div id="ch5P1LandingStatus" class="ch5-p1-video-status"></div><button id="ch5P1LandingPlay" class="primary ch5-p1-video-play" type="button" hidden></button><button id="ch5P1LandingSkip" class="ghost ch5-p1-skip" type="button"></button></section>
+ <section id="${LANDING}" class="screen ch5-p1-video"><video id="ch5P1LandingVideo" playsinline webkit-playsinline preload="auto"><source src="${VIDEO}bangkok-landing.mp4?v=0228c5p1r7" type="video/mp4"></video><div class="ch4-p5-shade"></div><div id="ch5P1LandingStatus" class="ch5-p1-video-status"></div><button id="ch5P1LandingPlay" class="primary ch5-p1-video-play" type="button" hidden></button><button id="ch5P1LandingSkip" class="ghost ch5-p1-skip" type="button"></button></section>
  <section id="${ARRIVAL}" class="screen ch4-p4-location"><div id="ch5P1ArrivalCardInner" class="ch4-p4-location-card"><div id="ch5P1ArrivalEye" class="eyebrow"></div><div id="ch5P1ArrivalCity" class="ch4-p4-location-city"></div><h2 id="ch5P1ArrivalName"></h2><div class="ch4-p4-location-rule"></div><p id="ch5P1ArrivalBody"></p></div></section>
  ${scene(POLICE,POLICE_IMAGE,"ch5P1PoliceLocation")}
- ${scene(BRIEFING,BASE+"police-briefing-room.png?v=0227c5p1r6","ch5P1BriefingLocation")}
- <section id="${WALK}" class="screen ch5-p1-video"><video id="ch5P1WalkVideo" playsinline webkit-playsinline preload="auto"><source src="${VIDEO}walk-to-condo.mp4?v=0227c5p1r6" type="video/mp4"></video><div class="ch4-p5-shade"></div><div id="ch5P1WalkStatus" class="ch5-p1-video-status"></div><button id="ch5P1WalkPlay" class="primary ch5-p1-video-play" type="button" hidden></button><button id="ch5P1WalkSkip" class="ghost ch5-p1-skip" type="button"></button></section>
- <section id="${CONDO_CARD}" class="screen ch4-p4-location"><div id="ch5P1CondoCardInner" class="ch4-p4-location-card"><div id="ch5P1CondoEye" class="eyebrow"></div><div id="ch5P1CondoCity" class="ch4-p4-location-city"></div><h2 id="ch5P1CondoName"></h2><div class="ch4-p4-location-rule"></div><p id="ch5P1CondoBody"></p><button id="ch5P1CondoContinue" class="primary" type="button"></button></div></section>
- ${scene(CONDO,BASE+"benedict-condo-interior.jpg?v=0227c5p1r6","ch5P1CondoLocation")}
- ${scene(REVEAL,BASE+"north-safehouse-reveal.jpg?v=0227c5p1r6","ch5P1RevealLocation","ch5-p1-reveal")}
+ ${scene(BRIEFING,BASE+"police-briefing-room.png?v=0228c5p1r7","ch5P1BriefingLocation")}
+ <section id="${WALK}" class="screen ch5-p1-video"><video id="ch5P1WalkVideo" playsinline webkit-playsinline preload="auto"><source src="${VIDEO}walk-to-condo.mp4?v=0228c5p1r7" type="video/mp4"></video><div class="ch4-p5-shade"></div><div id="ch5P1WalkStatus" class="ch5-p1-video-status"></div><button id="ch5P1WalkPlay" class="primary ch5-p1-video-play" type="button" hidden></button><button id="ch5P1WalkSkip" class="ghost ch5-p1-skip" type="button"></button></section>
+ <section id="${CONDO_CARD}" class="screen ch4-p4-location"><div id="ch5P1CondoCardInner" class="ch4-p4-location-card"><div id="ch5P1CondoEye" class="eyebrow"></div><div id="ch5P1CondoCity" class="ch4-p4-location-city"></div><h2 id="ch5P1CondoName"></h2><div class="ch4-p4-location-rule"></div><p id="ch5P1CondoBody"></p></div></section>
+ ${scene(CONDO,BASE+"benedict-condo-interior.jpg?v=0228c5p1r7","ch5P1CondoLocation")}
+ ${scene(REVEAL,BASE+"north-safehouse-reveal.jpg?v=0228c5p1r7","ch5P1RevealLocation","ch5-p1-reveal")}
  <div id="ch5P1Custody" class="modal ch5-p1-custody" aria-hidden="true"><div class="modal-card"><header class="ch5-p1-custody-head"><div class="eyebrow" id="ch5P1CustodyEye"></div><h3 id="ch5P1CustodyTitle"></h3><p id="ch5P1CustodyBody"></p><button id="ch5P1CustodyClose" class="ghost ch5-p1-custody-close" type="button" aria-label="Close">×</button><div class="ch5-p1-step"><span id="ch5P1CustodyStepLabel"></span><div><i id="ch5P1CustodyStepFill"></i></div></div></header><div class="ch5-p1-custody-scroll"><div id="ch5P1CustodyAirborne" class="ch5-p1-airborne"></div><div id="ch5P1CustodyWork"></div></div><div id="ch5P1CustodyStatus" class="ch5-p1-custody-status" aria-live="polite"></div><footer class="ch5-p1-custody-foot"><button id="ch5P1CustodyReset" class="ghost" type="button"></button><button id="ch5P1CustodyConfirm" class="primary" type="button"></button></footer></div></div>
  <div id="ch5P1Influence" class="modal ch5-p1-influence" aria-hidden="true"><div class="modal-card"><div class="eyebrow" id="ch5P1InfluenceEye"></div><h3 id="ch5P1InfluenceTitle"></h3><p id="ch5P1InfluenceBody"></p><div id="ch5P1InfluenceGrid" class="ch5-p1-influence-grid"></div></div></div>
  <section id="${COMPLETE}" class="screen ch4-p4-complete ch5-p1-complete"><div class="ch4-p4-complete-card"><div id="ch5P1CompleteEye" class="eyebrow"></div><h2 id="ch5P1CompleteTitle"></h2><div class="ch4-p4-location-rule"></div><p id="ch5P1CompleteBody"></p><div class="ch4-p4-complete-grid"><div><span id="ch5P1ResultReturn"></span><b id="ch5P1ValueReturn"></b></div><div><span id="ch5P1ResultNorth"></span><b id="ch5P1ValueNorth"></b></div><div><span id="ch5P1ResultCustody"></span><b id="ch5P1ValueCustody"></b></div><div><span id="ch5P1ResultRoom"></span><b id="ch5P1ValueRoom"></b></div></div><strong id="ch5P1Next"></strong><button id="ch5P1ReturnTitle" class="primary" type="button"></button></div>${progressMarkup()}</section>
- <audio id="ch5P1OpeningScore" preload="auto" src="${AUDIO}opening-scene-c5p1.mp3?v=0227c5p1r6"></audio>
- <audio id="ch5P1WalkScore" preload="auto" src="${AUDIO}walk-to-condo-scene.mp3?v=0227c5p1r6"></audio>`);
+ <audio id="ch5P1OpeningScore" preload="auto" src="${AUDIO}opening-scene-c5p1.mp3?v=0228c5p1r7"></audio>
+ <audio id="ch5P1WalkScore" preload="auto" src="${AUDIO}walk-to-condo-scene.mp3?v=0228c5p1r7"></audio>`);
  bindUi();updateLanguage();syncProgress();return true
 }
 
@@ -110,7 +121,7 @@ function renderDialogue(){
  if(line.speaker==="Somchai")portraitClass.push("ch5-p1-somchai-portrait");
  if(line.speaker==="North")portraitClass.push("ch5-p1-north-portrait");
  if(line.speaker==="Benedict")portraitClass.push("ch5-p1-benedict-portrait");
- box.innerHTML=`<div class="dialogue-copy"><div class="speaker">${line.speaker}</div><div class="line">${thai()?line.th:line.en}</div></div><div class="portrait-wrap">${src?`<img class="${portraitClass.join(" ")}" src="${src}" alt="">`:""}</div><div class="next">${tr("Tap to continue","แตะเพื่อดำเนินต่อ")}</div>`;
+ box.innerHTML=`<div class="portrait-wrap">${src?`<img class="${portraitClass.join(" ")}" src="${src}" alt="">`:""}</div><div class="dialogue-copy"><div class="speaker">${line.speaker}</div><div class="line">${thai()?line.th:line.en}</div></div><div class="next">${tr("Tap to continue","แตะเพื่อดำเนินต่อ")}</div>`;
  dialogueActive=true;syncAudio()
 }
 function startDialogue(lines,onDone){dialogue={lines:clone(lines),i:0,onDone};recordLine(dialogue.lines[0]);renderDialogue()}
@@ -212,7 +223,7 @@ function safeShow(id){
  clearCondoCardAuto();
  internalRouting=true;try{typeof show==="function"&&show(id)}catch(_){}
  if(!$("#"+id)?.classList.contains("active")){$$(".screen.active").forEach(n=>n.classList.remove("active"));$("#"+id)?.classList.add("active");if(gs())gs().screen=id}
- internalRouting=false;syncProgress();syncAudio()
+ internalRouting=false;positionSceneNotes();syncProgress();syncAudio()
 }
 function closeOverlays(){[$("#ch5P1Custody"),$("#ch5P1Influence")].forEach(n=>{n?.classList.remove("open");n?.setAttribute("aria-hidden","true")});miniOpen=false;influenceOpen=false}
 function openSave(){try{window.LastWitnessSaveManager?.open?.("save")}catch(_){} }
@@ -263,8 +274,8 @@ function showCustodyResume(){const b=$("#"+BRIEFING+"Action");if(b){b.hidden=fal
 function finishBriefing(){const p=phaseState();startDialogue(postCustodyLines(),()=>{p.briefingClosed=true;p.stage="briefing_close";setProgress(74);save("ch5_p1_briefing_complete");showLeaveAction()})}
 function showLeaveAction(){const b=$("#"+BRIEFING+"Action");if(b){b.hidden=false;b.textContent=tr("LEAVE THE STATION","ออกจากสถานีตำรวจ")}}
 function showWalk(){const p=phaseState();p.stage="walk";safeShow(WALK);setProgress(77);save("ch5_p1_walk");revealDuckUntil=0;const v=walkVideo();if(!v)return;v.currentTime=0;v.onended=finishWalk;v.onerror=finishWalk;syncAudio();const result=v.play();if(result?.catch)result.catch(()=>{$("#ch5P1WalkPlay")?.removeAttribute("hidden")})}
-function finishWalk(){const p=phaseState();p.walkSeen=true;p.stage="condo_card";stopElement(walkVideo(),false);safeShow(CONDO_CARD);setProgress(81);save("ch5_p1_condo_card");const button=$("#ch5P1CondoContinue");if(button)button.hidden=true;condoCardAutoTimer=setTimeout(()=>{condoCardAutoTimer=0;if(activeScreen()===CONDO_CARD)showCondo()},CONDO_CARD_AUTO_MS)}
-function showCondo(){const p=phaseState();p.condoCardSeen=true;p.stage="condo";safeShow(CONDO);setProgress(83);save("ch5_p1_condo");const cardButton=$("#ch5P1CondoContinue");if(cardButton)cardButton.hidden=true;if(!p.condoIntroComplete){startDialogue(condoIntroLines(),()=>{p.condoIntroComplete=true;save("ch5_p1_condo_ready");const b=$("#"+CONDO+"Action");if(b){b.hidden=false;b.textContent=tr("CONTINUE","ดำเนินต่อ")}})}else{const b=$("#"+CONDO+"Action");if(b)b.hidden=false}}
+function finishWalk(){const p=phaseState();p.walkSeen=true;p.stage="condo_card";stopElement(walkVideo(),false);safeShow(CONDO_CARD);setProgress(81);save("ch5_p1_condo_card");condoCardAutoTimer=setTimeout(()=>{condoCardAutoTimer=0;if(activeScreen()===CONDO_CARD)showCondo()},CONDO_CARD_AUTO_MS)}
+function showCondo(){const p=phaseState();p.condoCardSeen=true;p.stage="condo";safeShow(CONDO);setProgress(83);save("ch5_p1_condo");if(!p.condoIntroComplete){startDialogue(condoIntroLines(),()=>{p.condoIntroComplete=true;save("ch5_p1_condo_ready");const b=$("#"+CONDO+"Action");if(b){b.hidden=false;b.textContent=tr("CONTINUE","ดำเนินต่อ")}})}else{const b=$("#"+CONDO+"Action");if(b)b.hidden=false}}
 function showReveal(){const p=phaseState();p.stage="reveal";revealDuckUntil=performance.now()+2800;safeShow(REVEAL);setProgress(88);save("ch5_p1_north_reveal");setTimeout(()=>syncAudio(),2900);if(!p.revealSeen){startDialogue(revealLines(),()=>{p.revealSeen=true;setProgress(92);save("ch5_p1_reveal_complete");startDebrief()})}else if(!p.debriefComplete)startDebrief();else completePhase()}
 function startDebrief(){const p=phaseState();safeShow(CONDO);p.stage="debrief";setProgress(93);save("ch5_p1_debrief");startDialogue(debriefLines(),()=>{p.debriefComplete=true;setProgress(99);save("ch5_p1_debrief_complete");completePhase()})}
 function completePhase(){const p=phaseState();p.complete=true;p.stage="complete";const s=gs();if(s){s.flags=s.flags||{};s.flags.ch5_p1_complete=true;s.flags.ch5_p1_room1807_identity_reference=true;s.chapter=5}safeShow(COMPLETE);setProgress(100);save("ch5_phase1_complete")}
@@ -312,20 +323,20 @@ function updateLanguage(){
  set("ch5P1PoliceLocation",tr("POLICE STATION · EVIDENCE DIVISION","สถานีตำรวจ · ฝ่ายพยานหลักฐาน"));set(POLICE+"Scene",tr("DAY 7 · 08:45 ICT","วันที่ 7 · 08:45 น."));set(POLICE+"Objective",tr("Review the Jakarta return record and overnight custody changes.","ทบทวนข้อมูลที่กลับมาจาก Jakarta และการเปลี่ยนแปลงสายการครอบครองหลักฐานเมื่อคืน"));set(POLICE+"Note",tr("RETURN BRIEFING · INTERNAL","RETURN BRIEFING · ภายใน"));
  set("ch5P1BriefingLocation",tr("POLICE STATION · SECURE BRIEFING","สถานีตำรวจ · ห้องประชุมภายใน"));set(BRIEFING+"Scene",tr("DAY 7 · 08:52 ICT","วันที่ 7 · 08:52 น."));set(BRIEFING+"Objective",tr("Separate what Jakarta proved from what Bangkok merely suspects.","แยกสิ่งที่ Jakarta พิสูจน์ได้ ออกจากสิ่งที่ Bangkok เพียงสงสัย"));set(BRIEFING+"Note",tr("ATTENDEES · BENEDICT / ELENA / SOMCHAI / KITTISAK","ผู้เข้าร่วม · BENEDICT / ELENA / SOMCHAI / KITTISAK"));
  set("ch5P1WalkStatus",tr("DAY 7 · 20:36 ICT · BANGKOK","วันที่ 7 · 20:36 น. · กรุงเทพฯ"));set("ch5P1WalkPlay",tr("PLAY TRANSITION","เล่นฉากเดินทาง"));set("ch5P1WalkSkip",tr("SKIP","ข้าม"));
- set("ch5P1CondoEye",tr("DAY 7 · 20:44 ICT","วันที่ 7 · 20:44 น."));set("ch5P1CondoCity",tr("BANGKOK · PRIVATE RESIDENCE","กรุงเทพฯ · ที่พักส่วนตัว"));set("ch5P1CondoName",tr("BENEDICT'S CONDOMINIUM","คอนโดมิเนียมของ BENEDICT"));set("ch5P1CondoBody",tr("OFF THE OFFICIAL ROUTE","นอกเส้นทางปฏิบัติการอย่างเป็นทางการ"));set("ch5P1CondoContinue",tr("CONTINUE","ดำเนินต่อ"));
+ set("ch5P1CondoEye",tr("DAY 7 · 20:44 ICT","วันที่ 7 · 20:44 น."));set("ch5P1CondoCity",tr("BANGKOK · PRIVATE RESIDENCE","กรุงเทพฯ · ที่พักส่วนตัว"));set("ch5P1CondoName",tr("BENEDICT'S CONDOMINIUM","คอนโดมิเนียมของ BENEDICT"));set("ch5P1CondoBody",tr("OFF THE OFFICIAL ROUTE","นอกเส้นทางปฏิบัติการอย่างเป็นทางการ"));
  set("ch5P1CondoLocation",tr("BENEDICT'S CONDOMINIUM","คอนโดมิเนียมของ BENEDICT"));set(CONDO+"Scene",tr("DAY 7 · 20:45 ICT","วันที่ 7 · 20:45 น."));set(CONDO+"Objective",tr("Close the public route. Continue the investigation privately.","ปิดเส้นทางที่คนอื่นมองเห็น แล้วสืบต่อแบบส่วนตัว"));set(CONDO+"Note",tr("PRIVATE · NO OPERATIONAL ADDRESS","ส่วนตัว · ไม่มีที่อยู่ในบันทึกปฏิบัติการ"));
  set("ch5P1RevealLocation",tr("BENEDICT'S CONDOMINIUM · PRIVATE","คอนโดมิเนียมของ BENEDICT · ส่วนตัว"));set(REVEAL+"Scene",tr("SAFE LOCATION · 20:46 ICT","สถานที่ปลอดภัย · 20:46 น."));set(REVEAL+"Objective",tr("Compare the public story with the record underneath it.","เทียบเรื่องที่ทุกคนเชื่อ กับบันทึกที่ซ่อนอยู่ข้างใต้"));set(REVEAL+"Note",tr("NORTH · OFF RECORD","NORTH · นอกบันทึก"));
  set("ch5P1CustodyEye",tr("INTERNAL REVIEW · EVIDENCE CUSTODY","ตรวจภายใน · สายการครอบครองหลักฐาน"));set("ch5P1CustodyTitle","CUSTODY WINDOW");set("ch5P1CustodyBody",tr("Reconstruct what happened while Benedict's return flight was still airborne. Verify the record before assigning motive.","เรียงสิ่งที่เกิดขึ้นระหว่างที่เที่ยวบินขากลับของ Benedict ยังอยู่บนฟ้า ตรวจบันทึกให้จบก่อนตีความเจตนา"));
  set("ch5P1InfluenceEye",tr("INVESTIGATIVE EMPHASIS · PHASE I","น้ำหนักการสืบสวน · เฟส I"));set("ch5P1InfluenceTitle",tr("What does Benedict protect next?","Benedict จะรักษาอะไรไว้เป็นลำดับต่อไป"));set("ch5P1InfluenceBody",tr("This changes the investigation emphasis, not the historical facts.","การเลือกนี้เปลี่ยนน้ำหนักการสืบสวน ไม่ได้เปลี่ยนข้อเท็จจริงที่เกิดขึ้น"));
  set("ch5P1CompleteEye",tr("PHASE I COMPLETE","จบเฟส I"));set("ch5P1CompleteTitle",tr("RETURN TO BANGKOK","กลับสู่กรุงเทพฯ"));set("ch5P1CompleteBody",tr("The Jakarta trail survived the flight. Bangkok added a clean custody chain, suspicious timing, and a protected identity reference tied back to Room 1807.","ร่องรอยจาก Jakarta กลับมาถึงกรุงเทพครบ สิ่งที่เพิ่มเข้ามาคือสายการครอบครองหลักฐานที่สะอาด จังหวะเวลาที่น่าสงสัย และข้อมูลตัวตนที่ถูกปกป้องซึ่งพากลับไปยังห้อง 1807"));set("ch5P1ResultReturn",tr("BANGKOK RETURN","กลับกรุงเทพฯ"));set("ch5P1ValueReturn",tr("COMPLETE","COMPLETE"));set("ch5P1ResultNorth",tr("NORTH PUBLIC RECORD","สถานะ NORTH ในบันทึกสาธารณะ"));set("ch5P1ValueNorth",tr("REMOVED","REMOVED"));set("ch5P1ResultCustody",tr("CUSTODY WINDOW","CUSTODY WINDOW"));set("ch5P1ValueCustody",tr("VERIFIED / REVIEW TIMING","ตรวจแล้ว / ทบทวนเวลา"));set("ch5P1ResultRoom",tr("ROOM 1807","ห้อง 1807"));set("ch5P1ValueRoom",tr("IDENTITY REFERENCE","ข้อมูลอ้างอิงตัวตน"));set("ch5P1Next",tr("NEXT · PHASE II · NAME IN ROOM 1807","ถัดไป · เฟส II · NAME IN ROOM 1807"));set("ch5P1ReturnTitle",tr("RETURN TO TITLE","กลับหน้าหลัก"));
  const p=phaseState();if(miniOpen)renderCustody();if(influenceOpen)showInfluence();if(dialogue)renderDialogue();
- installToolLabels();syncProgress()
+ installToolLabels();positionSceneNotes();syncProgress()
 }
 
 function bindUi(){
  $("#ch5P1LandingPlay")?.addEventListener("click",()=>{const b=$("#ch5P1LandingPlay");if(b)b.hidden=true;landingVideo()?.play().catch(()=>{})});$("#ch5P1LandingSkip")?.addEventListener("click",finishLanding);
  $("#"+POLICE+"Action")?.addEventListener("click",showBriefing);$("#"+BRIEFING+"Action")?.addEventListener("click",()=>{const p=phaseState();if(!p.custodyComplete)openCustody();else if(!p.briefingClosed)finishBriefing();else showWalk()});
- $("#ch5P1WalkPlay")?.addEventListener("click",()=>{const b=$("#ch5P1WalkPlay");if(b)b.hidden=true;walkVideo()?.play().catch(()=>{})});$("#ch5P1WalkSkip")?.addEventListener("click",finishWalk);$("#ch5P1CondoContinue")?.addEventListener("click",showCondo);$("#"+CONDO+"Action")?.addEventListener("click",showReveal);
+ $("#ch5P1WalkPlay")?.addEventListener("click",()=>{const b=$("#ch5P1WalkPlay");if(b)b.hidden=true;walkVideo()?.play().catch(()=>{})});$("#ch5P1WalkSkip")?.addEventListener("click",finishWalk);$("#"+CONDO+"Action")?.addEventListener("click",showReveal);
  [POLICE,BRIEFING,CONDO,REVEAL].forEach(id=>$("#"+id+"Dialogue")?.addEventListener("click",advanceDialogue));
  $$(".ch5-p1-save").forEach(b=>b.addEventListener("click",openSave));$$('.ch5-p1-menu').forEach(b=>b.addEventListener("click",openMenu));
  $("#ch5P1CustodyClose")?.addEventListener("click",closeCustody);$("#ch5P1CustodyReset")?.addEventListener("click",resetCustody);$("#ch5P1CustodyConfirm")?.addEventListener("click",confirmCustody);
@@ -334,7 +345,7 @@ function bindUi(){
  $("#ch5P1ReturnTitle")?.addEventListener("click",()=>{stopAudio(true);try{typeof show==="function"&&show("title")}catch(_){};try{window.LastWitnessChapter2Integration?.titleAudioState?.()}catch(_){}});
  document.addEventListener("click",event=>{if(event.target.closest?.("[data-lang]"))setTimeout(updateLanguage,0);if(event.target.closest?.("#titleButton,#returnTitle,#chapter2ReturnTitle,#chapter3WipReturnTitle,#ch4P8ReturnTitle"))stopAudio(true)},true);
  ["musicRange","sfxRange","soundToggle"].forEach(id=>$("#"+id)?.addEventListener("input",()=>setTimeout(syncAudio,0)));
- document.addEventListener("visibilitychange",()=>{if(document.hidden)pauseForBackground();else resumeForeground()});window.addEventListener("pagehide",pauseForBackground);window.addEventListener("pageshow",()=>{if(!document.hidden)resumeForeground()});window.addEventListener("focus",()=>{if(!document.hidden)resumeForeground()})
+ window.addEventListener("resize",positionSceneNotes);document.addEventListener("visibilitychange",()=>{if(document.hidden)pauseForBackground();else resumeForeground()});window.addEventListener("pagehide",pauseForBackground);window.addEventListener("pageshow",()=>{if(!document.hidden)resumeForeground()});window.addEventListener("focus",()=>{if(!document.hidden)resumeForeground()})
 }
 
 function prepareStart(dev=false){
@@ -351,7 +362,7 @@ function resumeFromState(target){
 
 async function copyText(value){try{if(navigator.clipboard?.writeText){await navigator.clipboard.writeText(value);return true}}catch(_){}const a=document.createElement("textarea");a.value=value;a.setAttribute("readonly","");a.style.position="fixed";a.style.opacity="0";document.body.appendChild(a);a.select();const ok=document.execCommand?.("copy")===true;a.remove();return ok}
 function testerAuthorized(){try{return sessionStorage.getItem("last_witness_north_qa_role")==="tester"}catch(_){return false}}
-function qaInfo(){const s=gs()||{},p=phaseState();return["LAST WITNESS QA","Build: "+String(window.LastWitnessRuntimeBuild||"0.22.7"),"Access: NORTH QA","QA Module: 0.22.7","Chapter V Phase I: "+VERSION,"Chapter: 5","Phase: 1","Screen: "+activeScreen(),"Checkpoint: "+(s.checkpoint||"unresolved"),"Stage: "+(p?.stage||"unresolved"),"Language: "+(s.language==="th"?"TH":"EN"),"Visibility: "+(document.hidden?"hidden":"visible")].join("\n")}
+function qaInfo(){const s=gs()||{},p=phaseState();return["LAST WITNESS QA","Build: "+String(window.LastWitnessRuntimeBuild||"0.22.8"),"Access: NORTH QA","QA Module: 0.22.8","Chapter V Phase I: "+VERSION,"Chapter: 5","Phase: 1","Screen: "+activeScreen(),"Checkpoint: "+(s.checkpoint||"unresolved"),"Stage: "+(p?.stage||"unresolved"),"Language: "+(s.language==="th"?"TH":"EN"),"Visibility: "+(document.hidden?"hidden":"visible")].join("\n")}
 function closeToolOverlays(){
  $("#drawer")?.classList.remove("open");$$('.modal.open').forEach(n=>n.classList.remove("open"));["developerModal","northQaModal","devAccessModal"].forEach(id=>$("#"+id)?.classList.remove("open"))
 }
