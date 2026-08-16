@@ -1,8 +1,8 @@
-/* LAST WITNESS — Audio + Professional Save Manager 0.7.10
+/* LAST WITNESS — Audio + Professional Save Manager 0.7.10-s1
  * Preserves production audio behaviour while adding named manual saves,
  * IndexedDB persistence, legacy migration, export/import and versioned restore.
- * Save Manager exit controls remain visible on mobile and successful saves
- * return the player to the game automatically.
+ * Scoped 0.22.7-s1 repair: save-facing build identity now follows Runtime 0.22.7,
+ * stale Settings relabeling is removed, and Chapter V Phase I restore is wired.
  * Police ambience loops only its clean 04.6–45.0 second section.
  */
 
@@ -42,7 +42,8 @@ function ambience(screen){
 
 const LW_SAVE_FORMAT="LAST_WITNESS_SAVE";
 const LW_SAVE_VERSION=1;
-const LW_SAVE_BUILD="0.7.10";
+const LW_SAVE_BUILD="0.22.7";
+const LW_SAVE_MODULE="0.7.10-s1";
 const LW_SAVE_DB="last_witness_saves";
 const LW_SAVE_STORE="slots";
 const LW_SAVE_FALLBACK="last_witness_named_saves_v1";
@@ -113,7 +114,7 @@ function escapeHtml(value){return String(value??"").replace(/[&<>'"]/g,char=>({"
 function languageCode(){return state?.language==="th"?"th":"en"}
 function saveText(en,th){return languageCode()==="th"?th:en}
 function screenLabel(data){
- const labels={office:["Chapter I · Detective Office","บทที่ I · สำนักงานนักสืบ"],crime:["Chapter I · Room 1807","บทที่ I · ห้อง 1807"],phone:["Chapter I · Victim's Phone","บทที่ I · โทรศัพท์ผู้ตาย"],summary:["Chapter I · Case Summary","บทที่ I · สรุปคดี"],deduction:["Chapter I · Deduction","บทที่ I · การอนุมาน"],chapter:["Chapter I Complete","จบบทที่ I"],office2:["Chapter II · Detective Office","บทที่ II · สำนักงานนักสืบ"],apartment2:["Chapter II · Victim's Apartment","บทที่ II · อพาร์ตเมนต์ผู้ตาย"],cafe2:["Chapter II · Orchid Café","บทที่ II · Orchid Café"],police2:["Chapter II · Police Station","บทที่ II · สถานีตำรวจ"],forensic2:["Chapter II · Forensic Science Unit","บทที่ II · หน่วยนิติวิทยาศาสตร์"],medical2:["Chapter II · Medical Examiner","บทที่ II · สถาบันนิติเวช"],chapter2Complete:["Chapter II Complete","จบบทที่ II"],chapter3Office:["Chapter III · Detective Office","บทที่ III · สำนักงานนักสืบ"],chapter3Phase2Wip:["Chapter III · In Flight","บทที่ III · ระหว่างเที่ยวบิน"]};
+ const labels={office:["Chapter I · Detective Office","บทที่ I · สำนักงานนักสืบ"],crime:["Chapter I · Room 1807","บทที่ I · ห้อง 1807"],phone:["Chapter I · Victim's Phone","บทที่ I · โทรศัพท์ผู้ตาย"],summary:["Chapter I · Case Summary","บทที่ I · สรุปคดี"],deduction:["Chapter I · Deduction","บทที่ I · การอนุมาน"],chapter:["Chapter I Complete","จบบทที่ I"],office2:["Chapter II · Detective Office","บทที่ II · สำนักงานนักสืบ"],apartment2:["Chapter II · Victim's Apartment","บทที่ II · อพาร์ตเมนต์ผู้ตาย"],cafe2:["Chapter II · Orchid Café","บทที่ II · Orchid Café"],police2:["Chapter II · Police Station","บทที่ II · สถานีตำรวจ"],forensic2:["Chapter II · Forensic Science Unit","บทที่ II · หน่วยนิติวิทยาศาสตร์"],medical2:["Chapter II · Medical Examiner","บทที่ II · สถาบันนิติเวช"],chapter2Complete:["Chapter II Complete","จบบทที่ II"],chapter3Office:["Chapter III · Detective Office","บทที่ III · สำนักงานนักสืบ"],chapter3Phase2Wip:["Chapter III · In Flight","บทที่ III · ระหว่างเที่ยวบิน"],ch5P1Landing:["Chapter V · Return Flight","บทที่ V · เที่ยวบินขากลับ"],ch5P1ArrivalCard:["Chapter V · Bangkok Arrival","บทที่ V · ถึงกรุงเทพฯ"],ch5P1Police:["Chapter V · Evidence Division","บทที่ V · ฝ่ายพยานหลักฐาน"],ch5P1Briefing:["Chapter V · Secure Briefing","บทที่ V · ห้องประชุมภายใน"],ch5P1CondoWalk:["Chapter V · Private Route","บทที่ V · เส้นทางส่วนตัว"],ch5P1CondoCard:["Chapter V · Benedict's Condominium","บทที่ V · คอนโดมิเนียมของ Benedict"],ch5P1Condo:["Chapter V · Benedict's Condominium","บทที่ V · คอนโดมิเนียมของ Benedict"],ch5P1NorthReveal:["Chapter V · Safe Location","บทที่ V · สถานที่ปลอดภัย"],ch5P1Complete:["Chapter V · Phase I Complete","บทที่ V · จบเฟส I"]};
  const pair=labels[data?.screen]||[`Chapter ${data?.chapter||1} · ${data?.checkpoint||"Investigation"}`,`บทที่ ${data?.chapter||1} · ${data?.checkpoint||"การสืบสวน"}`];return pair[languageCode()==="th"?1:0]
 }
 function formatSaveDate(value){try{return new Intl.DateTimeFormat(languageCode()==="th"?"th-TH":"en-GB",{dateStyle:"medium",timeStyle:"short"}).format(new Date(value))}catch(_){return new Date(value).toLocaleString()}}
@@ -225,14 +226,18 @@ async function importSaveFile(event){
   const now=Date.now();await putNamedSave({id:newSaveId(),name,createdAt:source.createdAt||now,updatedAt:now,data:source.data});flashSave(saveText("Save imported","นำเข้าบันทึกแล้ว"));await renderSaveManager()
  }catch(error){console.error("LAST WITNESS import failed",error);alert(saveText("This file is not a valid LAST WITNESS save.","ไฟล์นี้ไม่ใช่ข้อมูลบันทึก LAST WITNESS ที่ถูกต้อง"))}finally{event.target.value=""}
 }
-async function prepareRuntimeFor(data){if(String(data?.screen||"").startsWith("chapter3")){await window.LastWitnessChapter2Integration?.ensureProductionRuntime?.()}}
+async function waitForChapter5Runtime(){
+ try{await window.LastWitnessChapter5Bootstrap?.install?.()}catch(_){}
+ const until=Date.now()+5000;while(Date.now()<until){if(window.LastWitnessChapter5Phase1?.installed)return true;await new Promise(resolve=>setTimeout(resolve,80))}return Boolean(window.LastWitnessChapter5Phase1?.installed)
+}
+async function prepareRuntimeFor(data){const target=String(data?.screen||"");if(target.startsWith("chapter3")){await window.LastWitnessChapter2Integration?.ensureProductionRuntime?.()}else if(target.startsWith("ch5P1")){await waitForChapter5Runtime()}}
 function applyRestoredSettings(data){
  if(data.language==="th"||data.language==="en")state.language=data.language;if(typeof data.sound==="boolean")state.sound=data.sound;if(Number.isFinite(Number(data.music)))state.music=Math.max(0,Math.min(1,Number(data.music)));if(Number.isFinite(Number(data.sfx)))state.sfx=Math.max(0,Math.min(1,Number(data.sfx)));
  try{document.documentElement.lang=state.language;document.getElementById("soundToggle").checked=state.sound;document.getElementById("musicRange").value=state.music;document.getElementById("sfxRange").value=state.sfx;setVolumes();if(typeof applyLanguage==="function")applyLanguage()}catch(_){}
 }
 function restore(data){
  if(!validSaveData(data))throw new Error("Invalid save snapshot");
- try{window.LastWitnessChapter3?.stopPhase2Media?.(true)}catch(_){};try{if(typeof closeOverlays==="function")closeOverlays()}catch(_){};
+ try{window.LastWitnessChapter3?.stopPhase2Media?.(true)}catch(_){};try{window.LastWitnessChapter5Phase1?.stopAudio?.(false)}catch(_){};try{if(typeof closeOverlays==="function")closeOverlays()}catch(_){};
  state.found=new Set(data.found||[]);state.history=data.history||[];state.chapter=data.chapter||1;state.progress=Number(data.progress)||0;state.checkpoint=data.checkpoint||"ch1_start";
  state.characters=Object.assign({Benedict:true,North:state.chapter>=2,Elena:false},data.characters||{});state.relationships=data.relationships||{North:{trust:70,respect:78,attachment:58,suspicion:3}};if(!state.relationships.Elena)state.relationships.Elena={trust:35,respect:52,attachment:18,suspicion:10};
  state.flags=data.flags||{};state.personality=data.personality||{warm:0,observant:0,direct:0};
@@ -248,6 +253,7 @@ function restore(data){
  else if(target==="forensic2")setTimeout(()=>window.LastWitnessForensic?.start?.(),120);
  else if(target==="medical2")setTimeout(()=>window.LastWitnessMedicalExaminer?.start?.(),120);
  else if(target.startsWith("chapter3"))setTimeout(()=>window.LastWitnessChapter3?.resumeFromState?.(target),120);
+ else if(target.startsWith("ch5P1"))setTimeout(()=>window.LastWitnessChapter5Phase1?.resumeFromState?.(target),120);
  try{window.LastWitnessContentRegistry?.updateVisibility?.();window.LastWitnessContentRegistry?.renderCharacters?.(true);window.LastWitnessContentRegistry?.updateDots?.()}catch(_){}
 }
 async function loadRecord(record){if(!record?.data)return;await prepareRuntimeFor(record.data);restore(record.data);closeSaveManager();try{if(typeof closeOverlays==="function")closeOverlays()}catch(_){};flashSave(saveText("Save loaded","โหลดบันทึกแล้ว"))}
@@ -261,7 +267,7 @@ function loadSave(kind){
 function flashSave(text){const element=document.getElementById("saveIndicator");if(!element)return;element.textContent=text;element.classList.add("show");clearTimeout(flashSave.timer);flashSave.timer=setTimeout(()=>element.classList.remove("show"),1100)}
 function showBadge(text){const element=document.getElementById("badge");if(!element)return;element.textContent=text;element.classList.add("show");clearTimeout(showBadge.timer);showBadge.timer=setTimeout(()=>element.classList.remove("show"),1500)}
 
-function initSaveManager(){injectSaveManager();const buildLabel=document.getElementById("settingsVersion");if(buildLabel)buildLabel.textContent="LAST WITNESS · BUILD 0.7.10";const resetButton=document.getElementById("devResetSave"),legacyReset=window.devResetSaves;if(resetButton)resetButton.onclick=async()=>{try{legacyReset?.()}catch(_){}await clearNamedSaves();try{localStorage.removeItem(SAVE.auto);localStorage.removeItem(SAVE.manual)}catch(_){}flashSave(saveText("All saves cleared","ลบข้อมูลบันทึกทั้งหมดแล้ว"))};migrateLegacyManual();document.addEventListener("click",event=>{if(event.target.closest?.("[data-lang]"))setTimeout(()=>{updateSaveManagerLanguage();if(document.getElementById("lwSaveManager")?.classList.contains("open"))renderSaveManager()},0)},true);window.LastWitnessSaveManager={open:openSaveManager,list:listNamedSaves,export:exportRecord,importFile:importSaveFile,clearAll:clearNamedSaves,snapshot,restore,version:LW_SAVE_BUILD}}
+function initSaveManager(){injectSaveManager();const resetButton=document.getElementById("devResetSave"),legacyReset=window.devResetSaves;if(resetButton)resetButton.onclick=async()=>{try{legacyReset?.()}catch(_){}await clearNamedSaves();try{localStorage.removeItem(SAVE.auto);localStorage.removeItem(SAVE.manual)}catch(_){}flashSave(saveText("All saves cleared","ลบข้อมูลบันทึกทั้งหมดแล้ว"))};migrateLegacyManual();document.addEventListener("click",event=>{if(event.target.closest?.("[data-lang]"))setTimeout(()=>{updateSaveManagerLanguage();if(document.getElementById("lwSaveManager")?.classList.contains("open"))renderSaveManager()},0)},true);window.LastWitnessSaveManager={open:openSaveManager,list:listNamedSaves,export:exportRecord,importFile:importSaveFile,clearAll:clearNamedSaves,snapshot,restore,version:LW_SAVE_BUILD,moduleVersion:LW_SAVE_MODULE}}
 if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",initSaveManager,{once:true});else initSaveManager();
 
 PORTRAITS.Elena={"neutral":"assets/images/f6ecc87ac62112b6.jpg","soft":"assets/images/0b58d037372b3893.jpg","warm":"assets/images/3717ee1601191df6.jpg","thinking":"assets/images/17dc23af74dd7be5.jpg","curious":"assets/images/45cdccdac98f15a4.jpg","attentive":"assets/images/ca489d84591703e2.jpg","skeptical":"assets/images/14251628ba5d808c.jpg","smirk":"assets/images/bedce8e0dbb90d49.jpg","confident":"assets/images/798d0dbcf7dc7040.jpg","serious":"assets/images/94c43ae882e43c69.jpg","concerned":"assets/images/258f1557b5b1d98e.jpg","surprised":"assets/images/7e5f812b3c7eec9e.jpg","shocked":"assets/images/54fa2709eff69d56.jpg","worried":"assets/images/39bae3b954927ff5.jpg","sad":"assets/images/c91ad48a8b115dce.jpg","disappointed":"assets/images/cd01390acb6b500a.jpg","embarrassed":"assets/images/2ad821b6a881a4c0.jpg","amused":"assets/images/5b2f58b400414246.jpg","laughing":"assets/images/a192e652ca70c9db.jpg","determined":"assets/images/e77228fe9ffb3470.jpg","calm":"assets/images/8d5572a029fa0d78.jpg","playful":"assets/images/11558d3825786804.jpg","charming":"assets/images/87fb1e543d974f07.jpg","mysterious":"assets/images/33e95d83dec5c517.jpg"};

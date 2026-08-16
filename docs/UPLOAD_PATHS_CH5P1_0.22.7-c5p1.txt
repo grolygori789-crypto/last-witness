@@ -1,0 +1,15 @@
+index.html
+js/engine/02-audio-save.js
+js/engine/33-chapter-05-loader.js
+js/chapters/chapter-05/01-return-to-bangkok.js
+css/chapter-05-phase-01.css
+assets/video/chapter-05/phase-01/bangkok-landing.mp4
+assets/video/chapter-05/phase-01/walk-to-condo.mp4
+assets/audio/chapter-05/phase-01/opening-scene-c5p1.mp3
+assets/audio/chapter-05/phase-01/walk-to-condo-scene.mp3
+assets/images/chapter-05/phase-01/police-briefing-room.png
+assets/images/chapter-05/phase-01/benedict-condo-interior.jpg
+assets/images/chapter-05/phase-01/north-safehouse-reveal.jpg
+docs/CHAPTER_05_PHASE_01_PREACCEPTANCE.md
+docs/QA_REPORT_CH5P1_0.22.7-c5p1.md
+docs/UPLOAD_PATHS_CH5P1_0.22.7-c5p1.txt
