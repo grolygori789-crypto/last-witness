@@ -2,13 +2,13 @@
 
 > **CANONICAL MASTER REFERENCE / ZERO-QUESTION ROOM HANDOFF**
 >
-> **Revision:** 2026-08-15 22:49 ICT  
+> **Revision:** 2026-08-16 12:30 ICT  
 > **Game:** LAST WITNESS  
 > **Studio:** BENEDICT INTERACTIVE  
 > **Repository:** `grolygori789-crypto/last-witness`  
 > **Production/default branch:** `production-rebuild`  
-> **Production HEAD observed before this Runtime/maintenance update:** `5e2dadb9faedbd86e26cdbe446e7e31d9de99381`  
-> **HEAD message:** `Restore pre-dialogue layout baseline 0.22.6`  
+> **Production HEAD observed before this audio-lifecycle maintenance update:** `aa2ecddd2ad3a05f1d1b9b03a47bd28c354b8509`  
+> **HEAD message:** `Add P8 matrix close and resume`  
 > **Authoritative Runtime build:** `0.22.7`  
 > **Current accepted playable boundary:** `CHAPTER IV COMPLETE · OWNER CURRENT-PASS ACCEPTED`  
 > **Chapter IV:** exactly 8 phases; no Phase IX without explicit owner approval  
@@ -19,11 +19,12 @@
 > **Owner Walkthrough Mode:** module `0.22.3-w1`; read-only guided walkthrough/verified solutions from Chapter I through Chapter IV Phase VIII; Owner-only  
 > **Dialogue presentation restore:** Runtime `0.22.6`; restored pre-adjustment Runtime `0.22.3` dialogue/progress presentation remains the active frozen baseline  
 > **Phase VIII Matrix Exit:** module `0.22.7-m1`; Disclosure Matrix now supports explicit Close → Secure Debrief → Resume without canonical state mutation  
+> **Chapter IV P7/P8 Audio Lifecycle:** maintenance module `0.22.7-a1`; background pauses scoped P7/P8 media and foreground restores the same playback position without user interaction  
 > **Adaptive model:** `P8 CALCULATE → Ch V INFLUENCE → Ch VI DIVERGE → Ch VII RESOLVE`
 
 This file supersedes all older Master Plan revisions. It preserves the locked long-game mystery architecture while updating actual Production status after the owner's current-pass review of Chapters I–IV.
 
-A documentation-only change to this file does **not** require a Runtime build increment. This revision accompanies Runtime `0.22.7` because the isolated Phase VIII Matrix Exit controller and build-facing runtime modules change in the same maintenance release. The restored dialogue/progress baseline from Runtime `0.22.6` remains frozen and unchanged.
+A documentation-only change to this file does **not** require a Runtime build increment. Runtime `0.22.7` remains the authoritative base build. The scoped audio-lifecycle maintenance module `0.22.7-a1` is loaded directly with its own cache key and does not change Runtime, Dev, North QA, Save-facing build identity, dialogue/progress presentation, Phase VIII core logic, or Hidden Case state.
 
 ---
 
@@ -2253,3 +2254,25 @@ Canonical final idea:
 - Accepted content is maintenance locked, not permanently immune from future reproducible defect repair.
 
 This is the canonical continuation contract from the owner-accepted Chapters I–IV production baseline into Chapter V and through Chapter VII final resolution.
+
+---
+
+## 0.22.7-a1 Chapter IV Phase VII / VIII audio lifecycle maintenance
+
+Owner real-device review identified two foreground/background defects: Phase VII audio could remain paused after returning to the game until another UI interaction occurred, while Phase VIII audio could be reawakened in the background by the session-local Matrix Exit audio guard.
+
+This maintenance module is intentionally isolated in `js/engine/32-c4-p7-p8-audio-lifecycle.js` and loaded directly from `index.html` as `v=0227a1`. The authoritative Runtime base remains `0.22.7`; no build-facing module identity is bumped for this micro-patch.
+
+Contract:
+
+- scope only Phase VII and Phase VIII screen families
+- background lifecycle uses `visibilitychange` with `pagehide` / Page Lifecycle fallback
+- foreground lifecycle uses visible `visibilitychange`, `pageshow` and `focus`
+- continuous media are paused without resetting `currentTime`
+- original playback time, volume, mute state and playback rate are restored on foreground
+- Phase VII music that Android/Chrome may auto-pause before the handler still resumes when its active screen and positive target volume show that the loop should be running
+- while backgrounded, any scoped media `play` attempt is immediately re-paused and rewound to the captured position; this prevents the Phase VIII Matrix Exit timer from audibly or temporally advancing the score in background
+- no dialogue, Progress, portrait, Matrix validator, card placement, evidence, choice, checkpoint, Save/Load, Hidden Case, route, Dev Jump, North QA or Owner Walkthrough mutation
+- no change to `07-relay-facility.js`, `08-shadow-of-truth.js`, `31-p8-matrix-exit.js` or any Chapter IV CSS
+- physical Android remains the final acceptance gate
+
