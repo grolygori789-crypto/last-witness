@@ -1,19 +1,19 @@
-/* LAST WITNESS - Chapter V / Phase I: RETURN TO BANGKOK 0.22.7-c5p1r4
+/* LAST WITNESS - Chapter V / Phase I: RETURN TO BANGKOK 0.22.7-c5p1r5
  * Production Chapter V opening. Reuses the accepted Phase V/VII ordinary-scene
  * shell and Phase IV/VII location/completion language. Only CUSTODY WINDOW is
  * bespoke. No Hidden Case values are displayed or mutated here.
  */
 (function(){
 "use strict";
-const VERSION="0.22.7-c5p1r4";
+const VERSION="0.22.7-c5p1r5";
 if(window.LastWitnessChapter5Phase1?.version===VERSION){try{window.LastWitnessChapter5Phase1.install?.()}catch(_){}return}
 
 const BASE="assets/images/chapter-05/phase-01/";
 const VIDEO="assets/video/chapter-05/phase-01/";
 const AUDIO="assets/audio/chapter-05/phase-01/";
 const POLICE_IMAGE="assets/images/b06c89de9255c034.png";
-const SOMCHAI_SHOCK=BASE+"somchai-shocked.png?v=0227c5p1r4";
-const SOMCHAI_SAD=BASE+"somchai-sad.png?v=0227c5p1r4";
+const SOMCHAI_SHOCK=BASE+"somchai-shocked.png?v=0227c5p1r5";
+const SOMCHAI_SAD=BASE+"somchai-sad.png?v=0227c5p1r5";
 
 const LANDING="ch5P1Landing";
 const ARRIVAL="ch5P1ArrivalCard";
@@ -80,19 +80,19 @@ function scene(id,image,labelId,extra=""){return `<section id="${id}" class="scr
 function inject(){
  if($("#"+LANDING))return true;const game=$("#game");if(!game)return false;
  game.insertAdjacentHTML("beforeend",`
- <section id="${LANDING}" class="screen ch5-p1-video"><video id="ch5P1LandingVideo" playsinline webkit-playsinline preload="auto"><source src="${VIDEO}bangkok-landing.mp4?v=0227c5p1r4" type="video/mp4"></video><div class="ch4-p5-shade"></div><div id="ch5P1LandingStatus" class="ch5-p1-video-status"></div><button id="ch5P1LandingPlay" class="primary ch5-p1-video-play" type="button" hidden></button><button id="ch5P1LandingSkip" class="ghost ch5-p1-skip" type="button"></button></section>
+ <section id="${LANDING}" class="screen ch5-p1-video"><video id="ch5P1LandingVideo" playsinline webkit-playsinline preload="auto"><source src="${VIDEO}bangkok-landing.mp4?v=0227c5p1r5" type="video/mp4"></video><div class="ch4-p5-shade"></div><div id="ch5P1LandingStatus" class="ch5-p1-video-status"></div><button id="ch5P1LandingPlay" class="primary ch5-p1-video-play" type="button" hidden></button><button id="ch5P1LandingSkip" class="ghost ch5-p1-skip" type="button"></button></section>
  <section id="${ARRIVAL}" class="screen ch4-p4-location"><div id="ch5P1ArrivalCardInner" class="ch4-p4-location-card"><div id="ch5P1ArrivalEye" class="eyebrow"></div><div id="ch5P1ArrivalCity" class="ch4-p4-location-city"></div><h2 id="ch5P1ArrivalName"></h2><div class="ch4-p4-location-rule"></div><p id="ch5P1ArrivalBody"></p></div></section>
  ${scene(POLICE,POLICE_IMAGE,"ch5P1PoliceLocation")}
- ${scene(BRIEFING,BASE+"police-briefing-room.png?v=0227c5p1r4","ch5P1BriefingLocation")}
- <section id="${WALK}" class="screen ch5-p1-video"><video id="ch5P1WalkVideo" playsinline webkit-playsinline preload="auto"><source src="${VIDEO}walk-to-condo.mp4?v=0227c5p1r4" type="video/mp4"></video><div class="ch4-p5-shade"></div><div id="ch5P1WalkStatus" class="ch5-p1-video-status"></div><button id="ch5P1WalkPlay" class="primary ch5-p1-video-play" type="button" hidden></button><button id="ch5P1WalkSkip" class="ghost ch5-p1-skip" type="button"></button></section>
+ ${scene(BRIEFING,BASE+"police-briefing-room.png?v=0227c5p1r5","ch5P1BriefingLocation")}
+ <section id="${WALK}" class="screen ch5-p1-video"><video id="ch5P1WalkVideo" playsinline webkit-playsinline preload="auto"><source src="${VIDEO}walk-to-condo.mp4?v=0227c5p1r5" type="video/mp4"></video><div class="ch4-p5-shade"></div><div id="ch5P1WalkStatus" class="ch5-p1-video-status"></div><button id="ch5P1WalkPlay" class="primary ch5-p1-video-play" type="button" hidden></button><button id="ch5P1WalkSkip" class="ghost ch5-p1-skip" type="button"></button></section>
  <section id="${CONDO_CARD}" class="screen ch4-p4-location"><div id="ch5P1CondoCardInner" class="ch4-p4-location-card"><div id="ch5P1CondoEye" class="eyebrow"></div><div id="ch5P1CondoCity" class="ch4-p4-location-city"></div><h2 id="ch5P1CondoName"></h2><div class="ch4-p4-location-rule"></div><p id="ch5P1CondoBody"></p><button id="ch5P1CondoContinue" class="primary" type="button"></button></div></section>
- ${scene(CONDO,BASE+"benedict-condo-interior.jpg?v=0227c5p1r4","ch5P1CondoLocation")}
- ${scene(REVEAL,BASE+"north-safehouse-reveal.jpg?v=0227c5p1r4","ch5P1RevealLocation","ch5-p1-reveal")}
+ ${scene(CONDO,BASE+"benedict-condo-interior.jpg?v=0227c5p1r5","ch5P1CondoLocation")}
+ ${scene(REVEAL,BASE+"north-safehouse-reveal.jpg?v=0227c5p1r5","ch5P1RevealLocation","ch5-p1-reveal")}
  <div id="ch5P1Custody" class="modal ch5-p1-custody" aria-hidden="true"><div class="modal-card"><header class="ch5-p1-custody-head"><div class="eyebrow" id="ch5P1CustodyEye"></div><h3 id="ch5P1CustodyTitle"></h3><p id="ch5P1CustodyBody"></p><button id="ch5P1CustodyClose" class="ghost ch5-p1-custody-close" type="button" aria-label="Close">×</button><div class="ch5-p1-step"><span id="ch5P1CustodyStepLabel"></span><div><i id="ch5P1CustodyStepFill"></i></div></div></header><div class="ch5-p1-custody-scroll"><div id="ch5P1CustodyAirborne" class="ch5-p1-airborne"></div><div id="ch5P1CustodyWork"></div></div><div id="ch5P1CustodyStatus" class="ch5-p1-custody-status" aria-live="polite"></div><footer class="ch5-p1-custody-foot"><button id="ch5P1CustodyReset" class="ghost" type="button"></button><button id="ch5P1CustodyConfirm" class="primary" type="button"></button></footer></div></div>
  <div id="ch5P1Influence" class="modal ch5-p1-influence" aria-hidden="true"><div class="modal-card"><div class="eyebrow" id="ch5P1InfluenceEye"></div><h3 id="ch5P1InfluenceTitle"></h3><p id="ch5P1InfluenceBody"></p><div id="ch5P1InfluenceGrid" class="ch5-p1-influence-grid"></div></div></div>
  <section id="${COMPLETE}" class="screen ch4-p4-complete ch5-p1-complete"><div class="ch4-p4-complete-card"><div id="ch5P1CompleteEye" class="eyebrow"></div><h2 id="ch5P1CompleteTitle"></h2><div class="ch4-p4-location-rule"></div><p id="ch5P1CompleteBody"></p><div class="ch4-p4-complete-grid"><div><span id="ch5P1ResultReturn"></span><b id="ch5P1ValueReturn"></b></div><div><span id="ch5P1ResultNorth"></span><b id="ch5P1ValueNorth"></b></div><div><span id="ch5P1ResultCustody"></span><b id="ch5P1ValueCustody"></b></div><div><span id="ch5P1ResultRoom"></span><b id="ch5P1ValueRoom"></b></div></div><strong id="ch5P1Next"></strong><button id="ch5P1ReturnTitle" class="primary" type="button"></button></div>${progressMarkup()}</section>
- <audio id="ch5P1OpeningScore" preload="auto" src="${AUDIO}opening-scene-c5p1.mp3?v=0227c5p1r4"></audio>
- <audio id="ch5P1WalkScore" preload="auto" src="${AUDIO}walk-to-condo-scene.mp3?v=0227c5p1r4"></audio>`);
+ <audio id="ch5P1OpeningScore" preload="auto" src="${AUDIO}opening-scene-c5p1.mp3?v=0227c5p1r5"></audio>
+ <audio id="ch5P1WalkScore" preload="auto" src="${AUDIO}walk-to-condo-scene.mp3?v=0227c5p1r5"></audio>`);
  bindUi();updateLanguage();syncProgress();return true
 }
 
