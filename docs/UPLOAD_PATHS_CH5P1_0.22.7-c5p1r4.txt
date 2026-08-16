@@ -1,0 +1,15 @@
+LAST WITNESS — Chapter V Phase I Revision 4 Upload Package
+Build: 0.22.7-c5p1r4
+Commit name: fix ch5p1 somchai portrait and ui
+
+Files to upload:
+assets/images/chapter-05/phase-01/somchai-sad.png
+assets/images/chapter-05/phase-01/somchai-shocked.png
+css/chapter-05-phase-01.css
+js/chapters/chapter-05/01-return-to-bangkok.js
+js/engine/33-chapter-05-loader.js
+js/engine/34-chapter-05-owner-walkthrough.js
+docs/CHAPTER_05_PHASE_01_REVISION_4.md
+docs/QA_REPORT_CH5P1_0.22.7-c5p1r4.md
+docs/UPLOAD_PATHS_CH5P1_0.22.7-c5p1r4.txt
+docs/MANIFEST_SHA256_CH5P1_0.22.7-c5p1r4.txt

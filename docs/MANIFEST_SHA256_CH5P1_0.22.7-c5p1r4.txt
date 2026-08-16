@@ -1,0 +1,9 @@
+cc3fa46cc85ef13a863e8d7982269dbf73fcb4bf2a8121e71f3bbf67231b0721  assets/images/chapter-05/phase-01/somchai-sad.png
+8d050af801c584d96810085193dc017bc71d9bb35f48b04fb36afad55ebec48e  assets/images/chapter-05/phase-01/somchai-shocked.png
+fc44039547d26673acd2872358b6db1a8f4a3943c94022939214916ca3c24508  css/chapter-05-phase-01.css
+acc56f12c88ea05eee30c009b287e3ab069ef2f9410931c40c4a9677b3032bba  docs/CHAPTER_05_PHASE_01_REVISION_4.md
+e3785329323e63588201a3f41825ee399af93f03a83cdb7d8d2e1cc69055867c  docs/QA_REPORT_CH5P1_0.22.7-c5p1r4.md
+6541630491e054492b96e5588bb2e02a60b3f0306ffcff288e7b4e229aada577  docs/UPLOAD_PATHS_CH5P1_0.22.7-c5p1r4.txt
+2c9a0291797685af6211a25091c3739d64010916a25b7dd478b8c58d8e175437  js/chapters/chapter-05/01-return-to-bangkok.js
+48870e77e8c94e6be4fd3885b0fbbec793433f24185d771cbaa46b6fedab6af9  js/engine/33-chapter-05-loader.js
+0712fbdcd9cc0e074f7b628d11efd9ba1eb3cd90e87e03f31ef5d8a54cd67eb7  js/engine/34-chapter-05-owner-walkthrough.js

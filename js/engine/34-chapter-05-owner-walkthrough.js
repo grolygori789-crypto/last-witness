@@ -1,11 +1,11 @@
-/* LAST WITNESS - Chapter V Owner Walkthrough Extension 0.22.7-c5w1
+/* LAST WITNESS - Chapter V Owner Walkthrough Extension 0.22.7-c5w2
  * Read-only Chapter V Phase I extension for the accepted Owner Walkthrough UI.
  * It reads screen/checkpoint/Phase I state only and never mutates gameplay,
  * Save, Hidden Case, evidence, choices, progress, audio or North QA state.
  */
 (function(){
 "use strict";
-const VERSION="0.22.7-c5w1";
+const VERSION="0.22.7-c5w2";
 const BASE_VERSION="0.22.3-w1";
 if(window.LastWitnessChapter5OwnerWalkthrough?.version===VERSION){try{window.LastWitnessChapter5OwnerWalkthrough.install?.()}catch(_){}return}
 const $=(s,r=document)=>r.querySelector(s);
@@ -54,7 +54,7 @@ function render(){
  const fill=$("#lwWalkStepFill");if(fill)fill.style.width=`${((index+1)/STEPS.length)*100}%`;const badge=$("#lwWalkNoFail");if(badge)badge.hidden=!step.nofail;
  set("#lwWalkTitle",tr(step.title[0],step.title[1]));set("#lwWalkActionLabel",tr("NEXT ACTION","ทำอะไรต่อ"));set("#lwWalkAction",tr(step.action[0],step.action[1]));set("#lwWalkHintLabel",tr("HINT","คำใบ้"));set("#lwWalkHint",tr(step.hint[0],step.hint[1]));set("#lwWalkSolutionLabel",tr("VERIFIED SOLUTION","คำตอบที่ตรวจจาก Production"));set("#lwWalkSolution",tr(step.solution[0],step.solution[1]));
  const hb=$("#lwWalkHintBlock"),sb=$("#lwWalkSolutionBlock");if(hb)hb.hidden=!hint;if(sb)sb.hidden=!solution;set("#lwWalkHintButton",hint?tr("HIDE HINT","ซ่อนคำใบ้"):tr("HINT","คำใบ้"));set("#lwWalkSolutionButton",solution?tr("HIDE SOLUTION","ซ่อนคำตอบ"):tr("SHOW SOLUTION","แสดงคำตอบ"));
- const prev=$("#lwWalkPrev"),next=$("#lwWalkNext");if(prev)prev.disabled=index===0;if(next)next.disabled=index===STEPS.length-1;const pill=$("#lwOwnerWalkthroughPill");if(pill)pill.textContent=`WALKTHROUGH · C5P1 · ${index+1}/${STEPS.length}`;const build=$("#lwOwnerWalkthrough .lw-walk-build");if(build)build.textContent=`${BASE_VERSION} · C5 ${VERSION}`;return true
+ const prev=$("#lwWalkPrev"),next=$("#lwWalkNext");if(prev)prev.disabled=index===0;if(next)next.disabled=index===STEPS.length-1;const pill=$("#lwOwnerWalkthroughPill");if(pill)pill.textContent=`WALKTHROUGH · C5P1 · ${index+1}/${STEPS.length}`;const build=$("#lwOwnerWalkthrough .lw-walk-build");if(build)build.textContent=`${BASE_VERSION} · C5W ${VERSION} · P1 0.22.7-c5p1r4`;return true
 }
 function activate(sync=true){
  const base=walk();if(!base)return false;if(!$("#lwOwnerWalkthrough"))base.install?.();if(!$("#lwOwnerWalkthrough"))return false;markBaseManual();active=true;manual=!sync;hint=false;solution=false;index=sync?stepIndexFromGame():0;render();armSync();return true
