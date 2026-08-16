@@ -2,13 +2,14 @@
 
 > **CANONICAL MASTER REFERENCE / ZERO-QUESTION ROOM HANDOFF**
 >
-> **Revision:** 2026-08-16 12:30 ICT  
+> **Revision:** 2026-08-16 13:46 ICT  
 > **Game:** LAST WITNESS  
 > **Studio:** BENEDICT INTERACTIVE  
 > **Repository:** `grolygori789-crypto/last-witness`  
 > **Production/default branch:** `production-rebuild`  
-> **Production HEAD observed before this audio-lifecycle maintenance update:** `aa2ecddd2ad3a05f1d1b9b03a47bd28c354b8509`  
-> **HEAD message:** `Add P8 matrix close and resume`  
+> **Latest inspected Production runtime-code/maintenance HEAD before this documentation-only handoff update:** `4034fc263a75118f143e8ce6d1d908ff5598c33d`  
+> **HEAD message:** `Fix P7 P8 background audio lifecycle`  
+> **Owner physical Android acceptance:** `PASS · 2026-08-16` — P7/P8 background pause and foreground automatic resume accepted; no extra tap required; P8 Matrix Exit no longer reawakens background audio  
 > **Authoritative Runtime build:** `0.22.7`  
 > **Current accepted playable boundary:** `CHAPTER IV COMPLETE · OWNER CURRENT-PASS ACCEPTED`  
 > **Chapter IV:** exactly 8 phases; no Phase IX without explicit owner approval  
@@ -25,6 +26,8 @@
 This file supersedes all older Master Plan revisions. It preserves the locked long-game mystery architecture while updating actual Production status after the owner's current-pass review of Chapters I–IV.
 
 A documentation-only change to this file does **not** require a Runtime build increment. Runtime `0.22.7` remains the authoritative base build. The scoped audio-lifecycle maintenance module `0.22.7-a1` is loaded directly with its own cache key and does not change Runtime, Dev, North QA, Save-facing build identity, dialogue/progress presentation, Phase VIII core logic, or Hidden Case state.
+
+This revision is the **final zero-question room-handoff contract** for beginning Chapters V–VII. After the owner uploads this documentation-only file, GitHub HEAD will naturally advance to the documentation commit; that does **not** change the runtime-code baseline above unless code changes are also made. A new room must inspect current Production before any repair or implementation, but must not reopen locked decisions merely because the documentation commit SHA differs from the runtime-code baseline recorded here.
 
 ---
 
@@ -154,6 +157,57 @@ Do not casually override global `.screen` geometry, especially with `position:re
 
 Progress reaches `100%` only at genuine completion.
 
+## Chapters V–VII Interface / UI shell preservation lock — OWNER NON-NEGOTIABLE
+
+For Chapters V, VI and VII, the established LAST WITNESS interface is an **implementation contract**, not merely visual inspiration. The existing owner-approved runtime must be studied first and reused as the source structure.
+
+The rule is:
+
+> **Study the proven shell, preserve the shell, replace only the story/content payload inside it.**
+
+For every new ordinary scene, card, dialogue surface, HUD, Progress presentation, location/time card, evidence panel, choice panel, flight/route presentation, completion card and transition:
+
+1. inspect the closest owner-approved Production implementation in the existing Chapters I–IV runtime
+2. reuse its DOM hierarchy, CSS primitives, geometry, spacing, safe-area treatment, typography hierarchy, border/radius language, button language, animation rhythm, z-index relationships and interaction behavior
+3. change only what the new content actually requires: IDs, text, character/portrait, image/video/audio asset, evidence payload, choice payload, state key, chapter/phase metadata and phase-specific logic
+4. extend proven classes only when a real new requirement cannot be expressed by the existing shell
+5. any visible structural redesign requires explicit owner approval before implementation
+
+Without explicit owner approval, **do not** independently:
+
+- move or resize established dialogue shells
+- change dialogue height/bottom position, portrait well, grid proportions, frame, border or radius
+- move or redesign Progress UI
+- change topbar/HUD geometry, icon style or safe-area behavior
+- invent new card geometry, title-card decoration, symbols, badges or ornamental blocks
+- change established fonts, type scale, tracking philosophy or button shape
+- introduce a new normal-scene layout because it appears cleaner or more modern
+- normalize Phase-specific geometry merely for visual symmetry
+- replace proven transitions with a new animation language
+- globally patch a local defect
+
+A new chapter number is **not** permission for a new interface language. Chapters V–VII must feel as though they were always part of the same shipped game.
+
+### Canonical reference pattern
+
+- ordinary investigation scene → proven Phase V / Phase VII scene shell
+- dialogue → existing accepted dialogue shell and portrait registry
+- location/time card → closest accepted location/time card
+- flight/takeoff/route → proven Singapore → Jakarta / Jakarta → Bangkok continuity pattern
+- evidence review → closest accepted evidence modal/card
+- completion → closest accepted completion card
+- minigame → bespoke internal interaction is allowed, but modal framing, typography, palette, safe area, touch behavior and exit/resume expectations must remain LAST WITNESS
+
+If a genuinely new interaction has no suitable existing shell, first prove that no accepted primitive fits. Only then design the smallest compatible extension. Do not redesign surrounding UI to accommodate the new feature.
+
+### Dialogue geometry freeze / historical Progress behavior
+
+The owner has explicitly frozen dialogue geometry across the accepted Chapters I–IV baseline. Do not modify dialogue height, bottom position, portrait-well geometry, frame/border/radius or grid proportions unless a reproducible defect makes a scene unusable or the owner explicitly requests a redesign.
+
+The Chapter IV Phase VIII ordinary dialogue sitting somewhat higher than an idealized uniform baseline is an **accepted visual variation**, not a reason to normalize all phases. Phase VI cinematic-CG dialogue is also an accepted special surface and must remain isolated.
+
+Chapter I's historical shared-layout behavior can place Progress behind an ordinary dialogue because both occupy the same lower lane while dialogue has the higher z-index. This predates Runtime `0.22.4`; it is not evidence that the restored `0.22.6` baseline failed. It is accepted for continuation as a known legacy presentation limitation. If the owner later chooses to repair it, the repair must be a dedicated Progress/HUD-only task: **do not move Dialogue to fix Progress**, and audit Chapters I–IV comprehensively before release.
+
 ## Dialogue / Progress presentation restore — Runtime 0.22.6
 
 Owner real-device review showed that the Runtime `0.22.4–0.22.5` dialogue-positioning experiment introduced unacceptable presentation regressions, including missing or overlapping Progress UI and distorted dialogue framing in some scenes. Runtime `0.22.6` therefore restores the exact pre-adjustment presentation behavior of Runtime `0.22.3` before any new dialogue/progress redesign is attempted.
@@ -177,6 +231,108 @@ Canonical restore contract:
 Current base build: **0.22.7**.
 
 All player-facing, owner-facing, QA-facing and save-facing Runtime build identities must resolve to the same base build.
+
+## BUILD LINKAGE IS ATOMIC / ZERO-TOLERANCE — RELEASE BLOCKER CONTRACT
+
+This rule is absolute for every future Production release from Chapter V through Chapter VII and for any maintenance release that changes shipped runtime behavior. **Build linkage is one atomic release transaction.** A package is not a valid release merely because gameplay code works. The release is valid only when every affected build-facing endpoint, loader expectation, cache key, QA surface and release artifact is internally consistent.
+
+**Any mismatch in any affected endpoint is a RELEASE BLOCKER. Do not package, upload, merge, publish or call the build complete until the mismatch is fixed at the authoritative source.**
+
+Mandatory interpretation rules:
+
+- Owner Developer Mode and North QA are **mandatory release endpoints**, never optional secondary tooling.
+- Settings build, Owner Dev build, North QA build, Runtime Build Label, global Runtime identity, document dataset identity and save-facing version metadata where present must never disagree after a base Runtime change.
+- A changed JS/CSS/module file must receive a fresh cache key or loader generation where that file is cache-addressed. Never reuse the previous cache key for changed shipped code.
+- A loader's expected module version must match the module actually loaded. Never let a stale `ready()` / expected-version check silently accept or reject the wrong generation.
+- A visible label must reflect the authoritative build; never cosmetically relabel an older runtime to hide an underlying mismatch.
+- Never repair build mismatch with MutationObservers, polling label patches, fallback overlays or post-load cosmetic rewrites. Fix the source build/version/loader linkage.
+- Never ship first and “sync Dev/North/build labels later.” Synchronization happens **before packaging**.
+- Do not infer that a successful main-game screen means Dev Mode or North QA linkage is correct. They must be checked explicitly.
+- Do not infer that Dev Mode working means North QA is correct, or vice versa. Each endpoint requires its own verification.
+- Do not infer that a documentation string proves runtime linkage. Runtime/source/loader values must be inspected directly.
+
+### Release identity taxonomy — no ambiguous versioning
+
+There are three different version concepts and they must never be conflated:
+
+1. **Base Runtime build** — the visible/player-facing release identity, currently `0.22.7`. When this changes, every mandatory base-build endpoint listed below must synchronize atomically.
+2. **Independent module version** — a stable subsystem may keep its own older internal version when its source did not change, for example Hidden Case `0.21.0`, Phase VIII core `0.22.2`, Owner Walkthrough `0.22.3-w1`. Do **not** fake-bump these merely to imitate the Runtime shell.
+3. **Scoped maintenance/module suffix** — a deliberately isolated patch may remain under the same base Runtime only when explicitly designated and documented, with its own unique version/cache identity, for example `0.22.7-m1` or `0.22.7-a1`. This exception does **not** permit visible build mismatch and does not excuse stale loader/cache expectations.
+
+If there is uncertainty over whether a change is a base Runtime release or a scoped independent maintenance module, **stop before packaging and resolve the release identity explicitly**. Never improvise version semantics mid-package.
+
+### Mandatory base-Runtime synchronization endpoints
+
+Whenever the **base Runtime number changes**, verify and synchronize all applicable endpoints before packaging, even when an individual tool's behavior did not otherwise change:
+
+- `index.html` visible/fallback Settings build text
+- `index.html` bootstrap cache key / generation
+- `js/engine/09-defect-hotfix.js` header build and startup generation
+- `window.LastWitnessRuntimeBuild`
+- `document.documentElement.dataset.runtimeBuild`
+- Runtime Build Label module version / expected version / cache
+- Settings-visible build
+- Owner Developer Mode visible build
+- Developer Phase Navigation base version, loader cache and expected version
+- North QA visible build
+- North QA module version, loader cache and expected version
+- Save-facing build/version metadata where the current Save Manager exposes it
+- every changed phase/module loader cache key
+- every changed module expected-version/ready check
+- any current build value copied into diagnostics, Copy Test Info or owner/QA surfaces
+- QA report release identity
+- release notes release identity
+- upload ZIP / source package naming
+- manifest naming/content
+- checksum filename/content references
+- upload instructions / commit instructions where build identity is stated
+
+**Developer Navigation may use a suffix such as `-d1`, but its base portion must equal the current Runtime. North QA's base must equal the current Runtime. Neither may be left on the previous base build after a Runtime increment.**
+
+### When Dev Mode / North QA changes without a base Runtime increment
+
+If Owner Developer Mode or North QA source itself changes while the base Runtime intentionally remains unchanged:
+
+- update that module's own version/suffix
+- update its cache key
+- update the bootstrap/direct loader expected version
+- keep its base portion compatible with the authoritative Runtime
+- verify its visible build remains the authoritative base Runtime
+- verify no hidden/owner-only data leaks into North QA
+- document the scoped maintenance identity in the Master Plan/release notes
+
+A Dev/North source change with stale module version or stale cache key is also a **RELEASE BLOCKER**.
+
+### Post-package and post-upload verification
+
+Packaging is not the final proof. After creating the upload artifact, verify the artifact itself, not only the working directory:
+
+1. enumerate ZIP paths and compare against the intended allowlist
+2. verify packaged bytes match the validated source files
+3. search packaged build-facing files for stale prior-build strings and stale cache generations
+4. verify no unintended QA/source/support files entered the upload-only package
+5. verify checksum against the final archive bytes
+
+After the owner uploads to GitHub, the next room/turn must read current Production HEAD and spot-check the actual landed build-facing files before treating the upload as canonical. **Never assume “uploaded” means every path landed correctly.**
+
+### Release stop conditions
+
+Stop the release and do not package/publish when any of the following is true:
+
+- Settings and Runtime disagree
+- Owner Dev and Runtime disagree
+- North QA and Runtime disagree
+- Dev/North loader expected version disagrees with module source version
+- a changed file still uses its previous cache key
+- Runtime Label/global/dataset identity disagrees
+- Save-facing version is stale where applicable
+- upload artifact contains unintended paths
+- QA/release notes/package names identify a different base build
+- stale previous-build strings remain in an affected authoritative path without an explicit historical/documentation reason
+- a scoped maintenance module is not explicitly versioned/documented
+- there is uncertainty about which version is authoritative
+
+The correct response to any stop condition is **fix first, re-run linkage validation, then package again**. No exception for “small” changes.
 
 ## Required endpoints when Runtime build changes
 
@@ -253,6 +409,20 @@ Contract:
 - the pause state is presentation-only and session-local; reloading while the canonical stage is `matrix` reopens the Matrix normally
 - no broad MutationObserver and no repair loader
 
+### `js/engine/32-c4-p7-p8-audio-lifecycle.js`
+
+Current scoped maintenance module: `0.22.7-a1`, direct loader cache `v=0227a1`.
+
+Contract:
+
+- authoritative Runtime base remains `0.22.7`; this micro-maintenance does not fake-bump independent build-facing modules
+- scope only Chapter IV Phase VII / VIII continuous-media lifecycle behavior
+- background pause preserves media position
+- foreground resumes appropriate active media automatically
+- background play attempts from timers/controllers are suppressed
+- no phase core, dialogue, Progress, CSS, Save/Load, checkpoint, Hidden Case, Dev, North QA or Walkthrough mutation
+- owner physical Android acceptance: PASS 2026-08-16
+
 ### changed phase modules
 
 If a phase JS/CSS changes, update its own version/cache and bootstrap expectations consistently.
@@ -273,33 +443,46 @@ Use the same base build in ZIP, QA report, manifest, checksum filename, upload i
 
 ## Mandatory build release gate
 
-1. choose base build
-2. update all endpoints
-3. update changed-file cache keys
-4. verify index bootstrap generation
-5. verify bootstrap expected versions
-6. Settings build
-7. Owner Dev build
-8. North QA build
-9. `window.LastWitnessRuntimeBuild`
-10. document dataset build
-11. save metadata version if applicable
-12. search changed build-facing files for stale previous build strings
-13. package only after all pass
+Run this gate for every base Runtime release. Run the applicable subset for scoped maintenance releases, but never skip a relevant check.
 
-Do not hide a build mismatch with another observer. Fix the authoritative sources.
+1. classify the release explicitly: base Runtime / independent module / scoped maintenance
+2. choose and record the authoritative base Runtime
+3. enumerate the exact affected repository paths before editing
+4. update every affected source version
+5. update every changed-file cache key / loader generation
+6. update every affected loader expected-version / ready check
+7. verify `index.html` fallback/visible build
+8. verify bootstrap header/startup generation and `window.LastWitnessRuntimeBuild`
+9. verify `document.documentElement.dataset.runtimeBuild`
+10. verify Settings build
+11. verify Owner Developer Mode build and Developer Navigation version/cache/expectation
+12. verify North QA build and North QA version/cache/expectation
+13. verify Runtime Build Label version/cache/expectation
+14. verify Save-facing version metadata where applicable
+15. verify changed phase/module versions and caches
+16. search all affected authoritative build-facing files for stale prior-build strings/cache keys, excluding clearly historical documentation only
+17. run syntax/static/build-linkage validation
+18. create the upload artifact and verify exact path allowlist + byte equality
+19. verify QA report/release notes/package/manifest/checksum all identify the same intended release
+20. package/present the release only after every applicable item passes
 
-Master Plan-only changes do not bump Runtime.
+**One failed applicable item = RELEASE BLOCKER.** Do not downgrade it to a warning. Do not hide a build mismatch with another observer. Fix the authoritative sources and rerun the gate from the affected step onward.
+
+After owner upload, re-read Production HEAD and the landed build-facing files before declaring the release canonical.
+
+Master Plan-only documentation changes do not bump Runtime.
 
 ---
 
 # 4. STARTUP / LOADER SAFETY
 
-Production HEAD observed before this Runtime/restore update:
+Historical pre-restore dialogue/progress regression head:
 
 `80c6b5c5189141c83887b81733ac6ee459a8c7d3` — `Keep Chapter IV progress visible in dialogue`
 
-Last Runtime-code baseline before Walkthrough:
+This is retained only as regression history; it is **not** the current Production baseline and its `0.22.4–0.22.5` presentation behavior must not be revived.
+
+Historical Runtime-code baseline before Walkthrough:
 
 `42a677a4e84132bb19d4f58dd5b1d8cd607e46c3` — `Fix P8 portraits and owner case inspector`
 
@@ -374,21 +557,58 @@ Unknown legacy choice = no invented score.
 
 ---
 
-# 6. AUDIO LIFECYCLE
+# 6. AUDIO LIFECYCLE — BACKGROUND AUDIO ZERO-TOLERANCE CONTRACT
 
-No accidental dead air when a continuous score bed is intended.
+No accidental dead air when a continuous score bed is intended, and **no LAST WITNESS phase audio may continue playing after the browser/app has been hidden, backgrounded, minimized or otherwise removed from the active foreground**. This is a permanent product rule for all current and future chapters.
 
 Dialogue, evidence, choices and minigames should normally **duck** music rather than hard-stop it. Use smooth fades and restore automatically.
 
-When browser/app is hidden: pause phase media cleanly.
+## Canonical foreground/background behavior
 
-On foreground return: resume appropriate scene audio automatically. Do not require an unrelated extra tap.
+When the browser/app leaves the foreground:
 
-Return to Title is a hard boundary: phase-specific music/ambience stops immediately and Title audio restores.
+- pause all continuous media owned by the active phase immediately
+- preserve `currentTime`; backgrounding is a pause, not a restart
+- preserve the information required to restore the correct media/volume/ducking state
+- no timer, observer, modal controller, minigame controller, fade loop or delayed callback may reawaken media while hidden
+- if any scoped `play()` attempt occurs while backgrounded, it must be suppressed/re-paused so the track cannot audibly or temporally advance
+- video and ambience follow the same lifecycle principle when they are phase-owned continuous media
 
-Music must fit LAST WITNESS, not merely loop correctly.
+When the browser/app returns to the foreground:
 
-Avoid harsh airport noise, intrusive announcements or high-frequency ambience that competes with reading.
+- resume the **appropriate current scene audio automatically** from the preserved position
+- restore the current scene's correct volume and ducking state
+- do not reset to the beginning unless the scene itself intentionally restarted
+- do not require the player to tap a tab, dialogue, button or empty area merely to wake the score
+- do not resurrect media from a phase/screen that stopped being active while backgrounded
+
+Use robust Page Lifecycle coverage appropriate to the implementation. The accepted `0.22.7-a1` maintenance pattern uses `visibilitychange`, `pagehide` / lifecycle fallback and foreground `visibilitychange`, `pageshow` and `focus`, while guarding against background replay attempts. Future phases must preserve the same behavioral contract even if implementation details evolve.
+
+## Phase VII / VIII incident — permanent regression lesson
+
+The owner found on physical Android that Phase VII paused when minimized but failed to resume until an unrelated interaction, while Phase VIII could continue/reawaken audio in the background because a Matrix Exit session timer called its audio mode repeatedly. Maintenance module `0.22.7-a1` repaired both classes of defect.
+
+**Owner physical Android acceptance on 2026-08-16: PASS.**
+
+Accepted behavior now confirmed:
+
+- Phase VII background → audio stops
+- Phase VII foreground → audio resumes automatically from the prior point without extra interaction
+- Phase VIII background → scoped media remains paused
+- Phase VIII Matrix Exit controller cannot reawaken audio while backgrounded
+- Phase VIII foreground → correct scene audio resumes automatically
+
+This incident must be remembered and applied proactively to Chapters V–VII. Do not wait for the owner to rediscover the same defect in a new phase. Every phase with continuous media must be designed and QA'd against this contract from the start.
+
+## Hard audio boundaries
+
+Return to Title is a hard boundary: phase-specific music/ambience stops immediately and Title audio restores. Phase transitions must stop foreign phase audio before starting the incoming phase. Save/Load/resume must restore only the appropriate scene audio.
+
+Music must fit LAST WITNESS, not merely loop correctly. Avoid harsh airport noise, intrusive announcements or high-frequency ambience that competes with reading.
+
+## Mandatory future audio QA
+
+For every Chapter V–VII phase containing continuous music, ambience or video, test at minimum: normal scene, dialogue duck, modal/evidence/choice state, minigame open, minigame closed/paused if applicable, background while each state is active, remain backgrounded long enough for timers to fire, foreground without touching the screen, phase change, Save/Load resume and Return Title. Physical Android Chrome remains the final acceptance authority.
 
 ---
 
@@ -420,6 +640,67 @@ The Phase VIII Maya/Cheryl edge defect was repaired through scoped scale/crop be
 Do not solve a local portrait defect by changing global portrait geometry unless the defect is proven global.
 
 Keep established Chapter IV dialogue shell unless owner asks for redesign.
+
+## Bilingual cinematic dialogue / subtitle contract — Thai and English
+
+All player-facing dialogue in Chapters V–VII must read like **high-quality native film/series subtitles**, not translation copy and not game-development placeholder text. This applies equally to Thai and English.
+
+The Thai and English versions are two native-written performances of the **same dramatic intent**, not a literal sentence-by-sentence conversion. Preserve the same facts, implication, emotional temperature, relationship dynamic and investigation meaning, while allowing word order, idiom, sentence length and line division to differ naturally between languages.
+
+### English standard
+
+- contemporary native spoken English appropriate to a serious crime thriller
+- contractions and natural ellipsis where the character would genuinely use them
+- concise, speakable rhythm rather than formal written prose
+- no ESL-like construction, Thai word-order carryover, textbook phrasing or artificial exposition
+- technical/legal language remains accurate but sounds like something that character would actually say aloud
+
+### Thai standard
+
+- natural contemporary spoken Thai with cinematic subtitle economy
+- preserve status, familiarity, restraint, tension and personality through pronouns/particles/omission naturally, not mechanically
+- avoid literal English syntax, stiff translated vocabulary, unnatural complete sentences and bureaucratic wording unless the speaker intentionally speaks institutionally
+- technical terms may remain English/transliterated when that is what real investigators/technical staff would naturally say
+- the Thai line must feel written by a native Thai screenwriter who understands the scene, not translated by a machine
+
+### Subtitle rhythm
+
+- prioritize meaning + subtext + voice over lexical equivalence
+- keep lines comfortably readable on portrait mobile
+- break on natural semantic beats
+- cut redundant explanation when the visual/action already carries it
+- do not repeat the same fact in dialogue merely to ensure the player noticed it
+- dramatic pauses must arise from character behavior and scene pressure, not suspicious artificial wording
+- a line must survive an aloud test: if it sounds written rather than spoken, rewrite it
+
+### Character voice lock
+
+Dialogue must remain recognizably character-specific. Do not let every investigator speak in one generic "smart detective" voice.
+
+- **Benedict** — experienced, observant, controlled and concise; dry when appropriate; thinks in evidence boundaries; does not speechify to prove intelligence
+- **North** — calm, analytically exact, understated, dryly amused at times; notices contradiction and system behavior; never robotic and never reduced to comic relief
+- **Cheryl** — competent Singapore investigator; clean, precise, socially perceptive, capable of restrained warmth/dry teasing without losing professional credibility
+- **Maya** — confident field/legal authority in Indonesia; direct, grounded and decisive; can relax into subtle playfulness but never becomes frivolous
+- **Farid** — remote technical analyst; precise, low-drama and verification-focused; explains only what the team needs
+- **Kittisak** — institutional authority with credible protective logic; controlled and plausible; dialogue must support both legitimate duty and suspicion without villain coding
+- **Somchai** — discreet operational professional; economical speech; protected-source/off-book handling should feel practiced rather than theatrically secretive
+- **Adrian** — polished lawful architect; technically exact; truthful inside carefully defended boundaries; liability awareness underneath composure
+- **Arman** — intelligent broker/toolmaker; measured, selective and hard to overread; controlled disclosure rather than melodramatic evasion
+- **Ika** — guarded, capable and physically credible; terse when pressured; never written as a cartoon assassin
+- **Narin** — operationally credible, pressured and defensive around real wrongdoing; must remain dangerous/viable enough to support a serious principal theory
+- **Elena** — ordinary, kind, credible, socially normal and harmlessly fallible until late Chapter VII; no sinister cadence, loaded wording, mysterious knowing pauses or dialogue that rewards meta-suspicion
+- **Rin** — intelligent, frightened, evasive, procedurally compromised and institutionally distrustful; reveals information in earned layers and must never become an exposition machine
+- **Ratchata** — forensic/physical-evidence clarity; professional and concrete rather than narrative-theory driven
+
+Where relationship context changes warmth or directness, preserve the core voice first. Never distort personality merely to force a plot beat.
+
+### Dialogue spoiler discipline
+
+Dialogue/subtitles are part of the mystery system. They must obey the same spoiler firewall as evidence. In particular: unknown-principal language remains gender-neutral; Elena cannot receive special ominous phrasing before late Chapter VII; Rin cannot be named before her Chapter V reveal; Hidden Case scores/thresholds/routes never leak through seemingly casual dialogue.
+
+### Bilingual dialogue QA gate
+
+Before a phase is accepted, review every Thai/English dialogue line for: native naturalness, character identity, cinematic rhythm, factual equivalence, subtext equivalence, mobile readability, spoiler safety and continuity with prior scenes. A technically correct translation that sounds unnatural **fails QA**.
 
 ---
 
@@ -687,6 +968,35 @@ Prohibited Elena tells include:
 - secret operator calls
 - Elena-named pre-reveal phase
 - gendered unknown-principal clues
+
+## Sensitive canon / spoiler firewall — room-internal only
+
+The following information is deliberately sensitive. It belongs in the Master Plan and Owner-only reasoning because losing it would break the long-form mystery, but it must not leak into normal player UI, North QA diagnostics, early dialogue, asset names intended for player exposure or pre-reveal chapter/phase titles.
+
+- Elena is the fixed historical murderer/mastermind/Decision Owner in every route
+- the five mandatory false-conviction-capable principals are Kittisak, Narin, Adrian, Arman and Ika
+- Somchai is strongly suspicious cleaner/accomplice/conditional support but is not currently a mandatory standalone false-conviction principal
+- Rin is `R.` and the future Last Witness/registrar, but Chapter IV may expose only `R.`
+- alternate endings change what can be proved/accepted legally or institutionally; they never change who historically committed the murders
+- visible relationship values are not criminal-attribution scores
+- the player is never asked to choose a killer from a final list
+- Elena must remain low-signal through Chapter V, below the principal false theories in Chapter VI, and becomes fully serious only during late Chapter VII cross-class synthesis
+- Elena true conviction requires both attribution convergence and prosecutability convergence with multiple independent evidence classes
+- RIGHT NAME, NO CASE is allowed when truth is understood but the legal bridge fails
+- FALSE CONVICTION is a sustainable wrong case against a person guilty of real serious wrongdoing but not the historical murders
+- THE PERFECT RECORD represents a surviving institutional narrative / inability to reopen when no clean correct prosecution survives
+- no single clue, confession, email, CCTV frame, timestamp, witness or database row may solve Elena
+- no ordinary single choice may decide the ending
+
+The core writing discipline remains:
+
+> **Elena does not create the red herring. She creates conditions in which the red herring creates itself.**
+
+And the core ending discipline remains:
+
+> **The game does not ask who you think the killer is. It reveals which case your entire investigation became capable of proving.**
+
+Treat these as spoiler-security constraints, not just plot notes.
 
 ---
 
@@ -1354,9 +1664,26 @@ Introduced:
 - audio returns to normal Secure Debrief level while visually paused and re-ducks when the Matrix resumes
 - Phase VIII core remains `0.22.2`; the exit controller is independent module `0.22.7-m1`
 
+## 0.22.7-a1 Chapter IV Phase VII / VIII audio lifecycle maintenance
+
+Owner physical Android review exposed two lifecycle defects after the Matrix Exit maintenance: Phase VII stopped in background but did not resume automatically on foreground until another UI interaction, while Phase VIII could remain/reawaken in background because the Matrix Exit session-local audio guard continued calling audio mode while hidden.
+
+Introduced as isolated maintenance module `js/engine/32-c4-p7-p8-audio-lifecycle.js` with cache `v=0227a1`; authoritative Runtime remains `0.22.7`.
+
+Contract:
+
+- scope only Phase VII and Phase VIII media families
+- background pause preserves playback position
+- foreground returns to the proper active media automatically without unrelated touch
+- background replay attempts are suppressed/re-paused and rewound to the captured position
+- no dialogue, Progress, portrait, Matrix validator, evidence, choice, checkpoint, Save/Load, Hidden Case, route, Dev Jump, North QA or Owner Walkthrough mutation
+- no change to P7 core, P8 core, Matrix Exit core or Chapter IV CSS
+
+**Owner physical Android acceptance on 2026-08-16: PASS.** The reported P7 and P8 lifecycle defects are closed. This pattern is a permanent regression lesson for Chapters V–VII.
+
 ## Current owner acceptance
 
-After the above recovery and polish, the owner has performed a practical Dev Mode Jump / real-device review across Chapters I–IV and accepts the current result for continuation.
+After the above recovery and maintenance, the owner has performed a practical Dev Mode Jump / real-device review across Chapters I–IV and accepts the current result for continuation. The latest P7/P8 audio lifecycle maintenance is additionally confirmed PASS on physical Android.
 
 Do not reinterpret this as an exhaustive guarantee that no future defect can exist.
 
@@ -1978,9 +2305,17 @@ Disclosure Matrix exit-path maintenance checks:
 - Departure
 - takeoff
 - Complete
-- background pause
-- foreground resume
+- background pause with no audible/temporal advance
+- remain backgrounded long enough for phase/minigame timers to fire; no timer may reawaken audio
+- foreground resume from preserved position automatically without extra tap
+- P7 normal scene background → foreground
+- P7 minigame/evidence state background → foreground where applicable
+- P8 normal Debrief background → foreground
+- P8 Matrix open background → foreground
+- P8 Matrix presentation-paused / Resume visible background → foreground
+- phase transition while backgrounded must not resurrect foreign phase audio
 - Return Title stop/restore
+- physical Android Chrome final acceptance
 
 ## Portraits
 
@@ -2043,7 +2378,7 @@ Check:
 
 ## Build linkage
 
-Settings, Owner Dev, North QA, global Runtime build, dataset build, save metadata if applicable, bootstrap cache and changed build-facing files must all agree.
+Settings, Owner Dev, North QA, Developer Navigation, Runtime Build Label, global Runtime build, document dataset build, save metadata where applicable, bootstrap generation, changed-module cache keys and expected-version checks must all agree with the intended release identity. Any affected mismatch is a RELEASE BLOCKER, not a cosmetic defect.
 
 ## Hidden secrecy
 
@@ -2053,15 +2388,21 @@ Normal UI/North QA must not expose scores, deltas, routes, projected endings, El
 
 # 27. CURRENT PRODUCTION STATUS AT THIS REVISION
 
-Current Runtime: **0.22.7**.
+Current authoritative Runtime: **0.22.7**.
 
-Production HEAD before this Runtime/maintenance update:
+Latest inspected Production runtime-code/maintenance HEAD before this documentation-only handoff update:
 
-`5e2dadb9faedbd86e26cdbe446e7e31d9de99381`
+`4034fc263a75118f143e8ce6d1d908ff5598c33d`
 
 Message:
 
-`Restore pre-dialogue layout baseline 0.22.6`
+`Fix P7 P8 background audio lifecycle`
+
+Parent:
+
+`aa2ecddd2ad3a05f1d1b9b03a47bd28c354b8509` — `Add P8 matrix close and resume`
+
+After the owner uploads this Master Plan, repository HEAD will advance to that documentation-only commit. Treat `4034fc...` as the latest verified runtime-code/maintenance baseline recorded by this handoff unless current Production inspection shows later code.
 
 Relevant recent history:
 
@@ -2074,21 +2415,43 @@ Relevant recent history:
 - `ff378fc981c7b7a68305953b3ddf4b0be1b4b24f` — `Lower Chapter IV dialogue and sync 0.22.4`
 - `80c6b5c5189141c83887b81733ac6ee459a8c7d3` — `Keep Chapter IV progress visible in dialogue`
 - `5e2dadb9faedbd86e26cdbe446e7e31d9de99381` — `Restore pre-dialogue layout baseline 0.22.6`
+- `aa2ecddd2ad3a05f1d1b9b03a47bd28c354b8509` — `Add P8 matrix close and resume`
+- `4034fc263a75118f143e8ce6d1d908ff5598c33d` — `Fix P7 P8 background audio lifecycle`
 
-Current modules:
+Current modules / presentation state:
 
-- Phase VIII: `0.22.2` (unchanged independent module)
+- Runtime: `0.22.7`
+- Phase VIII core: `0.22.2` (unchanged independent module)
 - Developer Navigation: `0.22.7-d1`
 - North QA: `0.22.7`
 - Runtime Build Label: `0.22.7`
-- Owner Walkthrough: `0.22.3-w1` (unchanged independent module)
-- Phase VIII Matrix Exit: `0.22.7-m1` (isolated player-facing UX controller)
-- Chapter IV dialogue/progress presentation: restored to Runtime `0.22.3` behavior; retired override file inert and not loaded
-- Hidden Case engine: `0.21.0` (unchanged independent module)
+- Owner Walkthrough: `0.22.3-w1` (unchanged independent Owner-only module)
+- Hidden Case engine: `0.21.0`
+- Phase VIII Matrix Exit: `0.22.7-m1`
+- P7/P8 Audio Lifecycle maintenance: `0.22.7-a1`
+- Chapter IV dialogue/progress presentation: restored to Runtime `0.22.3` behavior; `css/chapter-04-dialogue-positioning.css` inert and not loaded
+- Dialogue geometry: frozen across accepted Chapters I–IV unless reproducible unusability or explicit owner redesign request
 
-Canonical runtime rule:
+Canonical runtime rules:
 
-**Use the direct core implementation. Do not re-enable the reverted repair loader.**
+- **Use the direct core implementation. Do not re-enable the reverted repair loader.**
+- **Do not revive Runtime 0.22.4–0.22.5 dialogue/progress overrides.**
+- **Do not let any active phase audio continue/reawaken while the app/browser is backgrounded.**
+- **Do not redesign established interface shells in Chapters V–VII; clone proven structure and change only content payload/internal logic.**
+
+## Owner Android acceptance snapshot
+
+Physical Android Chrome is the highest acceptance authority. Current owner-confirmed state:
+
+- P8 Matrix Close → Secure Debrief → Resume: accepted
+- Matrix placements/attempts survive Close → Resume: accepted
+- P7 background audio pauses: accepted
+- P7 foreground audio resumes automatically from the prior position without extra interaction: accepted
+- P8 background audio remains paused: accepted
+- P8 Matrix Exit no longer reawakens background audio: accepted
+- P8 foreground audio returns appropriately: accepted
+
+These confirmations close the currently reported Matrix-exit and P7/P8 audio-lifecycle defects.
 
 ## Chapters I–IV current status
 
@@ -2101,7 +2464,8 @@ Status:
 - Chapter III: accepted for current continuation
 - Chapter IV: accepted for current continuation
 - Phase VIII: owner-accepted current pass
-- future reproducible defects: repair when actually observed
+- current P7/P8 audio lifecycle defect: closed on physical Android
+- future reproducible defects: repair surgically when actually observed
 - optional speculative polishing: do not reopen accepted systems by default
 
 This is the active handoff state.
@@ -2118,16 +2482,18 @@ Sequence:
 
 1. read this Master Plan
 2. inspect current Production when current repo truth matters
-3. use Runtime `0.22.7` / restored pre-adjustment presentation behavior plus the scoped P8 Matrix Exit as the baseline
+3. use Runtime `0.22.7`, restored pre-adjustment presentation, P8 Matrix Exit `0.22.7-m1` and accepted Audio Lifecycle `0.22.7-a1` as the baseline
 4. treat Chapters I–IV as accepted maintenance-locked content
 5. preserve Chapter IV final evidence/flags/state
-6. begin `CHAPTER V · PHASE I · RETURN TO BANGKOK`
+6. begin `CHAPTER V · PHASE I · RETURN TO BANGKOK` without another Chapter IV redesign cycle
 7. follow Chapter V canonical structure and INFLUENCE adaptive model
-8. reuse accepted UI and flight/location/dialogue primitives
-9. preserve Hidden Case determinism and secrecy
-10. synchronize every Runtime build endpoint on any future Runtime release
-11. if a genuine older-chapter defect appears later, isolate and repair only that reproducible defect
-12. do not reopen accepted content for optional redesign unless the owner asks
+8. before building each UI surface, inspect and clone the closest accepted shell; change only content/internal payload unless the owner explicitly authorizes structural redesign
+9. write Thai and English dialogue as independent native cinematic subtitle performances with locked character voices and identical investigative meaning
+10. apply background-audio zero-tolerance lifecycle behavior proactively to every new continuous-media phase
+11. preserve Hidden Case determinism, spoiler secrecy and Owner/North separation
+12. synchronize every Runtime build endpoint on any future Runtime release
+13. if a genuine older-chapter defect appears later, isolate and repair only that reproducible defect
+14. do not reopen accepted content for optional redesign unless the owner asks
 
 ### Maintenance rule for Chapters I–IV
 
@@ -2180,6 +2546,13 @@ Do not:
 - use Walkthrough auto-completion as evidence that a gameplay path actually works
 - let synthetic Owner Inspector values write canonical case state
 - reopen accepted Chapters I–IV for speculative polish without owner request
+- redesign established Chapter V–VII normal UI shells without explicit owner approval
+- treat existing UI as loose inspiration instead of a structure to reuse
+- alter dialogue geometry to solve a Progress/HUD issue
+- allow any timer/controller to replay phase media while hidden/backgrounded
+- require a player tap merely to resume continuous score after returning to foreground
+- ship Thai or English dialogue that is literal, stiff, translator-like, non-native or character-generic
+- give Elena suspiciously loaded wording, villain cadence or meta-foreshadowing before late Chapter VII
 
 ---
 
@@ -2214,65 +2587,60 @@ Canonical final idea:
 
 # 31. FINAL NON-NEGOTIABLE SUMMARY
 
-- Owner real-device evidence is highest authority.
-- Current Runtime at this revision is `0.22.7`.
-- Production HEAD observed before this Runtime/maintenance update is `5e2dadb9faedbd86e26cdbe446e7e31d9de99381`.
-- Chapters I–IV are owner-accepted for current continuation after practical Dev Mode Jump / real-device spot checks.
-- That acceptance is not a claim of exhaustive defect-free E2E coverage.
+- Owner physical Android evidence is highest authority.
+- Current authoritative Runtime is `0.22.7`.
+- Latest inspected runtime-code/maintenance HEAD before this documentation-only handoff is `4034fc263a75118f143e8ce6d1d908ff5598c33d` — `Fix P7 P8 background audio lifecycle`.
+- A later documentation-only Master Plan commit may advance GitHub HEAD without changing that runtime-code baseline.
+- P8 Matrix Exit `0.22.7-m1` is owner-accepted.
+- P7/P8 Audio Lifecycle `0.22.7-a1` is owner-confirmed PASS on physical Android.
+- Background/minimized phase audio must remain paused; foreground continuous audio must resume automatically from the correct prior position without unrelated user interaction. Apply this proactively to Chapters V–VII.
+- Chapters I–IV are owner-accepted for current continuation after practical Dev Mode Jump / real-device review.
+- Acceptance is not a claim of exhaustive defect-free E2E coverage.
 - Later reproducible defects in Chapters I–IV may be repaired surgically without reopening the whole accepted baseline.
-- Chapter IV has exactly 8 phases.
-- Phase VIII is owner-accepted for the current pass.
-- Chapter IV final state is frozen for continuation.
+- Chapter IV has exactly 8 phases. No Phase IX without explicit owner approval.
+- Chapter IV final story state is frozen for continuation.
 - Immediate story objective is `CHAPTER V · PHASE I · RETURN TO BANGKOK`.
-- Reuse proven normal UI before inventing structure.
-- Do not add novelty square-symbol cards.
-- Minigames may be premium but must remain LAST WITNESS.
+- Chapters V–VII must preserve the established LAST WITNESS Interface/UI identity **exactly**: inspect the closest proven Production structure, reuse its shell, and change only content/internal payload unless the owner explicitly authorizes structural redesign.
+- Existing normal UI is an implementation contract, not loose design inspiration.
+- Do not independently alter established dialogue geometry, HUD, Progress geometry, topbar, cards, typography hierarchy, button language, safe-area behavior or normal transition language.
+- Runtime `0.22.6` restored dialogue/progress presentation to the pre-adjustment Runtime `0.22.3` behavior. Runtime `0.22.4–0.22.5` presentation experiments are retired.
+- Dialogue geometry across the accepted Chapters I–IV baseline is frozen unless a reproducible unusable defect or explicit owner request justifies change.
+- If Progress is repaired later, do not move Dialogue to solve it; isolate the HUD/Progress fix and audit comprehensively.
+- Do not add novelty square-symbol cards or arbitrary decorative UI.
+- Minigames may be bespoke internally but must remain visibly/behaviorally LAST WITNESS and provide sane exit/resume behavior where appropriate.
 - Do not casually override global screen geometry.
-- Do not use broad repair observers.
-- Do not resurrect reverted P8 repair loader.
-- Build identity must synchronize across index/bootstrap/Settings/Dev/North QA/Runtime Label/save-facing metadata every Runtime release.
-- Runtime `0.22.6` restores dialogue/progress presentation to the pre-adjustment Runtime `0.22.3` behavior; the Runtime `0.22.4–0.22.5` presentation experiment is retired pending a fresh owner-approved redesign.
-- Runtime `0.22.7` adds only the isolated Phase VIII Disclosure Matrix Close → Resume path; dialogue/progress geometry remains frozen.
-- Dialogue positioning is presentation-only and must never mutate progress state, Save, Hidden Case, audio, evidence, choices or routing.
+- Do not use broad repair MutationObservers.
+- Do not resurrect the reverted P8 repair loader.
+- Build identity must synchronize across index/bootstrap/Settings/Dev/North QA/Runtime Label/save-facing metadata whenever the base Runtime changes.
+- Build linkage is atomic and zero-tolerance: one affected mismatch blocks release. Never package/upload first and synchronize labels/Dev/North later.
+- Owner Developer Mode and North QA are mandatory release endpoints and must be explicitly validated independently on every affected release.
+- Every changed shipped module must use a fresh cache key/loader generation and matching expected-version check where applicable; stale cache/version linkage is a release blocker.
+- Scoped maintenance under an unchanged base Runtime is allowed only when explicitly classified, uniquely versioned/cached, documented and free of visible/base-build mismatch.
+- After owner upload, verify current Production HEAD and landed build-facing files before treating the release as canonical.
+- Thai and English dialogue must each be native, cinematic, speakable and character-specific, like premium crime-series subtitles. Never use literal/translator-like copy.
+- Thai and English may differ naturally in wording/line breaks, but must preserve the same facts, subtext, emotional temperature and investigative meaning.
+- Unknown-principal language remains gender-neutral until canon permits otherwise.
+- Elena must never receive suspicious wording, ominous framing or unnatural prescience before late Chapter VII.
 - Relationship system remains separate from criminal attribution.
 - Hidden Case is deterministic, auditable, idempotent and player-invisible.
-- Owner Hidden Case Inspector synthetic controls are temporary and must never mutate canonical ledger/Save state.
-- Owner Walkthrough `0.22.3-w1` is read-only and covers Chapter I through Chapter IV Phase VIII.
-- Deterministic Walkthrough solutions must come from actual Production validators; non-failing choices must be labeled accordingly.
-- North QA never sees hidden scores/routes/gates, Owner simulation controls or Owner Walkthrough content.
-- Player never chooses killer from a final list.
+- Owner Hidden Case Inspector synthetic controls are temporary and never mutate canonical ledger/Save state.
+- Owner Walkthrough `0.22.3-w1` is Owner-only/read-only and covers Chapter I through Chapter IV Phase VIII.
+- Deterministic Walkthrough solutions come from actual Production validators; non-failing choices must be labeled accordingly.
+- North QA never sees hidden scores/routes/gates, ending projections, Elena gates, Owner simulation controls or Owner Walkthrough content.
+- Player never chooses a killer from a final list.
 - Five mandatory false principals: Kittisak, Narin, Adrian, Arman, Ika.
-- Somchai remains strongly suspicious.
-- Elena is historical murderer/Decision Owner in every route.
-- Elena remains low-signal until late Chapter VII.
-- Elena true conviction requires attribution + prosecutability convergence.
+- Somchai remains strongly suspicious cleaner/accomplice/conditional support.
+- Rin is `R.` / future Last Witness but is not named in Chapter IV.
+- Elena is historical murderer/mastermind/Decision Owner in every route.
+- Elena remains low-signal through Chapter V, below principal false theories in Chapter VI and becomes fully serious only in late Chapter VII synthesis.
+- Elena true conviction requires attribution + prosecutability convergence with multiple independent evidence classes.
+- Alternate endings alter what the investigation can prove/sustain, never historical truth.
 - P8 = CALCULATE; Ch V = INFLUENCE; Ch VI = DIVERGE; Ch VII = RESOLVE.
 - No retcon merely to rescue weak plotting.
-- No single clue solves mystery.
-- No single ordinary choice decides ending.
+- No single clue solves the mystery.
+- No single ordinary choice decides the ending.
 - Every ending must be traceable to the full investigation.
 - Accepted content is maintenance locked, not permanently immune from future reproducible defect repair.
+- New rooms must not ask the owner to repeat any decision already locked in this Master Plan.
 
-This is the canonical continuation contract from the owner-accepted Chapters I–IV production baseline into Chapter V and through Chapter VII final resolution.
-
----
-
-## 0.22.7-a1 Chapter IV Phase VII / VIII audio lifecycle maintenance
-
-Owner real-device review identified two foreground/background defects: Phase VII audio could remain paused after returning to the game until another UI interaction occurred, while Phase VIII audio could be reawakened in the background by the session-local Matrix Exit audio guard.
-
-This maintenance module is intentionally isolated in `js/engine/32-c4-p7-p8-audio-lifecycle.js` and loaded directly from `index.html` as `v=0227a1`. The authoritative Runtime base remains `0.22.7`; no build-facing module identity is bumped for this micro-patch.
-
-Contract:
-
-- scope only Phase VII and Phase VIII screen families
-- background lifecycle uses `visibilitychange` with `pagehide` / Page Lifecycle fallback
-- foreground lifecycle uses visible `visibilitychange`, `pageshow` and `focus`
-- continuous media are paused without resetting `currentTime`
-- original playback time, volume, mute state and playback rate are restored on foreground
-- Phase VII music that Android/Chrome may auto-pause before the handler still resumes when its active screen and positive target volume show that the loop should be running
-- while backgrounded, any scoped media `play` attempt is immediately re-paused and rewound to the captured position; this prevents the Phase VIII Matrix Exit timer from audibly or temporally advancing the score in background
-- no dialogue, Progress, portrait, Matrix validator, card placement, evidence, choice, checkpoint, Save/Load, Hidden Case, route, Dev Jump, North QA or Owner Walkthrough mutation
-- no change to `07-relay-facility.js`, `08-shadow-of-truth.js`, `31-p8-matrix-exit.js` or any Chapter IV CSS
-- physical Android remains the final acceptance gate
-
+This is the canonical zero-question continuation contract from the owner-accepted Chapters I–IV Production baseline into Chapter V and through Chapter VII final resolution. Read it before implementing, inspect current Production when repo truth matters, preserve the proven product language, and ask the owner only when a genuinely new creative/product decision is required.
