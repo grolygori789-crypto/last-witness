@@ -1,0 +1,13 @@
+LAST WITNESS Chapter V Phase I 0.22.7-c5p1r2 SHA256
+Base production HEAD: 8306798939eb6612b664d5f613bb45f288c7d14c
+
+fb88ed6b39307268502e4e739f9dfd8e795e3d1fa67fc7f1a48831e503bf6844  ./assets/images/chapter-05/phase-01/somchai-sad.png
+30c8c300ea23a838d4fdc833c398e3b1ed67e63046bfcb8257afe3bcf1a158d7  ./assets/images/chapter-05/phase-01/somchai-shocked.png
+b8fa3f17bcaf7a8fae20e17223cebe147204cfa87faf2967f90c45f135ff54f9  ./css/chapter-05-phase-01.css
+d487a7a45e076d36e2bbf661f3e68324a671e3a8c70e74f11b3c73812cecf868  ./docs/CHAPTER_05_PHASE_01_REVISION_2.md
+0f327d4b1cb556f3e593169908f7e76b05b485d26c2e8399e15ab5b1ad8be5c7  ./docs/QA_REPORT_CH5P1_0.22.7-c5p1r2.md
+6dcefc5d6475ef349daee2e62525e4907130e942e4e1059beccd5eeea2e3a70b  ./docs/UPLOAD_PATHS_CH5P1_0.22.7-c5p1r2.txt
+8cdfc02035509dc4724a3b139a857b5e7b46a23fec12234bed80e5cdbc83d899  ./index.html
+e9108e2ed13006dd82dad72fc04926656ad74aa925457c826d15ce903e574217  ./js/chapters/chapter-05/01-return-to-bangkok.js
+f9132173cfa1132b122902c6963fd2036da29ff72b988ac69a3a7c5273ac0359  ./js/engine/33-chapter-05-loader.js
+75ffff8828bc965608fe340af852d47a63b70cef5e8ff9673c96eec1e8e6f702  ./js/engine/34-chapter-05-owner-walkthrough.js

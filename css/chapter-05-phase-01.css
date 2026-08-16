@@ -1,4 +1,4 @@
-/* LAST WITNESS - Chapter V / Phase I: RETURN TO BANGKOK 0.22.7-c5p1
+/* LAST WITNESS - Chapter V / Phase I: RETURN TO BANGKOK 0.22.7-c5p1r2
  * Reuse-first production surface. Ordinary scenes inherit the accepted
  * Chapter IV Phase V / VII shell; only CUSTODY WINDOW is bespoke.
  */
@@ -16,6 +16,7 @@
 .ch5-p1-dialogue.ch4-p5-dialogue{z-index:28;bottom:calc(64px + var(--bottom,14px));min-height:170px;grid-template-columns:124px minmax(0,1fr)}
 .ch5-p1-dialogue.ch4-p5-dialogue.right{grid-template-columns:minmax(0,1fr) 124px}
 .ch5-p1-dialogue .portrait{transform:scale(1.03);transform-origin:center 23%}
+.ch5-p1-dialogue .ch5-p1-somchai-portrait{object-fit:cover;object-position:center 12%;transform:scale(1.035);transform-origin:center 18%;background:#030405}
 .ch5-p1-dialogue .dialogue-copy{padding-bottom:29px}
 
 .ch5-p1-progress.ch4-p5-progress{z-index:26;right:16px;bottom:calc(17px + env(safe-area-inset-bottom))}
