@@ -1,0 +1,29 @@
+/* LAST WITNESS - CH5P1 Police next-morning cue 0.22.8-c5t1
+ * Reuses the accepted Chapter IV/V location-card visual language while keeping
+ * the live Police Station scene visible behind the time transition.
+ */
+#ch5P1Police.ch5-p1-police-timecue-active>.topbar,
+#ch5P1Police.ch5-p1-police-timecue-active>#ch5P1PoliceScene,
+#ch5P1Police.ch5-p1-police-timecue-active>#ch5P1PoliceObjective,
+#ch5P1Police.ch5-p1-police-timecue-active>#ch5P1PoliceNote,
+#ch5P1Police.ch5-p1-police-timecue-active>#ch5P1PoliceDialogue,
+#ch5P1Police.ch5-p1-police-timecue-active>#ch5P1PoliceAction,
+#ch5P1Police.ch5-p1-police-timecue-active>.ch5-p1-progress{visibility:hidden!important}
+
+.ch5-p1-police-time-cue[hidden]{display:none!important}
+.ch5-p1-police-time-cue{position:absolute;z-index:120;inset:0;display:flex;align-items:center;justify-content:center;padding:calc(28px + env(safe-area-inset-top)) 22px calc(28px + env(safe-area-inset-bottom));pointer-events:auto;background:linear-gradient(180deg,rgba(1,3,6,.16),rgba(2,4,7,.06) 42%,rgba(1,3,6,.30) 100%);opacity:1;transition:opacity .48s ease}
+.ch5-p1-police-time-cue.is-leaving{opacity:0}
+.ch5-p1-police-time-cue-card{position:relative;width:min(88vw,520px);padding:clamp(28px,7.5vw,48px) clamp(22px,7vw,46px);border:1px solid rgba(221,181,109,.44);background:linear-gradient(155deg,rgba(22,29,37,.91),rgba(5,8,13,.94) 77%);box-shadow:0 28px 78px rgba(0,0,0,.58),inset 0 1px rgba(255,255,255,.045);text-align:center;backdrop-filter:blur(5px);animation:ch5P1TimeCueIn .48s cubic-bezier(.2,.75,.25,1) both}
+.ch5-p1-police-time-cue-card:before{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(circle at 50% 20%,rgba(65,113,132,.14),transparent 46%),linear-gradient(145deg,rgba(221,181,109,.045),transparent 52%)}
+.ch5-p1-police-time-cue .eyebrow{position:relative;color:var(--c5p1-gold,#ddb56d);font-size:10px;font-weight:850;letter-spacing:.23em;text-transform:uppercase}
+.ch5-p1-police-time-cue h2{position:relative;max-width:15ch;margin:16px auto 0;color:#f8f0e6;font:500 clamp(35px,10vw,61px)/.98 Georgia,serif;letter-spacing:.05em;text-wrap:balance;text-shadow:0 8px 28px rgba(0,0,0,.65)}
+.ch5-p1-police-time-cue-rule{position:relative;width:min(220px,55vw);height:1px;margin:22px auto;background:linear-gradient(90deg,transparent,var(--c5p1-gold,#ddb56d),transparent);box-shadow:0 0 14px rgba(221,181,109,.24)}
+.ch5-p1-police-time-cue-time{position:relative;margin:0;color:#d7dfdf;font:850 11px/1.4 ui-monospace,monospace;letter-spacing:.14em;text-transform:uppercase;text-shadow:0 2px 8px rgba(0,0,0,.75)}
+.ch5-p1-police-time-cue-location{position:relative;margin:9px 0 0;color:#aebbc0;font:750 9.5px/1.4 ui-monospace,monospace;letter-spacing:.11em;text-transform:uppercase;text-shadow:0 2px 8px rgba(0,0,0,.75)}
+@keyframes ch5P1TimeCueIn{from{opacity:0;transform:translateY(13px) scale(.987)}to{opacity:1;transform:none}}
+
+@media(max-width:420px){
+ .ch5-p1-police-time-cue{padding-left:17px;padding-right:17px}
+ .ch5-p1-police-time-cue-card{width:min(91vw,500px);padding:30px 20px}
+ .ch5-p1-police-time-cue h2{font-size:clamp(34px,11vw,50px)}
+}
