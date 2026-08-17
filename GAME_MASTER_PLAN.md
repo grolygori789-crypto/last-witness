@@ -1,25 +1,29 @@
 # LAST WITNESS - GAME MASTER PLAN
 
-> **CANONICAL MASTER REFERENCE / FINAL ZERO-QUESTION ROOM HANDOFF**
+> **CANONICAL MASTER REFERENCE / ZERO-QUESTION CONTINUATION CONTRACT**
 >
-> **Revision:** 2026-08-17 12:57 ICT  
+> **Revision:** 2026-08-17 16:44 ICT  
 > **Game:** LAST WITNESS  
 > **Studio:** BENEDICT INTERACTIVE  
 > **Repository:** `grolygori789-crypto/last-witness`  
 > **Production/default branch:** `production-rebuild`  
-> **Latest inspected Production HEAD / runtime-code baseline:** `7e2e8cd8c79960787cbb812fc4e630537ddd3f4e`  
-> **HEAD message:** `Sync Chapter V loader cache key`  
+> **Latest inspected Production HEAD / latest verified runtime-code baseline:** `f31b665aed6426a45fb44fb4e07d7a9a38d68424`  
+> **HEAD message:** `Add CH5P1 next morning time cue`  
 > **Authoritative base Runtime:** `0.22.8`  
 > **Runtime/bootstrap maintenance generation:** `0.22.8-r2` / cache `0228r2`  
 > **Resolved CH4P8 stacking maintenance:** `0.22.8-z1` / cache `0228z1`  
-> **Current Chapter V Phase I module:** `0.22.8-c5p1r10`  
-> **Current Chapter V loader:** `0.22.8-c5b7`  
-> **Current Chapter V loader cache in `index.html`:** `0228c5b7`  
-> **Loader cache-linkage status:** `OWNER ANDROID SMOKE PASS`  
-> **Current accepted playable boundary:** `CHAPTER V · PHASE I · PRELIMINARILY ACCEPTABLE WITH EXACTLY TWO NORTH PORTRAIT DEFECTS`  
-> **Chapter IV status:** `COMPLETE · OWNER ANDROID ACCEPTED · NO CURRENTLY KNOWN OPEN DEFECT`  
-> **Only current open maintenance scope:** `CH5P1 NORTH concerned + relieved portrait shots`  
-> **Immediate production priority:** repair exactly the two CH5P1 North portrait shots, obtain owner Android acceptance, freeze CH5P1, then begin `CHAPTER V · PHASE II · NAME IN ROOM 1807`  
+> **Current Chapter V Phase I core:** `0.22.8-c5p1r10`  
+> **Accepted CH5P1 North portrait fix:** `0.22.8-c5n1` / cache `0228c5n1`  
+> **Accepted CH5P1 Police next-morning cue:** `0.22.8-c5t1` / cache `0228c5t1`  
+> **Current Chapter V loader:** `0.22.8-c5b9`  
+> **Current Chapter V loader cache in `index.html`:** `0228c5b9`  
+> **Current accepted playable boundary:** `CHAPTER I → CHAPTER V · PHASE I · OWNER-ACCEPTED FOR CONTINUATION`  
+> **Acceptance coverage note:** `OWNER QUICK SMOKE / MOSTLY DEV-JUMP COVERAGE; NOT A CLAIM OF FULL LINEAR E2E CERTIFICATION`  
+> **Chapter IV status:** `COMPLETE · OWNER ANDROID ACCEPTED · MAINTENANCE-FROZEN`  
+> **Chapter V Phase I status:** `OWNER-ACCEPTED FOR CONTINUATION · MAINTENANCE-FROZEN UNLESS A NEW REPRODUCIBLE DEFECT APPEARS`  
+> **Known release-blocking defects:** `NONE CURRENTLY KNOWN`  
+> **Minor issues policy:** `DEFER NON-BLOCKING POLISH; REOPEN ONLY WHEN ACTUALLY REPRODUCED / OWNER-REQUESTED`  
+> **Immediate production priority:** `CHAPTER V · PHASE II · NAME IN ROOM 1807`  
 > **Chapter IV:** exactly 8 phases; no Phase IX without explicit owner approval  
 > **Hidden Case engine:** `0.21.0`  
 > **Phase VIII core:** `0.22.2`  
@@ -33,11 +37,20 @@
 > **Chapter IV P7/P8 Audio Lifecycle:** `0.22.7-a1`  
 > **Adaptive model:** `P8 CALCULATE → Ch V INFLUENCE → Ch VI DIVERGE → Ch VII RESOLVE`
 
-This revision is the final zero-question handoff snapshot for the current room move. It preserves all established story canon, Hidden Case architecture, ending architecture, Interface/UI contract, Developer/North QA separation, Save/Load rules, audio lifecycle, dialogue/subtitle standards, release discipline, build-linkage rules and Chapters IV–VII long-game plan while updating the current Production truth after both the owner-accepted CH4P8 stacking repair and the owner-tested Chapter V loader cache-linkage correction.
+This revision supersedes the 12:57 ICT handoff status while preserving its full canon, architecture, QA rules, release discipline, UI contract, dialogue/subtitle standards, Hidden Case/ending design and Chapters IV–VII long-game plan. No locked story detail is revoked merely because current status has advanced.
 
-The current Production base Runtime is still `0.22.8`. The CH4P8 repair is **scoped maintenance under the same base Runtime**, not a base Runtime bump. Do not downgrade, rebuild from older snapshots, or fake-bump unrelated stable modules merely to make version strings look uniform.
+Current Production base Runtime remains `0.22.8`. The two accepted CH5P1 maintenance releases after the previous handoff are scoped module/linkage work, not a base Runtime release:
 
-Current final handoff status: the Chapter IV Phase VIII `NORTH · REMOVED` Game Menu / Settings stacking defect is **RESOLVED and physically accepted by P'Benz on Android** after commit `76bbcceff1ad28eb81b921a5d0053da1283f2a2e`. The later linkage-only commit `7e2e8cd8c79960787cbb812fc4e630537ddd3f4e` (`Sync Chapter V loader cache key`) changed exactly the Chapter V loader cache URL in `index.html` from `0228c5b5` to `0228c5b7`; P'Benz then smoke-tested the game on Android and reported it working normally. Base Runtime remains `0.22.8`. The only known open maintenance work is the two named North portrait shots in Chapter V Phase I.
+- `723e94051818245d5a3f5a12c0a466377503bdac` — `Fix CH5P1 North portraits and cache sync`
+- `f31b665aed6426a45fb44fb4e07d7a9a38d68424` — `Add CH5P1 next morning time cue`
+
+P'Benz has now played/check-tested Chapters I through Chapter V Phase I at a practical smoke level, using Developer Jump for much of the coverage, and explicitly accepts the current state for continuation. This is an **owner acceptance / development-baseline decision**, not a claim that every route was replayed linearly as a full physical-device E2E certification. Small non-blocking issues may be repaired later if reproduced; they do not block story production now.
+
+Therefore the current operational state is:
+
+`CH1–CH4 = ACCEPTED / FROZEN FOR CONTINUATION`  
+`CH5P1 = ACCEPTED / FROZEN FOR CONTINUATION`  
+`NEXT = CH5P2 · NAME IN ROOM 1807`
 
 # 0. SOURCE OF TRUTH / OWNER OVERRIDE
 
@@ -170,31 +183,28 @@ The Chapter V Phase I r9 incident is now a permanent regression lesson: a correc
 
 # 0A. NEW-ROOM ZERO-QUESTION STARTUP PROTOCOL — MANDATORY
 
-The purpose of this handoff is that a new room can begin work **without asking P'Benz to restate any already-locked information**.
+The purpose of this handoff is that a new room can continue immediately without asking P'Benz to restate any locked information.
 
-Before replying to the first LAST WITNESS task in a new room, the assistant must perform this sequence internally:
+Before replying to the first LAST WITNESS task in a new room, the assistant must internally:
 
 1. Read this `GAME_MASTER_PLAN.md` completely.
 2. Read the paired `LAST_WITNESS_ROOM_MIGRATION_PROMPT.md` completely.
-3. Inspect current Production on:
-   - repository: `grolygori789-crypto/last-witness`
-   - branch: `production-rebuild`
-4. Compare current Production HEAD with the handoff runtime-code baseline:
-   - baseline HEAD: `7e2e8cd8c79960787cbb812fc4e630537ddd3f4e`
-   - baseline message: `Sync Chapter V loader cache key`
-5. P'Benz may upload this final documentation after `7e2e8cd8c79960787cbb812fc4e630537ddd3f4e`. Therefore, if repository HEAD is newer:
-   - inspect the diff/history first,
-   - if newer commits are documentation/handoff-only, keep `7e2e8cd8c79960787cbb812fc4e630537ddd3f4e` as the latest verified runtime-code baseline,
-   - if runtime/code/assets legitimately advanced, use current Production as runtime truth,
-   - preserve all locked product/story rules that were not explicitly superseded,
-   - never ask P'Benz to explain changes that GitHub can resolve.
-6. Confirm current base Runtime and linkage before implementation. At this handoff the base is `0.22.8`, Chapter V loader is `0.22.8-c5b7`, and `index.html` must address it with cache key `0228c5b7`. The previous `0228c5b5` URL is historical and must not be restored.
-7. Identify the smallest current task. At this handoff the only known open maintenance items are:
-   - North `concerned` portrait at `How bad was he?`
-   - North `relieved` portrait at `Good. Then we keep it that way.`
-8. Treat CH4P8 stacking as **resolved regression history**, not open work, unless a new physical-device regression is reported.
-9. Apply the Source-of-Truth order in Section 0.
-10. Ask P'Benz a question only when a genuinely new product/creative decision cannot be resolved from Production, this Master Plan, the Migration Prompt, bundled references or repository history.
+3. Inspect current Production on `grolygori789-crypto/last-witness`, branch `production-rebuild`.
+4. Compare Production HEAD with the latest verified runtime-code baseline in this revision: `f31b665aed6426a45fb44fb4e07d7a9a38d68424` — `Add CH5P1 next morning time cue`.
+5. If HEAD is newer, inspect the changed paths/commit history before deciding whether runtime truth advanced or the new commit is documentation-only.
+6. Confirm current base Runtime before implementation. At this revision the authoritative base is `0.22.8`.
+7. Confirm current Chapter V linkage before touching Chapter V:
+   - CH5P1 core `0.22.8-c5p1r10`
+   - North portrait fix `0.22.8-c5n1` / `0228c5n1`
+   - Police next-morning cue `0.22.8-c5t1` / `0228c5t1`
+   - Chapter V loader `0.22.8-c5b9`
+   - `index.html` Chapter V loader cache `0228c5b9`
+   - Chapter V Owner Walkthrough `0.22.8-c5w3`
+8. Treat CH4P8 stacking as resolved regression history unless a new defect is reproduced.
+9. Treat CH5P1 as owner-accepted and maintenance-frozen for continuation unless P'Benz reports a new reproducible issue.
+10. Default new story work to `CHAPTER V · PHASE II · NAME IN ROOM 1807`.
+11. Apply the Source-of-Truth order in Section 0.
+12. Ask P'Benz a question only when a genuinely new owner-level design/canon choice cannot be recovered from Production, this Master Plan, the Migration Prompt, bundled references or repository history.
 
 Never ask the owner to repeat:
 
@@ -203,8 +213,9 @@ Never ask the owner to repeat:
 - current Runtime/build policy
 - Chapter IV phase count
 - Chapters V–VII structure
-- current open defects
+- current accepted playable boundary
 - CH4P8 resolved status
+- CH5P1 acceptance/freeze status
 - Elena/Rin/Hidden Case canon
 - ending architecture
 - Interface/UI reuse rules
@@ -218,47 +229,51 @@ Never ask the owner to repeat:
 
 ## Handoff artifact contract
 
-For the room move, use the complete final ZIP supplied with this revision. It contains at minimum:
+A complete handoff package for this revision should contain at minimum:
 
 - `GAME_MASTER_PLAN.md`
 - `LAST_WITNESS_ROOM_MIGRATION_PROMPT.md`
 - `README_HANDOFF.md`
 - `HANDOFF_VALIDATION.json`
+- `HANDOFF_VALIDATION_REPORT.txt`
 - `REFERENCE_CH4P8_REMOVAL_CARD_PRE_FIX.jpg` — historical regression evidence only
-- `REFERENCE_CH5P1_NORTH_HOW_BAD_WAS_HE.jpg`
-- `REFERENCE_CH5P1_NORTH_GOOD_KEEP_IT_THAT_WAY.jpg`
+- `REFERENCE_CH5P1_NORTH_HOW_BAD_WAS_HE.jpg` — historical pre-fix target evidence
+- `REFERENCE_CH5P1_NORTH_GOOD_KEEP_IT_THAT_WAY.jpg` — historical pre-fix target evidence
+- `REFERENCE_CH5P1_NORTH_CONCERNED_ACCEPTED.jpg` — accepted asset reference
+- `REFERENCE_CH5P1_NORTH_RELIEVED_ACCEPTED.jpg` — accepted asset reference
 - `REFERENCE_NORTH_PORTRAIT_SOURCE_MAP.md`
+- owner-supplied North expression-sheet references when bundled
 - `SHA256SUMS.txt`
 
-The final bundle intentionally does **not** claim to contain a North Expression Sheet unless an actual owner-approved expression-sheet file is present. The new room must not block or ask P'Benz to resend one merely because an older handoff mentioned it. Current Production portrait registry paths, GitHub source/assets and the two owner target screenshots are sufficient to begin diagnosis. If an owner-approved expression sheet is later supplied, it becomes an additional visual reference under the normal Source-of-Truth order.
-
-GitHub remains authoritative for current Production source. Bundled screenshots are owner evidence/reference material.
+GitHub remains authoritative for current Production source. Bundled screenshots/assets are owner evidence/reference material and do not override newer Production unless P'Benz explicitly says so.
 
 ### First response behavior in a new room
 
-If P'Benz says only:
+If P'Benz says only `ดำเนินการต่อ`, `เริ่มได้เลย`, `ทำ Chapter 5 ต่อ`, `ทำงานต่อจากห้องเดิม` or equivalent, do **not** ask for project status again.
 
-- `ดำเนินการต่อ`
-- `เริ่มได้เลย`
-- `แก้ defect ต่อ`
-- `ทำงานต่อจากห้องเดิม`
+Default actionable order at this revision:
 
-then do **not** ask “ตอนนี้ถึงไหนแล้ว?” or request project status again.
+1. inspect current Production HEAD
+2. confirm whether any newer commit changes the runtime baseline
+3. confirm `0.22.8` base Runtime and affected Chapter V linkage
+4. preserve CH1–CH5P1 accepted behavior
+5. begin design/implementation of `CHAPTER V · PHASE II · NAME IN ROOM 1807`
+6. follow the locked Chapter V–VII story/reveal architecture in this Master Plan
+7. study proven UI shells before adding any new surface
+8. test honestly and run Build-Linkage Gate before every package
+9. package only intended repository paths
+10. automatically provide Commit Name ≤50 characters with every delivered project file/package
+11. P'Benz remains final physical-device acceptance authority
 
-Default actionable order at this handoff:
+### Acceptance-scope rule
 
-1. inspect current Production HEAD and confirm no newer runtime change invalidates the handoff
-2. inspect the canonical North `concerned` source and target screenshot
-3. inspect the canonical North `relieved` source and target screenshot
-4. repair **exactly those two portrait shots only** with the smallest safe surface
-5. preserve every frozen CH5P1 area
-6. run honest local/static/browser checks as available
-7. enforce the Build-Linkage Gate before packaging
-8. package only intended repository paths
-9. provide Commit Name ≤50 characters automatically with every delivered project artifact
-10. P'Benz performs physical Android acceptance
-11. after both shots pass, freeze CH5P1
-12. begin `CHAPTER V · PHASE II · NAME IN ROOM 1807`
+Current owner acceptance through CH5P1 is sufficient to continue production, but it must be described accurately:
+
+- accepted for continuation: **YES**
+- current known blocking defect: **NONE**
+- mostly Developer Jump smoke coverage: **YES**
+- full linear replay of every route/path proven by this acceptance: **NO CLAIM**
+- future minor regression may reopen a frozen area: **YES, only if actually reproduced or owner-requested**
 
 ### Ambiguity rule
 
@@ -267,8 +282,6 @@ Inspect before asking. Escalate to P'Benz only when:
 - two genuinely different owner-level design/canon choices remain after inspection, or
 - the request introduces new story/design intent, or
 - an actually required asset is unavailable in Production/history/final bundle and no safe existing source can satisfy the task.
-
----
 
 # 1. PROJECT / VISUAL IDENTITY
 
@@ -393,13 +406,13 @@ Base Runtime:
 
 `0.22.8`
 
-Latest inspected Production HEAD / latest verified runtime-code baseline at this handoff:
+Latest inspected Production HEAD / latest verified runtime-code baseline at this revision:
 
-`7e2e8cd8c79960787cbb812fc4e630537ddd3f4e`
+`f31b665aed6426a45fb44fb4e07d7a9a38d68424`
 
 Commit:
 
-`Sync Chapter V loader cache key`
+`Add CH5P1 next morning time cue`
 
 Current verified build/module snapshot:
 
@@ -412,9 +425,11 @@ Current verified build/module snapshot:
 - Developer Navigation: `0.22.8-d1`
 - North QA: `0.22.8`
 - Save Manager: `0.7.10-s2`, save-facing base Runtime identity follows `0.22.8`
-- Chapter V Phase I: `0.22.8-c5p1r10`
-- Chapter V loader: `0.22.8-c5b7`
-- `index.html` Chapter V loader cache: `0228c5b7`
+- Chapter V Phase I core: `0.22.8-c5p1r10`
+- CH5P1 North portrait fix: `0.22.8-c5n1`, cache `0228c5n1`
+- CH5P1 Police time cue: `0.22.8-c5t1`, cache `0228c5t1`
+- Chapter V loader: `0.22.8-c5b9`
+- `index.html` Chapter V loader cache: `0228c5b9`
 - Chapter V Owner Walkthrough extension: `0.22.8-c5w3`
 - Owner Walkthrough base: `0.22.3-w1`
 - Phase VIII core: `0.22.2`
@@ -422,7 +437,12 @@ Current verified build/module snapshot:
 - P7/P8 Audio Lifecycle: `0.22.7-a1`
 - Hidden Case engine: `0.21.0`
 
-The current base Runtime remains `0.22.8`. CH4P8 repair `76bbcceff1ad28eb81b921a5d0053da1283f2a2e` was scoped maintenance. The later `7e2e8cd8c79960787cbb812fc4e630537ddd3f4e` linkage correction changed only the Chapter V loader cache URL in `index.html` to match loader `0.22.8-c5b7`; it did **not** change gameplay logic or bump the base Runtime. P'Benz physically smoke-tested the landed build on Android and reported normal operation. Independent modules do not receive fake bumps merely to imitate the base Runtime.
+The current base Runtime remains `0.22.8`. The latest runtime-code sequence after the previous handoff is:
+
+1. `723e94051818245d5a3f5a12c0a466377503bdac` — accepted CH5P1 North portrait fix + loader/cache sync.
+2. `f31b665aed6426a45fb44fb4e07d7a9a38d68424` — accepted next-morning cue + current runtime-code baseline.
+
+The portrait repair and next-morning cue are scoped maintenance/extensions under Runtime `0.22.8`. They do **not** justify a cosmetic base-build bump. P'Benz has accepted the current CH1→CH5P1 playable boundary for continuation after practical smoke/Dev-Jump testing. Independent modules retain legitimate versions and are not fake-bumped.
 
 ## Release identity taxonomy — never conflate identities
 
@@ -435,9 +455,9 @@ There are three different version identities:
    Stable subsystems retain their own version when source is unchanged. Examples: Hidden Case `0.21.0`, Phase VIII core `0.22.2`, Owner Walkthrough `0.22.3-w1`, Matrix Exit `0.22.7-m1`, P7/P8 Audio Lifecycle `0.22.7-a1`.
 
 3. **Scoped maintenance/module generation**  
-   An isolated repair under the same base Runtime may carry its own suffix/cache generation when explicitly classified, uniquely versioned, linked and documented. Current example: CH4P8 stacking `0.22.8-z1` / `0228z1`; bootstrap maintenance generation `0.22.8-r2` / `0228r2`.
+   An isolated repair under the same base Runtime may carry its own suffix/cache generation when explicitly classified, uniquely versioned, linked and documented. Current examples: CH4P8 stacking `0.22.8-z1` / `0228z1`; bootstrap maintenance `0.22.8-r2` / `0228r2`; CH5P1 North portrait fix `0.22.8-c5n1` / `0228c5n1`; CH5P1 Police time cue `0.22.8-c5t1` / `0228c5t1`.
 
-**Runtime synchronization does not mean fake-bumping every unchanged independent module to the same number.** It means every player/owner/QA/save-facing base identity agrees on the authoritative base Runtime and every changed module has correct compatible source/version/cache/loader linkage. The current Chapter V loader is the concrete example: source `0.22.8-c5b7` and its `index.html` cache URL `0228c5b7` must agree; the old `0228c5b5` URL is stale historical linkage.
+**Runtime synchronization does not mean fake-bumping every unchanged independent module to the same number.** It means every player/owner/QA/save-facing base identity agrees on the authoritative base Runtime and every changed module has correct compatible source/version/cache/loader linkage. The current Chapter V loader is the concrete example: source `0.22.8-c5b9` and its `index.html` cache URL `0228c5b9` must agree. Older `0228c5b5` / `0228c5b7` linkage values are historical and must not be restored as current.
 
 If classification is unclear, stop before packaging and resolve whether the work is a base Runtime release, independent module update or scoped maintenance.
 
@@ -507,7 +527,7 @@ When base Runtime intentionally remains unchanged:
 
 ## Current `0.22.8` base-facing endpoint contract
 
-At this handoff, these must resolve coherently to base Runtime `0.22.8`:
+At this revision, these must resolve coherently to base Runtime `0.22.8`:
 
 - Settings: `LAST WITNESS · BUILD 0.22.8`
 - `window.LastWitnessRuntimeBuild`: `0.22.8`
@@ -517,12 +537,16 @@ At this handoff, these must resolve coherently to base Runtime `0.22.8`:
 - North QA base/runtime report: `0.22.8`
 - Save-facing Runtime identity: `0.22.8`
 - Developer Navigation: compatible `0.22.8-d1`
-- CH5P1: compatible `0.22.8-c5p1r10`
-- CH5 loader: compatible `0.22.8-c5b7`
-- `index.html` CH5 loader cache: `0228c5b7`
+- CH5P1 core: compatible `0.22.8-c5p1r10`
+- CH5P1 North portrait fix: `0.22.8-c5n1` / `0228c5n1`
+- CH5P1 Police time cue: `0.22.8-c5t1` / `0228c5t1`
+- CH5 loader: compatible `0.22.8-c5b9`
+- `index.html` CH5 loader cache: `0228c5b9`
 - CH5 Owner Walkthrough extension: compatible `0.22.8-c5w3`
 
-The authoritative Runtime Build Label implementation also synchronizes `window.LastWitnessRuntimeBuild`, the document dataset, Settings, North QA, Owner Developer and Save-facing identity. That does **not** remove the obligation to keep their authoritative source/cache/expected linkage correct.
+The authoritative Runtime Build Label implementation also synchronizes `window.LastWitnessRuntimeBuild`, the document dataset, Settings, North QA, Owner Developer and Save-facing identity. That does **not** remove the obligation to keep authoritative source/cache/expected linkage correct.
+
+Do **not** pre-bump the base Runtime merely because Chapter V Phase II is next. Classify the first CH5P2 release when implementation scope is known. A genuine new playable base release may warrant a new Runtime identity, but that is not canonical until the release classification is explicitly made and the complete atomic matrix is synchronized.
 
 ## Mandatory release stop conditions
 
@@ -600,27 +624,42 @@ Important recent chronology:
 
 - `6a32555ef5f73b23fd74d0fa5b60db4867cf4c39`  
   `Fix CH5P1 landing and North portraits`  
-  **Rejected incident release.** It introduced unacceptable North custom portraits and collateral changes beyond owner scope.
+  **Rejected incident release.** Introduced unacceptable North custom portraits and collateral changes beyond owner scope.
 
 - `1e4afcf94a55c87d684eb3dac3aa1442040c1601`  
   `Fix CH5P1 rollback and landing`  
-  Restored normal North portrait-registry routing, restored Somchai brightness `.88`, retained the corrected Chapter V opening clip.
+  Restored normal North portrait-registry routing, Somchai brightness `.88`, and retained the corrected Chapter V opening clip.
 
 - `1ad81889a0d6d4b3a3dcf5cb03b0eed1da6cc33b`  
   `Complete zero-question master handoff`  
-  Documentation-only preservation expansion. It did not change base Runtime.
+  Documentation-only preservation expansion.
 
 - `76bbcceff1ad28eb81b921a5d0053da1283f2a2e`  
   `Fix CH4P8 removal card stacking`  
-  Added the scoped `0.22.8-z1` CH4P8 stacking stylesheet and bootstrap/cache linkage under base Runtime `0.22.8`. P'Benz physically tested the previously reproduced CH4P8 Game Menu / Settings defect on Android and confirmed it fully resolved.
+  Scoped `0.22.8-z1` stack repair under base Runtime `0.22.8`; P'Benz physically accepted the repaired Game Menu / Settings stacking behavior on Android.
 
 - `1b31a903c81c05e36fcdf7ba319c3a16f72779a1`  
   `Finalize LAST WITNESS handoff`  
-  Documentation-only final-handoff expansion. It did not change Runtime or gameplay source.
+  Documentation-only handoff expansion.
 
 - `7e2e8cd8c79960787cbb812fc4e630537ddd3f4e`  
   `Sync Chapter V loader cache key`  
-  **Current runtime-code baseline at this handoff.** One-line linkage correction in `index.html`: Chapter V loader URL cache key `0228c5b5` → `0228c5b7`, matching loader source `0.22.8-c5b7`. No gameplay/module source changed. P'Benz then physically smoke-tested the landed game on Android and reported normal operation. Base Runtime remains `0.22.8`.
+  One-line `index.html` linkage correction `0228c5b5` → `0228c5b7`; owner Android smoke PASS. Historical runtime-code baseline before the later portrait/time-cue maintenance.
+
+- `9eb6afbeb6e5f0576ef17f9a625e0ceb5257f139`  
+  `Finalize LAST WITNESS room handoff`  
+  Documentation-only final zero-question room handoff at 12:57 ICT.
+
+- `723e94051818245d5a3f5a12c0a466377503bdac`  
+  `Fix CH5P1 North portraits and cache sync`  
+  Landed the owner-approved `concerned` / `relieved` North portrait assets through scoped module `0.22.8-c5n1`; Chapter V loader advanced to `0.22.8-c5b8` at that step. Base Runtime stayed `0.22.8`.
+
+- `f31b665aed6426a45fb44fb4e07d7a9a38d68424`  
+  `Add CH5P1 next morning time cue`  
+  **Current latest verified runtime-code baseline.** Added the ~3.2 second bilingual `NEXT MORNING / DAY 7 · 08:45 ICT` Police Station temporal cue as `0.22.8-c5t1`, advanced Chapter V loader to `0.22.8-c5b9`, and `index.html` loader cache to `0228c5b9`. Base Runtime remains `0.22.8`.
+
+- Owner checkpoint `2026-08-17 16:44 ICT`  
+  P'Benz reports Chapters I through Chapter V Phase I are acceptable for continuation after a practical check, mostly using Developer Jump. Current known blockers: none. Non-blocking minor issues may be fixed later if reproduced. CH5P1 is now maintenance-frozen and story work advances to Phase II.
 
 ## Permanent lesson from CH5P1 r9
 
@@ -643,8 +682,9 @@ These are engineering lessons, not trivia:
 - Matrix Exit `0.22.7-m1` solved a trap-state without mutating canonical Matrix progress
 - P7/P8 Audio Lifecycle `0.22.7-a1` fixed foreground/background media and is owner Android accepted
 - CH5P1 r9 proved collateral polish can invalidate a targeted fix
-- CH5P1 r10 is the accepted rollback baseline for the current portrait repair
+- CH5P1 r10 remains the accepted core baseline; the later accepted portrait/time-cue modules extend it without reopening the core
 - CH4P8 stacking `0.22.8-z1` proved the preferred repair style: one narrow authoritative layering correction, fresh cache linkage, no story/state/audio redesign
+- CH5P1 portrait/time-cue maintenance proved that accepted narrow extensions can remain under the same base Runtime when their module/cache/loader linkage is explicit
 
 General rule:
 
@@ -1445,10 +1485,6 @@ Do not reopen, redesign or “clean up” this CH4P8 behavior unless P'Benz repo
 
 # 19. CHAPTER IV FINAL STATE
 
----
-
-# 19. CHAPTER IV FINAL STATE
-
 Canonical Chapter IV end-state remains:
 
 - Jakarta operation closed
@@ -1497,44 +1533,90 @@ roughly 75–85% shared canonical spine, 15–25% adaptive emphasis.
 
 # 21. CHAPTER V PHASE I — RETURN TO BANGKOK
 
-Current Production module:
+Current Production core module:
 
 `0.22.8-c5p1r10`
 
-Current loader:
+Accepted scoped extensions:
 
-`0.22.8-c5b7`
+- North portrait fix: `0.22.8-c5n1` / cache `0228c5n1`
+- Police next-morning cue: `0.22.8-c5t1` / cache `0228c5t1`
 
-This phase is now **preliminarily acceptable except for exactly two North portrait shots** listed below.
+Current Chapter V loader:
 
-Everything else is frozen for now unless P'Benz reproduces another defect.
+`0.22.8-c5b9`
+
+`index.html` loader cache:
+
+`0228c5b9`
+
+Status:
+
+`OWNER-ACCEPTED FOR CONTINUATION · MAINTENANCE-FROZEN`
+
+P'Benz has accepted the Phase I experience at a practical smoke level after checking the game through Chapters I–V Phase I, using Developer Jump for much of the coverage. Treat all current Phase I behavior as frozen unless a new reproducible defect is reported or P'Benz explicitly requests a change.
 
 ## Current canonical flow
 
 1. landing cinematic
 2. automatic Bangkok arrival card, approximately 3 seconds, **no Continue**
-3. Evidence Division
-4. Briefing Room
-5. Singapore/Jakarta return briefing
-6. North public cover story
-7. Kittisak / Somchai custody thread
-8. `CUSTODY WINDOW`
-9. investigative emphasis choice
-10. walk-to-condo cinematic
-11. automatic condo card, approximately 3 seconds, **no Continue**
-12. Benedict condominium interior
-13. North reveal
-14. private debrief
-15. Phase Complete
-16. Phase II teaser
+3. Police Station daylight scene enters
+4. first narrative arrival→Police transition shows the accepted temporal cue for ~3.2 seconds:
+   - `BANGKOK · THAILAND`
+   - `NEXT MORNING`
+   - `DAY 7 · 08:45 ICT`
+   - `POLICE STATION · EVIDENCE DIVISION`
+5. temporal cue fades; existing Police UI/dialogue appears
+6. Evidence Division
+7. Briefing Room
+8. Singapore/Jakarta return briefing
+9. North public cover story
+10. Kittisak / Somchai custody thread
+11. `CUSTODY WINDOW`
+12. investigative emphasis choice
+13. walk-to-condo cinematic
+14. automatic condo card, approximately 3 seconds, **no Continue**
+15. Benedict condominium interior
+16. North reveal
+17. private debrief
+18. Phase Complete
+19. Phase II teaser
 
-Working Bangkok arrival:
+Timeline anchors:
 
-`DAY 6 · 21:50 ICT`
+- Bangkok arrival: `DAY 6 · 21:50 ICT`
+- Police Station: `DAY 7 · 08:45 ICT`
+- Walk-to-condo overlay: `DAY 7 · 20:36 ICT · BANGKOK`
+- Condo card: `DAY 7 · 20:44 ICT`
+- Condo scene: `DAY 7 · 20:45 ICT`
+- North reveal/debrief: `SAFE LOCATION · 20:46 ICT`
 
-Walk-to-condo overlay:
+The `NEXT MORNING` cue exists specifically to remove ambiguity between the nighttime arrival cinematic/card and the daylight Police scene. It is an overlay on the existing Police scene, not an additional full standalone card.
 
-`DAY 7 · 20:36 ICT · BANGKOK`
+### Police next-morning cue behavior lock
+
+Current module:
+
+`js/engine/36-ch5p1-police-time-cue.js` — `0.22.8-c5t1`
+
+Current stylesheet:
+
+`css/ch5p1-police-time-cue.css` — cache `0228c5t1`
+
+Locked behavior:
+
+- total cue duration `3200ms`
+- exit fade approximately `480ms`
+- live Police Station image remains visible behind the cue
+- normal Police HUD/objective/note/dialogue/action/progress are hidden only while cue is active
+- cue starts only when Police becomes active after narrative arrival, `arrivalSeen` is true, Police intro is not complete and the cue has not been seen
+- direct Developer jump does not force the narrative cue
+- cue records `policeTimeCueSeen`
+- timer pauses while the document/app is backgrounded and resumes on foreground
+- bilingual Thai/English copy follows current language
+- no dialogue/story/evidence/choice/audio/Progress mutation
+
+Owner checked the resulting cue and accepted it. Do not redesign/re-time it unless a new issue is reproduced or explicitly requested.
 
 ## Approved opening clip
 
@@ -1551,8 +1633,6 @@ This is the corrected clip supplied by P'Benz after the earlier aircraft-motion 
 Current walk-to-condo cinematic remains accepted.
 
 Do not alter it without a new reproduced defect.
-
----
 
 # 22. CHAPTER V PHASE I AUDIO
 
@@ -1637,22 +1717,29 @@ No Owner Hidden Case internals or Owner Walkthrough solutions leak into North QA
 
 # 25. CH5P1 CURRENT ACCEPTANCE / FREEZE
 
-Current r10 status after rollback:
+Current accepted state after the North portrait fix and Police next-morning cue:
 
-- corrected airplane opening clip: accepted
-- arrival card auto timing: accepted-for-now
-- police/briefing flow: accepted-for-now
-- scene notes: accepted-for-now
-- `NORTH · OFF RECORD`: accepted-for-now
-- `TAP TO CONTINUE`: accepted-for-now
-- condominium card auto timing: accepted-for-now
-- condominium scenes: accepted-for-now
-- scene brightness: accepted-for-now
-- Somchai portrait framing/brightness: accepted-for-now
-- Custody Window: accepted-for-now
-- audio behavior: accepted-for-now pending future reproduced issues
-- Save/Load linkage: current Production baseline
-- Dev/North QA linkage: current Production baseline
+- corrected airplane opening clip: accepted / frozen
+- arrival card auto timing: accepted / frozen
+- Police daylight transition and `NEXT MORNING` cue: accepted / frozen
+- police/briefing flow: accepted / frozen
+- scene notes: accepted / frozen
+- `NORTH · OFF RECORD`: accepted / frozen
+- `TAP TO CONTINUE`: accepted / frozen
+- condominium card auto timing: accepted / frozen
+- condominium scenes: accepted / frozen
+- scene brightness: accepted / frozen
+- Somchai portrait framing/brightness `.88`: accepted / frozen
+- North `concerned` / `relieved` repaired portraits: accepted / frozen
+- other North portrait behavior: accepted-for-continuation
+- Custody Window: accepted / frozen
+- audio behavior: accepted-for-continuation; reopen only on reproduced issue
+- Save/Load linkage: accepted current Production baseline
+- Dev/North QA linkage: accepted current Production baseline
+
+Owner acceptance classification:
+
+`ACCEPTED FOR CONTINUATION` does not mean every possible branch was replayed linearly end-to-end in this checkpoint. P'Benz's check was practical/rough and relied heavily on Developer Jump. It is nevertheless the explicit owner decision that the game may move forward now.
 
 ### Somchai lock
 
@@ -1666,141 +1753,121 @@ This is the restored accepted value after r9 collateral damage.
 
 ### Rejected r9 North custom portraits
 
-The r9 custom North portrait experiment is rejected.
+The r9 custom North portrait experiment remains rejected.
 
-Do not reuse/reintroduce those assets merely because they exist in repository history or local artifacts.
-
-Current r10 routes North through the normal portrait registry.
-
----
-
-# 25A. CH5P1 FROZEN-AREA MATRIX — DO NOT TOUCH DURING CURRENT REPAIR
-
-The following areas are considered acceptable-for-now and are frozen during the current two-portrait repair:
-
-| Area | Current status | Current repair permission |
-|---|---|---|
-| corrected landing clip | accepted | NO |
-| landing → arrival transition | accepted-for-now | NO |
-| arrival card ~3s auto | accepted-for-now | NO |
-| Police scene | accepted-for-now | NO |
-| Briefing scene | accepted-for-now | NO |
-| secondary scene-note style | accepted-for-now | NO |
-| `NORTH · OFF RECORD` | accepted-for-now | NO |
-| `TAP TO CONTINUE` | accepted-for-now | NO |
-| Custody Window | accepted-for-now | NO |
-| walk-to-condo video | accepted-for-now | NO |
-| condo auto card ~3s | accepted-for-now | NO |
-| condo scene brightness | accepted-for-now | NO |
-| Somchai brightness `.88` | accepted | NO |
-| Benedict portrait | accepted-for-now | NO |
-| other North emotions | accepted-for-now | NO |
-| CH5P1 music/ducking | accepted-for-now | NO |
-| HUD / Save / Menu | accepted-for-now | NO |
-| Progress | accepted-for-now | NO |
-| Save/Load wiring | current baseline | NO |
-| Dev / North QA | current baseline | NO |
-| North `concerned` target shot | OPEN DEFECT | YES |
-| North `relieved` target shot | OPEN DEFECT | YES |
-
-A new room must treat this table as a **scope firewall**.
-
-If a repair requires touching a frozen area merely because it is convenient, stop and find a more surgical method. Ask the owner only if a frozen-area change is genuinely unavoidable and materially necessary.
-
----
-
-# 26. ONLY REMAINING CH5P1 DEFECT
-
-P'Benz identified exactly two North dialogue portraits in the lower dialogue panel that still require improvement:
-
-### Defect A
-
-Speaker: **NORTH**  
-Emotion: `concerned`  
-Dialogue:
-
-`How bad was he?`
-
-### Defect B
-
-Speaker: **NORTH**  
-Emotion: `relieved`  
-Dialogue:
-
-`Good. Then we keep it that way.`
-
-## Owner requirement
-
-For these **two shots only**:
-
-- entire North head visible
-- no left-side head clipping
-- no top clipping
-- show a tasteful amount of shoulders / upper torso
-- portrait should fill the established well attractively
-- preserve approved North identity
-- preserve the correct emotion
-- preserve graphic-novel visual language
-- use an owner-approved North Expression Sheet if actually available; otherwise use the current canonical Production source portrait plus bundled owner target screenshot as the basis
-- do not simply zoom the face to hide a crop issue
-- do not modify unrelated North emotions
-- do not modify dialogue shell geometry
-
-## Absolute collateral-change prohibition for this repair
-
-Do **not** touch:
-
-- Somchai
-- Benedict portrait framing
-- other North emotions
-- scene-note positions/style
-- `NORTH · OFF RECORD`
-- `TAP TO CONTINUE`
-- HUD
-- Progress
-- dialogue geometry
-- condo card timing
-- scene brightness
-- audio
-- opening clip
-- walk clip
-- Custody Window
-- Save/Load
-- Developer tools
-- North QA
-- story copy/flow
-
-After these two portraits pass P'Benz's Android inspection, Chapter V Phase I may be treated as owner-acceptable for continuation unless another real-device defect is reported.
-
-Reference screenshots are bundled with the room-handoff package.
-
-## Current Production portrait source map — verified
-
-Current r10 routes North through the normal portrait registry in `js/engine/01-runtime-data.js`.
-
-Canonical current source assets:
-
-- `North.concerned` → `assets/images/5a51446056fdcb0a.jpg`
-- `North.relieved` → `assets/images/9a859e7e805b89ee.jpg`
-
-Current CH5P1 phase rendering uses `originalPortrait(name, emotion)` and normal registry routing for North in:
-
-`js/chapters/chapter-05/01-return-to-bangkok.js` — `0.22.8-c5p1r10`
-
-Rejected r9 custom assets that still exist in the repository but are **not approved repair sources by default**:
+Do not reuse/reintroduce these rejected paths merely because they exist in history:
 
 - `assets/images/chapter-05/phase-01/north-concerned-full.png`
 - `assets/images/chapter-05/phase-01/north-relieved-full.png`
 
-Do not resurrect those files merely because their filenames sound convenient. Diagnose the current canonical source framing and established dialogue-well crop first. The bundled owner screenshots define the visual defect to solve.
+The accepted repair uses different assets and a dedicated scoped module, documented below.
 
-If an owner-approved North Expression Sheet is available in the current room, it may be used as an additional visual identity/expression reference. Its absence from this final ZIP is not a reason to stop or ask P'Benz to resend it when current Production sources plus target screenshots are sufficient.
+---
+
+# 25A. CH5P1 FROZEN-AREA MATRIX — CURRENT ACCEPTED BASELINE
+
+Everything in this table is maintenance-frozen for story continuation. A future change requires a new reproduced defect, integration blocker or explicit owner request.
+
+| Area | Current status | Default permission during CH5P2+ work |
+|---|---|---|
+| corrected landing clip | accepted | NO |
+| landing → arrival transition | accepted | NO |
+| arrival card ~3s auto | accepted | NO |
+| Police next-morning cue ~3.2s | accepted | NO |
+| Police scene | accepted | NO |
+| Briefing scene | accepted | NO |
+| secondary scene-note style | accepted | NO |
+| `NORTH · OFF RECORD` | accepted | NO |
+| `TAP TO CONTINUE` | accepted | NO |
+| Custody Window | accepted | NO |
+| walk-to-condo video | accepted | NO |
+| condo auto card ~3s | accepted | NO |
+| condo scene brightness | accepted | NO |
+| Somchai brightness `.88` | accepted | NO |
+| Benedict portrait | accepted-for-continuation | NO |
+| North `concerned` accepted portrait | accepted | NO |
+| North `relieved` accepted portrait | accepted | NO |
+| other North emotions | accepted-for-continuation | NO |
+| CH5P1 music/ducking | accepted-for-continuation | NO |
+| HUD / Save / Menu | accepted-for-continuation | NO |
+| Progress | accepted-for-continuation | NO |
+| Save/Load wiring | accepted current baseline | NO |
+| Dev / North QA | accepted current baseline | NO |
+
+This table is a **regression firewall**, not a claim that future bugs are impossible. If a problem is actually reproduced, isolate and repair the smallest authoritative surface.
+
+---
+
+# 26. RESOLVED CH5P1 NORTH PORTRAIT MAINTENANCE
+
+The two previously open North dialogue portraits are now resolved and owner-accepted for continuation:
+
+### Accepted shot A
+
+Speaker: **NORTH**  
+Emotion: `concerned`  
+Dialogue: `How bad was he?`  
+Accepted asset: `assets/images/76e0d6b4a8c0dd91.jpg`  
+Scoped version/cache: `0.22.8-c5n1` / `0228c5n1`
+
+### Accepted shot B
+
+Speaker: **NORTH**  
+Emotion: `relieved`  
+Dialogue: `Good. Then we keep it that way.`  
+Accepted asset: `assets/images/4f6ec1f83a9b7d20.jpg`  
+Scoped version/cache: `0.22.8-c5n1` / `0228c5n1`
+
+Accepted visual result:
+
+- entire head visible
+- no left/top clipping
+- tasteful shoulders / upper torso
+- attractive fill in established portrait well
+- North identity/expression preserved
+- no source/white edge at bottom
+- scale/composition match the owner-approved mockups
+- skin-tone family accepted as consistent enough with the established North portrait set
+- dialogue shell geometry unchanged
+
+### Accepted routing architecture
+
+Current accepted module:
+
+`js/engine/35-ch5p1-north-portrait-fix.js` — `0.22.8-c5n1`
+
+It installs:
+
+- `North.concerned` → `assets/images/76e0d6b4a8c0dd91.jpg?v=0228c5n1`
+- `North.relieved` → `assets/images/4f6ec1f83a9b7d20.jpg?v=0228c5n1`
+
+The module updates `window.PORTRAITS.North` for those two emotions and wraps the shared `portrait(name,mood)` resolver so those two North emotion keys resolve to the accepted assets after the Chapter V loader installs the module.
+
+**Architecture watchpoint:** because the resolver is shared, a future regression audit should remember that these two emotion keys can affect any later/earlier scene rendered after this module has installed, not just the two original CH5P1 lines. P'Benz's current practical CH1→CH5P1 acceptance found no blocking problem, so do not redesign this now; simply keep the watchpoint documented for future regression work.
+
+Original pre-fix registry assets were:
+
+- `North.concerned` → `assets/images/5a51446056fdcb0a.jpg`
+- `North.relieved` → `assets/images/9a859e7e805b89ee.jpg`
+
+Those are historical/fallback references, not the accepted visible targets after `c5n1` installs.
+
+Rejected r9 files remain rejected:
+
+- `assets/images/chapter-05/phase-01/north-concerned-full.png`
+- `assets/images/chapter-05/phase-01/north-relieved-full.png`
+
+### Source-reference history
+
+The accepted two portraits were composed from the owner-supplied North expression-source sheet used in the repair session, with the concerned and subtle-relief expressions selected to preserve identity and Phase consistency. The handoff package may include both that source and the earlier/original North expression-sheet reference. Current Production assets are authoritative for what actually ships.
+
+Historical target screenshots remain bundled only to document the defect that was solved. They are no longer open acceptance gates.
 
 ---
 
 # 27. CHAPTER V PHASE II — NAME IN ROOM 1807
 
-This becomes the immediate story-production objective **only after the two open CH5P1 North portrait shots are accepted on Android**.
+This is the **immediate current story-production objective**. CH5P1 has been owner-accepted for continuation and no known release-blocking Phase I defect remains.
 
 Reveal Room 1807 victim:
 
@@ -2020,6 +2087,74 @@ Player sees consequence, never arithmetic.
 
 ---
 
+# 30A. CHAPTER V–VII CONTINUITY LEDGER — LOCKED VS DESIGN-OPEN
+
+This section exists to prevent a future room from either dropping locked plot logic or inventing details that were never approved.
+
+## Locked cross-chapter causal spine
+
+### Chapter V — THE MISSING PIECE / INFLUENCE
+
+Must accomplish:
+
+- return the investigation to Bangkok without reopening Jakarta for an invented bridge
+- reveal Room 1807 victim as **Kawin Nopparat** in Phase II
+- sharply strengthen Narin while keeping Kittisak, Adrian, Arman and Ika viable
+- preserve Kittisak's protective-but-suspicious institutional logic
+- preserve Somchai as documented physical handler / plausible cleaner-accomplice, not automatic mastermind
+- cross-map Room 1807 / Profile 18-07 / architecture / wrapper / deployment / physical movement / custody / institutional access
+- reveal Rin / `R.` in `THE REGISTRAR`
+- make Rin valuable but incomplete, frightened and procedurally compromised
+- reopen Ika through pre-Aster history/travel/field capability without invalidating the true later Aster recruitment timeline
+- create real witness/protected-source danger and extraction pressure
+- prove multiple concealment systems coexist
+- end with the “missing piece” **not Elena**
+- end Chapter V with Kittisak + Narin top-tier; Adrian/Arman/Ika viable; Somchai plausible support/cleaner; Rin guarded; Elena low-suspicion
+
+### Chapter VI — THE FINAL MOVE / DIVERGE
+
+Must accomplish:
+
+- build serious prosecutable-looking theories around the five false principals rather than five disconnected alternate games
+- use controlled leak / continuity / breach / staging-site pressure to make multiple actors react suspiciously for different real reasons
+- allow adaptive emphasis to reshape which theory appears strongest without changing historical truth
+- make `EVIDENCE DIVISION BREACH` a major Kittisak pressure spike
+- use `THE QUIET CHANNEL` only for mundane Elena-compatible latent facts; it must not become an “ELENA KNOWS” reveal
+- maintain at least three strong non-Elena theories by the end
+- increase the importance of Last Witness / Last Record without letting one witness solve the case
+- no direct Elena confrontation or special villain coding
+
+### Chapter VII — LAST WITNESS / RESOLVE
+
+Must accomplish:
+
+- bring the room/pier/physical-event patterns back into one final reconstruction frame
+- preserve/rescue the witness chain sufficiently for evidence to matter
+- present the five false principals at maximum plausible strength
+- use `THE LAST RECORD` as the first evidence class the five false principals cannot fully absorb, without a literal “Elena did it” answer
+- make Elena fully serious only in `FINAL RECONSTRUCTION`, through multi-class convergence across decision order, physical event, accepted record, chronology and legal/prosecutability bridges
+- run `THE WEIGHT OF PROOF` deterministically and invisibly
+- never present a final killer-choice list
+- resolve one of four ending families from the case the player actually built: TRUE CONVICTION / RIGHT NAME, NO CASE / FALSE CONVICTION / THE PERFECT RECORD
+- preserve historical truth in every ending: Elena remains the mastermind/murderer; endings change what can be proved and sustained, not what happened
+
+## Design-open details — do not invent as canon prematurely
+
+The following remain implementation/design work unless a later owner decision or shipped Production locks them:
+
+- exact room layouts, locations and scene choreography for future Phase II–VII content not already specified
+- exact dialogue lines beyond established canon/voice requirements
+- exact evidence filenames/IDs for future unimplemented phases
+- exact minigame mechanics when no accepted shell has yet been chosen
+- exact suspect-choice wording and branch microstructure
+- exact Phase II+ Runtime/version numbers before release classification
+- exact audio/image/video assets not yet approved
+- exact timing of future cards/transitions unless already locked
+
+When implementing a design-open item, preserve all locked causal/reveal constraints above and use the closest accepted UI/interaction shell. Do not transform an implementation gap into new canon without evidence or owner intent.
+
+---
+
 # 31. ENDING ARCHITECTURE
 
 Four families:
@@ -2155,40 +2290,34 @@ No Elena hidden value grants early Elena spotlight.
 
 ## Startup
 
-- Splash → Title
-- New Game
-- Continue
-- Load
-- Settings
-- Developer access
-- North QA
-- Title audio
-- current build label
+For every new runtime/content package, verify at minimum:
+
+- splash/title startup
+- New Game / Continue / Load accessibility as relevant
+- owner Developer access still works
+- North QA remains blind to owner-only internals
+- no startup lock / black-screen regression
+- no stale loader/cache mismatch
 
 ## Build linkage
 
-Verify all affected:
+Run the Section 4 Build-Linkage Gate. Current base Runtime remains `0.22.8` until a genuine base release is classified.
 
-- Runtime
-- Settings
-- Owner Dev
-- North QA
-- Save-facing identity
-- changed module versions
-- cache generations
-- loader expectations
-- packaged artifact naming
-- manifest/checksum
+For current accepted CH5P1 linkage, regression checks should resolve:
 
-Mismatch = blocker.
+- CH5P1 core `0.22.8-c5p1r10`
+- North portrait fix `0.22.8-c5n1` / `0228c5n1`
+- Police time cue `0.22.8-c5t1` / `0228c5t1`
+- CH5 loader `0.22.8-c5b9`
+- index loader cache `0228c5b9`
+- owner walkthrough extension `0.22.8-c5w3`
 
 ## Mobile viewports
 
-At minimum:
+Minimum practical viewport audit set:
 
-- 360×740
-- 375×812
-- 390×844
+- 360×800
+- 360×844
 - 412×915
 - 430×932
 
@@ -2205,11 +2334,11 @@ Check:
 - menus
 - stacking contexts
 
-## Resolved regression guard + current open acceptance checks
+## Accepted-baseline regression guards
 
-### CH4P8 personnel card — RESOLVED REGRESSION GUARD
+### CH4P8 personnel card — resolved guard
 
-Do not repair this again proactively. During broad release regression only, verify the already accepted behavior:
+Do not repair proactively. During a broad regression pass only:
 
 1. reach Jakarta departure
 2. leave `NORTH · REMOVED` card pending
@@ -2220,54 +2349,66 @@ Do not repair this again proactively. During broad release regression only, veri
 7. press its own `CONTINUE`
 8. normal departure continues
 9. evidence/state does not change merely from opening Settings
-10. Matrix Exit and accepted audio lifecycle remain intact
+10. Matrix Exit/audio lifecycle remain intact
 
-A failure here is a **new regression**, not continuation of an open 2026-08-17 defect.
+A failure is a **new regression**.
 
-### CH5P1 North portraits — CURRENT OPEN GATE
+### CH5P1 accepted North portraits — resolved guard
 
-Inspect only:
+Historical lines:
 
-- `How bad was he?`
-- `Good. Then we keep it that way.`
+- `How bad was he?` → accepted `concerned` asset `76e0d6b4a8c0dd91.jpg`
+- `Good. Then we keep it that way.` → accepted `relieved` asset `4f6ec1f83a9b7d20.jpg`
 
-Acceptance:
+Regression acceptance:
 
 - full head visible
 - shoulders/upper torso visible
-- attractive fill
-- no left/top clipping
-- identity/expression correct
-- no dialogue-shell regression
-- no collateral visual changes elsewhere
+- no left/top/bottom white-edge defect
+- identity/expression/skin-tone family coherent
+- dialogue shell unchanged
+- no unexpected shared-resolver leak in any scene that uses those emotion keys
 
-Physical Android Chrome remains final acceptance.
+### CH5P1 next-morning cue — resolved guard
 
----
+Narrative path must read coherently:
 
-# 36. CURRENT PRODUCTION STATUS — 2026-08-17
+`DAY 6 · 21:50 ICT arrival → NEXT MORNING overlay → DAY 7 · 08:45 ICT Police Station`
 
-Latest inspected Production HEAD and latest verified runtime-code baseline at this final handoff:
+Regression acceptance:
 
-`7e2e8cd8c79960787cbb812fc4e630537ddd3f4e`
+- cue appears only on first narrative arrival→Police transition
+- daylight Police scene visible behind cue
+- approximately 3.2 second readable hold
+- UI/dialogue does not overlap the active cue
+- Developer direct jump does not force it
+- background/foreground pause-resume does not cause player to miss it
+
+## Current owner acceptance scope
+
+As of 2026-08-17 16:44 ICT:
+
+- Chapters I→V Phase I accepted for continuation: **YES**
+- current known release blocker: **NONE**
+- practical testing relied mostly on Developer Jump: **YES**
+- full linear E2E certification of every path claimed: **NO**
+- minor future issue may be repaired later when reproduced: **YES**
+
+Physical Android/device evidence remains the highest acceptance authority whenever a specific regression is investigated.
+
+# 36. CURRENT PRODUCTION STATUS — 2026-08-17 16:44 ICT
+
+Latest inspected Production HEAD / latest verified runtime-code baseline:
+
+`f31b665aed6426a45fb44fb4e07d7a9a38d68424`
 
 Message:
 
-`Sync Chapter V loader cache key`
+`Add CH5P1 next morning time cue`
 
 Base Runtime:
 
 `0.22.8`
-
-This commit is linkage-only maintenance under Runtime `0.22.8`; it does not constitute a base Runtime bump or gameplay-logic change. It synchronizes the `index.html` Chapter V loader cache URL with loader `0.22.8-c5b7`. P'Benz physically smoke-tested the landed build on Android and reported normal operation.
-
-Current Chapter V Phase I:
-
-`0.22.8-c5p1r10`
-
-Current Chapter V loader:
-
-`0.22.8-c5b7`
 
 Current build snapshot:
 
@@ -2276,8 +2417,13 @@ Current build snapshot:
 - bootstrap cache: `0228r2`
 - CH4P8 stack repair: `0.22.8-z1`
 - CH4P8 stack-fix cache: `0228z1`
-- Chapter V loader: `0.22.8-c5b7`
-- Chapter V loader cache in `index.html`: `0228c5b7`
+- Chapter V Phase I core: `0.22.8-c5p1r10`
+- North portrait fix: `0.22.8-c5n1`
+- North portrait cache: `0228c5n1`
+- Police time cue: `0.22.8-c5t1`
+- Police time-cue cache: `0228c5t1`
+- Chapter V loader: `0.22.8-c5b9`
+- Chapter V loader cache in `index.html`: `0228c5b9`
 - Runtime Build Label: `0.22.8`
 - Developer Navigation: `0.22.8-d1`
 - North QA: `0.22.8`
@@ -2289,11 +2435,13 @@ Current build snapshot:
 - Matrix Exit: `0.22.7-m1`
 - P7/P8 Audio Lifecycle: `0.22.7-a1`
 
-If P'Benz uploads this final documentation afterward, repository HEAD will advance. A docs-only HEAD does not replace `7e2e8cd8c79960787cbb812fc4e630537ddd3f4e` as the runtime-code baseline. New rooms must inspect the newer commit before deciding.
+The base Runtime did not change during the portrait/time-cue maintenance. Do not cosmetically bump `0.22.8` after the fact.
+
+If P'Benz uploads this documentation package afterward, repository HEAD will advance. A docs-only HEAD does not replace `f31b665aed6426a45fb44fb4e07d7a9a38d68424` as the latest verified runtime-code baseline. New rooms must inspect changed paths first.
 
 ## Owner acceptance snapshot
 
-Accepted / closed:
+Accepted / closed for continuation:
 
 - Chapters I–IV continuation baseline
 - Chapter IV exactly 8 phases
@@ -2301,168 +2449,82 @@ Accepted / closed:
 - P8 Matrix Close / Resume
 - P7/P8 background audio lifecycle
 - corrected Chapter V opening clip
-- Chapter V loader cache linkage `0.22.8-c5b7` ↔ `0228c5b7`: **OWNER ANDROID SMOKE PASS**
-- CH5P1 current flow except two North portrait shots
+- Chapter V loader chain through `0.22.8-c5b9` / `0228c5b9`
+- CH5P1 North `concerned` / `relieved` portrait repair
+- CH5P1 daylight `NEXT MORNING` temporal cue
+- CH5P1 current flow / Custody Window / condo route / North reveal
 - Somchai brightness `.88`
-- rejected r9 North custom portrait experiment rolled back
+- rejected r9 custom portrait paths remain rejected
 
-Currently open, exactly two items:
+Current known release-blocking open defects:
 
-1. **CH5P1 North `concerned` portrait at `How bad was he?`**
-2. **CH5P1 North `relieved` portrait at `Good. Then we keep it that way.`**
+`NONE`
 
-No other Chapter IV or CH5P1 component is open merely because these portraits remain.
+Owner qualification:
+
+P'Benz's current acceptance is a practical smoke/development-baseline acceptance, mostly using Developer Jump. It is enough to advance production. It is not documented as a comprehensive linear E2E replay of every route.
 
 ---
 
-# 36A. MAINTENANCE EXECUTION MATRIX — EXACT CURRENT WORK
+# 36A. MAINTENANCE EXECUTION MATRIX — CURRENT STATE
 
 ## FAMILY A — CHAPTER IV PHASE VIII STACKING — CLOSED
 
-Status:
-
 `RESOLVED · OWNER PHYSICAL ANDROID PASS`
 
-Historical symptom, repair implementation and regression criteria are preserved in Section 18 and the bundled pre-fix screenshot. This family is **not actionable** unless a new regression is reported.
+Regression history only. Reopen only on a newly reproduced defect.
 
-Do not spend a new-room turn “repairing” or redesigning it again.
+## FAMILY B — CHAPTER V PHASE I NORTH PORTRAITS — CLOSED
 
-## FAMILY B — CHAPTER V PHASE I NORTH PORTRAITS — OPEN
+`RESOLVED · OWNER ACCEPTED FOR CONTINUATION`
 
-### Scope
-Exactly two lower dialogue-panel portraits.
+Accepted assets/module are documented in Section 26. Reopen only on a newly reproduced regression.
 
-#### Shot 1
-- Speaker: `NORTH`
-- Emotion: `concerned`
-- Line: `How bad was he?`
-- Canonical current registry source: `assets/images/5a51446056fdcb0a.jpg`
-- Owner target screenshot: `REFERENCE_CH5P1_NORTH_HOW_BAD_WAS_HE.jpg`
+## FAMILY C — CHAPTER V PHASE I NEXT-MORNING CUE — CLOSED
 
-#### Shot 2
-- Speaker: `NORTH`
-- Emotion: `relieved`
-- Line: `Good. Then we keep it that way.`
-- Canonical current registry source: `assets/images/9a859e7e805b89ee.jpg`
-- Owner target screenshot: `REFERENCE_CH5P1_NORTH_GOOD_KEEP_IT_THAT_WAY.jpg`
+`RESOLVED · OWNER ACCEPTED`
 
-### Required visual result
+Accepted module/style/linkage are documented in Section 21. Reopen only on a newly reproduced regression or explicit design change.
 
-For both shots:
+## Current maintenance queue
 
-- complete head visible
-- no left clipping
-- no top clipping
-- tasteful shoulders / upper torso visible
-- attractive fill in established portrait well
-- North identity preserved
-- correct emotion preserved
-- no stretching
-- no source/white edge
-- no face-only zoom
-- no excessive empty space
+No known blocking maintenance item is open.
 
-### Current source routing
-
-CH5P1 r10 uses normal portrait-registry routing. Rejected r9 custom `north-*-full.png` files are not approved defaults.
-
-Before editing:
-
-1. inspect current Production HEAD
-2. inspect `js/engine/01-runtime-data.js` North `concerned`/`relieved` registry entries
-3. inspect `js/chapters/chapter-05/01-return-to-bangkok.js` r10 render routing
-4. inspect the two bundled owner screenshots
-5. inspect current CH5P1 CSS portrait fitting
-6. determine whether source framing, crop/fitting or both cause the issue
-7. choose the smallest repair that affects exactly these two expression routes/assets
-
-### Absolute frozen-area firewall
-
-Do not alter:
-
-- Somchai
-- Benedict portrait framing
-- any other North emotion
-- dialogue shell/geometry
-- `TAP TO CONTINUE`
-- scene notes
-- `NORTH · OFF RECORD`
-- HUD
-- Progress
-- scene brightness
-- condo timing
-- audio
-- landing clip
-- walk clip
-- Custody Window
-- Save/Load
-- Developer tools
-- North QA
-- walkthrough behavior
-- dialogue/story text
-
-If an extra dependency truly must change, identify that dependency explicitly before changing it and keep it minimal. Convenience is not a dependency.
-
-### Pass gate
-
-Local/static/browser as available:
-
-- verify both target portraits at Production mobile geometry
-- full head + upper torso visible
-- no target-specific selector leaks to other North emotions
-- exact changed-file allowlist
-- syntax check where applicable
-- source/version/cache/loader linkage correct for every changed shipped file
-- base Runtime remains unchanged unless the repair genuinely requires a base release and the full atomic Runtime matrix is completed
-
-Owner Android:
-
-- P'Benz visually accepts both shots
-- adjacent CH5P1 dialogue shows no collateral regression
-
-## Queue completion
-
-Do not close CH5P1 from local confidence alone.
-
-Queue closes only after P'Benz physical Android acceptance of both portrait shots.
-
-Then:
-
-`CH5P1 = OWNER-ACCEPTABLE · FREEZE`
-
-Next story work:
-
-`CHAPTER V · PHASE II · NAME IN ROOM 1807`
+Non-blocking polish/issues discovered later may be triaged separately; they do not automatically reopen the entire accepted phase.
 
 ---
 
 # 37. IMMEDIATE NEXT-ROOM PRIORITY
 
-The new room begins with the two CH5P1 portrait repairs, not Chapter IV and not story expansion.
+The next room starts with **Chapter V Phase II story production**, not old CH4/CH5P1 maintenance.
 
-Order:
+Default order:
 
 1. read this Master Plan and Migration Prompt completely
 2. inspect current Production HEAD
-3. confirm current runtime-code baseline / newer commit impact
-4. inspect canonical North `concerned` source + target screenshot
-5. inspect canonical North `relieved` source + target screenshot
-6. inspect only the relevant CH5P1 portrait fit/routing
-7. repair exactly those two shots
-8. do not touch frozen CH5P1 behavior
-9. test honestly
-10. run the Build-Linkage Gate
-11. package exact intended files only
-12. provide Commit Name ≤50 characters automatically
-13. P'Benz performs physical Android acceptance
-14. after both pass, freeze CH5P1
-15. begin `CHAPTER V · PHASE II · NAME IN ROOM 1807`
+3. determine whether any newer commit is runtime-changing or docs-only
+4. confirm current base Runtime/build linkage
+5. preserve CH1→CH5P1 accepted baseline
+6. study the closest accepted Phase IV/V/VII and CH5P1 UI shells needed for Phase II
+7. implement `CHAPTER V · PHASE II · NAME IN ROOM 1807` according to Sections 20, 27, 30A and the spoiler/Hidden Case rules
+8. reveal Room 1807 victim as **Kawin Nopparat**
+9. sharply raise Narin suspicion while keeping Kittisak/Adrian/Arman/Ika viable and Elena low-signal
+10. do not invent an Elena clue to make the phase “more mysterious”
+11. preserve Save/Load, audio lifecycle, Dev/North separation and dialogue geometry
+12. run honest QA and the Build-Linkage Gate
+13. package exact intended files only
+14. provide Commit Name ≤50 characters automatically
+15. P'Benz performs final device acceptance for the new phase/release
 
-CH4P8 stacking is already resolved and must not be placed back into the open queue unless P'Benz reports a new regression.
+### CH5P2 release-number rule
 
-Do not start Chapter V Phase II before owner acceptance of the two portraits unless P'Benz explicitly changes priority.
+Do not predeclare a new base Runtime merely because Phase II is new content. At implementation/package time classify the release honestly:
 
----
+- if the work is a genuine new playable base release, assign the new base Runtime then and synchronize the full atomic Runtime matrix
+- if architecture justifies a module-only extension under `0.22.8`, document/version/cache it explicitly
+- never partially bump or fake-sync labels
+
+No Chapter IV Phase IX.
 
 # 37A. PROJECT-FILE DELIVERY GATE — MUST PASS BEFORE REPLY
 
@@ -2608,58 +2670,69 @@ Canonical final idea:
 
 # 40. FINAL NON-NEGOTIABLE SUMMARY
 
-- Owner physical Android evidence is highest authority.
+- Owner physical-device observation / explicit owner instruction is the highest authority.
 - Repository: `grolygori789-crypto/last-witness`.
 - Production/default branch: `production-rebuild`.
-- Latest inspected runtime-code HEAD at this handoff: `7e2e8cd8c79960787cbb812fc4e630537ddd3f4e` — `Sync Chapter V loader cache key`.
-- A later docs-only handoff commit does not automatically replace `7e2e8cd8c79960787cbb812fc4e630537ddd3f4e` as runtime-code baseline.
-- Current authoritative base Runtime is `0.22.8`.
-- Bootstrap maintenance generation is `0.22.8-r2` / cache `0228r2`.
-- CH4P8 scoped stacking maintenance is `0.22.8-z1` / cache `0228z1`.
-- Current CH5P1 is `0.22.8-c5p1r10`.
-- Current CH5 loader is `0.22.8-c5b7`; `index.html` loader cache key is `0228c5b7` and the landed linkage was owner-smoke-tested on Android.
+- Latest verified runtime-code baseline at this revision: `f31b665aed6426a45fb44fb4e07d7a9a38d68424` — `Add CH5P1 next morning time cue`.
+- A later docs-only handoff commit does not automatically replace that runtime-code baseline.
+- Current authoritative base Runtime remains `0.22.8`.
+- Bootstrap maintenance generation remains `0.22.8-r2` / `0228r2`.
+- CH4P8 scoped stacking maintenance remains `0.22.8-z1` / `0228z1`.
+- CH5P1 core remains `0.22.8-c5p1r10`.
+- Accepted North portrait fix is `0.22.8-c5n1` / `0228c5n1`.
+- Accepted Police next-morning cue is `0.22.8-c5t1` / `0228c5t1`.
+- Current Chapter V loader is `0.22.8-c5b9`; `index.html` loader cache is `0228c5b9`.
+- Runtime Build Label / Settings remain `0.22.8`; this is intentional, not a forgotten bump.
 - Chapter IV has exactly 8 phases. No Phase IX.
-- Chapter IV is complete, owner Android accepted and maintenance-frozen unless a new reproducible regression appears.
-- CH4P8 `#ch4P8RemovalCard` stacking defect is **RESOLVED / OWNER ANDROID PASS**.
+- Chapter IV is complete, accepted and maintenance-frozen unless a new reproducible regression appears.
+- CH4P8 `#ch4P8RemovalCard` stacking defect is resolved / owner Android PASS.
 - P8 Matrix Exit remains accepted.
 - P7/P8 background audio maintenance remains accepted.
-- Chapter V Phase I is preliminarily acceptable except exactly two North portraits.
-- Open shot 1: North `concerned` — `How bad was he?`.
-- Open shot 2: North `relieved` — `Good. Then we keep it that way.`.
-- Canonical current registry sources are `assets/images/5a51446056fdcb0a.jpg` and `assets/images/9a859e7e805b89ee.jpg` respectively.
-- Rejected r9 `north-concerned-full.png` / `north-relieved-full.png` must not be resurrected by filename convenience.
-- Repair only those two portrait shots; no collateral CH5P1 edits.
-- Corrected `bangkok-landing.mp4` is approved and frozen.
-- Somchai brightness `.88` is approved and frozen unless owner explicitly changes it.
-- After both North portraits pass owner Android, freeze CH5P1 and begin `CHAPTER V · PHASE II · NAME IN ROOM 1807`.
-- Interface/UI shells are implementation contracts.
-- Dialogue geometry is frozen unless owner explicitly requests change or a reproduced blocker truly requires the smallest necessary change.
-- Save/Load and Hidden Case scoring must remain deterministic/idempotent.
+- Chapter V Phase I is owner-accepted for continuation and maintenance-frozen.
+- Owner acceptance through CH5P1 was practical/rough and mostly Dev-Jump based; do not mislabel it as proof of a full linear E2E replay of every route.
+- Current known release-blocking defects: none.
+- Minor non-blocking issues may be repaired later only when reproduced or owner-requested.
+- Accepted North `concerned` asset: `assets/images/76e0d6b4a8c0dd91.jpg`.
+- Accepted North `relieved` asset: `assets/images/4f6ec1f83a9b7d20.jpg`.
+- Rejected r9 `north-concerned-full.png` / `north-relieved-full.png` remain rejected.
+- Corrected `bangkok-landing.mp4` remains approved and frozen.
+- Somchai brightness `.88` remains approved and frozen unless owner explicitly changes it.
+- Accepted overnight time transition is `DAY 6 · 21:50 ICT` arrival → ~3.2s `NEXT MORNING` cue → `DAY 7 · 08:45 ICT` Police Station.
+- Immediate story target is `CHAPTER V · PHASE II · NAME IN ROOM 1807`.
+- Phase II must reveal Room 1807 victim as **Kawin Nopparat** and sharply strengthen Narin without converting the reveal into Elena evidence.
+- Chapter V has exactly 8 phases and uses INFLUENCE.
+- Chapter VI is `THE FINAL MOVE`, exactly 9 phases, adaptive mode DIVERGE.
+- Chapter VII is `LAST WITNESS`, exactly 8 phases, adaptive mode RESOLVE.
+- Interface/UI shells are implementation contracts: study proven shell → preserve shell → change only content/internal payload.
+- Dialogue geometry is frozen unless owner explicitly requests change or a reproduced blocker truly requires the smallest necessary repair.
+- Save/Load and Hidden Case scoring remain deterministic/idempotent.
 - Background/foreground audio lifecycle is zero-tolerance.
 - Owner Developer and North QA are separate mandatory endpoints.
 - North QA remains blind to Hidden Case/Elena gates/Owner tools/solutions.
 - Hidden Case is deterministic, auditable, idempotent and player-invisible.
 - Player never chooses the killer from a final list.
 - Five false-conviction principals: Kittisak, Narin, Adrian, Arman, Ika.
-- Somchai remains strong cleaner/accomplice/conditional support.
+- Somchai remains strong cleaner/accomplice/conditional support, not a mandatory standalone false-conviction principal.
 - Rin is `R.` / Last Witness and is revealed in Chapter V, not Chapter IV.
 - Elena is historical murderer/mastermind in every route.
 - Elena remains low-signal through Chapter V and below principal false theories in Chapter VI.
-- Elena becomes fully serious only in late Chapter VII cross-class synthesis.
+- Elena becomes fully serious only in late Chapter VII `FINAL RECONSTRUCTION` through multi-class synthesis.
 - Alternate endings change what is provable/sustainable, never historical truth.
+- Ending families: TRUE CONVICTION / RIGHT NAME, NO CASE / FALSE CONVICTION / THE PERFECT RECORD.
 - Adaptive model: `P8 CALCULATE → Ch V INFLUENCE → Ch VI DIVERGE → Ch VII RESOLVE`.
 - No single clue and no single ordinary choice decides the ending.
 - Build linkage is atomic. **Any affected mismatch is a RELEASE BLOCKER.**
 - A base Runtime change requires complete synchronization across every applicable Runtime-facing endpoint in Section 4 before package/release.
+- Do not pre-bump CH5P2 blindly; classify the release when actual implementation scope is known.
 - Independent unchanged modules are not fake-bumped; compatibility/linkage must nevertheless be correct.
 - Every changed shipped cache-addressed file receives a fresh cache identity.
 - Dev and North linkage are verified separately every affected release.
 - Packaged bytes must equal validated source bytes.
-- Checksum must be generated from the final package bytes.
+- Checksum must be generated from final package bytes.
 - GitHub writes require explicit owner authorization in the current turn.
-- Every project file delivery must automatically include a scope-accurate Commit Name ≤50 characters in a copyable code block.
+- Every project file delivery automatically includes a scope-accurate Commit Name ≤50 characters in a copyable code block.
 - Missing Commit Name = incomplete handoff.
 - New rooms must not ask P'Benz to repeat locked decisions recoverable from this package/current Production.
+- When future phase detail is not yet locked, preserve the design-open status instead of inventing false canon.
 
-This is the canonical final zero-question continuation contract as of `2026-08-17 12:57 ICT`.
-
+This is the canonical zero-question continuation contract as of `2026-08-17 16:44 ICT`.
