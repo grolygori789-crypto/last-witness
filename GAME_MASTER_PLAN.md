@@ -2,18 +2,20 @@
 
 > **CANONICAL MASTER REFERENCE / FINAL ZERO-QUESTION ROOM HANDOFF**
 >
-> **Revision:** 2026-08-17 11:52 ICT  
+> **Revision:** 2026-08-17 12:57 ICT  
 > **Game:** LAST WITNESS  
 > **Studio:** BENEDICT INTERACTIVE  
 > **Repository:** `grolygori789-crypto/last-witness`  
 > **Production/default branch:** `production-rebuild`  
-> **Latest inspected Production HEAD:** `76bbcceff1ad28eb81b921a5d0053da1283f2a2e`  
-> **HEAD message:** `Fix CH4P8 removal card stacking`  
+> **Latest inspected Production HEAD / runtime-code baseline:** `7e2e8cd8c79960787cbb812fc4e630537ddd3f4e`  
+> **HEAD message:** `Sync Chapter V loader cache key`  
 > **Authoritative base Runtime:** `0.22.8`  
 > **Runtime/bootstrap maintenance generation:** `0.22.8-r2` / cache `0228r2`  
 > **Resolved CH4P8 stacking maintenance:** `0.22.8-z1` / cache `0228z1`  
 > **Current Chapter V Phase I module:** `0.22.8-c5p1r10`  
 > **Current Chapter V loader:** `0.22.8-c5b7`  
+> **Current Chapter V loader cache in `index.html`:** `0228c5b7`  
+> **Loader cache-linkage status:** `OWNER ANDROID SMOKE PASS`  
 > **Current accepted playable boundary:** `CHAPTER V · PHASE I · PRELIMINARILY ACCEPTABLE WITH EXACTLY TWO NORTH PORTRAIT DEFECTS`  
 > **Chapter IV status:** `COMPLETE · OWNER ANDROID ACCEPTED · NO CURRENTLY KNOWN OPEN DEFECT`  
 > **Only current open maintenance scope:** `CH5P1 NORTH concerned + relieved portrait shots`  
@@ -31,11 +33,11 @@
 > **Chapter IV P7/P8 Audio Lifecycle:** `0.22.7-a1`  
 > **Adaptive model:** `P8 CALCULATE → Ch V INFLUENCE → Ch VI DIVERGE → Ch VII RESOLVE`
 
-This revision is the final zero-question handoff snapshot for the current room move. It preserves all established story canon, Hidden Case architecture, ending architecture, Interface/UI contract, Developer/North QA separation, Save/Load rules, audio lifecycle, dialogue/subtitle standards, release discipline, build-linkage rules and Chapters IV–VII long-game plan while updating the current Production truth after the owner-accepted CH4P8 stacking repair.
+This revision is the final zero-question handoff snapshot for the current room move. It preserves all established story canon, Hidden Case architecture, ending architecture, Interface/UI contract, Developer/North QA separation, Save/Load rules, audio lifecycle, dialogue/subtitle standards, release discipline, build-linkage rules and Chapters IV–VII long-game plan while updating the current Production truth after both the owner-accepted CH4P8 stacking repair and the owner-tested Chapter V loader cache-linkage correction.
 
 The current Production base Runtime is still `0.22.8`. The CH4P8 repair is **scoped maintenance under the same base Runtime**, not a base Runtime bump. Do not downgrade, rebuild from older snapshots, or fake-bump unrelated stable modules merely to make version strings look uniform.
 
-Most important current status change: the Chapter IV Phase VIII `NORTH · REMOVED` Game Menu / Settings stacking defect is **RESOLVED and physically accepted by P'Benz on Android** after commit `76bbcceff1ad28eb81b921a5d0053da1283f2a2e`. It is now regression history only. The only known open maintenance work is the two named North portrait shots in Chapter V Phase I.
+Current final handoff status: the Chapter IV Phase VIII `NORTH · REMOVED` Game Menu / Settings stacking defect is **RESOLVED and physically accepted by P'Benz on Android** after commit `76bbcceff1ad28eb81b921a5d0053da1283f2a2e`. The later linkage-only commit `7e2e8cd8c79960787cbb812fc4e630537ddd3f4e` (`Sync Chapter V loader cache key`) changed exactly the Chapter V loader cache URL in `index.html` from `0228c5b5` to `0228c5b7`; P'Benz then smoke-tested the game on Android and reported it working normally. Base Runtime remains `0.22.8`. The only known open maintenance work is the two named North portrait shots in Chapter V Phase I.
 
 # 0. SOURCE OF TRUTH / OWNER OVERRIDE
 
@@ -178,15 +180,15 @@ Before replying to the first LAST WITNESS task in a new room, the assistant must
    - repository: `grolygori789-crypto/last-witness`
    - branch: `production-rebuild`
 4. Compare current Production HEAD with the handoff runtime-code baseline:
-   - baseline HEAD: `76bbcceff1ad28eb81b921a5d0053da1283f2a2e`
-   - baseline message: `Fix CH4P8 removal card stacking`
-5. P'Benz may upload this final documentation after `76bbcceff1ad28eb81b921a5d0053da1283f2a2e`. Therefore, if repository HEAD is newer:
+   - baseline HEAD: `7e2e8cd8c79960787cbb812fc4e630537ddd3f4e`
+   - baseline message: `Sync Chapter V loader cache key`
+5. P'Benz may upload this final documentation after `7e2e8cd8c79960787cbb812fc4e630537ddd3f4e`. Therefore, if repository HEAD is newer:
    - inspect the diff/history first,
-   - if newer commits are documentation/handoff-only, keep `76bbcceff1ad28eb81b921a5d0053da1283f2a2e` as the latest verified runtime-code baseline,
+   - if newer commits are documentation/handoff-only, keep `7e2e8cd8c79960787cbb812fc4e630537ddd3f4e` as the latest verified runtime-code baseline,
    - if runtime/code/assets legitimately advanced, use current Production as runtime truth,
    - preserve all locked product/story rules that were not explicitly superseded,
    - never ask P'Benz to explain changes that GitHub can resolve.
-6. Confirm current base Runtime and linkage before implementation. At this handoff the base is `0.22.8`.
+6. Confirm current base Runtime and linkage before implementation. At this handoff the base is `0.22.8`, Chapter V loader is `0.22.8-c5b7`, and `index.html` must address it with cache key `0228c5b7`. The previous `0228c5b5` URL is historical and must not be restored.
 7. Identify the smallest current task. At this handoff the only known open maintenance items are:
    - North `concerned` portrait at `How bad was he?`
    - North `relieved` portrait at `Good. Then we keep it that way.`
@@ -393,11 +395,11 @@ Base Runtime:
 
 Latest inspected Production HEAD / latest verified runtime-code baseline at this handoff:
 
-`76bbcceff1ad28eb81b921a5d0053da1283f2a2e`
+`7e2e8cd8c79960787cbb812fc4e630537ddd3f4e`
 
 Commit:
 
-`Fix CH4P8 removal card stacking`
+`Sync Chapter V loader cache key`
 
 Current verified build/module snapshot:
 
@@ -412,6 +414,7 @@ Current verified build/module snapshot:
 - Save Manager: `0.7.10-s2`, save-facing base Runtime identity follows `0.22.8`
 - Chapter V Phase I: `0.22.8-c5p1r10`
 - Chapter V loader: `0.22.8-c5b7`
+- `index.html` Chapter V loader cache: `0228c5b7`
 - Chapter V Owner Walkthrough extension: `0.22.8-c5w3`
 - Owner Walkthrough base: `0.22.3-w1`
 - Phase VIII core: `0.22.2`
@@ -419,7 +422,7 @@ Current verified build/module snapshot:
 - P7/P8 Audio Lifecycle: `0.22.7-a1`
 - Hidden Case engine: `0.21.0`
 
-The current CH4P8 repair did **not** bump the base Runtime. It is explicitly scoped maintenance. Independent modules do not receive fake bumps merely to imitate the base Runtime.
+The current base Runtime remains `0.22.8`. CH4P8 repair `76bbcceff1ad28eb81b921a5d0053da1283f2a2e` was scoped maintenance. The later `7e2e8cd8c79960787cbb812fc4e630537ddd3f4e` linkage correction changed only the Chapter V loader cache URL in `index.html` to match loader `0.22.8-c5b7`; it did **not** change gameplay logic or bump the base Runtime. P'Benz physically smoke-tested the landed build on Android and reported normal operation. Independent modules do not receive fake bumps merely to imitate the base Runtime.
 
 ## Release identity taxonomy — never conflate identities
 
@@ -434,7 +437,7 @@ There are three different version identities:
 3. **Scoped maintenance/module generation**  
    An isolated repair under the same base Runtime may carry its own suffix/cache generation when explicitly classified, uniquely versioned, linked and documented. Current example: CH4P8 stacking `0.22.8-z1` / `0228z1`; bootstrap maintenance generation `0.22.8-r2` / `0228r2`.
 
-**Runtime synchronization does not mean fake-bumping every unchanged independent module to the same number.** It means every player/owner/QA/save-facing base identity agrees on the authoritative base Runtime and every changed module has correct compatible source/version/cache/loader linkage.
+**Runtime synchronization does not mean fake-bumping every unchanged independent module to the same number.** It means every player/owner/QA/save-facing base identity agrees on the authoritative base Runtime and every changed module has correct compatible source/version/cache/loader linkage. The current Chapter V loader is the concrete example: source `0.22.8-c5b7` and its `index.html` cache URL `0228c5b7` must agree; the old `0228c5b5` URL is stale historical linkage.
 
 If classification is unclear, stop before packaging and resolve whether the work is a base Runtime release, independent module update or scoped maintenance.
 
@@ -516,6 +519,7 @@ At this handoff, these must resolve coherently to base Runtime `0.22.8`:
 - Developer Navigation: compatible `0.22.8-d1`
 - CH5P1: compatible `0.22.8-c5p1r10`
 - CH5 loader: compatible `0.22.8-c5b7`
+- `index.html` CH5 loader cache: `0228c5b7`
 - CH5 Owner Walkthrough extension: compatible `0.22.8-c5w3`
 
 The authoritative Runtime Build Label implementation also synchronizes `window.LastWitnessRuntimeBuild`, the document dataset, Settings, North QA, Owner Developer and Save-facing identity. That does **not** remove the obligation to keep their authoritative source/cache/expected linkage correct.
@@ -608,7 +612,15 @@ Important recent chronology:
 
 - `76bbcceff1ad28eb81b921a5d0053da1283f2a2e`  
   `Fix CH4P8 removal card stacking`  
-  Current runtime-code baseline at this handoff. Added the scoped `0.22.8-z1` CH4P8 stacking stylesheet and bootstrap/cache linkage under base Runtime `0.22.8`. P'Benz subsequently physically tested the previously reproduced CH4P8 Game Menu / Settings defect on Android and confirmed it fully resolved.
+  Added the scoped `0.22.8-z1` CH4P8 stacking stylesheet and bootstrap/cache linkage under base Runtime `0.22.8`. P'Benz physically tested the previously reproduced CH4P8 Game Menu / Settings defect on Android and confirmed it fully resolved.
+
+- `1b31a903c81c05e36fcdf7ba319c3a16f72779a1`  
+  `Finalize LAST WITNESS handoff`  
+  Documentation-only final-handoff expansion. It did not change Runtime or gameplay source.
+
+- `7e2e8cd8c79960787cbb812fc4e630537ddd3f4e`  
+  `Sync Chapter V loader cache key`  
+  **Current runtime-code baseline at this handoff.** One-line linkage correction in `index.html`: Chapter V loader URL cache key `0228c5b5` → `0228c5b7`, matching loader source `0.22.8-c5b7`. No gameplay/module source changed. P'Benz then physically smoke-tested the landed game on Android and reported normal operation. Base Runtime remains `0.22.8`.
 
 ## Permanent lesson from CH5P1 r9
 
@@ -2237,17 +2249,17 @@ Physical Android Chrome remains final acceptance.
 
 Latest inspected Production HEAD and latest verified runtime-code baseline at this final handoff:
 
-`76bbcceff1ad28eb81b921a5d0053da1283f2a2e`
+`7e2e8cd8c79960787cbb812fc4e630537ddd3f4e`
 
 Message:
 
-`Fix CH4P8 removal card stacking`
+`Sync Chapter V loader cache key`
 
 Base Runtime:
 
 `0.22.8`
 
-This commit is scoped maintenance under Runtime `0.22.8`; it does not constitute a base Runtime bump.
+This commit is linkage-only maintenance under Runtime `0.22.8`; it does not constitute a base Runtime bump or gameplay-logic change. It synchronizes the `index.html` Chapter V loader cache URL with loader `0.22.8-c5b7`. P'Benz physically smoke-tested the landed build on Android and reported normal operation.
 
 Current Chapter V Phase I:
 
@@ -2264,6 +2276,8 @@ Current build snapshot:
 - bootstrap cache: `0228r2`
 - CH4P8 stack repair: `0.22.8-z1`
 - CH4P8 stack-fix cache: `0228z1`
+- Chapter V loader: `0.22.8-c5b7`
+- Chapter V loader cache in `index.html`: `0228c5b7`
 - Runtime Build Label: `0.22.8`
 - Developer Navigation: `0.22.8-d1`
 - North QA: `0.22.8`
@@ -2275,7 +2289,7 @@ Current build snapshot:
 - Matrix Exit: `0.22.7-m1`
 - P7/P8 Audio Lifecycle: `0.22.7-a1`
 
-If P'Benz uploads this final documentation afterward, repository HEAD will advance. A docs-only HEAD does not replace `76bbc...` as the runtime-code baseline. New rooms must inspect the newer commit before deciding.
+If P'Benz uploads this final documentation afterward, repository HEAD will advance. A docs-only HEAD does not replace `7e2e8cd8c79960787cbb812fc4e630537ddd3f4e` as the runtime-code baseline. New rooms must inspect the newer commit before deciding.
 
 ## Owner acceptance snapshot
 
@@ -2287,6 +2301,7 @@ Accepted / closed:
 - P8 Matrix Close / Resume
 - P7/P8 background audio lifecycle
 - corrected Chapter V opening clip
+- Chapter V loader cache linkage `0.22.8-c5b7` ↔ `0228c5b7`: **OWNER ANDROID SMOKE PASS**
 - CH5P1 current flow except two North portrait shots
 - Somchai brightness `.88`
 - rejected r9 North custom portrait experiment rolled back
@@ -2596,13 +2611,13 @@ Canonical final idea:
 - Owner physical Android evidence is highest authority.
 - Repository: `grolygori789-crypto/last-witness`.
 - Production/default branch: `production-rebuild`.
-- Latest inspected runtime-code HEAD at this handoff: `76bbcceff1ad28eb81b921a5d0053da1283f2a2e` — `Fix CH4P8 removal card stacking`.
-- A later docs-only handoff commit does not automatically replace `76bbcceff1ad28eb81b921a5d0053da1283f2a2e` as runtime-code baseline.
+- Latest inspected runtime-code HEAD at this handoff: `7e2e8cd8c79960787cbb812fc4e630537ddd3f4e` — `Sync Chapter V loader cache key`.
+- A later docs-only handoff commit does not automatically replace `7e2e8cd8c79960787cbb812fc4e630537ddd3f4e` as runtime-code baseline.
 - Current authoritative base Runtime is `0.22.8`.
 - Bootstrap maintenance generation is `0.22.8-r2` / cache `0228r2`.
 - CH4P8 scoped stacking maintenance is `0.22.8-z1` / cache `0228z1`.
 - Current CH5P1 is `0.22.8-c5p1r10`.
-- Current CH5 loader is `0.22.8-c5b7`.
+- Current CH5 loader is `0.22.8-c5b7`; `index.html` loader cache key is `0228c5b7` and the landed linkage was owner-smoke-tested on Android.
 - Chapter IV has exactly 8 phases. No Phase IX.
 - Chapter IV is complete, owner Android accepted and maintenance-frozen unless a new reproducible regression appears.
 - CH4P8 `#ch4P8RemovalCard` stacking defect is **RESOLVED / OWNER ANDROID PASS**.
@@ -2646,5 +2661,5 @@ Canonical final idea:
 - Missing Commit Name = incomplete handoff.
 - New rooms must not ask P'Benz to repeat locked decisions recoverable from this package/current Production.
 
-This is the canonical final zero-question continuation contract as of `2026-08-17 11:52 ICT`.
+This is the canonical final zero-question continuation contract as of `2026-08-17 12:57 ICT`.
 
