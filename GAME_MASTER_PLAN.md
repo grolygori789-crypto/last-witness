@@ -2,19 +2,21 @@
 
 > **CANONICAL MASTER REFERENCE / ZERO-QUESTION ROOM HANDOFF**
 >
-> **Revision:** 2026-08-17 10:51 ICT  
+> **Revision:** 2026-08-17 11:09 ICT  
 > **Game:** LAST WITNESS  
 > **Studio:** BENEDICT INTERACTIVE  
 > **Repository:** `grolygori789-crypto/last-witness`  
 > **Production/default branch:** `production-rebuild`  
-> **Latest inspected Production HEAD:** `1e4afcf94a55c87d684eb3dac3aa1442040c1601`  
-> **HEAD message:** `Fix CH5P1 rollback and landing`  
+> **Latest inspected repository HEAD before this preservation correction:** `e9792c7b43d81a0b1d4631e0e59f62498c7870af`  
+> **Repository HEAD message:** `Perfect zero-question room handoff`  
+> **Latest verified runtime-code baseline:** `1e4afcf94a55c87d684eb3dac3aa1442040c1601`  
+> **Runtime-code message:** `Fix CH5P1 rollback and landing`  
 > **Authoritative base Runtime:** `0.22.8`  
 > **Current Chapter V Phase I module:** `0.22.8-c5p1r10`  
 > **Current Chapter V loader:** `0.22.8-c5b7`  
 > **Current accepted playable boundary:** `CHAPTER V · PHASE I · PRELIMINARILY ACCEPTABLE WITH TWO NORTH PORTRAIT DEFECTS`  
 > **Open maintenance defect:** `CHAPTER IV · PHASE VIII · NORTH REMOVED CARD STACKS ABOVE GAME MENU / SETTINGS`  
-> **Immediate production priority:** repair the two isolated defects above, obtain owner Android acceptance, then begin `CHAPTER V · PHASE II · NAME IN ROOM 1807`  
+> **Immediate production priority:** repair both open defect families (1 CH4P8 stacking defect + 2 CH5P1 North portrait shots), obtain owner Android acceptance, then begin `CHAPTER V · PHASE II · NAME IN ROOM 1807`  
 > **Chapter IV:** exactly 8 phases; no Phase IX without explicit owner approval  
 > **Hidden Case engine:** `0.21.0`  
 > **Phase VIII core:** `0.22.2`  
@@ -92,6 +94,26 @@ Rules:
 10. A missing or over-length Commit Name is a **handoff defect** and must be corrected before the delivery is considered complete.
 
 This rule is part of the project delivery contract, not a stylistic preference.
+
+## Canon-detail preservation rule — NEVER SILENTLY DROP LOCKED DETAIL
+
+This 2026-08-17 revision updates the current Production/handoff state. It does **not** revoke detailed canon merely because an earlier paragraph was condensed during documentation editing.
+
+The complete 2026-08-16 Master Plan at repository parent/runtime baseline `1e4afcf94a55c87d684eb3dac3aa1442040c1601` remains an incorporated historical-detail reference for any locked detail that:
+
+1. does not conflict with this revision,
+2. has not been explicitly superseded by P'Benz,
+3. remains compatible with current Production.
+
+A new room must never interpret an omitted explanatory paragraph as permission to invent a different canon.
+
+When a detail needed for implementation is not repeated verbatim here:
+- first inspect the current Production source,
+- then inspect the prior Master Plan at `1e4afcf...`,
+- apply this revision's newer status/defect/freeze rules over the older detail,
+- do not ask P'Benz to restate a decision that can be recovered from those sources.
+
+The following high-value historical details are additionally restated in this revision so the new room normally will not need to consult the parent document.
 
 ## No owner repetition
 
@@ -188,6 +210,30 @@ Before replying to the first LAST WITNESS task in a new room, the assistant must
    - audio-lifecycle rules
    - file-delivery/Commit-Name rule
    - current immediate next objective
+
+## Handoff artifact contract
+
+For the actual room move, P'Benz should attach the complete:
+
+`LAST_WITNESS_ROOM_HANDOFF_2026-08-17.zip`
+
+The ZIP is the preferred zero-question entry package because GitHub currently contains the canonical Master Plan but not the paired migration prompt or the owner reference screenshots as repository files.
+
+The ZIP must contain at minimum:
+
+- `GAME_MASTER_PLAN.md`
+- `LAST_WITNESS_ROOM_MIGRATION_PROMPT.md`
+- `README_HANDOFF.md`
+- `HANDOFF_VALIDATION.json`
+- `REFERENCE_CH4P8_REMOVAL_CARD_SETTINGS.jpg`
+- `REFERENCE_CH5P1_NORTH_HOW_BAD_WAS_HE.jpg`
+- `REFERENCE_CH5P1_NORTH_GOOD_KEEP_IT_THAT_WAY.jpg`
+- `REFERENCE_NORTH_EXPRESSION_SHEET.png`
+- `SHA256SUMS.txt`
+
+When the ZIP is attached, the new room must use those visual references directly and must not ask P'Benz to recapture the same defect screenshots or re-send the North expression sheet.
+
+GitHub remains authoritative for current Production source. The attached visual files are owner evidence/reference material.
 
 ### First response behavior in a new room
 
@@ -401,6 +447,83 @@ Never hide a mismatch through cosmetic relabeling, polling, MutationObservers or
 
 After P'Benz uploads a package, re-read current Production HEAD and landed authoritative files before treating the release as canonical.
 
+
+## Release identity taxonomy — no ambiguous versioning
+
+Never conflate these three identities:
+
+1. **Base Runtime build**  
+   Player/owner/QA-facing release identity. Current base: `0.22.8`.
+
+2. **Independent module version**  
+   Stable subsystems may retain older versions when source is unchanged. Current examples:
+   - Hidden Case `0.21.0`
+   - Phase VIII core `0.22.2`
+   - Owner Walkthrough base `0.22.3-w1`
+   - Matrix Exit `0.22.7-m1`
+   - P7/P8 Audio Lifecycle `0.22.7-a1`
+
+3. **Scoped maintenance/module suffix**  
+   An isolated module may carry a scoped suffix/cache generation under the same base Runtime when explicitly classified and documented.
+
+Do not fake-bump unchanged independent modules merely to make numbers look uniform.
+
+If there is uncertainty whether a change is:
+- a base Runtime release,
+- an independent module update,
+- or scoped maintenance,
+
+resolve that identity **before packaging**.
+
+### Current `0.22.8` mandatory base endpoints
+
+Current Production must remain coherent across:
+
+- Runtime Build Label `0.22.8`
+- Settings-visible build `0.22.8`
+- `window.LastWitnessRuntimeBuild`
+- `document.documentElement.dataset.runtimeBuild`
+- Owner Developer visible base `0.22.8`
+- Developer Navigation `0.22.8-d1`
+- North QA `0.22.8`
+- Save-facing Runtime identity `0.22.8`
+- CH5P1 `0.22.8-c5p1r10`
+- CH5 loader `0.22.8-c5b7`
+- CH5 Owner Walkthrough extension `0.22.8-c5w3`
+
+### Release stop conditions
+
+Stop and do not package/publish if any applicable condition is true:
+
+- Settings and Runtime disagree
+- Owner Dev and Runtime disagree
+- North QA and Runtime disagree
+- Save-facing build is stale
+- changed module source version and loader expected version disagree
+- a changed cache-addressed file still uses its previous cache key
+- changed module version/cache generation is ambiguous
+- upload artifact contains unintended paths
+- QA/release/package/manifest/checksum identify conflicting release identities
+- a scoped maintenance module is not explicitly versioned/documented
+- current authoritative version cannot be determined confidently
+
+Correct response:
+
+`FIX → RE-RUN LINKAGE GATE → PACKAGE AGAIN`
+
+Never hide mismatch with cosmetic relabeling, observer patches or delayed text rewriting.
+
+### Post-package verification
+
+For release/upload artifacts:
+
+1. enumerate ZIP paths against intended allowlist
+2. verify packaged bytes match validated source
+3. search affected build-facing files for stale generation/version strings
+4. confirm no unintended QA/source/support paths entered an upload-only package
+5. compute checksum from final archive bytes
+6. after P'Benz uploads, re-read landed Production before calling it canonical
+
 ---
 
 # 5. CURRENT RELEASE / INCIDENT HISTORY
@@ -446,6 +569,29 @@ When the owner freezes already-working CH5P1 behavior, do not touch:
 - story flow
 
 unless the owner explicitly identifies a new defect in that area.
+
+---
+
+## Historical regression memory — DO NOT REPEAT
+
+These are engineering lessons, not merely old release trivia:
+
+- initial Phase VIII package once omitted an approved opening MP4: a release is incomplete when an approved binary is missing
+- Phase VIII black-screen regressions proved that active DOM does not guarantee visible geometry
+- custom phase screen geometry overriding global `.screen` caused collapsed/black output
+- a broad MutationObserver/class-repair approach caused startup/UI lock and must not return
+- a temporary Phase VIII repair loader was reverted after startup damage; do not resurrect it
+- mocked media/static harnesses were once described too strongly; mocked playback is never physical playback E2E
+- Runtime `0.22.4–0.22.5` dialogue/Progress presentation experiments were rejected on owner Android
+- Runtime `0.22.6` restored the pre-adjustment `0.22.3` presentation baseline
+- Matrix Exit `0.22.7-m1` solved a trap-state without mutating canonical Matrix progress
+- P7/P8 Audio Lifecycle `0.22.7-a1` fixed background/foreground media behavior and is owner Android accepted
+- CH5P1 r9 proved that collateral "polish" outside owner scope can invalidate an otherwise targeted fix
+- CH5P1 r10 is the rollback/current runtime-code baseline for the present handoff
+
+The general rule:
+
+> **Isolate the reproduced defect; repair the authoritative source; do not widen scope to make the patch look cleaner.**
 
 ---
 
@@ -635,6 +781,58 @@ Owner Walkthrough:
 - no puzzle auto-completion
 - no audio control
 - no leak to North QA
+
+
+## Owner Hidden Case Inspector — detailed safety contract
+
+Owner-only Hidden Case Inspector may present:
+
+- suspect portrait / approved fallback
+- suspect name
+- live score/status
+- visual score bar
+- synthetic `− / +` adjustment controls
+- editable synthetic values where implemented
+- global case dimensions
+- live leader
+- simulated leader
+- projected ending / eligibility diagnostics where already approved
+- reset-to-live-state control
+
+Synthetic adjustment rules are non-negotiable:
+
+- temporary only
+- no write to Hidden Case ledger
+- no write to Save data
+- no write to canonical case state
+- no autosave
+- no permanent route mutation
+- close/reset discards synthetic overrides
+- North QA never sees these controls or their values
+
+This exists to accelerate Owner alternate-ending/eligibility testing without contaminating the real investigation state.
+
+## Owner Walkthrough — detailed safety contract
+
+Owner Walkthrough may:
+
+- show current step
+- show restrained hint
+- reveal verified deterministic solution
+- label narrative/relationship choices `NO FAILURE PATH` when there is no objectively correct answer
+- browse Chapter/Phase manually
+- `SYNC TO GAME`
+- minimize to a compact guide while gameplay continues
+
+It must never:
+
+- write Save
+- mutate checkpoint/progress/evidence/choices
+- mutate Hidden Case
+- auto-complete gameplay
+- inject synthetic gameplay clicks
+- control game audio
+- leak to North QA
 
 ---
 
@@ -831,6 +1029,62 @@ Core mystery discipline:
 
 > **Elena does not create the red herring. She creates conditions in which the red herring creates itself.**
 
+
+## Locked false-principal dark truths / late contradictions
+
+These details remain canon and must guide Chapters V–VII writing.
+
+### Kittisak
+
+**Real dark truth:** off-book continuity/containment operation, emergency authority beyond normal oversight, protected sources/assets, compartmentalized records and Somchai sealed transfers.
+
+**Why he can look like mastermind:** authority, access, audit restriction, information control, intermediary capacity and plausible institutional motive.
+
+**Late contradiction:** cannot fully explain preselection of both victims/timing across the entire chain.
+
+### Narin
+
+**Real dark truth:** trusted Bangkok deployment, bypassed change control, illicit compensation/protected interest, altered/suppressed deployment records and real fear of disclosure.
+
+**Why he can look like mastermind:** trusted local access, proximity, deployment capability, motive, record manipulation and opportunity.
+
+**Late contradiction:** selection/chronology begins before he could know enough to choose both victims and timing.
+
+### Adrian
+
+**Real dark truth:** lawful architect who concealed undocumented continuity/emergency path plus liability/regulatory/private-contract exposure.
+
+**Why he can look like mastermind:** privileged architecture, hidden failover capability, internally valid record behavior and motive to protect liability.
+
+**Late contradiction:** cannot fully explain physical victim-selection chronology.
+
+### Arman
+
+**Real dark truth:** engineered blind brokerage but retained behavior/payment/urgency/region/return-channel fingerprints and a deeper ledger.
+
+**Why he can look like mastermind:** tool authorship, sophistication, network compartmentalization, identity shielding and obstruction.
+
+**Late contradiction:** technical concealment cannot explain the full physical victim-selection chronology.
+
+### Ika
+
+**Real dark truth:** incomplete licensed history, pre-Aster aliases, unlicensed contracts, travel gaps and concealed violent work.
+
+**Why she can look like mastermind:** proven violence, field capability, surveillance tradecraft, hidden prior work and the North attack.
+
+**Late contradiction:** hidden work overlaps the case but does not complete the murder act.
+
+### Somchai
+
+**Real dark truth:** off-book physical transfers, evidence movement outside normal visibility, protected-source handling and secure routes.
+
+He can plausibly appear as:
+- Kittisak's cleaner,
+- physical remover,
+- or independent operator using institutional cover.
+
+He remains cleaner/accomplice/conditional support unless a future owner decision explicitly promotes him to a standalone false-conviction principal.
+
 ---
 
 # 15. COOPERATION PARADOX
@@ -1009,6 +1263,95 @@ Slots:
 4. WHO / WHAT BECAME NEXT TARGET
 
 Canonical interpretation remains unchanged.
+
+### Disclosure Matrix exact canonical answers
+
+#### Adrian
+
+- WHAT THEY GAVE: **Lawful continuity architecture**
+- WHAT IT PROVED: **base architecture authentic/authorized**
+- WHAT IT DID NOT PROVE: **who used continuity outside documented deployment boundary**
+- NEXT TARGET: **implementation / wrapper layer**
+
+#### Arman
+
+- WHAT THEY GAVE: **execution package / wrapper cache**
+- WHAT IT PROVED: **delivery package authentic**
+- WHAT IT DID NOT PROVE: **who sat behind blind broker / deeper ledger**
+- NEXT TARGET: **field deployment layer**
+
+#### Ika
+
+- WHAT THEY GAVE: **Aster employment timeline**
+- WHAT IT PROVED: **Aster recruited her after the murders**
+- WHAT IT DID NOT PROVE: **operational history before Aster**
+- NEXT TARGET: **earlier aliases / travel history**
+
+Interaction:
+- tap-to-place
+- mobile-first
+- safe-area aware
+- footer/buttons must remain reachable
+
+Hidden method choice after Matrix:
+
+- `boundaries`
+- `chronology`
+- `custody`
+
+Bangkok custody response choices:
+
+- `written`
+- `parallel`
+- `log`
+
+No Matrix or follow-up choice directly names the murderer.
+
+### Phase VIII locked production assets / continuity
+
+Opening:
+`assets/video/chapter-04/phase-08/opening-statement-return.mp4`
+
+Secure Debrief image:
+`assets/images/chapter-04/phase-08/secure-debrief-room.png`
+
+Departure image:
+`assets/images/chapter-04/phase-08/jakarta-departure-corridor.png`
+
+Takeoff video:
+`assets/video/chapter-03/phase-02/airplane-takeoff.mp4`
+
+Investigation score:
+`assets/audio/chapter-04/phase-08/investigation-c4p8.mp3`
+
+Departure score:
+`assets/audio/chapter-04/phase-08/departure-c4p8.mp3`
+
+### Jakarta → Bangkok takeoff continuity
+
+1. Phase reaches `100%` before boarding/takeoff
+2. takeoff video has no Phase Progress UI
+3. preserve proven header/Skip behavior
+4. route card appears only after natural end or intentional Skip
+5. route card shows:
+   - JAKARTA
+   - SOEKARNO-HATTA
+   - TAKEOFF 18:10 WIB
+   - BANGKOK
+   - DIRECT
+6. Continue → Chapter IV Complete
+7. Bangkok arrival itself belongs to Chapter V Phase I
+
+### Phase VIII completion card
+
+- JAKARTA OPERATION / CLOSED
+- NORTH PUBLIC RECORD / REMOVED
+- R. / REGISTRAR TRACE
+- CASE ATTRIBUTION / UNRESOLVED
+- NEXT · CHAPTER V · THE MISSING PIECE
+- RETURN TO TITLE
+
+No fake Chapter V gameplay is inserted into Phase VIII.
 
 Matrix Exit maintenance:
 
@@ -1399,6 +1742,39 @@ Dialogue:
 
 `Good. Then we keep it that way.`
 
+## Exact Production portrait source mapping for the two open shots
+
+Current portrait registry:
+
+`js/engine/01-runtime-data.js`
+
+Target mappings:
+
+- North `concerned` → `assets/images/5a51446056fdcb0a.jpg`
+- North `relieved` → `assets/images/9a859e7e805b89ee.jpg`
+
+Current CH5P1 dialogue source confirms:
+
+- `line("North","concerned","How bad was he?", ...)`
+- `line("North","relieved","Good. Then we keep it that way.", ...)`
+
+Rejected r9 custom assets still exist in repository history/current tree and must **not** be reused as approved solutions:
+
+- `assets/images/chapter-05/phase-01/north-concerned-full.png`
+- `assets/images/chapter-05/phase-01/north-relieved-full.png`
+
+Approved visual-source sheet included in the handoff package:
+
+`REFERENCE_NORTH_EXPRESSION_SHEET.png`
+
+The new room must inspect:
+1. registry source JPG
+2. expression sheet
+3. owner defect screenshot
+4. actual dialogue well geometry
+
+before choosing the surgical repair.
+
 ## Owner requirement
 
 For these **two shots only**:
@@ -1709,6 +2085,22 @@ THE PERFECT RECORD:
 
 no clean prosecution survives or an accepted wrong institutional narrative becomes too complete to reopen.
 
+
+## False-conviction deterministic tie-break order
+
+When multiple wrong principal cases remain legally eligible, resolve ties in this order:
+
+1. admissible corroboration breadth
+2. clean chain / evidence integrity
+3. motive + means + opportunity completeness
+4. unresolved contradiction severity
+5. human / physical corroboration
+6. institutional sustainability
+
+No randomness.
+
+Do not select a false principal because the story "needs" a dramatic ending. The full investigation state must support the result.
+
 ---
 
 # 32. EVIDENCE ARCHITECTURE
@@ -1893,13 +2285,25 @@ Physical Android Chrome remains final acceptance.
 
 # 36. CURRENT PRODUCTION STATUS — 2026-08-17
 
-Production HEAD:
+Latest inspected repository HEAD before this preservation correction:
 
-`1e4afcf94a55c87d684eb3dac3aa1442040c1601`
+`e9792c7b43d81a0b1d4631e0e59f62498c7870af`
 
 Message:
 
+`Perfect zero-question room handoff`
+
+This HEAD is documentation-only and changed only `GAME_MASTER_PLAN.md`.
+
+Latest verified runtime-code baseline remains:
+
+`1e4afcf94a55c87d684eb3dac3aa1442040c1601`
+
+Runtime-code message:
+
 `Fix CH5P1 rollback and landing`
+
+After P'Benz uploads this preservation correction, repository HEAD will advance again. That documentation commit does not change the runtime-code baseline unless runtime files are changed in the same upload.
 
 Current base Runtime:
 
@@ -2277,7 +2681,8 @@ Canonical final idea:
 # 40. FINAL NON-NEGOTIABLE SUMMARY
 
 - Owner physical Android evidence is highest authority.
-- Current Production HEAD is `1e4afcf94a55c87d684eb3dac3aa1442040c1601`.
+- Latest inspected repository HEAD before this preservation correction is `e9792c7b43d81a0b1d4631e0e59f62498c7870af` (documentation-only).
+- Latest verified runtime-code baseline is `1e4afcf94a55c87d684eb3dac3aa1442040c1601` — `Fix CH5P1 rollback and landing`.
 - Current authoritative Runtime is `0.22.8`.
 - Current CH5P1 is `0.22.8-c5p1r10`.
 - Current CH5 loader is `0.22.8-c5b7`.
