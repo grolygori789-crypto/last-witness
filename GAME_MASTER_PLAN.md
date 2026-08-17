@@ -1,22 +1,23 @@
 # LAST WITNESS - GAME MASTER PLAN
 
-> **CANONICAL MASTER REFERENCE / ZERO-QUESTION ROOM HANDOFF**
+> **CANONICAL MASTER REFERENCE / FINAL ZERO-QUESTION ROOM HANDOFF**
 >
-> **Revision:** 2026-08-17 11:09 ICT  
+> **Revision:** 2026-08-17 11:52 ICT  
 > **Game:** LAST WITNESS  
 > **Studio:** BENEDICT INTERACTIVE  
 > **Repository:** `grolygori789-crypto/last-witness`  
 > **Production/default branch:** `production-rebuild`  
-> **Latest inspected repository HEAD before this preservation correction:** `e9792c7b43d81a0b1d4631e0e59f62498c7870af`  
-> **Repository HEAD message:** `Perfect zero-question room handoff`  
-> **Latest verified runtime-code baseline:** `1e4afcf94a55c87d684eb3dac3aa1442040c1601`  
-> **Runtime-code message:** `Fix CH5P1 rollback and landing`  
+> **Latest inspected Production HEAD:** `76bbcceff1ad28eb81b921a5d0053da1283f2a2e`  
+> **HEAD message:** `Fix CH4P8 removal card stacking`  
 > **Authoritative base Runtime:** `0.22.8`  
+> **Runtime/bootstrap maintenance generation:** `0.22.8-r2` / cache `0228r2`  
+> **Resolved CH4P8 stacking maintenance:** `0.22.8-z1` / cache `0228z1`  
 > **Current Chapter V Phase I module:** `0.22.8-c5p1r10`  
 > **Current Chapter V loader:** `0.22.8-c5b7`  
-> **Current accepted playable boundary:** `CHAPTER V · PHASE I · PRELIMINARILY ACCEPTABLE WITH TWO NORTH PORTRAIT DEFECTS`  
-> **Open maintenance defect:** `CHAPTER IV · PHASE VIII · NORTH REMOVED CARD STACKS ABOVE GAME MENU / SETTINGS`  
-> **Immediate production priority:** repair both open defect families (1 CH4P8 stacking defect + 2 CH5P1 North portrait shots), obtain owner Android acceptance, then begin `CHAPTER V · PHASE II · NAME IN ROOM 1807`  
+> **Current accepted playable boundary:** `CHAPTER V · PHASE I · PRELIMINARILY ACCEPTABLE WITH EXACTLY TWO NORTH PORTRAIT DEFECTS`  
+> **Chapter IV status:** `COMPLETE · OWNER ANDROID ACCEPTED · NO CURRENTLY KNOWN OPEN DEFECT`  
+> **Only current open maintenance scope:** `CH5P1 NORTH concerned + relieved portrait shots`  
+> **Immediate production priority:** repair exactly the two CH5P1 North portrait shots, obtain owner Android acceptance, freeze CH5P1, then begin `CHAPTER V · PHASE II · NAME IN ROOM 1807`  
 > **Chapter IV:** exactly 8 phases; no Phase IX without explicit owner approval  
 > **Hidden Case engine:** `0.21.0`  
 > **Phase VIII core:** `0.22.2`  
@@ -30,13 +31,11 @@
 > **Chapter IV P7/P8 Audio Lifecycle:** `0.22.7-a1`  
 > **Adaptive model:** `P8 CALCULATE → Ch V INFLUENCE → Ch VI DIVERGE → Ch VII RESOLVE`
 
-This revision supersedes older Master Plan runtime/status snapshots while preserving the established story canon, Hidden Case architecture, ending architecture, Interface/UI contract, Developer/North QA separation, Save/Load contract, audio-lifecycle rules, Chapter IV canon and Chapters V–VII long-game plan.
+This revision is the final zero-question handoff snapshot for the current room move. It preserves all established story canon, Hidden Case architecture, ending architecture, Interface/UI contract, Developer/North QA separation, Save/Load rules, audio lifecycle, dialogue/subtitle standards, release discipline, build-linkage rules and Chapters IV–VII long-game plan while updating the current Production truth after the owner-accepted CH4P8 stacking repair.
 
-The owner has already moved Production beyond the old Runtime `0.22.7` handoff. **Do not downgrade or rebuild to `0.22.7`.** Runtime `0.22.8` is the current Production truth.
+The current Production base Runtime is still `0.22.8`. The CH4P8 repair is **scoped maintenance under the same base Runtime**, not a base Runtime bump. Do not downgrade, rebuild from older snapshots, or fake-bump unrelated stable modules merely to make version strings look uniform.
 
-The most important change in this revision is not merely a version bump. It records the exact owner-accepted state after the Chapter V Phase I repair/rollback cycle, identifies the only two remaining Chapter V Phase I portrait defects, records the newly reproduced Chapter IV Phase VIII stacking defect, and freezes everything else that is currently acceptable so a new room does not reopen working systems.
-
----
+Most important current status change: the Chapter IV Phase VIII `NORTH · REMOVED` Game Menu / Settings stacking defect is **RESOLVED and physically accepted by P'Benz on Android** after commit `76bbcceff1ad28eb81b921a5d0053da1283f2a2e`. It is now regression history only. The only known open maintenance work is the two named North portrait shots in Chapter V Phase I.
 
 # 0. SOURCE OF TRUTH / OWNER OVERRIDE
 
@@ -95,25 +94,28 @@ Rules:
 
 This rule is part of the project delivery contract, not a stylistic preference.
 
+
 ## Canon-detail preservation rule — NEVER SILENTLY DROP LOCKED DETAIL
 
-This 2026-08-17 revision updates the current Production/handoff state. It does **not** revoke detailed canon merely because an earlier paragraph was condensed during documentation editing.
+This final revision updates current Production and handoff status. It does **not** revoke detailed canon merely because an older paragraph is condensed, moved or summarized.
 
-The complete 2026-08-16 Master Plan at repository parent/runtime baseline `1e4afcf94a55c87d684eb3dac3aa1442040c1601` remains an incorporated historical-detail reference for any locked detail that:
+The full pre-final Master Plan history, especially the detailed runtime/canon baseline around `1e4afcf94a55c87d684eb3dac3aa1442040c1601` and the preservation documentation commit `1ad81889a0d6d4b3a3dcf5cb03b0eed1da6cc33b`, remains an incorporated historical-detail reference for any locked detail that:
 
-1. does not conflict with this revision,
-2. has not been explicitly superseded by P'Benz,
+1. does not conflict with P'Benz's newer physical-device observation or explicit instruction,
+2. has not been explicitly superseded by this revision,
 3. remains compatible with current Production.
 
-A new room must never interpret an omitted explanatory paragraph as permission to invent a different canon.
+A new room must never interpret omission as permission to invent a different canon.
 
 When a detail needed for implementation is not repeated verbatim here:
-- first inspect the current Production source,
-- then inspect the prior Master Plan at `1e4afcf...`,
-- apply this revision's newer status/defect/freeze rules over the older detail,
-- do not ask P'Benz to restate a decision that can be recovered from those sources.
 
-The following high-value historical details are additionally restated in this revision so the new room normally will not need to consult the parent document.
+1. inspect current Production source first,
+2. inspect this Master Plan and paired Migration Prompt,
+3. inspect relevant repository history / earlier Master Plan only when needed,
+4. apply the newest owner/status/freeze rule over older detail,
+5. do not ask P'Benz to repeat a decision recoverable from those sources.
+
+This rule exists specifically to prevent documentation cleanup from silently erasing story, UI, QA or release constraints.
 
 ## No owner repetition
 
@@ -171,102 +173,98 @@ The purpose of this handoff is that a new room can begin work **without asking P
 Before replying to the first LAST WITNESS task in a new room, the assistant must perform this sequence internally:
 
 1. Read this `GAME_MASTER_PLAN.md` completely.
-2. Read the paired `LAST_WITNESS_ROOM_MIGRATION_PROMPT.md`.
+2. Read the paired `LAST_WITNESS_ROOM_MIGRATION_PROMPT.md` completely.
 3. Inspect current Production on:
    - repository: `grolygori789-crypto/last-witness`
    - branch: `production-rebuild`
-4. Compare current Production HEAD with the recorded handoff HEAD:
-   - recorded handoff HEAD: `1e4afcf94a55c87d684eb3dac3aa1442040c1601`
-   - recorded message: `Fix CH5P1 rollback and landing`
-5. If Production has advanced:
-   - do **not** assume this handoff is obsolete
-   - inspect the new commits/files
-   - preserve this file's locked story/product rules
-   - use current Production as runtime/source truth where code has legitimately advanced
-   - do not ask P'Benz to explain changes that can be resolved from GitHub history/current source
-6. Identify whether the owner's request concerns:
-   - one of the two known open defect families
-   - a new reproducible defect
-   - Chapter V Phase II or later story implementation
-   - documentation/release work
-7. Use the Source-of-Truth order in Section 0 to resolve any conflict.
-8. Ask P'Benz a question **only** when a genuinely new creative/product decision is required and cannot be resolved from:
-   - current Production
-   - this Master Plan
-   - the Migration Prompt
-   - bundled reference screenshots
-   - accepted release history
-9. Never ask the owner to repeat:
-   - project/repository identity
-   - current branch
-   - current Runtime/build policy
-   - Chapter IV phase count
-   - Chapter V–VII phase structure
-   - current known defects
-   - Elena/Rin/Hidden Case canon
-   - UI/UX reuse rules
-   - Dev/North separation
-   - Save/Load rules
-   - audio-lifecycle rules
-   - file-delivery/Commit-Name rule
-   - current immediate next objective
+4. Compare current Production HEAD with the handoff runtime-code baseline:
+   - baseline HEAD: `76bbcceff1ad28eb81b921a5d0053da1283f2a2e`
+   - baseline message: `Fix CH4P8 removal card stacking`
+5. P'Benz may upload this final documentation after `76bbcceff1ad28eb81b921a5d0053da1283f2a2e`. Therefore, if repository HEAD is newer:
+   - inspect the diff/history first,
+   - if newer commits are documentation/handoff-only, keep `76bbcceff1ad28eb81b921a5d0053da1283f2a2e` as the latest verified runtime-code baseline,
+   - if runtime/code/assets legitimately advanced, use current Production as runtime truth,
+   - preserve all locked product/story rules that were not explicitly superseded,
+   - never ask P'Benz to explain changes that GitHub can resolve.
+6. Confirm current base Runtime and linkage before implementation. At this handoff the base is `0.22.8`.
+7. Identify the smallest current task. At this handoff the only known open maintenance items are:
+   - North `concerned` portrait at `How bad was he?`
+   - North `relieved` portrait at `Good. Then we keep it that way.`
+8. Treat CH4P8 stacking as **resolved regression history**, not open work, unless a new physical-device regression is reported.
+9. Apply the Source-of-Truth order in Section 0.
+10. Ask P'Benz a question only when a genuinely new product/creative decision cannot be resolved from Production, this Master Plan, the Migration Prompt, bundled references or repository history.
+
+Never ask the owner to repeat:
+
+- project/repository identity
+- branch
+- current Runtime/build policy
+- Chapter IV phase count
+- Chapters V–VII structure
+- current open defects
+- CH4P8 resolved status
+- Elena/Rin/Hidden Case canon
+- ending architecture
+- Interface/UI reuse rules
+- dialogue geometry freeze
+- Dev/North separation
+- Save/Load rules
+- audio lifecycle
+- file-delivery/Commit-Name rule
+- build-linkage rule
+- current immediate objective
 
 ## Handoff artifact contract
 
-For the actual room move, P'Benz should attach the complete:
-
-`LAST_WITNESS_ROOM_HANDOFF_2026-08-17.zip`
-
-The ZIP is the preferred zero-question entry package because GitHub currently contains the canonical Master Plan but not the paired migration prompt or the owner reference screenshots as repository files.
-
-The ZIP must contain at minimum:
+For the room move, use the complete final ZIP supplied with this revision. It contains at minimum:
 
 - `GAME_MASTER_PLAN.md`
 - `LAST_WITNESS_ROOM_MIGRATION_PROMPT.md`
 - `README_HANDOFF.md`
 - `HANDOFF_VALIDATION.json`
-- `REFERENCE_CH4P8_REMOVAL_CARD_SETTINGS.jpg`
+- `REFERENCE_CH4P8_REMOVAL_CARD_PRE_FIX.jpg` — historical regression evidence only
 - `REFERENCE_CH5P1_NORTH_HOW_BAD_WAS_HE.jpg`
 - `REFERENCE_CH5P1_NORTH_GOOD_KEEP_IT_THAT_WAY.jpg`
-- `REFERENCE_NORTH_EXPRESSION_SHEET.png`
+- `REFERENCE_NORTH_PORTRAIT_SOURCE_MAP.md`
 - `SHA256SUMS.txt`
 
-When the ZIP is attached, the new room must use those visual references directly and must not ask P'Benz to recapture the same defect screenshots or re-send the North expression sheet.
+The final bundle intentionally does **not** claim to contain a North Expression Sheet unless an actual owner-approved expression-sheet file is present. The new room must not block or ask P'Benz to resend one merely because an older handoff mentioned it. Current Production portrait registry paths, GitHub source/assets and the two owner target screenshots are sufficient to begin diagnosis. If an owner-approved expression sheet is later supplied, it becomes an additional visual reference under the normal Source-of-Truth order.
 
-GitHub remains authoritative for current Production source. The attached visual files are owner evidence/reference material.
+GitHub remains authoritative for current Production source. Bundled screenshots are owner evidence/reference material.
 
 ### First response behavior in a new room
 
-If P'Benz says only something like:
+If P'Benz says only:
 
 - `ดำเนินการต่อ`
 - `เริ่มได้เลย`
 - `แก้ defect ต่อ`
 - `ทำงานต่อจากห้องเดิม`
 
-the assistant must **not ask “ตอนนี้ถึงไหนแล้ว?”** or ask for the project state again.
+then do **not** ask “ตอนนี้ถึงไหนแล้ว?” or request project status again.
 
-Instead, it must infer the current actionable state from this handoff and current Production inspection.
+Default actionable order at this handoff:
 
-At this handoff revision, the default actionable order is:
-
-1. CH4P8 Game Menu / Settings stacking defect
-2. CH5P1 North portrait defect: `How bad was he?`
-3. CH5P1 North portrait defect: `Good. Then we keep it that way.`
-4. owner physical Android acceptance
-5. freeze CH5P1
-6. begin CH5P2 `NAME IN ROOM 1807`
-
-If P'Benz's new-room message names one of these specifically, work on that exact item only.
+1. inspect current Production HEAD and confirm no newer runtime change invalidates the handoff
+2. inspect the canonical North `concerned` source and target screenshot
+3. inspect the canonical North `relieved` source and target screenshot
+4. repair **exactly those two portrait shots only** with the smallest safe surface
+5. preserve every frozen CH5P1 area
+6. run honest local/static/browser checks as available
+7. enforce the Build-Linkage Gate before packaging
+8. package only intended repository paths
+9. provide Commit Name ≤50 characters automatically with every delivered project artifact
+10. P'Benz performs physical Android acceptance
+11. after both shots pass, freeze CH5P1
+12. begin `CHAPTER V · PHASE II · NAME IN ROOM 1807`
 
 ### Ambiguity rule
 
-When an ambiguity can be resolved by inspecting code, assets, Git history, bundled screenshots or this Master Plan, **inspect first; do not push the work back to the owner**.
+Inspect before asking. Escalate to P'Benz only when:
 
-Only escalate to P'Benz when:
-- two equally valid canon/product choices remain after inspection, or
-- the request introduces genuinely new story/design intent, or
-- a required asset is actually missing and cannot be recovered from current Production/handoff files.
+- two genuinely different owner-level design/canon choices remain after inspection, or
+- the request introduces new story/design intent, or
+- an actually required asset is unavailable in Production/history/final bundle and no safe existing source can satisfy the task.
 
 ---
 
@@ -385,26 +383,33 @@ A local portrait defect must not become a dialogue-shell redesign.
 
 ---
 
-# 4. CURRENT PRODUCTION BUILD / LINKAGE
+# 4. CURRENT PRODUCTION BUILD / LINKAGE — ZERO TOLERANCE
 
-Current authoritative base Runtime:
+## Current authoritative release identity
+
+Base Runtime:
 
 `0.22.8`
 
-Latest inspected Production HEAD:
+Latest inspected Production HEAD / latest verified runtime-code baseline at this handoff:
 
-`1e4afcf94a55c87d684eb3dac3aa1442040c1601`
+`76bbcceff1ad28eb81b921a5d0053da1283f2a2e`
 
 Commit:
 
-`Fix CH5P1 rollback and landing`
+`Fix CH4P8 removal card stacking`
 
-Current verified build-facing modules:
+Current verified build/module snapshot:
 
+- Base Runtime / Settings / runtime-facing build: `0.22.8`
+- Runtime bootstrap maintenance generation: `0.22.8-r2`
+- `index.html` bootstrap cache generation: `0228r2`
+- CH4P8 scoped stacking repair: `0.22.8-z1`
+- CH4P8 stack-fix stylesheet cache: `0228z1`
 - Runtime Build Label: `0.22.8`
 - Developer Navigation: `0.22.8-d1`
 - North QA: `0.22.8`
-- Save Manager: `0.7.10-s2`, scoped save repair follows Runtime `0.22.8`
+- Save Manager: `0.7.10-s2`, save-facing base Runtime identity follows `0.22.8`
 - Chapter V Phase I: `0.22.8-c5p1r10`
 - Chapter V loader: `0.22.8-c5b7`
 - Chapter V Owner Walkthrough extension: `0.22.8-c5w3`
@@ -414,115 +419,166 @@ Current verified build-facing modules:
 - P7/P8 Audio Lifecycle: `0.22.7-a1`
 - Hidden Case engine: `0.21.0`
 
-Independent modules do not receive fake version bumps merely to imitate the Runtime shell.
+The current CH4P8 repair did **not** bump the base Runtime. It is explicitly scoped maintenance. Independent modules do not receive fake bumps merely to imitate the base Runtime.
 
-## Atomic build-linkage contract
+## Release identity taxonomy — never conflate identities
 
-When the **base Runtime** changes, all applicable player/owner/QA/save-facing endpoints must synchronize before release:
+There are three different version identities:
 
-- `index.html` fallback/visible build
-- startup/bootstrap generation
-- `window.LastWitnessRuntimeBuild`
-- `document.documentElement.dataset.runtimeBuild`
-- Runtime Build Label source/cache/expectation
-- Settings build
-- Owner Developer build
-- Developer Navigation base version/cache/expectation
-- North QA build/version/cache/expectation
-- Save-facing build metadata
-- changed phase/module versions
-- changed phase/module cache keys
-- loader expected-version checks
-- diagnostics / Copy Test Info values
-- QA report
-- release notes
-- ZIP/package names
-- manifest/checksum identities
+1. **Base Runtime build**  
+   Player/owner/QA/save-facing release identity. Current base: `0.22.8`.
 
-Any affected mismatch is a **RELEASE BLOCKER**.
+2. **Independent module version**  
+   Stable subsystems retain their own version when source is unchanged. Examples: Hidden Case `0.21.0`, Phase VIII core `0.22.2`, Owner Walkthrough `0.22.3-w1`, Matrix Exit `0.22.7-m1`, P7/P8 Audio Lifecycle `0.22.7-a1`.
 
-Never hide a mismatch through cosmetic relabeling, polling, MutationObservers or post-load text patching.
+3. **Scoped maintenance/module generation**  
+   An isolated repair under the same base Runtime may carry its own suffix/cache generation when explicitly classified, uniquely versioned, linked and documented. Current example: CH4P8 stacking `0.22.8-z1` / `0228z1`; bootstrap maintenance generation `0.22.8-r2` / `0228r2`.
+
+**Runtime synchronization does not mean fake-bumping every unchanged independent module to the same number.** It means every player/owner/QA/save-facing base identity agrees on the authoritative base Runtime and every changed module has correct compatible source/version/cache/loader linkage.
+
+If classification is unclear, stop before packaging and resolve whether the work is a base Runtime release, independent module update or scoped maintenance.
+
+## Atomic base-Runtime synchronization contract — OWNER NON-NEGOTIABLE
+
+Whenever the **base Runtime changes**, all applicable endpoints must be updated and validated **atomically in the same release**. Partial linkage is forbidden.
+
+Mandatory matrix:
+
+| Endpoint / identity | Required action when base Runtime changes |
+|---|---|
+| `index.html` visible/fallback build | update and verify |
+| startup/bootstrap Runtime generation | update and verify |
+| bootstrap script cache key in `index.html` | fresh key if changed |
+| `window.LastWitnessRuntimeBuild` | exact new base Runtime |
+| `document.documentElement.dataset.runtimeBuild` | exact new base Runtime |
+| Settings visible build | exact new base Runtime |
+| Runtime Build Label source/version | exact new base Runtime |
+| Runtime Build Label cache/expected version | synchronized |
+| Owner Developer visible base build | exact new base Runtime |
+| Developer Navigation base-compatible version/cache/expected | synchronized |
+| North QA visible/base build | exact new base Runtime |
+| North QA source/cache/expected version | synchronized |
+| Save-facing Runtime metadata | exact new base Runtime |
+| diagnostics / Copy Test Info | exact new base Runtime and current module ids |
+| changed phase/module source version | new correct module identity |
+| changed phase/module cache key | fresh key |
+| loader expected-version check | exact changed module identity |
+| loader cache key | fresh if loader changed |
+| owner walkthrough extension if affected | source/cache/expected synchronized |
+| QA report | same release identity |
+| release notes | same release identity |
+| ZIP/package filename | same release identity when applicable |
+| manifest | same release identity |
+| checksum metadata | checksum of final package bytes |
+| upload instructions | exact paths/identity for same release |
+
+A mismatch at **any affected endpoint is a `RELEASE BLOCKER`**.
+
+Do not package, publish, call the work complete, or hand it to P'Benz as release-ready until the mismatch is corrected.
+
+Correct sequence:
+
+`FIX → RE-RUN LINKAGE GATE → REPACKAGE → RECHECK FINAL BYTES`
+
+Never conceal a mismatch through:
+
+- cosmetic relabeling
+- delayed text replacement
+- MutationObserver patches used only to overwrite labels
+- polling that masks stale authoritative source
+- fallback code that makes UI appear current while loader/source remains stale
+
+Fix the authoritative source and linkage instead.
+
+## Scoped maintenance / module-only change rule
+
+When base Runtime intentionally remains unchanged:
+
+- do not change every base Runtime endpoint merely for visual symmetry
+- change only the affected module/file(s) and the loaders/cache keys/expected-version checks that actually address them
+- every changed shipped cache-addressed JS/CSS/module receives a fresh cache identity
+- update module suffix/version where the project architecture expects one
+- update loader expected-version checks when module identity changes
+- update release notes/manifest/package metadata to describe the scoped repair
+- verify no visible base-build mismatch is introduced
+
+## Current `0.22.8` base-facing endpoint contract
+
+At this handoff, these must resolve coherently to base Runtime `0.22.8`:
+
+- Settings: `LAST WITNESS · BUILD 0.22.8`
+- `window.LastWitnessRuntimeBuild`: `0.22.8`
+- `document.documentElement.dataset.runtimeBuild`: `0.22.8`
+- Runtime Build Label: `0.22.8`
+- Owner Developer visible base build: `0.22.8`
+- North QA base/runtime report: `0.22.8`
+- Save-facing Runtime identity: `0.22.8`
+- Developer Navigation: compatible `0.22.8-d1`
+- CH5P1: compatible `0.22.8-c5p1r10`
+- CH5 loader: compatible `0.22.8-c5b7`
+- CH5 Owner Walkthrough extension: compatible `0.22.8-c5w3`
+
+The authoritative Runtime Build Label implementation also synchronizes `window.LastWitnessRuntimeBuild`, the document dataset, Settings, North QA, Owner Developer and Save-facing identity. That does **not** remove the obligation to keep their authoritative source/cache/expected linkage correct.
+
+## Mandatory release stop conditions
+
+STOP and do not package/release when any applicable condition is true:
+
+- Settings and Runtime disagree
+- Owner Developer and Runtime disagree
+- North QA and Runtime disagree
+- Save-facing Runtime is stale
+- `window.LastWitnessRuntimeBuild` or document dataset is stale
+- changed source version and loader expected version disagree
+- changed cache-addressed file still uses previous cache key
+- changed loader points at an old module generation
+- stale build/cache string remains in an affected authoritative file
+- Dev and North endpoints were not checked separately
+- scoped maintenance classification is ambiguous
+- package contains unintended paths
+- packaged bytes differ from validated source
+- QA/release/package/manifest/checksum describe conflicting identities
+- checksum was computed before the final archive was finalized
+- authoritative current version cannot be determined confidently
+
+## Pre-package Build-Linkage Gate — mandatory
+
+Before every release/upload package:
+
+1. inspect current Production HEAD
+2. establish exact release classification: base Runtime / module update / scoped maintenance / docs-only
+3. identify intended changed-file allowlist
+4. search every affected authoritative file for stale prior version/cache strings
+5. verify source version ↔ cache key ↔ loader expected version ↔ loader cache key
+6. verify Settings/base Runtime identity when applicable
+7. verify Owner Developer independently
+8. verify North QA independently
+9. verify Save-facing identity when applicable
+10. verify Runtime Label / `window.LastWitnessRuntimeBuild` / document dataset when applicable
+11. verify diagnostics/Copy Test Info when applicable
+12. verify ZIP contains exact allowlist and no extra paths
+13. verify packaged bytes match the validated local source bytes
+14. generate release notes/manifest from the final identity
+15. compute checksum **after** the final archive bytes exist
+16. reopen/read checksum and package listing once more
+17. only then deliver the artifact
+
+## Documentation-only rule
+
+A Master Plan / Migration Prompt / README / validation-only update does **not** bump Runtime or gameplay module versions.
+
+Do not touch runtime source merely to make a documentation commit look like a build release.
 
 ## Post-upload rule
 
-After P'Benz uploads a package, re-read current Production HEAD and landed authoritative files before treating the release as canonical.
+After P'Benz uploads any runtime or documentation package:
 
-
-## Release identity taxonomy — no ambiguous versioning
-
-Never conflate these three identities:
-
-1. **Base Runtime build**  
-   Player/owner/QA-facing release identity. Current base: `0.22.8`.
-
-2. **Independent module version**  
-   Stable subsystems may retain older versions when source is unchanged. Current examples:
-   - Hidden Case `0.21.0`
-   - Phase VIII core `0.22.2`
-   - Owner Walkthrough base `0.22.3-w1`
-   - Matrix Exit `0.22.7-m1`
-   - P7/P8 Audio Lifecycle `0.22.7-a1`
-
-3. **Scoped maintenance/module suffix**  
-   An isolated module may carry a scoped suffix/cache generation under the same base Runtime when explicitly classified and documented.
-
-Do not fake-bump unchanged independent modules merely to make numbers look uniform.
-
-If there is uncertainty whether a change is:
-- a base Runtime release,
-- an independent module update,
-- or scoped maintenance,
-
-resolve that identity **before packaging**.
-
-### Current `0.22.8` mandatory base endpoints
-
-Current Production must remain coherent across:
-
-- Runtime Build Label `0.22.8`
-- Settings-visible build `0.22.8`
-- `window.LastWitnessRuntimeBuild`
-- `document.documentElement.dataset.runtimeBuild`
-- Owner Developer visible base `0.22.8`
-- Developer Navigation `0.22.8-d1`
-- North QA `0.22.8`
-- Save-facing Runtime identity `0.22.8`
-- CH5P1 `0.22.8-c5p1r10`
-- CH5 loader `0.22.8-c5b7`
-- CH5 Owner Walkthrough extension `0.22.8-c5w3`
-
-### Release stop conditions
-
-Stop and do not package/publish if any applicable condition is true:
-
-- Settings and Runtime disagree
-- Owner Dev and Runtime disagree
-- North QA and Runtime disagree
-- Save-facing build is stale
-- changed module source version and loader expected version disagree
-- a changed cache-addressed file still uses its previous cache key
-- changed module version/cache generation is ambiguous
-- upload artifact contains unintended paths
-- QA/release/package/manifest/checksum identify conflicting release identities
-- a scoped maintenance module is not explicitly versioned/documented
-- current authoritative version cannot be determined confidently
-
-Correct response:
-
-`FIX → RE-RUN LINKAGE GATE → PACKAGE AGAIN`
-
-Never hide mismatch with cosmetic relabeling, observer patches or delayed text rewriting.
-
-### Post-package verification
-
-For release/upload artifacts:
-
-1. enumerate ZIP paths against intended allowlist
-2. verify packaged bytes match validated source
-3. search affected build-facing files for stale generation/version strings
-4. confirm no unintended QA/source/support paths entered an upload-only package
-5. compute checksum from final archive bytes
-6. after P'Benz uploads, re-read landed Production before calling it canonical
+1. re-read current Production HEAD
+2. inspect the landed changed files
+3. determine whether the new HEAD is docs-only or runtime-changing
+4. verify exact intended files landed
+5. if runtime changed, re-run the linkage gate against landed Production
+6. only then treat the new state as canonical
 
 ---
 
@@ -540,58 +596,47 @@ Important recent chronology:
 
 - `6a32555ef5f73b23fd74d0fa5b60db4867cf4c39`  
   `Fix CH5P1 landing and North portraits`  
-  **Rejected incident release.** It introduced unacceptable North custom portraits and included collateral changes beyond the owner's requested scope.
+  **Rejected incident release.** It introduced unacceptable North custom portraits and collateral changes beyond owner scope.
 
 - `1e4afcf94a55c87d684eb3dac3aa1442040c1601`  
   `Fix CH5P1 rollback and landing`  
-  Current Production. It restored normal North portrait-registry routing, restored Somchai brightness to the accepted `.88`, and retained the corrected Chapter V opening airplane clip.
+  Restored normal North portrait-registry routing, restored Somchai brightness `.88`, retained the corrected Chapter V opening clip.
 
-## Permanent lesson from r9
+- `1ad81889a0d6d4b3a3dcf5cb03b0eed1da6cc33b`  
+  `Complete zero-question master handoff`  
+  Documentation-only preservation expansion. It did not change base Runtime.
 
-Never assume "while we are here" polishing is harmless.
+- `76bbcceff1ad28eb81b921a5d0053da1283f2a2e`  
+  `Fix CH4P8 removal card stacking`  
+  Current runtime-code baseline at this handoff. Added the scoped `0.22.8-z1` CH4P8 stacking stylesheet and bootstrap/cache linkage under base Runtime `0.22.8`. P'Benz subsequently physically tested the previously reproduced CH4P8 Game Menu / Settings defect on Android and confirmed it fully resolved.
 
-When the owner freezes already-working CH5P1 behavior, do not touch:
+## Permanent lesson from CH5P1 r9
 
-- Somchai brightness
-- `TAP TO CONTINUE`
-- scene-note placement
-- `NORTH · OFF RECORD`
-- HUD
-- Progress
-- scene brightness
-- condo-card timing
-- audio
-- dialogue geometry
-- other North emotions
-- Save/Load
-- Dev/North QA
-- Custody Window
-- story flow
+Never assume “while we are here” polishing is harmless.
 
-unless the owner explicitly identifies a new defect in that area.
-
----
+When the owner freezes already-working CH5P1 behavior, do not touch Somchai brightness, `TAP TO CONTINUE`, scene-note placement, `NORTH · OFF RECORD`, HUD, Progress, scene brightness, condo timing, audio, dialogue geometry, other North emotions, Save/Load, Dev/North QA, Custody Window or story flow unless the owner explicitly reports a new defect there.
 
 ## Historical regression memory — DO NOT REPEAT
 
-These are engineering lessons, not merely old release trivia:
+These are engineering lessons, not trivia:
 
-- initial Phase VIII package once omitted an approved opening MP4: a release is incomplete when an approved binary is missing
-- Phase VIII black-screen regressions proved that active DOM does not guarantee visible geometry
-- custom phase screen geometry overriding global `.screen` caused collapsed/black output
-- a broad MutationObserver/class-repair approach caused startup/UI lock and must not return
-- a temporary Phase VIII repair loader was reverted after startup damage; do not resurrect it
-- mocked media/static harnesses were once described too strongly; mocked playback is never physical playback E2E
-- Runtime `0.22.4–0.22.5` dialogue/Progress presentation experiments were rejected on owner Android
+- an early Phase VIII package omitted an approved opening MP4; a release is incomplete when an approved binary is missing
+- Phase VIII black-screen regressions proved active DOM does not guarantee visible geometry
+- phase-level geometry overriding the global `.screen` contract can collapse a visible screen
+- broad MutationObserver/class-repair approaches caused startup/UI lock and must not return
+- the temporary Phase VIII repair loader was reverted after startup damage; do not resurrect it
+- mocked media/static harnesses are never physical playback E2E
+- Runtime `0.22.4–0.22.5` dialogue/Progress experiments were rejected on owner Android
 - Runtime `0.22.6` restored the pre-adjustment `0.22.3` presentation baseline
 - Matrix Exit `0.22.7-m1` solved a trap-state without mutating canonical Matrix progress
-- P7/P8 Audio Lifecycle `0.22.7-a1` fixed background/foreground media behavior and is owner Android accepted
-- CH5P1 r9 proved that collateral "polish" outside owner scope can invalidate an otherwise targeted fix
-- CH5P1 r10 is the rollback/current runtime-code baseline for the present handoff
+- P7/P8 Audio Lifecycle `0.22.7-a1` fixed foreground/background media and is owner Android accepted
+- CH5P1 r9 proved collateral polish can invalidate a targeted fix
+- CH5P1 r10 is the accepted rollback baseline for the current portrait repair
+- CH4P8 stacking `0.22.8-z1` proved the preferred repair style: one narrow authoritative layering correction, fresh cache linkage, no story/state/audio redesign
 
-The general rule:
+General rule:
 
-> **Isolate the reproduced defect; repair the authoritative source; do not widen scope to make the patch look cleaner.**
+> **ISOLATE THE REPRODUCED DEFECT → REPAIR AUTHORITATIVE SOURCE → UPDATE ONLY REQUIRED LINKAGE → VERIFY → PACKAGE EXACT SCOPE.**
 
 ---
 
@@ -782,22 +827,11 @@ Owner Walkthrough:
 - no audio control
 - no leak to North QA
 
+---
 
 ## Owner Hidden Case Inspector — detailed safety contract
 
-Owner-only Hidden Case Inspector may present:
-
-- suspect portrait / approved fallback
-- suspect name
-- live score/status
-- visual score bar
-- synthetic `− / +` adjustment controls
-- editable synthetic values where implemented
-- global case dimensions
-- live leader
-- simulated leader
-- projected ending / eligibility diagnostics where already approved
-- reset-to-live-state control
+Owner-only Hidden Case Inspector may present suspect portrait/fallback, suspect name, live score/status, visual score bar, temporary synthetic `− / +` controls, editable synthetic values where implemented, global case dimensions, live leader, simulated leader, projected ending/eligibility diagnostics where already approved, and reset-to-live-state control.
 
 Synthetic adjustment rules are non-negotiable:
 
@@ -808,21 +842,13 @@ Synthetic adjustment rules are non-negotiable:
 - no autosave
 - no permanent route mutation
 - close/reset discards synthetic overrides
-- North QA never sees these controls or their values
+- North QA never sees these controls or values
 
-This exists to accelerate Owner alternate-ending/eligibility testing without contaminating the real investigation state.
+This exists only to accelerate Owner alternate-ending/eligibility testing without contaminating real investigation state.
 
 ## Owner Walkthrough — detailed safety contract
 
-Owner Walkthrough may:
-
-- show current step
-- show restrained hint
-- reveal verified deterministic solution
-- label narrative/relationship choices `NO FAILURE PATH` when there is no objectively correct answer
-- browse Chapter/Phase manually
-- `SYNC TO GAME`
-- minimize to a compact guide while gameplay continues
+Owner Walkthrough may show current step, restrained hint, verified deterministic solution, `NO FAILURE PATH` for non-objective narrative/relationship choices, manual Chapter/Phase browsing, `SYNC TO GAME`, and a minimized guide.
 
 It must never:
 
@@ -1029,10 +1055,11 @@ Core mystery discipline:
 
 > **Elena does not create the red herring. She creates conditions in which the red herring creates itself.**
 
+---
 
 ## Locked false-principal dark truths / late contradictions
 
-These details remain canon and must guide Chapters V–VII writing.
+These details remain canon and guide Chapters V–VII writing.
 
 ### Kittisak
 
@@ -1078,12 +1105,7 @@ These details remain canon and must guide Chapters V–VII writing.
 
 **Real dark truth:** off-book physical transfers, evidence movement outside normal visibility, protected-source handling and secure routes.
 
-He can plausibly appear as:
-- Kittisak's cleaner,
-- physical remover,
-- or independent operator using institutional cover.
-
-He remains cleaner/accomplice/conditional support unless a future owner decision explicitly promotes him to a standalone false-conviction principal.
+He can plausibly appear as Kittisak's cleaner, physical remover, or independent operator using institutional cover. He remains cleaner/accomplice/conditional support unless a future explicit owner decision promotes him to a standalone false-conviction principal.
 
 ---
 
@@ -1264,6 +1286,7 @@ Slots:
 
 Canonical interpretation remains unchanged.
 
+
 ### Disclosure Matrix exact canonical answers
 
 #### Adrian
@@ -1287,11 +1310,7 @@ Canonical interpretation remains unchanged.
 - WHAT IT DID NOT PROVE: **operational history before Aster**
 - NEXT TARGET: **earlier aliases / travel history**
 
-Interaction:
-- tap-to-place
-- mobile-first
-- safe-area aware
-- footer/buttons must remain reachable
+Interaction remains tap-to-place, mobile-first, safe-area aware, with footer/buttons always reachable.
 
 Hidden method choice after Matrix:
 
@@ -1299,59 +1318,13 @@ Hidden method choice after Matrix:
 - `chronology`
 - `custody`
 
-Bangkok custody response choices:
+Bangkok custody-response choices:
 
 - `written`
 - `parallel`
 - `log`
 
 No Matrix or follow-up choice directly names the murderer.
-
-### Phase VIII locked production assets / continuity
-
-Opening:
-`assets/video/chapter-04/phase-08/opening-statement-return.mp4`
-
-Secure Debrief image:
-`assets/images/chapter-04/phase-08/secure-debrief-room.png`
-
-Departure image:
-`assets/images/chapter-04/phase-08/jakarta-departure-corridor.png`
-
-Takeoff video:
-`assets/video/chapter-03/phase-02/airplane-takeoff.mp4`
-
-Investigation score:
-`assets/audio/chapter-04/phase-08/investigation-c4p8.mp3`
-
-Departure score:
-`assets/audio/chapter-04/phase-08/departure-c4p8.mp3`
-
-### Jakarta → Bangkok takeoff continuity
-
-1. Phase reaches `100%` before boarding/takeoff
-2. takeoff video has no Phase Progress UI
-3. preserve proven header/Skip behavior
-4. route card appears only after natural end or intentional Skip
-5. route card shows:
-   - JAKARTA
-   - SOEKARNO-HATTA
-   - TAKEOFF 18:10 WIB
-   - BANGKOK
-   - DIRECT
-6. Continue → Chapter IV Complete
-7. Bangkok arrival itself belongs to Chapter V Phase I
-
-### Phase VIII completion card
-
-- JAKARTA OPERATION / CLOSED
-- NORTH PUBLIC RECORD / REMOVED
-- R. / REGISTRAR TRACE
-- CASE ATTRIBUTION / UNRESOLVED
-- NEXT · CHAPTER V · THE MISSING PIECE
-- RETURN TO TITLE
-
-No fake Chapter V gameplay is inserted into Phase VIII.
 
 Matrix Exit maintenance:
 
@@ -1418,45 +1391,47 @@ DOM:
 
 Its narrative persistence is intentional. It remains until the player presses its own `CONTINUE`.
 
-### OPEN DEFECT — SETTINGS / GAME MENU STACKING
+### RESOLVED DEFECT — SETTINGS / GAME MENU STACKING
 
-Owner physical Android reproduced a layering defect on 2026-08-17.
+Historical owner Android reproduction on 2026-08-17 showed the persistent `#ch4P8RemovalCard` above Game Menu / Settings because the Phase VIII card used a much higher stacking value than the shared menu/modal shell.
 
-Current source:
+Scoped Production repair landed in:
 
-- `.ch4-p8-removal-card` has `z-index:420`
-- global `.drawer,.modal` shell has `z-index:95`
+`76bbcceff1ad28eb81b921a5d0053da1283f2a2e` — `Fix CH4P8 removal card stacking`
 
-Result:
+Repair identity:
 
-the NORTH REMOVED personnel card remains **above** Game Menu / Settings and covers the menu.
+- base Runtime remains `0.22.8`
+- scoped repair: `0.22.8-z1`
+- stylesheet: `css/chapter-04-phase-08-stack-fix.css`
+- repair rule: `.ch4-p8-removal-card{z-index:94}`
+- shared global `.drawer,.modal` remains `z-index:95`
+- bootstrap maintenance generation: `0.22.8-r2`
+- bootstrap cache in `index.html`: `0228r2`
+- stack-fix CSS cache: `0228z1`
 
-This is wrong.
+P'Benz physical Android acceptance after the repair: **PASS / RESOLVED**.
 
-Required behavior:
+Accepted behavior now locked:
 
-- Game Menu / Settings must visually stack above `#ch4P8RemovalCard`
-- the card may stay pending underneath
+- Game Menu / Settings visually covers the personnel card
+- personnel card remains pending underneath
 - closing Menu / Settings reveals the same pending card
-- player still presses the card's own `CONTINUE`
-- opening Menu / Settings must not auto-dismiss the card
-- must not auto-advance narrative
-- must not mark evidence complete
-- must not mutate Hidden Case / Save / checkpoint merely due to opening settings
+- the card's own `CONTINUE` still advances normally
+- opening Menu / Settings does not dismiss the card
+- does not auto-advance narrative
+- does not mark evidence complete
+- does not mutate Hidden Case / Save / checkpoint merely because Settings/Menu was opened
+- Matrix Exit remains accepted
+- P7/P8 audio lifecycle remains accepted
 
-Repair as a **surgical stacking-context defect only**.
+The pre-fix screenshot in the final handoff package is **historical regression evidence only**. A new room must not interpret it as an open defect.
 
-Do not redesign:
+Do not reopen, redesign or “clean up” this CH4P8 behavior unless P'Benz reports a new reproducible regression.
 
-- removal card
-- Game Menu
-- Settings
-- Phase VIII departure
-- Matrix Exit
-- Phase VIII audio
-- Phase VIII evidence/state logic
+---
 
-This defect reopens only this narrow Phase VIII presentation behavior, not Chapter IV globally.
+# 19. CHAPTER IV FINAL STATE
 
 ---
 
@@ -1481,7 +1456,7 @@ Canonical Chapter IV end-state remains:
 
 Status:
 
-`CHAPTER IV COMPLETE · ACCEPTED BASELINE + ISOLATED P8 STACKING DEFECT`
+`CHAPTER IV COMPLETE · OWNER ANDROID ACCEPTED · MAINTENANCE-FROZEN`
 
 ---
 
@@ -1742,39 +1717,6 @@ Dialogue:
 
 `Good. Then we keep it that way.`
 
-## Exact Production portrait source mapping for the two open shots
-
-Current portrait registry:
-
-`js/engine/01-runtime-data.js`
-
-Target mappings:
-
-- North `concerned` → `assets/images/5a51446056fdcb0a.jpg`
-- North `relieved` → `assets/images/9a859e7e805b89ee.jpg`
-
-Current CH5P1 dialogue source confirms:
-
-- `line("North","concerned","How bad was he?", ...)`
-- `line("North","relieved","Good. Then we keep it that way.", ...)`
-
-Rejected r9 custom assets still exist in repository history/current tree and must **not** be reused as approved solutions:
-
-- `assets/images/chapter-05/phase-01/north-concerned-full.png`
-- `assets/images/chapter-05/phase-01/north-relieved-full.png`
-
-Approved visual-source sheet included in the handoff package:
-
-`REFERENCE_NORTH_EXPRESSION_SHEET.png`
-
-The new room must inspect:
-1. registry source JPG
-2. expression sheet
-3. owner defect screenshot
-4. actual dialogue well geometry
-
-before choosing the surgical repair.
-
 ## Owner requirement
 
 For these **two shots only**:
@@ -1787,7 +1729,7 @@ For these **two shots only**:
 - preserve approved North identity
 - preserve the correct emotion
 - preserve graphic-novel visual language
-- use the approved North Expression Sheet / correct source portrait as basis
+- use an owner-approved North Expression Sheet if actually available; otherwise use the current canonical Production source portrait plus bundled owner target screenshot as the basis
 - do not simply zoom the face to hide a crop issue
 - do not modify unrelated North emotions
 - do not modify dialogue shell geometry
@@ -1818,13 +1760,35 @@ Do **not** touch:
 
 After these two portraits pass P'Benz's Android inspection, Chapter V Phase I may be treated as owner-acceptable for continuation unless another real-device defect is reported.
 
-Reference screenshots are bundled with the room-handoff package when available.
+Reference screenshots are bundled with the room-handoff package.
+
+## Current Production portrait source map — verified
+
+Current r10 routes North through the normal portrait registry in `js/engine/01-runtime-data.js`.
+
+Canonical current source assets:
+
+- `North.concerned` → `assets/images/5a51446056fdcb0a.jpg`
+- `North.relieved` → `assets/images/9a859e7e805b89ee.jpg`
+
+Current CH5P1 phase rendering uses `originalPortrait(name, emotion)` and normal registry routing for North in:
+
+`js/chapters/chapter-05/01-return-to-bangkok.js` — `0.22.8-c5p1r10`
+
+Rejected r9 custom assets that still exist in the repository but are **not approved repair sources by default**:
+
+- `assets/images/chapter-05/phase-01/north-concerned-full.png`
+- `assets/images/chapter-05/phase-01/north-relieved-full.png`
+
+Do not resurrect those files merely because their filenames sound convenient. Diagnose the current canonical source framing and established dialogue-well crop first. The bundled owner screenshots define the visual defect to solve.
+
+If an owner-approved North Expression Sheet is available in the current room, it may be used as an additional visual identity/expression reference. Its absence from this final ZIP is not a reason to stop or ask P'Benz to resend it when current Production sources plus target screenshots are sufficient.
 
 ---
 
 # 27. CHAPTER V PHASE II — NAME IN ROOM 1807
 
-This becomes the immediate story-production objective **only after the two open maintenance defects are accepted on Android**.
+This becomes the immediate story-production objective **only after the two open CH5P1 North portrait shots are accepted on Android**.
 
 Reveal Room 1807 victim:
 
@@ -2085,22 +2049,6 @@ THE PERFECT RECORD:
 
 no clean prosecution survives or an accepted wrong institutional narrative becomes too complete to reopen.
 
-
-## False-conviction deterministic tie-break order
-
-When multiple wrong principal cases remain legally eligible, resolve ties in this order:
-
-1. admissible corroboration breadth
-2. clean chain / evidence integrity
-3. motive + means + opportunity completeness
-4. unresolved contradiction severity
-5. human / physical corroboration
-6. institutional sustainability
-
-No randomness.
-
-Do not select a false principal because the story "needs" a dramatic ending. The full investigation state must support the result.
-
 ---
 
 # 32. EVIDENCE ARCHITECTURE
@@ -2245,24 +2193,26 @@ Check:
 - menus
 - stacking contexts
 
-## Open defect regression checks
+## Resolved regression guard + current open acceptance checks
 
-### CH4P8 personnel card
+### CH4P8 personnel card — RESOLVED REGRESSION GUARD
 
-Reproduce:
+Do not repair this again proactively. During broad release regression only, verify the already accepted behavior:
 
 1. reach Jakarta departure
 2. leave `NORTH · REMOVED` card pending
 3. open Game Menu / Settings
-4. verify Menu/Settings fully covers the card
+4. Menu/Settings covers card
 5. close Menu/Settings
-6. verify pending card returns unchanged
+6. same pending card returns unchanged
 7. press its own `CONTINUE`
-8. verify normal departure flow
-9. verify evidence/state not changed merely by opening Settings
-10. verify Matrix Exit and audio lifecycle still behave as previously accepted
+8. normal departure continues
+9. evidence/state does not change merely from opening Settings
+10. Matrix Exit and accepted audio lifecycle remain intact
 
-### CH5P1 North portraits
+A failure here is a **new regression**, not continuation of an open 2026-08-17 defect.
+
+### CH5P1 North portraits — CURRENT OPEN GATE
 
 Inspect only:
 
@@ -2285,29 +2235,19 @@ Physical Android Chrome remains final acceptance.
 
 # 36. CURRENT PRODUCTION STATUS — 2026-08-17
 
-Latest inspected repository HEAD before this preservation correction:
+Latest inspected Production HEAD and latest verified runtime-code baseline at this final handoff:
 
-`e9792c7b43d81a0b1d4631e0e59f62498c7870af`
+`76bbcceff1ad28eb81b921a5d0053da1283f2a2e`
 
 Message:
 
-`Perfect zero-question room handoff`
+`Fix CH4P8 removal card stacking`
 
-This HEAD is documentation-only and changed only `GAME_MASTER_PLAN.md`.
-
-Latest verified runtime-code baseline remains:
-
-`1e4afcf94a55c87d684eb3dac3aa1442040c1601`
-
-Runtime-code message:
-
-`Fix CH5P1 rollback and landing`
-
-After P'Benz uploads this preservation correction, repository HEAD will advance again. That documentation commit does not change the runtime-code baseline unless runtime files are changed in the same upload.
-
-Current base Runtime:
+Base Runtime:
 
 `0.22.8`
+
+This commit is scoped maintenance under Runtime `0.22.8`; it does not constitute a base Runtime bump.
 
 Current Chapter V Phase I:
 
@@ -2319,6 +2259,11 @@ Current Chapter V loader:
 
 Current build snapshot:
 
+- base Runtime: `0.22.8`
+- bootstrap maintenance: `0.22.8-r2`
+- bootstrap cache: `0228r2`
+- CH4P8 stack repair: `0.22.8-z1`
+- CH4P8 stack-fix cache: `0228z1`
 - Runtime Build Label: `0.22.8`
 - Developer Navigation: `0.22.8-d1`
 - North QA: `0.22.8`
@@ -2330,179 +2275,100 @@ Current build snapshot:
 - Matrix Exit: `0.22.7-m1`
 - P7/P8 Audio Lifecycle: `0.22.7-a1`
 
+If P'Benz uploads this final documentation afterward, repository HEAD will advance. A docs-only HEAD does not replace `76bbc...` as the runtime-code baseline. New rooms must inspect the newer commit before deciding.
+
 ## Owner acceptance snapshot
 
 Accepted / closed:
 
-- Chapters I–IV overall continuation baseline
+- Chapters I–IV continuation baseline
+- Chapter IV exactly 8 phases
+- CH4P8 NORTH REMOVED card stacking: **RESOLVED / OWNER ANDROID PASS**
 - P8 Matrix Close / Resume
-- P7/P8 background audio maintenance
-- current corrected Chapter V opening clip
+- P7/P8 background audio lifecycle
+- corrected Chapter V opening clip
 - CH5P1 current flow except two North portrait shots
-- Somchai brightness restored to `.88`
+- Somchai brightness `.88`
 - rejected r9 North custom portrait experiment rolled back
 
-Open:
+Currently open, exactly two items:
 
-1. **CH4P8 Game Menu / Settings must cover NORTH REMOVED card**
-2. **CH5P1 North portrait at “How bad was he?”**
-3. **CH5P1 North portrait at “Good. Then we keep it that way.”**
+1. **CH5P1 North `concerned` portrait at `How bad was he?`**
+2. **CH5P1 North `relieved` portrait at `Good. Then we keep it that way.`**
 
-These are the immediate known defects at this handoff.
-
-No other CH5P1 component should be reopened merely because these defects remain.
+No other Chapter IV or CH5P1 component is open merely because these portraits remain.
 
 ---
 
-# 36A. OPEN-DEFECT EXECUTION MATRIX — EXACT FIRST WORK
+# 36A. MAINTENANCE EXECUTION MATRIX — EXACT CURRENT WORK
 
-This matrix is the authoritative maintenance queue at the moment of handoff.
+## FAMILY A — CHAPTER IV PHASE VIII STACKING — CLOSED
 
-## DEFECT FAMILY A — CHAPTER IV PHASE VIII
+Status:
 
-### Symptom
-At Jakarta airport/departure, the persistent personnel card:
+`RESOLVED · OWNER PHYSICAL ANDROID PASS`
 
-- `PUBLIC PERSONNEL RECORD`
-- `NORTH`
-- `REMOVED`
-- `No correction published`
-- `CONTINUE`
+Historical symptom, repair implementation and regression criteria are preserved in Section 18 and the bundled pre-fix screenshot. This family is **not actionable** unless a new regression is reported.
 
-remains visible until its own `CONTINUE` is pressed.
+Do not spend a new-room turn “repairing” or redesigning it again.
 
-When Game Menu / Settings is opened before pressing `CONTINUE`, the card currently stacks above the menu.
-
-### Reference
-Bundled screenshot:
-
-`REFERENCE_CH4P8_REMOVAL_CARD_SETTINGS.jpg`
-
-### Known source target
-Card DOM:
-
-`#ch4P8RemovalCard`
-
-Primary phase files:
-
-- `js/chapters/chapter-04/08-shadow-of-truth.js`
-- `css/chapter-04-phase-08.css`
-
-Global menu/modal shell is defined in the shared UI layer.
-
-### Known source relationship at handoff
-- `.ch4-p8-removal-card` uses `z-index:420`
-- global `.drawer,.modal` uses `z-index:95`
-
-This is a strong source-level explanation for the reproduced Android symptom.
-
-### Required repair
-Fix the stacking relationship so:
-
-1. Game Menu / Settings covers the personnel card.
-2. The personnel card remains pending underneath.
-3. Closing Menu / Settings reveals the same pending card.
-4. The card's own `CONTINUE` still advances normally.
-5. Opening Settings does not dismiss the card.
-6. Opening Settings does not auto-advance the story.
-7. Opening Settings does not mutate evidence/checkpoint/Hidden Case merely by opening.
-8. No Phase VIII redesign.
-
-### Forbidden collateral changes
-Do not alter:
-
-- personnel-card copy
-- card geometry unless technically required for stacking only
-- Departure scene
-- takeoff flow
-- route card
-- Matrix validator
-- Matrix Close/Resume
-- Phase VIII audio lifecycle
-- Save schema
-- Hidden Case
-- Chapter IV story
-- global menu appearance
-
-### Pass gate
-Local/static:
-- source stacking inspected
-- only intended CSS/JS paths changed
-- syntax check passes where applicable
-- no stale version/cache mismatch for changed shipped source
-
-Owner Android:
-- Settings fully covers card
-- card returns unchanged after Settings closes
-- Continue still works
-- no new overlay/audio/state regression
-
----
-
-## DEFECT FAMILY B — CHAPTER V PHASE I NORTH PORTRAITS
+## FAMILY B — CHAPTER V PHASE I NORTH PORTRAITS — OPEN
 
 ### Scope
 Exactly two lower dialogue-panel portraits.
 
 #### Shot 1
-Speaker: `NORTH`  
-Emotion: `concerned`  
-Line:
-
-`How bad was he?`
-
-Bundled screenshot:
-
-`REFERENCE_CH5P1_NORTH_HOW_BAD_WAS_HE.jpg`
+- Speaker: `NORTH`
+- Emotion: `concerned`
+- Line: `How bad was he?`
+- Canonical current registry source: `assets/images/5a51446056fdcb0a.jpg`
+- Owner target screenshot: `REFERENCE_CH5P1_NORTH_HOW_BAD_WAS_HE.jpg`
 
 #### Shot 2
-Speaker: `NORTH`  
-Emotion: `relieved`  
-Line:
-
-`Good. Then we keep it that way.`
-
-Bundled screenshot:
-
-`REFERENCE_CH5P1_NORTH_GOOD_KEEP_IT_THAT_WAY.jpg`
+- Speaker: `NORTH`
+- Emotion: `relieved`
+- Line: `Good. Then we keep it that way.`
+- Canonical current registry source: `assets/images/9a859e7e805b89ee.jpg`
+- Owner target screenshot: `REFERENCE_CH5P1_NORTH_GOOD_KEEP_IT_THAT_WAY.jpg`
 
 ### Required visual result
+
 For both shots:
 
 - complete head visible
-- no left-side clipping
+- no left clipping
 - no top clipping
-- shoulders / upper torso visible
-- portrait fills accepted portrait well attractively
+- tasteful shoulders / upper torso visible
+- attractive fill in established portrait well
 - North identity preserved
 - correct emotion preserved
 - no stretching
-- no white/source edge
+- no source/white edge
 - no face-only zoom
-- no awkward excessive empty space
+- no excessive empty space
 
-### Source rule
-Current r10 uses normal portrait-registry routing.
+### Current source routing
 
-The rejected r9 custom North portrait assets are **not approved repair sources**.
+CH5P1 r10 uses normal portrait-registry routing. Rejected r9 custom `north-*-full.png` files are not approved defaults.
 
 Before editing:
-1. inspect the actual source asset for `concerned`
-2. inspect the actual source asset for `relieved`
-3. inspect the approved North expression sheet/reference
-4. determine whether the defect is:
-   - source export framing
-   - dialogue-well fit/crop
-   - or both
-5. repair only these two expression routes/assets as needed
 
-### Forbidden collateral changes
+1. inspect current Production HEAD
+2. inspect `js/engine/01-runtime-data.js` North `concerned`/`relieved` registry entries
+3. inspect `js/chapters/chapter-05/01-return-to-bangkok.js` r10 render routing
+4. inspect the two bundled owner screenshots
+5. inspect current CH5P1 CSS portrait fitting
+6. determine whether source framing, crop/fitting or both cause the issue
+7. choose the smallest repair that affects exactly these two expression routes/assets
+
+### Absolute frozen-area firewall
+
 Do not alter:
 
 - Somchai
-- Benedict
+- Benedict portrait framing
 - any other North emotion
-- dialogue shell
+- dialogue shell/geometry
 - `TAP TO CONTINUE`
 - scene notes
 - `NORTH · OFF RECORD`
@@ -2515,36 +2381,41 @@ Do not alter:
 - walk clip
 - Custody Window
 - Save/Load
-- Dev
+- Developer tools
 - North QA
 - walkthrough behavior
 - dialogue/story text
 
+If an extra dependency truly must change, identify that dependency explicitly before changing it and keep it minimal. Convenience is not a dependency.
+
 ### Pass gate
-Local:
-- verify both target portraits at production mobile geometry
-- full head / upper torso visible
-- compare only intended files against current Production
-- package allowlist exact
-- syntax/build linkage unaffected or correctly updated where applicable
+
+Local/static/browser as available:
+
+- verify both target portraits at Production mobile geometry
+- full head + upper torso visible
+- no target-specific selector leaks to other North emotions
+- exact changed-file allowlist
+- syntax check where applicable
+- source/version/cache/loader linkage correct for every changed shipped file
+- base Runtime remains unchanged unless the repair genuinely requires a base release and the full atomic Runtime matrix is completed
 
 Owner Android:
+
 - P'Benz visually accepts both shots
-- no collateral regression in adjacent CH5P1 dialogue
+- adjacent CH5P1 dialogue shows no collateral regression
 
----
+## Queue completion
 
-## DEFECT QUEUE COMPLETION RULE
+Do not close CH5P1 from local confidence alone.
 
-Do not mark the queue closed because local tests look correct.
+Queue closes only after P'Benz physical Android acceptance of both portrait shots.
 
-Queue closes only when P'Benz confirms physical Android acceptance.
+Then:
 
-After both defect families pass:
+`CH5P1 = OWNER-ACCEPTABLE · FREEZE`
 
-`CH5P1 = OWNER-ACCEPTABLE FOR CONTINUATION`
-
-Then proceed to:
+Next story work:
 
 `CHAPTER V · PHASE II · NAME IN ROOM 1807`
 
@@ -2552,53 +2423,95 @@ Then proceed to:
 
 # 37. IMMEDIATE NEXT-ROOM PRIORITY
 
-The new room must begin with maintenance, not story expansion.
+The new room begins with the two CH5P1 portrait repairs, not Chapter IV and not story expansion.
 
 Order:
 
-1. read this Master Plan
+1. read this Master Plan and Migration Prompt completely
 2. inspect current Production HEAD
-3. reproduce/inspect the CH4P8 stacking issue from source and owner screenshot
-4. repair only the stacking relationship
-5. repair only the two named North CH5P1 portrait shots
-6. do not touch unrelated accepted CH5P1 behavior
-7. test locally honestly
-8. package the exact intended files only
-9. provide commit name ≤ 50 characters
-10. P'Benz performs physical Android acceptance
-11. once both defect families pass, freeze CH5P1
-12. begin `CHAPTER V · PHASE II · NAME IN ROOM 1807`
+3. confirm current runtime-code baseline / newer commit impact
+4. inspect canonical North `concerned` source + target screenshot
+5. inspect canonical North `relieved` source + target screenshot
+6. inspect only the relevant CH5P1 portrait fit/routing
+7. repair exactly those two shots
+8. do not touch frozen CH5P1 behavior
+9. test honestly
+10. run the Build-Linkage Gate
+11. package exact intended files only
+12. provide Commit Name ≤50 characters automatically
+13. P'Benz performs physical Android acceptance
+14. after both pass, freeze CH5P1
+15. begin `CHAPTER V · PHASE II · NAME IN ROOM 1807`
 
-Do not start Chapter V Phase II before the owner accepts these maintenance defects unless P'Benz explicitly changes priority.
+CH4P8 stacking is already resolved and must not be placed back into the open queue unless P'Benz reports a new regression.
+
+Do not start Chapter V Phase II before owner acceptance of the two portraits unless P'Benz explicitly changes priority.
 
 ---
 
 # 37A. PROJECT-FILE DELIVERY GATE — MUST PASS BEFORE REPLY
 
-Whenever delivering any LAST WITNESS file/package to P'Benz, verify all applicable items before the final reply:
+Whenever delivering **any** LAST WITNESS project file/package to P'Benz, verify all applicable items before the final reply.
 
-1. file actually exists
-2. user-visible sandbox download link is provided
-3. delivered scope matches the owner's request exactly
-4. no unrelated file slipped into the package
-5. changed-file allowlist is stated or internally verified
-6. final archive bytes are checksummed when the package is release/upload oriented
-7. current Production baseline was used for repair work
-8. changed source version/cache/loader linkage is consistent where applicable
-9. testing is described honestly
-10. Android acceptance is never claimed without P'Benz confirming it
-11. a proposed **Commit Name** is included automatically
-12. Commit Name is **50 characters or fewer**
-13. Commit Name matches the actual delivered scope
-14. Commit Name appears in a copyable code block
-15. if multiple independent packages are delivered, each receives the correct Commit Name
-16. no GitHub write is implied unless actually authorized/performed
-17. if the owner uploads manually, the response says so accurately
-18. after a landed upload, inspect Production before treating it as canonical
+## Artifact existence / scope
 
-A file delivery missing its Commit Name or download link is **incomplete**.
+1. file actually exists at the linked path
+2. user-visible sandbox download link is present
+3. delivered scope matches request exactly
+4. no unrelated path entered package
+5. changed-file allowlist is explicit or internally verified
+6. final archive listing has been re-opened/verified
+7. final package bytes are the same bytes that were validated
 
-A package containing collateral changes outside the owner-requested scope is **rejected**, even if the requested defect itself is fixed.
+## Build/linkage
+
+8. current Production baseline was used
+9. release classification is explicit: base Runtime / module / scoped maintenance / docs-only
+10. changed source version/cache/loader expected linkage is correct
+11. every changed cache-addressed shipped file uses a fresh cache identity
+12. if base Runtime changed, **every applicable atomic Runtime endpoint in Section 4 is synchronized**
+13. Settings / Runtime Label / runtime global / document dataset agree where applicable
+14. Owner Developer checked independently
+15. North QA checked independently
+16. Save-facing build checked where applicable
+17. diagnostics / Copy Test Info checked where applicable
+18. no stale prior build/cache string remains in affected authoritative files
+19. any mismatch = `RELEASE BLOCKER`; fix and repackage before delivery
+
+## QA honesty
+
+20. syntax/static/browser/harness results are labeled exactly as such
+21. Android acceptance is never claimed without P'Benz's actual physical-device confirmation
+22. Walkthrough pass is never substituted for gameplay pass
+23. mocked media is never called physical playback E2E
+
+## Package identity / checksum
+
+24. QA report, release notes, manifest and package identity describe the same release
+25. checksum is calculated from final archive bytes after archive is finalized
+26. checksum file is checked against the final archive
+
+## Mandatory Commit Name — OWNER NON-NEGOTIABLE
+
+27. a proposed **Commit Name is included automatically every time any project file is delivered**
+28. Commit Name is **50 characters or fewer including spaces/punctuation**
+29. Commit Name accurately describes the delivered artifact scope
+30. Commit Name is in a copyable Markdown code block
+31. one atomic package may use one Commit Name
+32. independent packages require separate Commit Names
+33. do not wait for P'Benz to request the Commit Name
+34. a missing or over-length Commit Name is an **incomplete handoff defect** and must be fixed before sending
+
+## GitHub truthfulness
+
+35. never imply a GitHub write occurred unless it actually did
+36. GitHub write permission must exist explicitly in the current turn
+37. when owner uploads manually, say so accurately
+38. after the owner uploads, re-inspect landed Production before calling it canonical
+
+A package containing collateral changes outside owner scope is rejected even if the target defect itself works.
+
+A release with one stale applicable Runtime/build endpoint is rejected even if gameplay appears correct on one screen.
 
 ---
 
@@ -2681,41 +2594,57 @@ Canonical final idea:
 # 40. FINAL NON-NEGOTIABLE SUMMARY
 
 - Owner physical Android evidence is highest authority.
-- Latest inspected repository HEAD before this preservation correction is `e9792c7b43d81a0b1d4631e0e59f62498c7870af` (documentation-only).
-- Latest verified runtime-code baseline is `1e4afcf94a55c87d684eb3dac3aa1442040c1601` — `Fix CH5P1 rollback and landing`.
-- Current authoritative Runtime is `0.22.8`.
+- Repository: `grolygori789-crypto/last-witness`.
+- Production/default branch: `production-rebuild`.
+- Latest inspected runtime-code HEAD at this handoff: `76bbcceff1ad28eb81b921a5d0053da1283f2a2e` — `Fix CH4P8 removal card stacking`.
+- A later docs-only handoff commit does not automatically replace `76bbcceff1ad28eb81b921a5d0053da1283f2a2e` as runtime-code baseline.
+- Current authoritative base Runtime is `0.22.8`.
+- Bootstrap maintenance generation is `0.22.8-r2` / cache `0228r2`.
+- CH4P8 scoped stacking maintenance is `0.22.8-z1` / cache `0228z1`.
 - Current CH5P1 is `0.22.8-c5p1r10`.
 - Current CH5 loader is `0.22.8-c5b7`.
-- Chapter IV has exactly 8 phases.
-- Chapters I–IV remain accepted continuation baseline with isolated maintenance allowed.
-- Phase VIII Matrix Exit remains accepted.
+- Chapter IV has exactly 8 phases. No Phase IX.
+- Chapter IV is complete, owner Android accepted and maintenance-frozen unless a new reproducible regression appears.
+- CH4P8 `#ch4P8RemovalCard` stacking defect is **RESOLVED / OWNER ANDROID PASS**.
+- P8 Matrix Exit remains accepted.
 - P7/P8 background audio maintenance remains accepted.
-- Chapter V Phase I is preliminarily acceptable except two North portraits.
-- The two North shots are `How bad was he?` and `Good. Then we keep it that way.`
-- Repair those two portrait shots only; no collateral CH5P1 edits.
-- Current corrected `bangkok-landing.mp4` is approved and frozen.
-- Somchai brightness is restored to `.88` and frozen unless owner says otherwise.
-- Rejected r9 North custom portraits must not be resurrected.
-- CH4P8 `#ch4P8RemovalCard` currently stacks above Settings/Game Menu and must be surgically fixed so Menu/Settings cover it while it remains pending underneath.
-- Opening Settings must not dismiss/advance/mutate the personnel card state.
-- After both defect families pass owner Android, freeze CH5P1 and begin Chapter V Phase II.
+- Chapter V Phase I is preliminarily acceptable except exactly two North portraits.
+- Open shot 1: North `concerned` — `How bad was he?`.
+- Open shot 2: North `relieved` — `Good. Then we keep it that way.`.
+- Canonical current registry sources are `assets/images/5a51446056fdcb0a.jpg` and `assets/images/9a859e7e805b89ee.jpg` respectively.
+- Rejected r9 `north-concerned-full.png` / `north-relieved-full.png` must not be resurrected by filename convenience.
+- Repair only those two portrait shots; no collateral CH5P1 edits.
+- Corrected `bangkok-landing.mp4` is approved and frozen.
+- Somchai brightness `.88` is approved and frozen unless owner explicitly changes it.
+- After both North portraits pass owner Android, freeze CH5P1 and begin `CHAPTER V · PHASE II · NAME IN ROOM 1807`.
 - Interface/UI shells are implementation contracts.
-- Build linkage is atomic and mismatches block release.
+- Dialogue geometry is frozen unless owner explicitly requests change or a reproduced blocker truly requires the smallest necessary change.
+- Save/Load and Hidden Case scoring must remain deterministic/idempotent.
+- Background/foreground audio lifecycle is zero-tolerance.
 - Owner Developer and North QA are separate mandatory endpoints.
+- North QA remains blind to Hidden Case/Elena gates/Owner tools/solutions.
 - Hidden Case is deterministic, auditable, idempotent and player-invisible.
-- Player never chooses killer from a final list.
-- Five false principals: Kittisak, Narin, Adrian, Arman, Ika.
-- Somchai remains strong cleaner/accomplice/support.
+- Player never chooses the killer from a final list.
+- Five false-conviction principals: Kittisak, Narin, Adrian, Arman, Ika.
+- Somchai remains strong cleaner/accomplice/conditional support.
 - Rin is `R.` / Last Witness and is revealed in Chapter V, not Chapter IV.
 - Elena is historical murderer/mastermind in every route.
 - Elena remains low-signal through Chapter V and below principal false theories in Chapter VI.
-- Elena becomes fully serious only in late Chapter VII synthesis.
+- Elena becomes fully serious only in late Chapter VII cross-class synthesis.
 - Alternate endings change what is provable/sustainable, never historical truth.
-- P8 = CALCULATE; Ch V = INFLUENCE; Ch VI = DIVERGE; Ch VII = RESOLVE.
+- Adaptive model: `P8 CALCULATE → Ch V INFLUENCE → Ch VI DIVERGE → Ch VII RESOLVE`.
 - No single clue and no single ordinary choice decides the ending.
-- Commit names are ≤ 50 characters.
-- Every project file delivery must include a scope-accurate Commit Name of 50 characters or fewer, without waiting for the owner to ask.
-- GitHub writes require explicit authorization in the current turn.
-- New rooms must not ask the owner to repeat locked decisions contained here.
+- Build linkage is atomic. **Any affected mismatch is a RELEASE BLOCKER.**
+- A base Runtime change requires complete synchronization across every applicable Runtime-facing endpoint in Section 4 before package/release.
+- Independent unchanged modules are not fake-bumped; compatibility/linkage must nevertheless be correct.
+- Every changed shipped cache-addressed file receives a fresh cache identity.
+- Dev and North linkage are verified separately every affected release.
+- Packaged bytes must equal validated source bytes.
+- Checksum must be generated from the final package bytes.
+- GitHub writes require explicit owner authorization in the current turn.
+- Every project file delivery must automatically include a scope-accurate Commit Name ≤50 characters in a copyable code block.
+- Missing Commit Name = incomplete handoff.
+- New rooms must not ask P'Benz to repeat locked decisions recoverable from this package/current Production.
 
-This is the canonical zero-question continuation contract as of 2026-08-17.
+This is the canonical final zero-question continuation contract as of `2026-08-17 11:52 ICT`.
+
