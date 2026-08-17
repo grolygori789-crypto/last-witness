@@ -1,0 +1,5 @@
+/* LAST WITNESS - CH4P8 NORTH REMOVED stacking repair 0.22.8-z1
+ * Scoped maintenance only: keep the pending personnel card above gameplay,
+ * but below the global Game Menu / Settings layer (z-index:95).
+ */
+.ch4-p8-removal-card{z-index:94}

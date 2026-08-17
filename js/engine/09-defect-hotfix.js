@@ -1,5 +1,5 @@
-/* LAST WITNESS - Legacy Compatibility Shim + Runtime Bootstrap 0.22.8
- * STARTUP RECOVERY 0228R1.
+/* LAST WITNESS - Legacy Compatibility Shim + Runtime Bootstrap 0.22.8-r2
+ * STARTUP RECOVERY 0228R2.
  * Same safe Production module order plus isolated Owner Walkthrough and P8 Matrix Exit tooling.
  * No Phase VIII repair loader; changed runtime-facing tools use fresh cache keys.
  */
@@ -29,7 +29,7 @@ script("js/engine/15-thai-localization.js?v=0152","lwThaiLocalizationScript",()=
  .then(()=>script("js/engine/26-c4-uniform-portrait-edge-repair.js?v=0197","lwC4UniformPortraitEdgeRepairScript",()=>Boolean(window.LastWitnessC4UniformPortraitEdgeRepair?.version==="0.19.7"&&window.LastWitnessC4UniformPortraitEdgeRepair?.installed)).catch(error=>console.error("LAST WITNESS Chapter IV uniform portrait edge repair failed to load",error)))
  .then(()=>{stylesheet("css/chapter-04-phase-07.css?v=0207","lwChapter04Phase07Style");return script("js/chapters/chapter-04/07-relay-facility.js?v=0206","lwChapter04Phase07Script",()=>Boolean(window.LastWitnessChapter4Phase7?.version==="0.20.6")).catch(error=>console.error("LAST WITNESS Relay Facility Climax failed to load",error))})
  .then(()=>script("js/engine/28-hidden-case-architecture.js?v=0210","lwHiddenCaseArchitectureScript",()=>Boolean(window.LastWitnessHiddenCase?.version==="0.21.0")).catch(error=>console.error("LAST WITNESS Hidden Case Architecture failed to load",error)))
- .then(()=>{stylesheet("css/chapter-04-phase-08.css?v=0222","lwChapter04Phase08Style");return script("js/chapters/chapter-04/08-shadow-of-truth.js?v=0222","lwChapter04Phase08Script",()=>Boolean(window.LastWitnessChapter4Phase8?.version==="0.22.2")).catch(error=>console.error("LAST WITNESS Shadow of the Truth failed to load",error))})
+ .then(()=>{stylesheet("css/chapter-04-phase-08.css?v=0222","lwChapter04Phase08Style");stylesheet("css/chapter-04-phase-08-stack-fix.css?v=0228z1","lwChapter04Phase08StackFixStyle");return script("js/chapters/chapter-04/08-shadow-of-truth.js?v=0222","lwChapter04Phase08Script",()=>Boolean(window.LastWitnessChapter4Phase8?.version==="0.22.2")).catch(error=>console.error("LAST WITNESS Shadow of the Truth failed to load",error))})
  .then(()=>{stylesheet("css/chapter-04-phase-08-matrix-exit.css?v=0227m1","lwChapter04Phase08MatrixExitStyle");return script("js/engine/31-p8-matrix-exit.js?v=0227m1","lwChapter04Phase08MatrixExitScript",()=>Boolean(window.LastWitnessP8MatrixExit?.version==="0.22.7-m1"&&window.LastWitnessP8MatrixExit?.installed)).catch(error=>console.error("LAST WITNESS P8 Matrix Exit failed to load",error))})
  .then(()=>script("js/engine/23-chapter4-native-thai.js?v=01813","lwChapter4NativeThaiScript",()=>Boolean(window.LastWitnessChapter4NativeThai?.version==="0.18.13"&&window.LastWitnessChapter4NativeThai?.installed)).catch(error=>console.error("LAST WITNESS Chapter IV Native Thai localization failed to load",error)))
  .then(()=>script("js/engine/19-ch4-phase3-direct-handoff.js?v=0170d2","lwChapter4Phase3DirectHandoffScript",()=>Boolean(window.LastWitnessPhase3DirectHandoff?.version==="0.17.0-d2"&&window.LastWitnessPhase3DirectHandoff?.installed)).catch(error=>console.error("LAST WITNESS Phase III direct handoff failed to load",error)))
