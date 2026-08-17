@@ -1,17 +1,18 @@
-/* LAST WITNESS - Chapter V Production Loader 0.22.8-c5b7
+/* LAST WITNESS - Chapter V Production Loader 0.22.8-c5b8
  * Historical 0.4.x repair logic remains retired. This file now owns only the
  * scoped Chapter V Phase I production extension loader under Runtime 0.22.8.
  */
 (function(){
 "use strict";
-const VERSION="0.22.8-c5b7";
+const VERSION="0.22.8-c5b8";
 if(window.LastWitnessChapter5Bootstrap?.version===VERSION)return;
 function stylesheet(href,id){if(document.getElementById(id))return;const n=document.createElement("link");n.id=id;n.rel="stylesheet";n.href=href;document.head.appendChild(n)}
 function script(src,id,ready){const existing=document.getElementById(id);if(ready?.())return Promise.resolve();if(existing?.dataset.loaded==="1")return Promise.resolve();if(existing?.__lwPromise)return existing.__lwPromise;const n=existing||document.createElement("script");n.id=id;n.src=src;n.async=false;n.__lwPromise=new Promise((resolve,reject)=>{n.addEventListener("load",()=>{n.dataset.loaded="1";resolve()},{once:true});n.addEventListener("error",reject,{once:true})});if(!existing)document.body.appendChild(n);return n.__lwPromise}
 function install(){
  stylesheet("css/chapter-05-phase-01.css?v=0228c5p1r10","lwChapter05Phase01Style");
  return script("js/chapters/chapter-05/01-return-to-bangkok.js?v=0228c5p1r10","lwChapter05Phase01Script",()=>Boolean(window.LastWitnessChapter5Phase1?.version==="0.22.8-c5p1r10"&&window.LastWitnessChapter5Phase1?.installed))
-  .then(()=>{try{window.LastWitnessChapter5Phase1.install?.()}catch(_){};return script("js/engine/34-chapter-05-owner-walkthrough.js?v=0228c5w3","lwChapter05OwnerWalkthroughScript",()=>Boolean(window.LastWitnessChapter5OwnerWalkthrough?.version==="0.22.8-c5w3"&&window.LastWitnessChapter5OwnerWalkthrough?.installed))})
+  .then(()=>{try{window.LastWitnessChapter5Phase1.install?.()}catch(_){};return script("js/engine/35-ch5p1-north-portrait-fix.js?v=0228c5n1","lwChapter05NorthPortraitFixScript",()=>Boolean(window.LastWitnessChapter5NorthPortraitFix?.version==="0.22.8-c5n1"&&window.LastWitnessChapter5NorthPortraitFix?.installed))})
+  .then(()=>{try{window.LastWitnessChapter5NorthPortraitFix.install?.()}catch(_){};return script("js/engine/34-chapter-05-owner-walkthrough.js?v=0228c5w3","lwChapter05OwnerWalkthroughScript",()=>Boolean(window.LastWitnessChapter5OwnerWalkthrough?.version==="0.22.8-c5w3"&&window.LastWitnessChapter5OwnerWalkthrough?.installed))})
   .then(()=>{try{window.LastWitnessChapter5OwnerWalkthrough?.install?.()}catch(_){}})
   .catch(error=>console.error("LAST WITNESS Chapter V Phase I extension failed to load",error))
 }
