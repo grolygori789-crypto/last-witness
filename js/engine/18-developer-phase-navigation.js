@@ -1,10 +1,10 @@
-/* LAST WITNESS - Isolated Chapter IV Developer Phase Navigation 0.22.8-d1
+/* LAST WITNESS - Isolated Chapter IV Developer Phase Navigation 0.22.10-d2
  * Canonical Developer Console jumps for Chapter IV Phases I-VIII.
  * All Chapter IV test jumps share one modal lifecycle, media boundary and state reset path.
  */
 (function(){
 "use strict";
-const VERSION="0.22.8-d1";
+const VERSION="0.22.10-d2";
 if(window.LastWitnessDeveloperPhaseNavigation?.version===VERSION){
  try{window.LastWitnessDeveloperPhaseNavigation.install?.()}catch(_){}
  return
