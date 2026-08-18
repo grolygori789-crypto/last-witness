@@ -1,4 +1,4 @@
-/* LAST WITNESS - Chapter V / Phase II: NAME IN ROOM 1807 0.22.8-c5p2r2
+/* LAST WITNESS - Chapter V / Phase II: NAME IN ROOM 1807 0.22.8-c5p2r3
  * Reuse-first production surface. Ordinary scene/HUD/dialogue/card geometry inherits
  * the accepted Chapter IV Phase V and Chapter V Phase I visual contract.
  */
@@ -87,3 +87,47 @@
 .ch5-p2-scene .ch4-p5-label{display:none!important}
 .ch5-p2-dialogue{pointer-events:auto!important;touch-action:manipulation;cursor:pointer;z-index:40!important}
 .ch5-p2-action,.ch5-p2-scene .hud,.ch5-p2-monitor-button{pointer-events:auto!important;touch-action:manipulation}
+
+/* r3 owner visual/input/audio repair
+ * - Progress language is the same warm LAST WITNESS gold used by accepted phases.
+ * - Workstation HTML is geometrically pinned to the physical LCD by JS source-pixel mapping.
+ * - The physical monitor owns the sole workstation action; no duplicate screen-external CTA.
+ */
+.ch5-p2-progress.ch4-p5-progress>div{background:rgba(255,255,255,.13)!important}
+.ch5-p2-progress .ch5-p2-progress-fill,
+.ch5-p2-progress .ch4-p5-progress-fill{background:var(--gold,#ddb56d)!important;background-image:none!important;box-shadow:0 0 8px rgba(221,181,109,.42)!important}
+
+#ch5P2WorkstationAction{display:none!important;pointer-events:none!important}
+#ch5P2Workstation>.scene{object-position:center center}
+.ch5-p2-monitor-screen{
+ left:12.73%;top:28.26%;width:72.22%;height:27.08%;
+ border-radius:1px;background:linear-gradient(180deg,rgba(7,11,15,.995),rgba(3,6,10,.998));
+ box-shadow:inset 0 0 0 1px rgba(226,203,158,.08),inset 0 0 46px rgba(0,0,0,.58);
+ pointer-events:auto!important;touch-action:manipulation
+}
+.ch5-p2-monitor-ui{padding:0;display:grid;grid-template-rows:auto minmax(0,1fr) auto;background:linear-gradient(180deg,rgba(7,12,17,.96),rgba(4,8,12,.985));}
+.ch5-p2-monitor-head{padding:12px 15px 10px;border-bottom:1px solid rgba(221,181,109,.22);background:linear-gradient(90deg,rgba(221,181,109,.055),transparent 72%)}
+.ch5-p2-monitor-head strong{font-size:clamp(9px,1.8vw,14px);letter-spacing:.145em}
+.ch5-p2-monitor-head small{font-size:clamp(6.5px,1.15vw,9px)}
+.ch5-p2-monitor-dashboard{min-height:0;display:grid;grid-template-columns:minmax(0,1.28fr) minmax(112px,.72fr);gap:0}
+.ch5-p2-monitor-primary{display:flex;min-width:0;flex-direction:column;justify-content:center;padding:12px 16px 11px;border-right:1px solid rgba(255,255,255,.065)}
+.ch5-p2-monitor-primary>small{color:#80949d;font-size:clamp(6px,1.05vw,8.5px);font-weight:800;letter-spacing:.14em}
+.ch5-p2-monitor-state{margin-top:6px;color:#f1e8d9;font-size:clamp(13px,2.35vw,21px);font-weight:850;line-height:1.08;letter-spacing:.085em;text-align:left}
+.ch5-p2-monitor-sub{max-width:46ch;margin-top:8px;color:#9cacb3;font-size:clamp(7.5px,1.25vw,10.5px);line-height:1.42;text-align:left}
+.ch5-p2-monitor-path{display:grid;align-content:center;gap:7px;padding:10px 12px;background:rgba(255,255,255,.012)}
+.ch5-p2-monitor-path>div{min-width:0;padding:7px 8px;border-left:2px solid rgba(221,181,109,.45);background:linear-gradient(90deg,rgba(221,181,109,.055),transparent)}
+.ch5-p2-monitor-path small{display:block;color:#758891;font-size:clamp(5.5px,.9vw,7.5px);font-weight:800;letter-spacing:.12em}
+.ch5-p2-monitor-path b{display:block;overflow:hidden;margin-top:2px;color:#d8e0e1;font-size:clamp(7px,1.05vw,9.5px);letter-spacing:.07em;text-overflow:ellipsis;white-space:nowrap}
+.ch5-p2-monitor-button{width:auto!important;min-height:34px!important;margin:0 14px 12px!important;padding:8px 12px!important;border-radius:4px!important;font-size:clamp(7px,1.25vw,10px)!important;letter-spacing:.105em!important;box-shadow:0 5px 16px rgba(0,0,0,.26)!important}
+
+.ch5-p2-source,.ch5-p2-slot,.ch5-p2-conclusion,.ch5-p2-close,.ch5-p2-modal-foot button,#ch5P2NarinNext{touch-action:manipulation}
+#settingsModal.open{pointer-events:auto}
+
+@media(max-width:520px){
+ .ch5-p2-monitor-head{padding:9px 11px 8px}
+ .ch5-p2-monitor-dashboard{grid-template-columns:minmax(0,1.34fr) minmax(92px,.66fr)}
+ .ch5-p2-monitor-primary{padding:9px 11px 8px}
+ .ch5-p2-monitor-path{gap:5px;padding:7px 8px}
+ .ch5-p2-monitor-path>div{padding:5px 6px}
+ .ch5-p2-monitor-button{min-height:30px!important;margin:0 10px 9px!important;padding:6px 9px!important}
+}
