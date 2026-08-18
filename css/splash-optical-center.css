@@ -1,0 +1,7 @@
+/* LAST WITNESS - Benedict Interactive splash optical alignment 0.22.11-splash1
+ * Visual-only additive override. Keeps title/tap behavior unchanged.
+ */
+#splash .studio{
+  transform:translateY(clamp(-44px,-4svh,-28px));
+  will-change:transform;
+}

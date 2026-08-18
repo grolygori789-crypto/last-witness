@@ -1,10 +1,10 @@
-/* LAST WITNESS - CH5P2 Silent Interaction Surface 0.22.10-p2s2
+/* LAST WITNESS - CH5P2 Silent Interaction Surface 0.22.11-p2s3
  * Removes shared tactile click audio from high-frequency Phase II investigation
  * controls without blocking their pointer/click events or changing global Menu/Settings audio.
  */
 (function(){
 "use strict";
-const VERSION="0.22.10-p2s2";
+const VERSION="0.22.11-p2s3";
 if(window.LastWitnessChapter5Phase2SilentUI?.version===VERSION){try{window.LastWitnessChapter5Phase2SilentUI.install?.()}catch(_){}return}
 const SELECTOR=[
  ".ch5-p2-dialogue",

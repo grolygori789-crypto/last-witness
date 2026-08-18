@@ -1,10 +1,10 @@
-/* LAST WITNESS - Chapter V Phase II Hidden Case Extension 0.22.10-c5h2
+/* LAST WITNESS - Chapter V Phase II Hidden Case Extension 0.22.11-c5h3
  * Idempotent Chapter V Phase II evidence interpretation layered over the accepted
  * Hidden Case 0.21.0 engine. No relationship mutation and no Elena leakage.
  */
 (function(){
 "use strict";
-const VERSION="0.22.10-c5h2";
+const VERSION="0.22.11-c5h3";
 if(window.LastWitnessChapter5Phase2HiddenCase?.version===VERSION&&window.LastWitnessChapter5Phase2HiddenCase?.installed)return;
 const clone=v=>JSON.parse(JSON.stringify(v));
 const gs=()=>{try{return state}catch(_){return window.state||null}};
