@@ -1,12 +1,12 @@
-/* LAST WITNESS - Legacy Compatibility Shim + Runtime Bootstrap 0.22.8-r2
- * STARTUP RECOVERY 0228R2.
+/* LAST WITNESS - Legacy Compatibility Shim + Runtime Bootstrap 0.22.9-r1
+ * STARTUP RECOVERY 0229R1.
  * Same safe Production module order plus isolated Owner Walkthrough and P8 Matrix Exit tooling.
  * No Phase VIII repair loader; changed runtime-facing tools use fresh cache keys.
  */
 (function(){
 "use strict";
 window.LastWitnessLegacyHotfix={disabled:true,version:"0.5.0"};
-window.LastWitnessRuntimeBuild="0.22.8";
+window.LastWitnessRuntimeBuild="0.22.9";
 function stylesheet(href,id){if(document.getElementById(id))return;const link=document.createElement("link");link.id=id;link.rel="stylesheet";link.href=href;document.head.appendChild(link)}
 function script(src,id,ready){const existing=document.getElementById(id);if(ready?.())return Promise.resolve();if(existing?.dataset.loaded==="1")return Promise.resolve();if(existing?.__lwPromise)return existing.__lwPromise;const node=existing||document.createElement("script");node.id=id;node.src=src;node.async=false;node.__lwPromise=new Promise((resolve,reject)=>{node.addEventListener("load",()=>{node.dataset.loaded="1";resolve()},{once:true});node.addEventListener("error",reject,{once:true})});if(!existing)document.body.appendChild(node);return node.__lwPromise}
 script("js/engine/15-thai-localization.js?v=0152","lwThaiLocalizationScript",()=>Boolean(window.LastWitnessThaiLocalization?.version==="0.15.2"&&window.LastWitnessThaiLocalization?.installed))
@@ -35,7 +35,7 @@ script("js/engine/15-thai-localization.js?v=0152","lwThaiLocalizationScript",()=
  .then(()=>script("js/engine/19-ch4-phase3-direct-handoff.js?v=0170d2","lwChapter4Phase3DirectHandoffScript",()=>Boolean(window.LastWitnessPhase3DirectHandoff?.version==="0.17.0-d2"&&window.LastWitnessPhase3DirectHandoff?.installed)).catch(error=>console.error("LAST WITNESS Phase III direct handoff failed to load",error)))
  .then(()=>script("js/engine/18-developer-phase-navigation.js?v=0228d1","lwDeveloperPhaseNavigationScript",()=>Boolean(window.LastWitnessDeveloperPhaseNavigation?.version==="0.22.8-d1"&&window.LastWitnessDeveloperPhaseNavigation?.installed)).catch(error=>console.error("LAST WITNESS Developer Phase Navigation failed to load",error)))
  .then(()=>script("js/engine/24-north-qa-access.js?v=0228","lwNorthQAAccessScript",()=>Boolean(window.LastWitnessNorthQA?.version==="0.22.8"&&window.LastWitnessNorthQA?.installed)).catch(error=>console.error("LAST WITNESS North QA Access failed to load",error)))
- .then(()=>script("js/engine/25-runtime-build-label.js?v=0228r1","lwRuntimeBuildLabelScript",()=>Boolean(window.LastWitnessRuntimeBuildLabel?.version==="0.22.8"&&window.LastWitnessRuntimeBuildLabel?.installed)).catch(error=>console.error("LAST WITNESS Runtime Build Label failed to load",error)))
+ .then(()=>script("js/engine/25-runtime-build-label.js?v=0229r1","lwRuntimeBuildLabelScript",()=>Boolean(window.LastWitnessRuntimeBuildLabel?.version==="0.22.9"&&window.LastWitnessRuntimeBuildLabel?.installed)).catch(error=>console.error("LAST WITNESS Runtime Build Label failed to load",error)))
  .then(()=>{stylesheet("css/owner-walkthrough-mode.css?v=0223w1","lwOwnerWalkthroughStyle");return script("js/engine/30-owner-walkthrough-mode.js?v=0223w1","lwOwnerWalkthroughScript",()=>Boolean(window.LastWitnessOwnerWalkthrough?.version==="0.22.3-w1"&&window.LastWitnessOwnerWalkthrough?.installed)).catch(error=>console.error("LAST WITNESS Owner Walkthrough failed to load",error))})
  .then(()=>stylesheet("css/phase-action-standard.css?v=01718","lwPhaseActionStandardStyle"))
  .catch(error=>console.error("LAST WITNESS runtime bootstrap failed",error));

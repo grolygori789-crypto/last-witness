@@ -1,4 +1,4 @@
-/* LAST WITNESS - Chapter V / Phase II: NAME IN ROOM 1807 0.22.8-c5p2r3
+/* LAST WITNESS - Chapter V / Phase II: NAME IN ROOM 1807 0.22.9-c5p2r4
  * Reuse-first production surface. Ordinary scene/HUD/dialogue/card geometry inherits
  * the accepted Chapter IV Phase V and Chapter V Phase I visual contract.
  */
@@ -131,3 +131,71 @@
  .ch5-p2-monitor-path>div{padding:5px 6px}
  .ch5-p2-monitor-button{min-height:30px!important;margin:0 10px 9px!important;padding:6px 9px!important}
 }
+
+
+/* r4 owner Android correction — preserve established LAST WITNESS visual language. */
+.ch5-p2-progress.ch4-p5-progress>div{background:rgba(255,255,255,.13)!important}
+.ch5-p2-progress .ch5-p2-progress-fill,
+.ch5-p2-progress .ch4-p5-progress-fill{
+  background:#ddb56d!important;
+  background-image:none!important;
+  box-shadow:0 0 8px rgba(221,181,109,.42)!important;
+}
+
+/* Reconciliation is a centered premium LAST WITNESS gold surface, not a blue/black full-height sheet. */
+.ch5-p2-modal.open{
+  display:grid!important;
+  place-items:center!important;
+  padding:calc(24px + env(safe-area-inset-top)) 18px calc(24px + env(safe-area-inset-bottom))!important;
+  background:radial-gradient(circle at 50% 18%,rgba(221,181,109,.11),transparent 42%),rgba(1,3,6,.91)!important;
+}
+.ch5-p2-modal .modal-card{
+  width:min(90vw,640px)!important;
+  height:min(84dvh,800px)!important;
+  max-height:min(84dvh,800px)!important;
+  margin:auto!important;
+  border:1px solid rgba(221,181,109,.56)!important;
+  border-radius:14px!important;
+  background:linear-gradient(155deg,rgba(24,22,19,.995),rgba(7,8,11,.998) 76%)!important;
+  box-shadow:0 30px 90px rgba(0,0,0,.82),inset 0 1px rgba(255,238,204,.04)!important;
+}
+.ch5-p2-modal-head{
+  background:linear-gradient(90deg,rgba(221,181,109,.11),rgba(221,181,109,.025) 58%,transparent)!important;
+  border-bottom-color:rgba(221,181,109,.18)!important;
+}
+.ch5-p2-step{color:#d7bf92!important}
+.ch5-p2-step>div{background:rgba(221,181,109,.14)!important}
+.ch5-p2-step i{background:linear-gradient(90deg,#aa7c3c,#ddb56d,#efd091)!important;box-shadow:0 0 8px rgba(221,181,109,.25)!important}
+.ch5-p2-source{
+  border-color:rgba(221,181,109,.18)!important;
+  background:linear-gradient(145deg,rgba(221,181,109,.045),rgba(255,255,255,.018))!important;
+}
+.ch5-p2-source:before{background:linear-gradient(#efd091,#b8833d)!important;opacity:.84!important}
+.ch5-p2-source small{color:#b7a27b!important}
+.ch5-p2-source.selected{
+  border-color:rgba(221,181,109,.72)!important;
+  background:linear-gradient(145deg,rgba(221,181,109,.16),rgba(221,181,109,.045))!important;
+  box-shadow:inset 0 0 0 1px rgba(239,208,145,.045)!important;
+}
+.ch5-p2-slot{border-color:rgba(221,181,109,.34)!important;background:rgba(11,9,6,.32)!important}
+.ch5-p2-slot.filled{border-color:rgba(221,181,109,.58)!important;color:#efe2cc!important;background:rgba(221,181,109,.085)!important}
+.ch5-p2-match-copy,.ch5-p2-kavin,.ch5-p2-finding{border-color:rgba(221,181,109,.28)!important}
+.ch5-p2-kavin{background:radial-gradient(circle at 50% 18%,rgba(221,181,109,.10),transparent 44%),#060606!important}
+.ch5-p2-match-copy .eyebrow{color:#d7bd8d!important}
+.ch5-p2-proof-limit>div{border-left-color:rgba(221,181,109,.65)!important;background:linear-gradient(90deg,rgba(221,181,109,.075),transparent)!important}
+.ch5-p2-conclusion{border-color:rgba(221,181,109,.16)!important;background:rgba(221,181,109,.025)!important}
+.ch5-p2-conclusion.selected{border-color:rgba(221,181,109,.72)!important;background:rgba(221,181,109,.13)!important;color:#f2dfbd!important}
+.ch5-p2-modal-foot{border-top-color:rgba(221,181,109,.16)!important;background:rgba(7,6,5,.72)!important}
+.ch5-p2-close{border-color:rgba(221,181,109,.28)!important;background:rgba(8,7,6,.84)!important}
+
+@media(max-width:520px){
+  .ch5-p2-modal .modal-card{width:min(92vw,640px)!important;height:min(82dvh,780px)!important;max-height:min(82dvh,780px)!important}
+}
+
+/* R4 scroll contract: fixed centered modal with independently scrollable body. */
+.ch5-p2-modal .ch5-p2-scroll{flex:1 1 auto;min-height:0;overflow:auto}
+
+/* R4 global-overlay contract: accepted Game Menu / Settings (z-index 95) must always win. */
+.ch5-p2-modal{z-index:90!important}
+.ch5-p2-narin-modal{z-index:90!important}
+.ch5-p2-modal.open,.ch5-p2-narin-modal.open{place-items:center}
