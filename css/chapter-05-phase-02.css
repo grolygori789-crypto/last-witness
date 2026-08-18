@@ -1,4 +1,4 @@
-/* LAST WITNESS - Chapter V / Phase II: NAME IN ROOM 1807 0.22.8-c5p2r1
+/* LAST WITNESS - Chapter V / Phase II: NAME IN ROOM 1807 0.22.8-c5p2r2
  * Reuse-first production surface. Ordinary scene/HUD/dialogue/card geometry inherits
  * the accepted Chapter IV Phase V and Chapter V Phase I visual contract.
  */
@@ -71,3 +71,19 @@
 @media(max-width:380px){
  .ch5-p2-match{grid-template-columns:102px 1fr;gap:9px}.ch5-p2-narin-shell{grid-template-columns:112px 1fr}.ch5-p2-modal-head{padding-left:15px}.ch5-p2-scroll{padding-left:12px;padding-right:12px}
 }
+
+
+/* r2 owner-lock repair: Phase II intro reuses the accepted Phase I location-card shell.
+   No geometric title mark, no CTA button, no bespoke card interaction. */
+.ch5-p2-card{align-items:center;justify-content:center;padding:calc(24px + env(safe-area-inset-top)) 18px calc(24px + env(safe-area-inset-bottom));background:#040609}
+.ch5-p2-card .ch4-p4-location-card{pointer-events:none}
+
+/* r2 mobile input firewall. Decorative/label layers never consume scene taps;
+   gameplay controls and dialogue remain the only interactive surfaces. */
+.ch5-p2-scene .ch4-p5-shade,
+.ch5-p2-scene .ch4-p5-label,
+.ch5-p2-scene .ch4-p5-objective,
+.ch5-p2-scene-note{pointer-events:none!important}
+.ch5-p2-scene .ch4-p5-label{display:none!important}
+.ch5-p2-dialogue{pointer-events:auto!important;touch-action:manipulation;cursor:pointer;z-index:40!important}
+.ch5-p2-action,.ch5-p2-scene .hud,.ch5-p2-monitor-button{pointer-events:auto!important;touch-action:manipulation}
