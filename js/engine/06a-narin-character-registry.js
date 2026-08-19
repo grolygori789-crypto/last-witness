@@ -1,13 +1,13 @@
-/* LAST WITNESS - Narin Character Journal Integration 0.22.20-nj10
+/* LAST WITNESS - Narin Character Journal Integration 0.22.21-nj11
  * Surgical Chapter V Phase II bridge for the legacy Character Journal allowlist.
  * Narin remains story-gated to completed secure contact; existing characters/rendering
  * are untouched. The extension augments only Narin's card/detail and unread state.
  */
 (function(){
 "use strict";
-const VERSION="0.22.20-nj10";
+const VERSION="0.22.21-nj11";
 if(window.LastWitnessNarinCharacterRegistry?.version===VERSION&&window.LastWitnessNarinCharacterRegistry?.installed){try{window.LastWitnessNarinCharacterRegistry.repair?.()}catch(_){}return}
-const THUMB_SRC="assets/images/chapter-05/phase-02/narin-journal.png?v=0240nj10";
+const THUMB_SRC="assets/images/chapter-05/phase-02/narin-journal.png?v=0241nj11";
 const DATA={
  name:{en:"Narin",th:"Narin"},
  role:{en:"Bangkok Deployment Operations",th:"ฝ่ายปฏิบัติการ Deployment กรุงเทพฯ"},
@@ -36,14 +36,15 @@ function relationSummary(){return`<div class="relation-summary"><div class="rela
 function metricMarkup(){return`<div class="relation-metrics">${DATA.metrics.map(m=>`<div class="relation-metric"><div class="relation-metric-head"><span>${text(m.label)}</span><strong>${m.value}%</strong></div><div class="relation-bar"><div class="relation-fill" style="width:${m.value}%"></div></div></div>`).join("")}</div>`}
 function ensureNarinDetailStyle(){
  if($("#lwNarinJournalDetailStyle"))return true;const style=document.createElement("style");style.id="lwNarinJournalDetailStyle";style.textContent=`
- #characterDetail [data-narin-detail="1"] .character-detail-head{align-items:flex-start}
- #characterDetail [data-narin-detail="1"] [data-detail-portrait]{width:112px!important;height:140px!important;flex:0 0 112px!important;border-radius:10px!important;object-fit:cover!important;object-position:center 18%!important;background:#090a0e}
- @media(max-width:390px){#characterDetail [data-narin-detail="1"] [data-detail-portrait]{width:108px!important;height:135px!important;flex-basis:108px!important}}
+ #characterDetail [data-narin-detail="1"] .character-detail-head{align-items:flex-start;gap:14px}
+ #characterDetail [data-narin-detail="1"] [data-detail-portrait-frame]{width:138px;height:173px;flex:0 0 138px;overflow:hidden;border-radius:11px;background:#090a0e}
+ #characterDetail [data-narin-detail="1"] [data-detail-portrait]{display:block;width:100%!important;height:100%!important;max-width:none!important;object-fit:cover!important;object-position:center center!important;transform:scale(1.30);transform-origin:50% 20%;border-radius:0!important;margin:0!important}
+ @media(max-width:390px){#characterDetail [data-narin-detail="1"] [data-detail-portrait-frame]{width:132px;height:165px;flex-basis:132px}}
  `;document.head.appendChild(style);return true
 }
 function showDetail(){
  ensureNarinDetailStyle();const grid=$("#characterGrid"),detail=$("#characterDetail"),back=$("#charactersBack");if(!detail)return false;
- detail.innerHTML=`<div data-detail-shell data-narin-detail="1"><div class="character-detail-head"><img data-detail-portrait alt="" width="512" height="640" loading="eager" decoding="async" style="object-fit:cover"><div><div class="character-name" data-detail-name></div><div class="character-status" data-detail-status></div></div></div><div data-detail-metrics></div><div class="character-notes" data-detail-notes></div></div>`;
+ detail.innerHTML=`<div data-detail-shell data-narin-detail="1"><div class="character-detail-head"><div data-detail-portrait-frame><img data-detail-portrait alt="" width="512" height="640" loading="eager" decoding="async"></div><div><div class="character-name" data-detail-name></div><div class="character-status" data-detail-status></div></div></div><div data-detail-metrics></div><div class="character-notes" data-detail-notes></div></div>`;
  const image=detail.querySelector("[data-detail-portrait]");if(image)image.src=DATA.src;detail.querySelector("[data-detail-name]").textContent=text(DATA.name);detail.querySelector("[data-detail-status]").textContent=text(DATA.role);detail.querySelector("[data-detail-metrics]").innerHTML=metricMarkup();detail.querySelector("[data-detail-notes]").textContent=text(DATA.bio);if(grid)grid.style.display="none";detail.style.display="block";if(back)back.style.display="block";return true
 }
 let injecting=false,observer=null,modalObserver=null;
