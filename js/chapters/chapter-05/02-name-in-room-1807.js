@@ -1,11 +1,11 @@
-/* LAST WITNESS - Chapter V / Phase II: NAME IN ROOM 1807 0.22.16-c5p2r12
- * Production module update under base Runtime 0.22.16.
+/* LAST WITNESS - Chapter V / Phase II: NAME IN ROOM 1807 0.22.17-c5p2r13
+ * Production module update under base Runtime 0.22.17.
  * Reuses accepted card/scene/HUD/dialogue shells; Phase II owns only its screens,
  * reconciliation interaction, scoped audio, state, content registration and test entry.
  */
 (function(){
 "use strict";
-const VERSION="0.22.16-c5p2r12";
+const VERSION="0.22.17-c5p2r13";
 if(window.LastWitnessChapter5Phase2?.version===VERSION){try{window.LastWitnessChapter5Phase2.install?.()}catch(_){}return}
 
 const BASE="assets/images/chapter-05/phase-02/";
@@ -50,14 +50,15 @@ const WORKSTATION_LCD={x:110,y:434,w:624,h:416};
 function defaults(){return{
  started:false,phaseCardSeen:false,recordsIntroComplete:false,terminalOpened:false,
  sourceAssignments:{},sourceComplete:false,identityConfirmed:false,kittisakPossibleReviewed:false,
- attributionChoice:"",attributionComplete:false,narinActive:false,narinContactStarted:false,narinChannelEstablished:false,narinJournalUnlocked:false,narinLine:0,narinContactComplete:false,
+ attributionChoice:"",attributionComplete:false,narinActive:false,narinContactStarted:false,narinChannelEstablished:false,narinMusicActive:false,narinJournalUnlocked:false,narinLine:0,narinContactComplete:false,
  closingComplete:false,complete:false,stage:"phase-card"
 }}
 function phaseState(){
  const s=gs();if(!s)return null;s.flags=s.flags||{};
  const raw=s.flags.ch5_p2&&typeof s.flags.ch5_p2==="object"?s.flags.ch5_p2:{};
  const p=Object.assign(defaults(),raw);p.sourceAssignments=Object.assign({},raw.sourceAssignments||{});
- if(p.complete)Object.assign(p,{started:true,phaseCardSeen:true,recordsIntroComplete:true,terminalOpened:true,sourceComplete:true,identityConfirmed:true,kittisakPossibleReviewed:true,attributionChoice:"boundary",attributionComplete:true,narinActive:true,narinContactStarted:true,narinChannelEstablished:true,narinJournalUnlocked:true,narinContactComplete:true,closingComplete:true,stage:"complete"});
+ if(p.complete)Object.assign(p,{started:true,phaseCardSeen:true,recordsIntroComplete:true,terminalOpened:true,sourceComplete:true,identityConfirmed:true,kittisakPossibleReviewed:true,attributionChoice:"boundary",attributionComplete:true,narinActive:true,narinContactStarted:true,narinChannelEstablished:true,narinMusicActive:true,narinJournalUnlocked:true,narinContactComplete:true,closingComplete:true,stage:"complete"});
+ if(p.narinContactComplete||p.complete||["narin-contact","closing","closing_complete"].includes(String(p.stage||"")))p.narinMusicActive=true;
  s.flags.ch5_p2=p;return p
 }
 function save(checkpoint){const s=gs();if(!s)return;if(checkpoint)s.checkpoint=checkpoint;try{typeof autoSave==="function"&&autoSave()}catch(_){} }
@@ -111,13 +112,13 @@ let secureCallCtx=null,secureCallBuffer=null,secureCallBufferPromise=null,secure
 function secureAudioContext(){try{const C=window.AudioContext||window.webkitAudioContext;if(!C)return null;if(!secureCallCtx)secureCallCtx=new C();return secureCallCtx}catch(_){return null}}
 function preloadHandshakeBuffer(){if(secureCallBuffer)return Promise.resolve(secureCallBuffer);if(secureCallBufferPromise)return secureCallBufferPromise;const ctx=secureAudioContext();if(!ctx)return Promise.resolve(null);secureCallBufferPromise=fetch(AUDIO+"secure-call-establish.wav?v=0231c5p2c2",{cache:"force-cache"}).then(r=>{if(!r.ok)throw new Error("handshake "+r.status);return r.arrayBuffer()}).then(b=>ctx.decodeAudioData(b.slice(0))).then(buf=>secureCallBuffer=buf).catch(()=>null);return secureCallBufferPromise}
 function stopHandshakePlayback(reset=false){const ctx=secureCallCtx;if(secureCallSource){if(ctx&&secureCallStartedAt>0)secureCallOffset=Math.max(0,secureCallOffset+(ctx.currentTime-secureCallStartedAt));try{secureCallSource.onended=null;secureCallSource.stop()}catch(_){};try{secureCallSource.disconnect()}catch(_){};secureCallSource=null}secureCallStartedAt=0;if(reset)secureCallOffset=0}
-function playHandshake(reset=false){if(!soundOn()||sfxLevel()<=0)return Promise.resolve(false);if(reset)stopHandshakePlayback(true);const ctx=secureAudioContext();if(!ctx)return Promise.resolve(false);const resume=ctx.state==="suspended"?ctx.resume().catch(()=>false):Promise.resolve(true);return resume.then(()=>preloadHandshakeBuffer()).then(buf=>{if(!buf||ctx.state!=="running")return false;stopHandshakePlayback(false);const src=ctx.createBufferSource(),gain=ctx.createGain(),offset=Math.max(0,Math.min(secureCallOffset,Math.max(0,buf.duration-.02)));gain.gain.value=clamp(sfxLevel()*.22,0,.16);src.buffer=buf;src.connect(gain).connect(ctx.destination);secureCallSource=src;secureCallGain=gain;secureCallStartedAt=ctx.currentTime;src.onended=()=>{if(secureCallSource===src){secureCallSource=null;secureCallStartedAt=0;secureCallOffset=0}};try{src.start(0,offset);return true}catch(_){secureCallSource=null;secureCallStartedAt=0;return false}}).catch(()=>false)}
+function playHandshake(reset=false){if(!soundOn()||sfxLevel()<=0)return Promise.resolve(false);if(reset)stopHandshakePlayback(true);const ctx=secureAudioContext();if(!ctx)return Promise.resolve(false);const resume=ctx.state==="suspended"?ctx.resume().catch(()=>false):Promise.resolve(true);return resume.then(()=>preloadHandshakeBuffer()).then(buf=>{if(!buf||ctx.state!=="running")return false;stopHandshakePlayback(false);const src=ctx.createBufferSource(),gain=ctx.createGain(),offset=Math.max(0,Math.min(secureCallOffset,Math.max(0,buf.duration-.02)));gain.gain.value=clamp(sfxLevel()*.95,0,.72);src.buffer=buf;src.connect(gain).connect(ctx.destination);secureCallSource=src;secureCallGain=gain;secureCallStartedAt=ctx.currentTime;src.onended=()=>{if(secureCallSource===src){secureCallSource=null;secureCallStartedAt=0;secureCallOffset=0}};try{src.start(0,offset);return true}catch(_){secureCallSource=null;secureCallStartedAt=0;return false}}).catch(()=>false)}
 function pauseHandshakePlayback(){stopHandshakePlayback(false)}
 
 let activeScoreMode="a",scoreTransitionToken=0,audioWatchdogTimer=0,scoreTransitionMode="",scoreTransitionStartedAt=0;
 let trackBConfirmed=false,trackBLastTime=0,trackBLastAdvanceAt=0,trackBStartPromise=null;
-function scoreMode(){const p=phaseState();return p?.narinContactStarted||p?.narinContactComplete||p?.complete?"b":"a"}
-function scoreTarget(){const duck=connectOpen?0.86:1;return isP2()&&soundOn()?clamp(musicLevel()*.34*duck,0,.36):0}
+function scoreMode(){const p=phaseState();return p?.narinMusicActive||p?.narinContactComplete||p?.complete?"b":"a"}
+function scoreTarget(){const duck=connectOpen?0.72:1;return isP2()&&soundOn()?clamp(musicLevel()*.34*duck,0,.36):0}
 function roomTarget(){return isP2()&&soundOn()?clamp(sfxLevel()*.045,0,.055):0}
 function scoreMedia(mode){return media(mode==="b"?"ch5P2MusicB":"ch5P2MusicA")}
 function otherScore(mode){return scoreMedia(mode==="b"?"a":"b")}
@@ -193,7 +194,10 @@ function beginTrackBFromGesture(){
  }catch(_){resetTrackBHealth();if(previous&&isPlaying(previous))fade(previous,target,120);activeScoreMode=previous?modeForMedia(previous):"a";armForegroundGestureRecovery();return Promise.resolve(false)}
 }
 function syncAudio(){
- if(document.hidden||backgroundPaused||!isP2()){[scoreMedia("a"),scoreMedia("b"),media("ch5P2RoomTone")].forEach(pauseElement);return false}
+ if(!isP2()){[scoreMedia("a"),scoreMedia("b"),media("ch5P2RoomTone")].forEach(pauseElement);return false}
+ /* Android Chrome can revoke autoplay when script explicitly pauses a previously-authorized BGM during app backgrounding.
+  * While hidden we leave score elements in their native play-intent state and let the browser suspend them. */
+ if(document.hidden||backgroundPaused)return false;
  const target=scoreTarget();if(target<=0){[scoreMedia("a"),scoreMedia("b")].forEach(pauseElement);const room=media("ch5P2RoomTone");if(room)room.pause();return false}
  return ensureScorePlaying(false)
 }
@@ -210,19 +214,39 @@ function pauseCardAuto(){if(!cardAutoTimer)return;cardAutoRemaining=Math.max(0,c
 function resumeCardAuto(){if(activeScreen()===CARD&&!cardAutoTimer)scheduleCardAuto(false)}
 function finiteMediaTime(a){const n=Number(a?.currentTime);return Number.isFinite(n)&&n>=0?n:0}
 function p2MediaSnapshotRecord(id,a){
- if(!a)return null;return{id,time:finiteMediaTime(a),volume:Number.isFinite(Number(a.volume))?Number(a.volume):1,muted:Boolean(a.muted),playbackRate:Number.isFinite(Number(a.playbackRate))?Number(a.playbackRate):1,wasPlaying:isPlaying(a)}
+ if(!a)return null;const p=phaseState(),desired=scoreMode();let shouldResume=isPlaying(a);
+ /* Chrome may mark media paused before dispatching freeze/pagehide. Preserve the phase's intended music
+  * owner instead of trusting paused at lifecycle-event time, otherwise foreground restore has no target. */
+ if(id==="ch5P2MusicA"&&!shouldResume)shouldResume=desired==="a"&&finiteMediaTime(a)>.02;
+ if(id==="ch5P2MusicB"&&!shouldResume)shouldResume=(desired==="b"&&Boolean(p?.narinContactStarted||p?.narinContactComplete||p?.complete))||(connectOpen&&a.dataset.ch5P2Primed==="1");
+ return{id,time:finiteMediaTime(a),volume:Number.isFinite(Number(a.volume))?Number(a.volume):1,muted:Boolean(a.muted),playbackRate:Number.isFinite(Number(a.playbackRate))?Number(a.playbackRate):1,wasPlaying:shouldResume}
 }
 function restoreMediaPosition(a,time){try{if(Number.isFinite(time)&&Math.abs(finiteMediaTime(a)-time)>.04)a.currentTime=time}catch(_){} }
 function pauseCapturedMedia(a,record){if(!a||!record)return;cancelFade(a);try{a.pause();restoreMediaPosition(a,record.time)}catch(_){} }
 function pauseForBackground(){
- if(backgroundPaused||!isP2())return false;pauseCardAuto();pauseConnectionTransition();
- const ids=["ch5P2MusicA","ch5P2MusicB","ch5P2RoomTone"],records={};pauseHandshakePlayback();
+ if(backgroundPaused||!isP2())return false;pauseCardAuto();pauseConnectionTransition();pauseHandshakePlayback();
+ const ids=["ch5P2MusicA","ch5P2MusicB","ch5P2RoomTone"],records={};
  ids.forEach(id=>{const a=media(id),record=p2MediaSnapshotRecord(id,a);if(record)records[id]=record});
  backgroundSnapshot={activeMode:activeScoreMode,desiredMode:scoreMode(),records};backgroundPaused=true;
- ids.forEach(id=>{const a=media(id),record=records[id];if(a&&record)pauseCapturedMedia(a,record)});return true
+ /* IMPORTANT: never call pause() on the two BGM elements here. On Android Chrome that destroys the
+  * existing playback grant and is exactly what caused silent returns. Keep the element's play intent
+  * alive at zero volume and let the browser natively suspend/resume decoding. */
+ [scoreMedia("a"),scoreMedia("b")].forEach(a=>{if(!a)return;cancelFade(a);try{a.volume=0}catch(_){}});
+ const room=media("ch5P2RoomTone");if(room)pauseElement(room);return true
 }
 let foregroundGesturePending=false;
 function armForegroundGestureRecovery(){if(isP2()&&!document.hidden&&soundOn())foregroundGesturePending=true}
+function resumePreviouslyAuthorizedMedia(a,record){
+ if(!a||!record?.wasPlaying||!soundOn()||!isP2())return Promise.resolve(false);
+ const finalMuted=record.muted,finalVolume=record.volume,start=Math.max(0,Number(record.time)||0);restoreMediaPosition(a,start);a.loop=true;
+ const restoreLevel=()=>{try{a.muted=finalMuted;a.volume=finalVolume}catch(_){}};
+ const verify=()=>waitForPlaybackAdvance(a,start,620).then(ok=>{if(ok){restoreLevel();return true}return false});
+ /* First give the browser-native resume path a chance. If Android kept paused=false but the decoder is
+  * still suspended, currentTime will expose that stall instead of us mistaking paused=false for success. */
+ if(isPlaying(a))return verify().then(ok=>{if(ok)return true;try{a.pause();restoreMediaPosition(a,start);a.muted=true;a.volume=0;const r=a.play(),promise=r&&typeof r.then==="function"?r:Promise.resolve();return promise.then(()=>waitForPlaybackAdvance(a,start,900)).then(restarted=>{restoreLevel();if(!restarted)armForegroundGestureRecovery();return restarted}).catch(()=>{restoreLevel();armForegroundGestureRecovery();return false})}catch(_){restoreLevel();armForegroundGestureRecovery();return false}});
+ /* Muted restart is permitted by mobile autoplay policy and reuses the same already-authorized element. */
+ try{a.muted=true;a.volume=0;const result=a.play(),promise=result&&typeof result.then==="function"?result:Promise.resolve();return promise.then(()=>waitForPlaybackAdvance(a,start,900)).then(ok=>{restoreLevel();if(!ok)armForegroundGestureRecovery();return ok}).catch(()=>{restoreLevel();armForegroundGestureRecovery();return false})}catch(_){restoreLevel();armForegroundGestureRecovery();return Promise.resolve(false)}
+}
 function retryForegroundAudio(){
  if(document.hidden||backgroundPaused||!isP2()||!soundOn())return false;ensureScorePlaying(false);
  const mode=scoreMode(),desired=scoreMedia(mode),any=audibleScore(),desiredReady=mode==="b"?scoreReady("b"):isPlaying(desired);if(!desiredReady)armForegroundGestureRecovery();else foregroundGesturePending=false;return Boolean(any)
@@ -231,13 +255,22 @@ function resumeForeground(){
  if(document.hidden)return false;const snap=backgroundSnapshot;
  if(backgroundPaused){
   backgroundPaused=false;activeScoreMode=snap?.activeMode||snap?.desiredMode||scoreMode();const records=snap?.records||{};
-  Object.values(records).forEach(record=>{const a=media(record.id);if(!a)return;try{a.pause();restoreMediaPosition(a,record.time);a.volume=record.volume;a.playbackRate=record.playbackRate;a.muted=record.muted;if(record.wasPlaying&&soundOn()&&isP2()){const result=a.play();if(result&&typeof result.catch==="function")result.catch(armForegroundGestureRecovery)}}catch(_){armForegroundGestureRecovery()}});
+  /* First restore position/levels without pausing a score that the browser may already have resumed. */
+  ["ch5P2MusicA","ch5P2MusicB"].forEach(id=>{const a=media(id),record=records[id];if(!a||!record)return;restoreMediaPosition(a,record.time);try{a.playbackRate=record.playbackRate;a.muted=record.muted;a.volume=record.volume}catch(_){}});
+  const resumes=["ch5P2MusicA","ch5P2MusicB"].map(id=>resumePreviouslyAuthorizedMedia(media(id),records[id]));
+  const roomRecord=records.ch5P2RoomTone,room=media("ch5P2RoomTone");if(room&&roomRecord){restoreMediaPosition(room,roomRecord.time);try{room.playbackRate=roomRecord.playbackRate;room.muted=roomRecord.muted;room.volume=roomRecord.volume}catch(_){};if(roomRecord.wasPlaying){const r=room.play();if(r&&typeof r.catch==="function")r.catch(()=>{})}}
+  Promise.all(resumes).then(results=>{if(results.some(Boolean)){foregroundGesturePending=false;ensureScorePlaying(false)}else armForegroundGestureRecovery()});
   backgroundSnapshot=null;resumeCardAuto();resumeConnectionTransition()
  }
- if(!isP2())return false;syncAudio();scheduleAudioStability();retryForegroundAudio();return true
+ if(!isP2())return false;scheduleAudioStability();retryForegroundAudio();return true
 }
-function queueForegroundResume(){[0,70,180,420,850,1500,2600].forEach(ms=>setTimeout(()=>{if(!document.hidden){if(backgroundPaused)resumeForeground();else retryForegroundAudio()}},ms))}
-function guardBackgroundP2Play(event){if(!backgroundPaused)return;const a=event.target,record=a?.id?backgroundSnapshot?.records?.[a.id]:null;if(record)pauseCapturedMedia(a,record)}
+function queueForegroundResume(){[0,80,220,520,1000,1800].forEach(ms=>setTimeout(()=>{if(!document.hidden){if(backgroundPaused)resumeForeground();else retryForegroundAudio()}},ms))}
+function guardBackgroundP2Play(event){
+ /* Do NOT intercept browser-native BGM resume. R13's capture guard could pause the exact play event
+  * Android emits while returning to the foreground, leaving the phase permanently silent. */
+ if(!backgroundPaused)return;const a=event.target;if(!a||a===scoreMedia("a")||a===scoreMedia("b"))return;
+ const record=a?.id?backgroundSnapshot?.records?.[a.id]:null;if(record)pauseCapturedMedia(a,record)
+}
 function foregroundGestureRecovery(){
  if(document.hidden||backgroundPaused||!isP2()||!soundOn())return;const mode=scoreMode(),desired=scoreMedia(mode),ready=mode==="b"?scoreReady("b"):isPlaying(desired);if(foregroundGesturePending||!ready){foregroundGesturePending=false;if(mode==="b")beginTrackBFromGesture();else ensureScorePlaying(true)}resumeConnectionTransition()
 }
@@ -346,20 +379,41 @@ function unlockNarinJournal(opt={}){
  const alreadyNotified=s.flags.ch5_p2_narin_journal_notified===true;if(notify&&!alreadyNotified){s.flags.ch5_p2_narin_journal_notified=true;showNarinJournalNote()}
  save("ch5_p2_narin_journal_unlocked");return true
 }
-function stabilizeNarinScore(){const target=scoreTarget(),b=scoreMedia("b"),a=scoreMedia("a");if(target<=0)return false;if(scoreReady("b")){activeScoreMode="b";fade(b,target,120);if(a&&isPlaying(a))parkWarmFallback(a,220);foregroundGesturePending=false;return true}if(a&&isPlaying(a)){activeScoreMode="a";try{a.muted=false}catch(_){};fade(a,target,90)}armForegroundGestureRecovery();return false}
-function reassertNarinTrackBFromGesture(){if(!isP2()||document.hidden||backgroundPaused||!soundOn()||scoreMode()!=="b")return Promise.resolve(false);const b=scoreMedia("b"),target=scoreTarget();if(b&&scoreReady("b")){try{b.muted=false;b.volume=Math.max(Number(b.volume)||0,target);const r=b.play();if(r&&typeof r.catch==="function")r.catch(()=>{})}catch(_){};fade(b,target,80);foregroundGesturePending=false;return Promise.resolve(true)}return beginTrackBFromGesture()}
-function openNarinDirect(){const p=phaseState();p.narinContactStarted=true;p.narinChannelEstablished=true;p.stage="narin-contact";const s=gs();s.flags=s.flags||{};s.flags.ch5_p2_narin_channel_established=true;narinOpen=true;$("#ch5P2Narin")?.classList.add("open");$("#ch5P2Narin")?.setAttribute("aria-hidden","false");renderNarin();stabilizeNarinScore();save("ch5_p2_narin_contact")}
+function primeTrackBForNarinFromGesture(reset=true){
+ if(!isP2()||document.hidden||backgroundPaused||!soundOn())return Promise.resolve(false);
+ const b=scoreMedia("b"),a=scoreMedia("a"),target=scoreTarget();if(!b||target<=0)return Promise.resolve(false);
+ if(trackBStartPromise)return trackBStartPromise;
+ if(reset){cancelFade(b);try{b.pause();b.currentTime=0;b.volume=0;b.muted=false}catch(_){};resetTrackBHealth()}
+ if(scoreReady("b"))return Promise.resolve(true);
+ const start=finiteMediaTime(b);
+ try{
+  b.loop=true;b.muted=false;b.volume=.002;const result=b.play(),promise=result&&typeof result.then==="function"?result:Promise.resolve();
+  const attempt=promise.then(()=>waitForPlaybackAdvance(b,start,1350)).then(ok=>{if(!ok){if(a&&isPlaying(a))fade(a,scoreTarget(),80);armForegroundGestureRecovery();return false}trackBConfirmed=true;trackBLastTime=finiteMediaTime(b);trackBLastAdvanceAt=performance.now();b.dataset.ch5P2Primed="1";return true}).catch(()=>{if(a&&isPlaying(a))fade(a,scoreTarget(),80);armForegroundGestureRecovery();return false});
+  trackBStartPromise=attempt.finally(()=>{trackBStartPromise=null});return trackBStartPromise
+ }catch(_){if(a&&isPlaying(a))fade(a,scoreTarget(),80);armForegroundGestureRecovery();return Promise.resolve(false)}
+}
+function activateNarinTrackB(){
+ const p=phaseState();if(p)p.narinMusicActive=true;const target=scoreTarget(),b=scoreMedia("b"),a=scoreMedia("a");
+ if(b&&scoreReady("b")){activeScoreMode="b";foregroundGesturePending=false;try{b.muted=false;b.volume=Math.max(Number(b.volume)||0,.01)}catch(_){};fade(b,target,360);if(a&&a!==b&&isPlaying(a))fade(a,0,420);return true}
+ if(a&&isPlaying(a)){activeScoreMode="a";try{a.muted=false}catch(_){};fade(a,target,90)}armForegroundGestureRecovery();return false
+}
+function stabilizeNarinScore(){return activateNarinTrackB()}
+function reassertNarinTrackBFromGesture(){const p=phaseState();if(p)p.narinMusicActive=true;if(!isP2()||document.hidden||backgroundPaused||!soundOn()||scoreMode()!=="b")return Promise.resolve(false);const b=scoreMedia("b"),target=scoreTarget();if(b&&scoreReady("b")){try{b.muted=false;b.volume=Math.max(Number(b.volume)||0,target);const r=b.play();if(r&&typeof r.catch==="function")r.catch(()=>{})}catch(_){};fade(b,target,80);foregroundGesturePending=false;return Promise.resolve(true)}return beginTrackBFromGesture()}
+function openNarinDirect(){const p=phaseState();p.narinContactStarted=true;p.narinChannelEstablished=true;p.narinMusicActive=true;p.stage="narin-contact";const s=gs();s.flags=s.flags||{};s.flags.ch5_p2_narin_channel_established=true;narinOpen=true;$("#ch5P2Narin")?.classList.add("open");$("#ch5P2Narin")?.setAttribute("aria-hidden","false");renderNarin();stabilizeNarinScore();save("ch5_p2_narin_contact")}
 
 function setConnectEstablishedVisual(){const n=$("#ch5P2Connect");n?.classList.add("established");const status=$("#ch5P2ConnectStatus");if(status)status.textContent=tr("SECURE CHANNEL ESTABLISHED","เชื่อมต่อช่องสัญญาณปลอดภัยแล้ว")}
 function clearConnectTimer(){if(connectTimer){clearTimeout(connectTimer);connectTimer=0}connectDeadline=0}
 function scheduleConnectTimer(){clearConnectTimer();if(!connectOpen||backgroundPaused||document.hidden)return;const delay=Math.max(20,Number(connectRemaining)||20);connectDeadline=Date.now()+delay;connectTimer=setTimeout(advanceConnectPhase,delay)}
 function startNarinConnection(reset=true){
  const p=phaseState(),fresh=!p.narinContactStarted;p.narinContactStarted=true;
- if(fresh){const b=scoreMedia("b");resetTrackBHealth();if(b&&!trackBStartPromise){cancelFade(b);try{b.pause();b.currentTime=0;b.volume=0;b.muted=false}catch(_){}}}
- if(p.narinChannelEstablished){p.stage="narin-contact";beginTrackBFromGesture();openNarinDirect();return}
- p.stage="narin-connecting";connectOpen=true;connectPhase="handshake";connectRemaining=CONNECT_HANDSHAKE_MS;const n=$("#ch5P2Connect");n?.classList.add("open");n?.classList.remove("established");n?.setAttribute("aria-hidden","false");updateLanguage();beginTrackBFromGesture();playHandshake(reset);const score=audibleScore();if(score)fade(score,scoreTarget(),180);save("ch5_p2_narin_connecting");scheduleConnectTimer()
+ /* Score ownership deliberately remains Track A during the handshake. Track B is started at near-zero
+  * volume synchronously inside this explicit player gesture, then promoted only when Narin appears. */
+ if(p.narinChannelEstablished){p.stage="narin-contact";p.narinMusicActive=true;beginTrackBFromGesture();openNarinDirect();return}
+ p.narinMusicActive=false;p.stage="narin-connecting";connectOpen=true;connectPhase="handshake";connectRemaining=CONNECT_HANDSHAKE_MS;
+ const n=$("#ch5P2Connect");n?.classList.add("open");n?.classList.remove("established");n?.setAttribute("aria-hidden","false");updateLanguage();
+ primeTrackBForNarinFromGesture(fresh||reset);playHandshake(reset);const a=scoreMedia("a");if(a&&isPlaying(a))fade(a,scoreTarget(),140);save("ch5_p2_narin_connecting");scheduleConnectTimer()
 }
-function advanceConnectPhase(){clearConnectTimer();if(!connectOpen)return;if(document.hidden||backgroundPaused){scheduleConnectTimer();return}if(connectPhase==="handshake"){connectPhase="established";connectRemaining=CONNECT_ESTABLISHED_MS;const p=phaseState();p.narinChannelEstablished=true;const s=gs();s.flags=s.flags||{};s.flags.ch5_p2_narin_channel_established=true;setConnectEstablishedVisual();save("ch5_p2_narin_channel_established");scheduleConnectTimer();return}connectOpen=false;connectPhase="idle";connectRemaining=CONNECT_HANDSHAKE_MS;const n=$("#ch5P2Connect");n?.classList.remove("open","established");n?.setAttribute("aria-hidden","true");stopHandshakePlayback(true);openNarinDirect()}
+function advanceConnectPhase(){clearConnectTimer();if(!connectOpen)return;if(document.hidden||backgroundPaused){scheduleConnectTimer();return}if(connectPhase==="handshake"){connectPhase="established";connectRemaining=CONNECT_ESTABLISHED_MS;const p=phaseState();p.narinChannelEstablished=true;const s=gs();s.flags=s.flags||{};s.flags.ch5_p2_narin_channel_established=true;setConnectEstablishedVisual();save("ch5_p2_narin_channel_established");scheduleConnectTimer();return}connectOpen=false;connectPhase="idle";connectRemaining=CONNECT_HANDSHAKE_MS;const n=$("#ch5P2Connect");n?.classList.remove("open","established");n?.setAttribute("aria-hidden","true");stopHandshakePlayback(true);const open=()=>{if(!narinOpen)openNarinDirect()};if(trackBStartPromise)Promise.race([trackBStartPromise,new Promise(resolve=>setTimeout(()=>resolve(false),650))]).finally(open);else open()}
 function pauseConnectionTransition(){if(!connectOpen)return;if(connectTimer){connectRemaining=Math.max(20,connectDeadline-Date.now());clearConnectTimer()}pauseHandshakePlayback() }
 function resumeConnectionTransition(){if(!connectOpen||document.hidden||backgroundPaused)return;if(connectPhase==="handshake")playHandshake(false);scheduleConnectTimer()}
 function closeConnection(reset=false){connectOpen=false;connectPhase="idle";connectRemaining=CONNECT_HANDSHAKE_MS;clearConnectTimer();const n=$("#ch5P2Connect");n?.classList.remove("open","established");n?.setAttribute("aria-hidden","true");stopHandshakePlayback(reset) }
@@ -369,7 +423,7 @@ function advanceNarin(){const p=phaseState();if(p.narinLine>=NARIN_LINES.length-
 function showCard(resetTimer=true){const p=phaseState();p.stage="phase-card";safeShow(CARD);setProgress(0);save("ch5_p2_phase_card");scheduleCardAuto(resetTimer)}
 function showRecords(){clearCardAuto(true);const p=phaseState();p.phaseCardSeen=true;p.stage="records";safeShow(RECORDS);setProgress(12);save("ch5_p2_records");if(!p.recordsIntroComplete){startDialogue(openingLines(),()=>{const live=phaseState();live.recordsIntroComplete=true;live.stage="records_ready";setProgress(24);save("ch5_p2_records_ready");const b=$("#"+RECORDS+"Action");if(b){b.hidden=false;b.textContent=tr("OPEN RESTRICTED WORKSTATION","เปิดเครื่อง Restricted Workstation")}})}else{const b=$("#"+RECORDS+"Action");if(b){b.hidden=false;b.textContent=tr("OPEN RESTRICTED WORKSTATION","เปิดเครื่อง Restricted Workstation")}}}
 function showWork(){const p=phaseState();p.stage=p.identityConfirmed?(p.attributionComplete?"narin-lead":"identity"):"workstation";safeShow(WORK);setProgress(Math.max(34,progressFor()));save(p.identityConfirmed?"ch5_p2_identity_review":"ch5_p2_workstation");const b=$("#"+WORK+"Action");if(b)b.hidden=true;positionMonitorOverlay();updateMonitor();if(p.narinContactComplete&&!p.closingComplete&&!dialogue){startDialogue(closingLines(),()=>{const live=phaseState();live.closingComplete=true;live.stage="closing_complete";setProgress(99);save("ch5_p2_closing_complete");updateMonitor()})}}
-function completePhase(){unlockNarinJournal({notify:false,forceUnread:false});const p=phaseState();p.complete=true;p.narinChannelEstablished=true;p.narinJournalUnlocked=true;p.stage="complete";const s=gs();s.flags=s.flags||{};s.flags.ch5_p2_complete=true;s.flags.ch5_p2_kavin_identity_confirmed=true;s.flags.ch5_p2_narin_active=true;s.flags.ch5_p2_narin_channel_established=true;s.flags.ch5_p2_narin_journal_unlocked=true;s.flags.ch5_p2_deployment_record_altered=true;s.flags.ch5_p2_attribution_boundary_preserved=true;s.chapter=5;try{window.LastWitnessHiddenCase?.recompute?.()}catch(_){};safeShow(COMPLETE);ensureScorePlaying(true);scheduleAudioStability();setProgress(100);save("ch5_phase2_complete")}
+function completePhase(){unlockNarinJournal({notify:false,forceUnread:false});const p=phaseState();p.complete=true;p.narinChannelEstablished=true;p.narinMusicActive=true;p.narinJournalUnlocked=true;p.stage="complete";const s=gs();s.flags=s.flags||{};s.flags.ch5_p2_complete=true;s.flags.ch5_p2_kavin_identity_confirmed=true;s.flags.ch5_p2_narin_active=true;s.flags.ch5_p2_narin_channel_established=true;s.flags.ch5_p2_narin_journal_unlocked=true;s.flags.ch5_p2_deployment_record_altered=true;s.flags.ch5_p2_attribution_boundary_preserved=true;s.chapter=5;try{window.LastWitnessHiddenCase?.recompute?.()}catch(_){};safeShow(COMPLETE);ensureScorePlaying(true);scheduleAudioStability();setProgress(100);save("ch5_phase2_complete")}
 function updateMonitor(){const p=phaseState(),button=$("#ch5P2OpenRecon");$("#ch5P2MonitorFlag").textContent=p.closingComplete?"PHASE REVIEW COMPLETE":p.attributionComplete?"BOUNDARY PRESERVED":p.identityConfirmed?"MATCH CONFIRMED":"MANUAL BRIDGE REQUIRED";$("#ch5P2MonitorState").textContent=p.identityConfirmed?"KAVIN NOPPARAT":"ROOM 1807 · IDENTITY LOCKED";$("#ch5P2MonitorSub").textContent=p.identityConfirmed?tr("Protected identity resolved. Deployment record carries a post-disappearance edit marker.","ยืนยันตัวตนที่ถูกปกป้องแล้ว และพบบันทึกการ Deploy ถูกแก้หลังการหายตัว"):tr("Three records must be reconciled without converting access into attribution.","ต้องเชื่อมบันทึกสามชุดโดยไม่เปลี่ยนสิทธิ์เข้าถึงให้กลายเป็นการระบุตัวผู้กระทำ");if(button)button.textContent=p.closingComplete?tr("COMPLETE PHASE II","จบเฟส II"):p.attributionComplete?(p.narinContactStarted&&!p.narinContactComplete?tr("RESUME SECURE CONTACT","กลับไปยังการติดต่อแบบ Secure"):p.narinContactComplete?tr("REVIEW COMPLETE","ตรวจเสร็จแล้ว"):tr("OPEN SECURE CONTACT","เปิดการติดต่อแบบ Secure")):p.identityConfirmed?tr("REVIEW ATTRIBUTION","ตรวจขอบเขตการระบุตัว"):tr("OPEN IDENTITY RECONCILIATION","เปิด Identity Reconciliation")}
 function activateMonitorAction(){const p=phaseState();if(p.closingComplete){completePhase();return}if(p.attributionComplete){if(!p.narinContactComplete)startNarinConnection(!p.narinChannelEstablished);return}openRecon()}
 
@@ -437,7 +491,7 @@ function installSaveRestoreBridge(){
 
 async function copyText(value){try{if(navigator.clipboard?.writeText){await navigator.clipboard.writeText(value);return true}}catch(_){}const a=document.createElement("textarea");a.value=value;a.setAttribute("readonly","");a.style.position="fixed";a.style.opacity="0";document.body.appendChild(a);a.select();const ok=document.execCommand?.("copy")===true;a.remove();return ok}
 function testerAuthorized(){try{return sessionStorage.getItem("last_witness_north_qa_role")==="tester"}catch(_){return false}}
-function qaInfo(){const s=gs()||{},p=phaseState();return["LAST WITNESS QA","Build: "+String(window.LastWitnessRuntimeBuild||"0.22.16"),"Access: NORTH QA","QA Module: "+String(window.LastWitnessNorthQA?.version||"0.22.16"),"Chapter V Phase II: "+VERSION,"Chapter: 5","Phase: 2","Screen: "+activeScreen(),"Checkpoint: "+(s.checkpoint||"unresolved"),"Stage: "+(p?.stage||"unresolved"),"Language: "+(s.language==="th"?"TH":"EN"),"Visibility: "+(document.hidden?"hidden":"visible")].join("\n")}
+function qaInfo(){const s=gs()||{},p=phaseState();return["LAST WITNESS QA","Build: "+String(window.LastWitnessRuntimeBuild||"0.22.17"),"Access: NORTH QA","QA Module: "+String(window.LastWitnessNorthQA?.version||"0.22.17"),"Chapter V Phase II: "+VERSION,"Chapter: 5","Phase: 2","Screen: "+activeScreen(),"Checkpoint: "+(s.checkpoint||"unresolved"),"Stage: "+(p?.stage||"unresolved"),"Language: "+(s.language==="th"?"TH":"EN"),"Visibility: "+(document.hidden?"hidden":"visible")].join("\n")}
 function closeToolOverlays(){$("#drawer")?.classList.remove("open");$$('.modal.open').forEach(n=>n.classList.remove("open"));["developerModal","northQaModal","devAccessModal"].forEach(id=>$("#"+id)?.classList.remove("open"))}
 function positionAfter(node,anchor,container){if(!node||!container)return;if(anchor&&anchor.parentElement===container){if(anchor.nextElementSibling!==node)anchor.insertAdjacentElement("afterend",node)}else if(node.parentElement!==container||container.lastElementChild!==node)container.appendChild(node)}
 function installDevButton(){const grid=$("#developerModal .dev-grid");if(!grid)return false;let b=$("#ch5P2DeveloperJump");if(!b){b=document.createElement("button");b.id="ch5P2DeveloperJump";b.type="button";b.className="dev-button";b.dataset.ch5P2Jump="1";b.addEventListener("click",event=>{event.preventDefault();event.stopPropagation();event.stopImmediatePropagation();closeToolOverlays();startFreshForDev()},true)}positionAfter(b,$("#ch5P1DeveloperJump")||grid.querySelector('[data-dev-jump="chapter4ShadowTruth"]'),grid);installToolLabels();return true}
@@ -469,6 +523,6 @@ function install(){
  resumeSavedEntry();return true
 }
 
-window.LastWitnessChapter5Phase2={version:VERSION,installed:true,install,start,startFreshForDev,resumeFromState,stopAudio,openReconciliation:openRecon,getState:()=>clone(phaseState()),audioState:()=>({mode:scoreMode(),activeMode:activeScoreMode,aPaused:media("ch5P2MusicA")?.paused,bPaused:media("ch5P2MusicB")?.paused,aTime:media("ch5P2MusicA")?.currentTime||0,bTime:media("ch5P2MusicB")?.currentTime||0,handshakePaused:media("ch5P2Handshake")?.paused,handshakeTime:media("ch5P2Handshake")?.currentTime||0,connectOpen,connectPhase,backgroundPaused,foregroundGesturePending}),screens:[...SCREENS],qaInfo,installP1AutoHandoff};
+window.LastWitnessChapter5Phase2={version:VERSION,installed:true,install,start,startFreshForDev,resumeFromState,stopAudio,openReconciliation:openRecon,getState:()=>clone(phaseState()),audioState:()=>({mode:scoreMode(),activeMode:activeScoreMode,aPaused:media("ch5P2MusicA")?.paused,bPaused:media("ch5P2MusicB")?.paused,aTime:media("ch5P2MusicA")?.currentTime||0,bTime:media("ch5P2MusicB")?.currentTime||0,handshakeContext:secureCallCtx?.state||"none",connectOpen,connectPhase,backgroundPaused,foregroundGesturePending}),screens:[...SCREENS],qaInfo,installP1AutoHandoff};
 if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",install,{once:true});else install();
 })();
