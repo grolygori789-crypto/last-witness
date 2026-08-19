@@ -1,4 +1,4 @@
-/* LAST WITNESS - Chapter V / Phase II: NAME IN ROOM 1807 0.22.17-c5p2r13
+/* LAST WITNESS - Chapter V / Phase II: NAME IN ROOM 1807 0.22.18-c5p2r14
  * Reuse-first production surface. Scene/HUD/dialogue/progress language follows
  * accepted CH5P1. Phase II owns only workstation, reconciliation and secure contact.
  */
@@ -112,7 +112,6 @@
 @keyframes ch5P2HandshakePulse{0%,100%{opacity:.38;transform:scale(.86)}50%{opacity:1;transform:scale(1.08)}}
 
 /* Character Journal unlock feedback appears only after Narin contact completes, in the established workstation note lane. */
-.ch5-p2-scene-note.ch5-p2-journal-feedback{color:#ddb56d!important;font-size:10.5px!important;letter-spacing:.06em!important;text-shadow:0 2px 8px #000,0 0 12px rgba(221,181,109,.22)}
 
 /* Narin secure contact: balanced remote-call composition with explicit local/remote endpoints. */
 .ch5-p2-narin-modal{z-index:90!important;background:radial-gradient(circle at 42% 20%,rgba(221,181,109,.07),transparent 42%),rgba(1,3,6,.91);backdrop-filter:blur(8px)}
@@ -138,3 +137,21 @@
 @media(max-height:760px){
   .ch5-p2-modal.open,.ch5-p2-narin-modal.open{padding:8px!important}.ch5-p2-modal .modal-card,.ch5-p2-narin-modal .modal-card{max-height:calc(100svh - 16px)}.ch5-p2-modal-head{padding-top:9px;padding-bottom:7px}.ch5-p2-modal-head p{display:none}.ch5-p2-step{margin-top:7px}.ch5-p2-scroll{padding-top:7px}.ch5-p2-source{min-height:50px}.ch5-p2-source span{-webkit-line-clamp:1}.ch5-p2-status{min-height:24px;padding:3px 10px 5px}.ch5-p2-modal-foot{padding-top:6px;padding-bottom:calc(7px + env(safe-area-inset-bottom))}.ch5-p2-kavin{height:145px}.ch5-p2-conclusion{min-height:68px}.ch5-p2-narin-shell{min-height:365px}.ch5-p2-narin-visual{padding-top:15px}.ch5-p2-narin-feed-label{margin-bottom:5px}.ch5-p2-narin-line{min-height:125px}
 }
+
+/* R15: deterministic Character Journal feedback after Narin contact closes.
+ * Dedicated P2 toast avoids the workstation scene-note being overwritten by scene/language refreshes.
+ * z-index remains below the accepted global Menu/Settings layer (95). */
+.ch5-p2-journal-toast{
+  position:fixed;z-index:89;left:50%;top:calc(86px + env(safe-area-inset-top));
+  width:min(88vw,480px);box-sizing:border-box;padding:11px 14px 12px;
+  border:1px solid rgba(221,181,109,.38);border-radius:12px;
+  background:linear-gradient(180deg,rgba(9,12,17,.97),rgba(4,7,11,.96));
+  box-shadow:0 14px 34px rgba(0,0,0,.52),inset 0 1px 0 rgba(255,255,255,.025);
+  color:#f5eee4;opacity:0;pointer-events:none;
+  transform:translate(-50%,-10px);transition:opacity .22s ease,transform .28s ease;
+  text-align:left;backdrop-filter:blur(8px)
+}
+.ch5-p2-journal-toast.show{opacity:1;transform:translate(-50%,0)}
+.ch5-p2-journal-toast small{display:block;margin:0 0 4px;color:#9fc8d2;font:700 9px/1.2 ui-monospace,monospace;letter-spacing:.14em;text-transform:uppercase}
+.ch5-p2-journal-toast strong{display:block;color:#f1d29b;font:700 12px/1.42 ui-monospace,monospace;letter-spacing:.045em;text-transform:uppercase}
+@media(max-width:390px){.ch5-p2-journal-toast{top:calc(78px + env(safe-area-inset-top));width:90vw;padding:10px 12px}.ch5-p2-journal-toast strong{font-size:11.5px}}

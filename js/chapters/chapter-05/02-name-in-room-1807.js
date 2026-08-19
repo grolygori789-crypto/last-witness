@@ -1,11 +1,11 @@
-/* LAST WITNESS - Chapter V / Phase II: NAME IN ROOM 1807 0.22.17-c5p2r13
- * Production module update under base Runtime 0.22.17.
+/* LAST WITNESS - Chapter V / Phase II: NAME IN ROOM 1807 0.22.18-c5p2r14
+ * Production module update under base Runtime 0.22.18.
  * Reuses accepted card/scene/HUD/dialogue shells; Phase II owns only its screens,
  * reconciliation interaction, scoped audio, state, content registration and test entry.
  */
 (function(){
 "use strict";
-const VERSION="0.22.17-c5p2r13";
+const VERSION="0.22.18-c5p2r14";
 if(window.LastWitnessChapter5Phase2?.version===VERSION){try{window.LastWitnessChapter5Phase2.install?.()}catch(_){}return}
 
 const BASE="assets/images/chapter-05/phase-02/";
@@ -31,7 +31,7 @@ const sfxLevel=()=>soundOn()?clamp(gs()?.sfx??.55):0;
 const isP2=()=>Number(gs()?.chapter)===5&&SCREENS.has(activeScreen());
 
 let dialogue=null,dialogueActive=false,miniOpen=false,narinOpen=false,selectedSource="";
-let backgroundPaused=false,backgroundSnapshot=null,registryInstalled=false,journalNoteTimer=0,journalNoteVisible=false;
+let backgroundPaused=false,backgroundSnapshot=null,registryInstalled=false,journalNoteTimer=0;
 let installTimers=[];
 const fadeFrames=new WeakMap();
 let cardAutoTimer=0,cardAutoDeadline=0,cardAutoRemaining=3000;
@@ -50,7 +50,7 @@ const WORKSTATION_LCD={x:110,y:434,w:624,h:416};
 function defaults(){return{
  started:false,phaseCardSeen:false,recordsIntroComplete:false,terminalOpened:false,
  sourceAssignments:{},sourceComplete:false,identityConfirmed:false,kittisakPossibleReviewed:false,
- attributionChoice:"",attributionComplete:false,narinActive:false,narinContactStarted:false,narinChannelEstablished:false,narinMusicActive:false,narinJournalUnlocked:false,narinLine:0,narinContactComplete:false,
+ attributionChoice:"",attributionComplete:false,narinActive:false,narinContactStarted:false,narinChannelEstablished:false,narinMusicActive:false,narinJournalUnlocked:false,journalFeedbackShown:false,narinLine:0,narinContactComplete:false,
  closingComplete:false,complete:false,stage:"phase-card"
 }}
 function phaseState(){
@@ -79,6 +79,7 @@ function inject(){
  <div id="ch5P2Recon" class="modal ch5-p2-modal" aria-hidden="true"><div class="modal-card"><header class="ch5-p2-modal-head"><div class="eyebrow" id="ch5P2ReconEye"></div><h3 id="ch5P2ReconTitle"></h3><p id="ch5P2ReconBody"></p><button id="ch5P2ReconClose" class="ghost ch5-p2-close" type="button" aria-label="Close">×</button><div class="ch5-p2-step"><span id="ch5P2ReconStep"></span><div><i id="ch5P2ReconStepFill"></i></div></div></header><div id="ch5P2ReconWork" class="ch5-p2-scroll"></div><div id="ch5P2ReconStatus" class="ch5-p2-status" aria-live="polite"></div><footer class="ch5-p2-modal-foot"><button id="ch5P2ReconReset" class="ghost" type="button"></button><button id="ch5P2ReconConfirm" class="primary" type="button"></button></footer></div></div>
  <div id="ch5P2Connect" class="modal ch5-p2-connect" aria-hidden="true"><div class="ch5-p2-connect-card"><div class="ch5-p2-connect-kicker" id="ch5P2ConnectKicker"></div><h3 id="ch5P2ConnectTitle"></h3><div class="ch5-p2-connect-route"><span id="ch5P2ConnectOrigin"></span><i aria-hidden="true"></i><span id="ch5P2ConnectEndpoint"></span></div><div class="ch5-p2-connect-steps" aria-hidden="true"><b></b><b></b><b></b></div><div id="ch5P2ConnectStatus" class="ch5-p2-connect-status"></div></div></div>
  <div id="ch5P2Narin" class="modal ch5-p2-narin-modal" aria-hidden="true"><div class="modal-card"><button id="ch5P2NarinClose" class="ghost ch5-p2-close" type="button" aria-label="Close">×</button><div class="ch5-p2-narin-shell"><div class="ch5-p2-narin-visual"><div class="ch5-p2-narin-feed"><div class="ch5-p2-narin-feed-label">SECURE REMOTE FEED</div><div class="ch5-p2-narin-feed-frame"><img id="ch5P2NarinImage" src="${BASE}narin-guarded.png?v=0233c5p2r9" alt=""></div></div></div><div class="ch5-p2-narin-copy"><div id="ch5P2NarinEye" class="eyebrow"></div><h3>NARIN</h3><div id="ch5P2NarinRole" class="ch5-p2-narin-role"></div><div class="ch5-p2-narin-line"><div class="ch5-p2-narin-speaker-row"><div id="ch5P2NarinSpeaker" class="ch5-p2-narin-speaker"></div><span id="ch5P2NarinChannel" class="ch5-p2-narin-channel"></span><img id="ch5P2BenedictMini" class="ch5-p2-benedict-mini" src="assets/images/381e0e1f9a98101c.jpg" alt="Benedict"></div><div id="ch5P2NarinText" class="ch5-p2-narin-text"></div></div><button id="ch5P2NarinNext" class="primary" type="button"></button><div id="ch5P2NarinCounter" class="ch5-p2-narin-next"></div></div></div></div></div>
+ <div id="ch5P2JournalToast" class="ch5-p2-journal-toast" role="status" aria-live="polite" aria-atomic="true"><small>CHARACTER JOURNAL UPDATED</small><strong>NARIN HAS BEEN ADDED TO THE CHARACTER JOURNAL</strong></div>
  <section id="${COMPLETE}" class="screen ch4-p4-complete ch5-p2-complete"><div class="ch4-p4-complete-card"><div id="ch5P2CompleteEye" class="eyebrow"></div><h2 id="ch5P2CompleteTitle"></h2><div class="ch4-p4-location-rule"></div><p id="ch5P2CompleteBody"></p><div class="ch4-p4-complete-grid"><div><span id="ch5P2ResultIdentity"></span><b id="ch5P2ValueIdentity"></b></div><div><span id="ch5P2ResultNarin"></span><b id="ch5P2ValueNarin"></b></div><div><span id="ch5P2ResultRecord"></span><b id="ch5P2ValueRecord"></b></div><div><span id="ch5P2ResultAttribution"></span><b id="ch5P2ValueAttribution"></b></div></div><strong id="ch5P2Next"></strong><button id="ch5P2ReturnTitle" class="primary" type="button"></button></div>${progressMarkup()}</section>
  <audio id="ch5P2MusicA" preload="auto" loop><source src="${AUDIO}restricted-identity.webm?v=0233c5p2a3" type="audio/webm"><source src="${AUDIO}restricted-identity.mp3?v=0233c5p2a3" type="audio/mpeg"></audio>
  <audio id="ch5P2MusicB" preload="auto" loop><source src="${AUDIO}name-changes-everything.webm?v=0230c5p2a2" type="audio/webm"><source src="${AUDIO}name-changes-everything.mp3?v=0230c5p2a2" type="audio/mpeg"></audio>
@@ -352,11 +353,12 @@ function resetRecon(){const p=phaseState();if(!p.identityConfirmed){p.sourceAssi
 function confirmRecon(){
  const p=phaseState();if(p.attributionComplete){closeRecon(false);return}if(!p.identityConfirmed){const good=SOURCE_ORDER.every((id,i)=>p.sourceAssignments[i+1]===id);if(!good){reconStatus(tr("NOT SUPPORTED BY THE RECORD · Build the bridge from subject → protected identity → deployment.","หลักฐานไม่รองรับ · เชื่อมจากผู้ตาย → ตัวตนที่ถูกปกป้อง → บันทึกการ Deploy"),"error");return}p.sourceComplete=true;p.identityConfirmed=true;p.kittisakPossibleReviewed=true;p.stage="identity";const s=gs();s.flags.ch5_p2_kavin_identity_confirmed=true;s.flags.ch5_p2_deployment_record_altered=true;s.flags.ch5_p2_kittisak_prior_knowledge_possible=true;collectEvidence("ch5_p2_kavin_identity");collectEvidence("ch5_p2_deployment_edit");collectEvidence("ch5_p2_protected_visibility");setProgress(64);save("ch5_p2_kavin_identity");setTimeout(()=>playOne("ch5P2Reveal",.10),100);try{window.LastWitnessHiddenCase?.recompute?.()}catch(_){};ensureScorePlaying(true);scheduleAudioStability();renderRecon();reconStatus(tr("IDENTITY RECONCILIATION CONFIRMED","ยืนยันการเชื่อมตัวตนแล้ว"),"success");return}
  if(p.attributionChoice!=="boundary"){reconStatus(tr("NOT SUPPORTED BY THE RECORD · Separate concealment from murder attribution.","หลักฐานไม่รองรับ · แยกการปกปิดออกจากการระบุว่าใครเป็นฆาตกร"),"error");return}
- p.attributionComplete=true;p.narinActive=true;p.stage="narin-lead";const s=gs();s.flags.ch5_p2_narin_active=true;s.flags.ch5_p2_attribution_boundary_preserved=true;setProgress(82);save("ch5_p2_attribution_boundary");try{window.LastWitnessHiddenCase?.recompute?.()}catch(_){};reconStatus(tr("FINDING PRESERVED · NARIN ELEVATED TO ACTIVE SCRUTINY","เก็บข้อสรุปแล้ว · ยกระดับ NARIN เป็นบุคคลที่ต้องตรวจเชิงรุก"),"success");setTimeout(()=>{closeRecon();startDialogue(postMatchLines(),()=>{updateMonitor();save("ch5_p2_narin_contact_ready")})},480)
+ p.attributionComplete=true;p.narinActive=true;p.stage="narin-lead";const s=gs();s.flags.ch5_p2_narin_active=true;s.flags.ch5_p2_attribution_boundary_preserved=true;primeTrackBWarmFromGesture();setProgress(82);save("ch5_p2_attribution_boundary");try{window.LastWitnessHiddenCase?.recompute?.()}catch(_){};reconStatus(tr("FINDING PRESERVED · NARIN ELEVATED TO ACTIVE SCRUTINY","เก็บข้อสรุปแล้ว · ยกระดับ NARIN เป็นบุคคลที่ต้องตรวจเชิงรุก"),"success");setTimeout(()=>{closeRecon();startDialogue(postMatchLines(),()=>{updateMonitor();save("ch5_p2_narin_contact_ready")})},480)
 }
 
 function narinImage(emotion){return BASE+`narin-${emotion}.png?v=0233c5p2r9`}
-function showNarinJournalNote(){const note=$("#ch5P2WorkstationNote");if(!note)return false;journalNoteVisible=true;note.classList.add("ch5-p2-journal-feedback");updateLanguage();positionSceneNotes();clearTimeout(journalNoteTimer);journalNoteTimer=setTimeout(()=>{journalNoteVisible=false;note.classList.remove("ch5-p2-journal-feedback");updateLanguage();positionSceneNotes()},3000);return true}
+function journalToastText(){const toast=$("#ch5P2JournalToast");if(!toast)return false;const small=toast.querySelector("small"),strong=toast.querySelector("strong");if(small)small.textContent=tr("CHARACTER JOURNAL UPDATED","อัปเดตบันทึกตัวละครแล้ว");if(strong)strong.textContent=tr("NARIN HAS BEEN ADDED TO THE CHARACTER JOURNAL","เพิ่ม NARIN ลงในบันทึกตัวละครแล้ว");return true}
+function showNarinJournalNote(){const toast=$("#ch5P2JournalToast");if(!toast)return false;journalToastText();toast.classList.remove("show");void toast.offsetWidth;toast.classList.add("show");clearTimeout(journalNoteTimer);journalNoteTimer=setTimeout(()=>toast.classList.remove("show"),3600);return true}
 function narinJournalPresent(){const s=gs(),ext=window.LastWitnessNarinCharacterRegistry;try{if(ext?.present?.())return true}catch(_){};return Boolean(s?.flags?.ch5_p2_narin_journal_unlocked===true||s?.flags?.ch5_p2?.narinJournalUnlocked===true)}
 function renderNarin(){
  const p=phaseState(),i=Math.max(0,Math.min(NARIN_LINES.length-1,p.narinLine||0)),line=NARIN_LINES[i],benedict=line.speaker==="Benedict";
@@ -376,26 +378,57 @@ function unlockNarinJournal(opt={}){
  if(!present)try{api.unlockCharacter?.("narin",{unread:true,source:"story"});present=narinJournalPresent()}catch(error){console.error("LAST WITNESS Narin journal unlock failed",error)}
  if(!present)return false;
  p.narinJournalUnlocked=true;s.flags.ch5_p2_narin_journal_unlocked=true;if(forceUnread)s.flags.ch5_p2_narin_journal_unread=true;try{api.renderCharacters?.(true);api.updateDots?.();ext?.ensureCard?.();ext?.syncDot?.()}catch(_){}
- const alreadyNotified=s.flags.ch5_p2_narin_journal_notified===true;if(notify&&!alreadyNotified){s.flags.ch5_p2_narin_journal_notified=true;showNarinJournalNote()}
+ if(notify)s.flags.ch5_p2_narin_journal_notified=true;
  save("ch5_p2_narin_journal_unlocked");return true
+}
+function primeTrackBWarmFromGesture(){
+ if(!isP2()||document.hidden||backgroundPaused||!soundOn())return Promise.resolve(false);
+ const b=scoreMedia("b"),target=scoreTarget();if(!b||target<=0)return Promise.resolve(false);
+ if(isPlaying(b)){try{b.loop=true;b.muted=false;b.volume=Math.min(Math.max(Number(b.volume)||0,.0015),.004)}catch(_){};return Promise.resolve(true)}
+ resetTrackBHealth();const start=finiteMediaTime(b);
+ try{b.loop=true;b.muted=false;b.volume=.0015;const result=b.play(),promise=result&&typeof result.then==="function"?result:Promise.resolve();return promise.then(()=>waitForPlaybackAdvance(b,start,1100)).then(ok=>{if(ok){trackBConfirmed=true;trackBLastTime=finiteMediaTime(b);trackBLastAdvanceAt=performance.now();b.dataset.ch5P2Warm="1"}return ok}).catch(()=>false)}catch(_){return Promise.resolve(false)}
 }
 function primeTrackBForNarinFromGesture(reset=true){
  if(!isP2()||document.hidden||backgroundPaused||!soundOn())return Promise.resolve(false);
  const b=scoreMedia("b"),a=scoreMedia("a"),target=scoreTarget();if(!b||target<=0)return Promise.resolve(false);
  if(trackBStartPromise)return trackBStartPromise;
- if(reset){cancelFade(b);try{b.pause();b.currentTime=0;b.volume=0;b.muted=false}catch(_){};resetTrackBHealth()}
- if(scoreReady("b"))return Promise.resolve(true);
- const start=finiteMediaTime(b);
+ cancelFade(b);resetTrackBHealth();
  try{
-  b.loop=true;b.muted=false;b.volume=.002;const result=b.play(),promise=result&&typeof result.then==="function"?result:Promise.resolve();
-  const attempt=promise.then(()=>waitForPlaybackAdvance(b,start,1350)).then(ok=>{if(!ok){if(a&&isPlaying(a))fade(a,scoreTarget(),80);armForegroundGestureRecovery();return false}trackBConfirmed=true;trackBLastTime=finiteMediaTime(b);trackBLastAdvanceAt=performance.now();b.dataset.ch5P2Primed="1";return true}).catch(()=>{if(a&&isPlaying(a))fade(a,scoreTarget(),80);armForegroundGestureRecovery();return false});
+  b.loop=true;b.muted=false;
+  /* Never pause an already-authorized Track B here. Rewind it in-place inside the trusted OPEN SECURE CONTACT gesture. */
+  if(reset)restoreMediaPosition(b,0);
+  const start=finiteMediaTime(b),handshakeLevel=clamp(Math.max(.12,target*.72),.12,.26);
+  /* The Narin score becomes genuinely audible during the secure-connection gesture, not after a timer.
+   * Android Chrome has repeatedly failed when an almost-silent media element is promoted only after
+   * the connection animation. Begin the musical handoff here while the trusted gesture is active,
+   * then finish the crossfade when the Narin panel appears. */
+  b.volume=Math.max(Number(b.volume)||0,handshakeLevel);
+  const result=isPlaying(b)?null:b.play(),promise=result&&typeof result.then==="function"?result:Promise.resolve();
+  const attempt=promise.then(()=>waitForPlaybackAdvance(b,start,1350)).then(ok=>{
+   if(!ok){if(a&&isPlaying(a)){try{a.muted=false}catch(_){};fade(a,target,80)}armForegroundGestureRecovery();return false}
+   trackBConfirmed=true;trackBLastTime=finiteMediaTime(b);trackBLastAdvanceAt=performance.now();b.dataset.ch5P2Primed="1";
+   if(a&&isPlaying(a))fade(a,target*.52,220);return true
+  }).catch(()=>{if(a&&isPlaying(a))fade(a,target,80);armForegroundGestureRecovery();return false});
   trackBStartPromise=attempt.finally(()=>{trackBStartPromise=null});return trackBStartPromise
- }catch(_){if(a&&isPlaying(a))fade(a,scoreTarget(),80);armForegroundGestureRecovery();return Promise.resolve(false)}
+ }catch(_){if(a&&isPlaying(a))fade(a,target,80);armForegroundGestureRecovery();return Promise.resolve(false)}
 }
 function activateNarinTrackB(){
  const p=phaseState();if(p)p.narinMusicActive=true;const target=scoreTarget(),b=scoreMedia("b"),a=scoreMedia("a");
- if(b&&scoreReady("b")){activeScoreMode="b";foregroundGesturePending=false;try{b.muted=false;b.volume=Math.max(Number(b.volume)||0,.01)}catch(_){};fade(b,target,360);if(a&&a!==b&&isPlaying(a))fade(a,0,420);return true}
- if(a&&isPlaying(a)){activeScoreMode="a";try{a.muted=false}catch(_){};fade(a,target,90)}armForegroundGestureRecovery();return false
+ if(a&&isPlaying(a)){activeScoreMode="a";try{a.muted=false}catch(_){};fade(a,target*.52,120)}
+ if(!b){if(a&&isPlaying(a))fade(a,target,90);armForegroundGestureRecovery();return false}
+ const promote=()=>{
+  const start=finiteMediaTime(b);try{b.loop=true;b.muted=false;b.volume=target}catch(_){}
+  waitForPlaybackAdvance(b,start,900).then(ok=>{
+   if(!isP2()||document.hidden||backgroundPaused)return;
+   if(ok){trackBConfirmed=true;trackBLastTime=finiteMediaTime(b);trackBLastAdvanceAt=performance.now();activeScoreMode="b";foregroundGesturePending=false;try{b.muted=false;b.volume=target}catch(_){};if(a&&a!==b&&isPlaying(a))parkWarmFallback(a,520)}
+   else{resetTrackBHealth();if(a&&isPlaying(a)){activeScoreMode="a";try{a.muted=false}catch(_){};fade(a,target,100)}armForegroundGestureRecovery()}
+  });return true
+ };
+ if(isPlaying(b))return promote();
+ /* Last-resort timer-safe recovery: muted autoplay is allowed by Chrome even when the connection
+  * transition itself is no longer inside the originating tap. Keep Track A audible until B proves
+  * that its decoder is advancing, then promote B. */
+ try{b.loop=true;b.muted=true;b.volume=0;const r=b.play(),promise=r&&typeof r.then==="function"?r:Promise.resolve();promise.then(()=>{if(!isP2()||document.hidden||backgroundPaused)return;promote()}).catch(()=>{if(a&&isPlaying(a))fade(a,target,90);armForegroundGestureRecovery()});return true}catch(_){if(a&&isPlaying(a))fade(a,target,90);armForegroundGestureRecovery();return false}
 }
 function stabilizeNarinScore(){return activateNarinTrackB()}
 function reassertNarinTrackBFromGesture(){const p=phaseState();if(p)p.narinMusicActive=true;if(!isP2()||document.hidden||backgroundPaused||!soundOn()||scoreMode()!=="b")return Promise.resolve(false);const b=scoreMedia("b"),target=scoreTarget();if(b&&scoreReady("b")){try{b.muted=false;b.volume=Math.max(Number(b.volume)||0,target);const r=b.play();if(r&&typeof r.catch==="function")r.catch(()=>{})}catch(_){};fade(b,target,80);foregroundGesturePending=false;return Promise.resolve(true)}return beginTrackBFromGesture()}
@@ -418,7 +451,7 @@ function pauseConnectionTransition(){if(!connectOpen)return;if(connectTimer){con
 function resumeConnectionTransition(){if(!connectOpen||document.hidden||backgroundPaused)return;if(connectPhase==="handshake")playHandshake(false);scheduleConnectTimer()}
 function closeConnection(reset=false){connectOpen=false;connectPhase="idle";connectRemaining=CONNECT_HANDSHAKE_MS;clearConnectTimer();const n=$("#ch5P2Connect");n?.classList.remove("open","established");n?.setAttribute("aria-hidden","true");stopHandshakePlayback(reset) }
 function closeNarin(paused=true){narinOpen=false;$("#ch5P2Narin")?.classList.remove("open");$("#ch5P2Narin")?.setAttribute("aria-hidden","true");updateMonitor();if(paused&&!phaseState().narinContactComplete)save("ch5_p2_narin_contact_paused")}
-function advanceNarin(){const p=phaseState();if(p.narinLine>=NARIN_LINES.length-1){p.narinContactComplete=true;p.stage="closing";const s=gs();s.flags.ch5_p2_narin_contact_complete=true;setProgress(94);save("ch5_p2_narin_contact_complete");closeNarin(false);unlockNarinJournal({notify:true,forceUnread:true});startDialogue(closingLines(),()=>{const live=phaseState();live.closingComplete=true;live.stage="closing_complete";setProgress(99);save("ch5_p2_closing_complete");updateMonitor()});return}p.narinLine++;renderNarin();save()}
+function advanceNarin(){const p=phaseState();if(p.narinLine>=NARIN_LINES.length-1){p.narinContactComplete=true;p.stage="closing";const s=gs();s.flags.ch5_p2_narin_contact_complete=true;setProgress(94);save("ch5_p2_narin_contact_complete");closeNarin(false);const unlocked=unlockNarinJournal({notify:false,forceUnread:true}),liveJournal=phaseState();if(unlocked&&!liveJournal.journalFeedbackShown){liveJournal.journalFeedbackShown=true;s.flags.ch5_p2_narin_journal_notified=true;showNarinJournalNote();save("ch5_p2_narin_journal_feedback")}startDialogue(closingLines(),()=>{const live=phaseState();live.closingComplete=true;live.stage="closing_complete";setProgress(99);save("ch5_p2_closing_complete");updateMonitor()});return}p.narinLine++;renderNarin();save()}
 
 function showCard(resetTimer=true){const p=phaseState();p.stage="phase-card";safeShow(CARD);setProgress(0);save("ch5_p2_phase_card");scheduleCardAuto(resetTimer)}
 function showRecords(){clearCardAuto(true);const p=phaseState();p.phaseCardSeen=true;p.stage="records";safeShow(RECORDS);setProgress(12);save("ch5_p2_records");if(!p.recordsIntroComplete){startDialogue(openingLines(),()=>{const live=phaseState();live.recordsIntroComplete=true;live.stage="records_ready";setProgress(24);save("ch5_p2_records_ready");const b=$("#"+RECORDS+"Action");if(b){b.hidden=false;b.textContent=tr("OPEN RESTRICTED WORKSTATION","เปิดเครื่อง Restricted Workstation")}})}else{const b=$("#"+RECORDS+"Action");if(b){b.hidden=false;b.textContent=tr("OPEN RESTRICTED WORKSTATION","เปิดเครื่อง Restricted Workstation")}}}
@@ -443,13 +476,13 @@ function updateLanguage(){
  const p=phaseState()||defaults(),map={
  ch5P2CardEye:tr("CHAPTER V · PHASE II","บทที่ V · เฟส II"),ch5P2CardCity:tr("POLICE STATION · RESTRICTED RECORDS","สถานีตำรวจ · RESTRICTED RECORDS"),ch5P2CardTitle:tr("NAME IN ROOM 1807","ชื่อในห้อง 1807"),ch5P2CardBody:tr("A protected identity reference forces the Room 1807 file open again.","ข้อมูลตัวตนที่ถูกปกป้องทำให้แฟ้มห้อง 1807 ต้องถูกเปิดขึ้นมาอีกครั้ง"),
  ch5P2RecordsLocation:tr("POLICE STATION · RESTRICTED RECORDS","สถานีตำรวจ · RESTRICTED RECORDS"),ch5P2RecordsScene:"",ch5P2RecordsObjective:tr("Resolve the protected Room 1807 identity without outrunning the record.","ยืนยันตัวตนที่ถูกปกป้องของห้อง 1807 โดยไม่สรุปไกลเกินหลักฐาน"),ch5P2RecordsNote:"",
- ch5P2WorkLocation:tr("RESTRICTED WORKSTATION · INTERNAL","RESTRICTED WORKSTATION · INTERNAL"),ch5P2WorkstationScene:"",ch5P2WorkstationObjective:tr("Bridge the protected identity path, then separate concealment from attribution.","เชื่อมเส้นทางตัวตนที่ถูกปกป้อง แล้วแยกการปกปิดออกจากการระบุตัวผู้กระทำ"),ch5P2WorkstationNote:journalNoteVisible?tr("NARIN HAS BEEN ADDED TO THE CHARACTER JOURNAL","เพิ่ม NARIN ลงในบันทึกตัวละครแล้ว"):"ACCESS LOGGED · READ / RECONCILE ONLY",
+ ch5P2WorkLocation:tr("RESTRICTED WORKSTATION · INTERNAL","RESTRICTED WORKSTATION · INTERNAL"),ch5P2WorkstationScene:"",ch5P2WorkstationObjective:tr("Bridge the protected identity path, then separate concealment from attribution.","เชื่อมเส้นทางตัวตนที่ถูกปกป้อง แล้วแยกการปกปิดออกจากการระบุตัวผู้กระทำ"),ch5P2WorkstationNote:"ACCESS LOGGED · READ / RECONCILE ONLY",
  ch5P2MonitorTitle:"IDENTITY RECONCILIATION",ch5P2MonitorSession:"SESSION · ROOM 1807",ch5P2ReconEye:"RESTRICTED INTERNAL",ch5P2ReconTitle:"IDENTITY RECONCILIATION",ch5P2ReconBody:tr("Build the only source bridge the record supports. Closing pauses the task; it does not complete it.","เชื่อมเฉพาะแหล่งข้อมูลที่หลักฐานรองรับ การกด X เป็นเพียงการพัก ไม่ถือว่าจบขั้นตอน"),
  ch5P2ConnectKicker:tr("SECURE CONTACT REQUEST","คำขอเชื่อมต่อแบบปลอดภัย"),ch5P2ConnectTitle:tr("ESTABLISHING SECURE CONTACT","กำลังเชื่อมต่อช่องสัญญาณปลอดภัย"),ch5P2ConnectOrigin:tr("RESTRICTED RECORDS · BENEDICT","RESTRICTED RECORDS · BENEDICT"),ch5P2ConnectEndpoint:"NARIN · REMOTE ENDPOINT",ch5P2ConnectStatus:connectPhase==="established"?tr("SECURE CHANNEL ESTABLISHED","เชื่อมต่อช่องสัญญาณปลอดภัยแล้ว"):tr("ENCRYPTED HANDSHAKE · CONTROLLED LINE","ENCRYPTED HANDSHAKE · CONTROLLED LINE"),
  ch5P2NarinEye:tr("NARIN · REMOTE CONTACT","NARIN · REMOTE CONTACT"),ch5P2NarinRole:tr("CONTROLLED SECURE LINE · REMOTE ENDPOINT","CONTROLLED SECURE LINE · REMOTE ENDPOINT"),
  ch5P2CompleteEye:tr("CHAPTER V · PHASE II COMPLETE","บทที่ V · จบเฟส II"),ch5P2CompleteTitle:tr("NAME IN ROOM 1807","ชื่อในห้อง 1807"),ch5P2CompleteBody:tr("Room 1807 has a name. Narin now has a serious record problem. Neither fact resolves the murder decision.","ห้อง 1807 มีชื่อแล้ว และ Narin มีปัญหาจากบันทึกที่จริงจังขึ้น แต่ทั้งสองอย่างยังไม่ตอบว่าใครเป็นเจ้าของการตัดสินใจฆาตกรรม"),
  ch5P2ResultIdentity:tr("ROOM 1807 IDENTITY","ตัวตนห้อง 1807"),ch5P2ValueIdentity:"KAVIN NOPPARAT",ch5P2ResultNarin:"NARIN",ch5P2ValueNarin:tr("ACTIVE SCRUTINY","ACTIVE SCRUTINY"),ch5P2ResultRecord:tr("DEPLOYMENT RECORD","บันทึก DEPLOYMENT"),ch5P2ValueRecord:tr("ALTERED AFTER DISAPPEARANCE","แก้ไขหลังการหายตัว"),ch5P2ResultAttribution:tr("ATTRIBUTION","การระบุตัวผู้กระทำ"),ch5P2ValueAttribution:tr("UNRESOLVED","ยังไม่ยุติ"),ch5P2Next:tr("NEXT · PHASE III · ROOM / PROFILE CROSS-MAP","ถัดไป · เฟส III · ROOM / PROFILE CROSS-MAP"),ch5P2ReturnTitle:tr("RETURN TO TITLE","กลับหน้าหลัก")};
- Object.entries(map).forEach(([id,text])=>{const n=$("#"+id);if(n)n.textContent=text});if(connectPhase==="established")setConnectEstablishedVisual();updateMonitor();if(miniOpen)renderRecon();if(narinOpen)renderNarin();installToolLabels();positionSceneNotes()
+ Object.entries(map).forEach(([id,text])=>{const n=$("#"+id);if(n)n.textContent=text});journalToastText();if(connectPhase==="established")setConnectEstablishedVisual();updateMonitor();if(miniOpen)renderRecon();if(narinOpen)renderNarin();installToolLabels();positionSceneNotes()
 }
 
 function bindUi(){
@@ -491,7 +524,7 @@ function installSaveRestoreBridge(){
 
 async function copyText(value){try{if(navigator.clipboard?.writeText){await navigator.clipboard.writeText(value);return true}}catch(_){}const a=document.createElement("textarea");a.value=value;a.setAttribute("readonly","");a.style.position="fixed";a.style.opacity="0";document.body.appendChild(a);a.select();const ok=document.execCommand?.("copy")===true;a.remove();return ok}
 function testerAuthorized(){try{return sessionStorage.getItem("last_witness_north_qa_role")==="tester"}catch(_){return false}}
-function qaInfo(){const s=gs()||{},p=phaseState();return["LAST WITNESS QA","Build: "+String(window.LastWitnessRuntimeBuild||"0.22.17"),"Access: NORTH QA","QA Module: "+String(window.LastWitnessNorthQA?.version||"0.22.17"),"Chapter V Phase II: "+VERSION,"Chapter: 5","Phase: 2","Screen: "+activeScreen(),"Checkpoint: "+(s.checkpoint||"unresolved"),"Stage: "+(p?.stage||"unresolved"),"Language: "+(s.language==="th"?"TH":"EN"),"Visibility: "+(document.hidden?"hidden":"visible")].join("\n")}
+function qaInfo(){const s=gs()||{},p=phaseState();return["LAST WITNESS QA","Build: "+String(window.LastWitnessRuntimeBuild||"0.22.18"),"Access: NORTH QA","QA Module: "+String(window.LastWitnessNorthQA?.version||"0.22.18"),"Chapter V Phase II: "+VERSION,"Chapter: 5","Phase: 2","Screen: "+activeScreen(),"Checkpoint: "+(s.checkpoint||"unresolved"),"Stage: "+(p?.stage||"unresolved"),"Language: "+(s.language==="th"?"TH":"EN"),"Visibility: "+(document.hidden?"hidden":"visible")].join("\n")}
 function closeToolOverlays(){$("#drawer")?.classList.remove("open");$$('.modal.open').forEach(n=>n.classList.remove("open"));["developerModal","northQaModal","devAccessModal"].forEach(id=>$("#"+id)?.classList.remove("open"))}
 function positionAfter(node,anchor,container){if(!node||!container)return;if(anchor&&anchor.parentElement===container){if(anchor.nextElementSibling!==node)anchor.insertAdjacentElement("afterend",node)}else if(node.parentElement!==container||container.lastElementChild!==node)container.appendChild(node)}
 function installDevButton(){const grid=$("#developerModal .dev-grid");if(!grid)return false;let b=$("#ch5P2DeveloperJump");if(!b){b=document.createElement("button");b.id="ch5P2DeveloperJump";b.type="button";b.className="dev-button";b.dataset.ch5P2Jump="1";b.addEventListener("click",event=>{event.preventDefault();event.stopPropagation();event.stopImmediatePropagation();closeToolOverlays();startFreshForDev()},true)}positionAfter(b,$("#ch5P1DeveloperJump")||grid.querySelector('[data-dev-jump="chapter4ShadowTruth"]'),grid);installToolLabels();return true}
@@ -523,6 +556,6 @@ function install(){
  resumeSavedEntry();return true
 }
 
-window.LastWitnessChapter5Phase2={version:VERSION,installed:true,install,start,startFreshForDev,resumeFromState,stopAudio,openReconciliation:openRecon,getState:()=>clone(phaseState()),audioState:()=>({mode:scoreMode(),activeMode:activeScoreMode,aPaused:media("ch5P2MusicA")?.paused,bPaused:media("ch5P2MusicB")?.paused,aTime:media("ch5P2MusicA")?.currentTime||0,bTime:media("ch5P2MusicB")?.currentTime||0,handshakeContext:secureCallCtx?.state||"none",connectOpen,connectPhase,backgroundPaused,foregroundGesturePending}),screens:[...SCREENS],qaInfo,installP1AutoHandoff};
+window.LastWitnessChapter5Phase2={version:VERSION,installed:true,install,start,startFreshForDev,resumeFromState,stopAudio,openReconciliation:openRecon,getState:()=>clone(phaseState()),audioState:()=>({mode:scoreMode(),activeMode:activeScoreMode,aPaused:media("ch5P2MusicA")?.paused,bPaused:media("ch5P2MusicB")?.paused,aTime:media("ch5P2MusicA")?.currentTime||0,bTime:media("ch5P2MusicB")?.currentTime||0,aVolume:media("ch5P2MusicA")?.volume||0,bVolume:media("ch5P2MusicB")?.volume||0,trackBConfirmed,handshakeContext:secureCallCtx?.state||"none",connectOpen,connectPhase,backgroundPaused,foregroundGesturePending}),screens:[...SCREENS],qaInfo,installP1AutoHandoff};
 if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",install,{once:true});else install();
 })();
