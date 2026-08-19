@@ -1,12 +1,13 @@
-/* LAST WITNESS - Narin Character Journal Integration 0.22.12-nj2
+/* LAST WITNESS - Narin Character Journal Integration 0.22.13-nj3
  * Surgical Chapter V Phase II bridge for the legacy Character Journal allowlist.
  * Narin remains story-gated to first secure contact; existing characters/rendering
  * are untouched. The extension augments only Narin's card/detail and unread state.
  */
 (function(){
 "use strict";
-const VERSION="0.22.12-nj2";
+const VERSION="0.22.13-nj3";
 if(window.LastWitnessNarinCharacterRegistry?.version===VERSION&&window.LastWitnessNarinCharacterRegistry?.installed){try{window.LastWitnessNarinCharacterRegistry.repair?.()}catch(_){}return}
+const THUMB_SRC="assets/images/chapter-05/phase-02/narin-journal.png?v=0233nj3";
 const DATA={
  name:{en:"Narin",th:"Narin"},
  role:{en:"Bangkok Deployment Operations",th:"ฝ่ายปฏิบัติการ Deployment กรุงเทพฯ"},
@@ -40,7 +41,7 @@ function showDetail(){
 let injecting=false,observer=null,modalObserver=null;
 function ensureCard(){
  if(!journalUnlocked()||injecting)return false;register();const grid=$("#characterGrid");if(!grid)return false;if(grid.querySelector('[data-character="narin"]'))return true;
- injecting=true;try{const button=document.createElement("button");button.type="button";button.className="character-card";button.dataset.character="narin";button.dataset.narinJournal="1";button.innerHTML=`<img src="${DATA.src}" alt="" width="512" height="640" loading="eager" decoding="async" data-character-image="narin" style="object-fit:cover"><div class="character-name">${text(DATA.name)}</div><div class="character-status">${text(DATA.status)}</div>${relationSummary()}`;button.addEventListener("click",event=>{event.preventDefault();event.stopPropagation();showDetail()});grid.appendChild(button)}finally{injecting=false}syncDot();return true
+ injecting=true;try{const button=document.createElement("button");button.type="button";button.className="character-card";button.dataset.character="narin";button.dataset.narinJournal="1";button.innerHTML=`<img src="${THUMB_SRC}" alt="" width="512" height="640" loading="eager" decoding="async" data-character-image="narin" style="object-fit:cover;object-position:center center"><div class="character-name">${text(DATA.name)}</div><div class="character-status">${text(DATA.status)}</div>${relationSummary()}`;button.addEventListener("click",event=>{event.preventDefault();event.stopPropagation();showDetail()});grid.appendChild(button)}finally{injecting=false}syncDot();return true
 }
 function syncDot(){const s=gs();if(!s)return;const own=journalUnlocked()&&s.flags?.ch5_p2_narin_journal_unread===true;const legacy=Array.isArray(s.lwCharactersUnread)&&s.lwCharactersUnread.length>0&&s.journal?.seen===false;$$('.journal-alert').forEach(node=>node.classList.toggle('show',Boolean(own||legacy)))}
 function persist(){try{typeof autoSave==="function"&&autoSave()}catch(_){} }

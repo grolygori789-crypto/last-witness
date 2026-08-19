@@ -1,7 +1,7 @@
-/* LAST WITNESS — Audio + Professional Save Manager 0.7.10-s4
+/* LAST WITNESS — Audio + Professional Save Manager 0.7.10-s5
  * Preserves production audio behaviour while adding named manual saves,
  * IndexedDB persistence, legacy migration, export/import and versioned restore.
- * Scoped 0.22.12-s5 repair: save-facing build identity now follows Runtime 0.22.12,
+ * Scoped 0.22.13-s5 repair: save-facing build identity now follows Runtime 0.22.13,
  * stale Settings relabeling is removed, and Chapter V Phase I restore is wired.
  * Police ambience loops only its clean 04.6–45.0 second section.
  */
@@ -42,8 +42,8 @@ function ambience(screen){
 
 const LW_SAVE_FORMAT="LAST_WITNESS_SAVE";
 const LW_SAVE_VERSION=1;
-const LW_SAVE_BUILD="0.22.12";
-const LW_SAVE_MODULE="0.7.10-s4";
+const LW_SAVE_BUILD="0.22.13";
+const LW_SAVE_MODULE="0.7.10-s5";
 const LW_SAVE_DB="last_witness_saves";
 const LW_SAVE_STORE="slots";
 const LW_SAVE_FALLBACK="last_witness_named_saves_v1";
