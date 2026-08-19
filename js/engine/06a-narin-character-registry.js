@@ -1,11 +1,11 @@
-/* LAST WITNESS - Canon Narin Character Registry Extension 0.22.11-nj1
- * Registers Narin before Chapter V Phase II loads and repairs saves where the
- * Phase II unlock flag exists but the canonical Character Journal array missed him.
- * Uses the existing Content Registry unlock/render/dot mechanisms only.
+/* LAST WITNESS - Narin Character Journal Integration 0.22.12-nj2
+ * Surgical Chapter V Phase II bridge for the legacy Character Journal allowlist.
+ * Narin remains story-gated to first secure contact; existing characters/rendering
+ * are untouched. The extension augments only Narin's card/detail and unread state.
  */
 (function(){
 "use strict";
-const VERSION="0.22.11-nj1";
+const VERSION="0.22.12-nj2";
 if(window.LastWitnessNarinCharacterRegistry?.version===VERSION&&window.LastWitnessNarinCharacterRegistry?.installed){try{window.LastWitnessNarinCharacterRegistry.repair?.()}catch(_){}return}
 const DATA={
  name:{en:"Narin",th:"Narin"},
@@ -20,21 +20,46 @@ const DATA={
   {key:"record",label:{en:"Record Integrity Concern",th:"ความกังวลด้านความสมบูรณ์ของบันทึก"},value:88}
  ]
 };
+const $=(s,r=document)=>r.querySelector(s);const $$=(s,r=document)=>Array.from(r.querySelectorAll(s));
 function gs(){try{return state}catch(_){return window.state||null}}
 function api(){return window.LastWitnessContentRegistry}
+function thai(){return gs()?.language==="th"||document.documentElement.lang==="th"}
+function text(pair){return pair?.[thai()?"th":"en"]||pair?.en||""}
+function journalUnlocked(){const s=gs(),p=s?.flags?.ch5_p2;return Boolean(s&&(s.flags?.ch5_p2_narin_journal_unlocked===true||p?.narinJournalUnlocked===true))}
+function eligible(){const s=gs(),p=s?.flags?.ch5_p2;return Boolean(s&&(journalUnlocked()||p?.narinChannelEstablished===true||s.flags?.ch5_p2_narin_channel_established===true))}
 function register(){const a=api();if(!a?.characters)return false;a.characters.narin=DATA;return true}
-function present(){const s=gs();return Boolean(Array.isArray(s?.lwCharactersUnlocked)&&s.lwCharactersUnlocked.includes("narin"))}
-function shouldRepair(){const s=gs(),p=s?.flags?.ch5_p2;return Boolean(s&&(s.flags?.ch5_p2_narin_journal_unlocked===true||p?.narinJournalUnlocked===true||p?.narinChannelEstablished===true||s.flags?.ch5_p2_narin_channel_established===true))}
-function ensureUnlocked(opt={}){
- if(!register())return false;const s=gs(),a=api();if(!s||!a)return false;
- s.characters=s.characters||{};s.characters.Narin=true;if(!Array.isArray(s.lwCharactersUnlocked))s.lwCharactersUnlocked=[];if(!Array.isArray(s.lwCharactersUnread))s.lwCharactersUnread=[];
- if(!present())try{a.unlockCharacter?.("narin",{unread:opt.unread!==false,source:opt.source||"story",quiet:opt.quiet===true})}catch(error){console.error("LAST WITNESS Narin canonical unlock failed",error)}
- if(!present()){s.lwCharactersUnlocked.push("narin");if(opt.unread!==false&&!s.lwCharactersUnread.includes("narin"))s.lwCharactersUnread.push("narin")}
- s.characters.Narin=true;try{a.renderCharacters?.(true);a.updateDots?.()}catch(_){}return present()
+function present(){return journalUnlocked()}
+function setStoryFlags(unread=true){const s=gs();if(!s)return false;s.flags=s.flags||{};s.flags.ch5_p2=s.flags.ch5_p2&&typeof s.flags.ch5_p2==="object"?s.flags.ch5_p2:{};s.flags.ch5_p2_narin_journal_unlocked=true;s.flags.ch5_p2.narinJournalUnlocked=true;s.flags.ch5_p2_narin_journal_unread=unread===true;s.characters=s.characters||{};s.characters.Narin=true;return true}
+function relationSummary(){return`<div class="relation-summary"><div class="relation-label-row"><span>${thai()?"ความสัมพันธ์":"Relationship"}</span><strong>${DATA.relation.value}%</strong></div><div class="relation-bar"><div class="relation-fill" style="width:${DATA.relation.value}%"></div></div></div>`}
+function metricMarkup(){return`<div class="relation-metrics">${DATA.metrics.map(m=>`<div class="relation-metric"><div class="relation-metric-head"><span>${text(m.label)}</span><strong>${m.value}%</strong></div><div class="relation-bar"><div class="relation-fill" style="width:${m.value}%"></div></div></div>`).join("")}</div>`}
+function showDetail(){
+ const grid=$("#characterGrid"),detail=$("#characterDetail"),back=$("#charactersBack");if(!detail)return false;
+ detail.innerHTML=`<div data-detail-shell data-narin-detail="1"><div class="character-detail-head"><img data-detail-portrait alt="" width="512" height="640" loading="eager" decoding="async" style="object-fit:cover"><div><div class="character-name" data-detail-name></div><div class="character-status" data-detail-status></div></div></div><div data-detail-metrics></div><div class="character-notes" data-detail-notes></div></div>`;
+ const image=detail.querySelector("[data-detail-portrait]");if(image)image.src=DATA.src;detail.querySelector("[data-detail-name]").textContent=text(DATA.name);detail.querySelector("[data-detail-status]").textContent=text(DATA.role);detail.querySelector("[data-detail-metrics]").innerHTML=metricMarkup();detail.querySelector("[data-detail-notes]").textContent=text(DATA.bio);if(grid)grid.style.display="none";detail.style.display="block";if(back)back.style.display="block";return true
 }
-function repair(){if(!register())return false;if(!shouldRepair())return true;return ensureUnlocked({unread:true,source:"story",quiet:true})}
-function schedule(){[0,80,220,600,1400,3000].forEach(ms=>setTimeout(repair,ms))}
-window.LastWitnessNarinCharacterRegistry={version:VERSION,installed:true,register,ensureUnlocked,repair,present};
-if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",schedule,{once:true});else schedule();
-window.addEventListener("pageshow",()=>setTimeout(repair,40));document.addEventListener("visibilitychange",()=>{if(!document.hidden)setTimeout(repair,60)});
+let injecting=false,observer=null,modalObserver=null;
+function ensureCard(){
+ if(!journalUnlocked()||injecting)return false;register();const grid=$("#characterGrid");if(!grid)return false;if(grid.querySelector('[data-character="narin"]'))return true;
+ injecting=true;try{const button=document.createElement("button");button.type="button";button.className="character-card";button.dataset.character="narin";button.dataset.narinJournal="1";button.innerHTML=`<img src="${DATA.src}" alt="" width="512" height="640" loading="eager" decoding="async" data-character-image="narin" style="object-fit:cover"><div class="character-name">${text(DATA.name)}</div><div class="character-status">${text(DATA.status)}</div>${relationSummary()}`;button.addEventListener("click",event=>{event.preventDefault();event.stopPropagation();showDetail()});grid.appendChild(button)}finally{injecting=false}syncDot();return true
+}
+function syncDot(){const s=gs();if(!s)return;const own=journalUnlocked()&&s.flags?.ch5_p2_narin_journal_unread===true;const legacy=Array.isArray(s.lwCharactersUnread)&&s.lwCharactersUnread.length>0&&s.journal?.seen===false;$$('.journal-alert').forEach(node=>node.classList.toggle('show',Boolean(own||legacy)))}
+function persist(){try{typeof autoSave==="function"&&autoSave()}catch(_){} }
+function markRead(){const s=gs();if(!s?.flags)return;s.flags.ch5_p2_narin_journal_unread=false;syncDot();persist()}
+function ensureUnlocked(opt={}){
+ if(!register())return false;const s=gs(),a=api();if(!s||!a)return false;const wasUnlocked=journalUnlocked();setStoryFlags(opt.unread!==false&&!wasUnlocked);
+ /* Best-effort base registration is retained for future registry versions, but
+    visibility does not depend on the legacy fixed allowlist. */
+ try{a.unlockCharacter?.("narin",{unread:opt.unread!==false,source:opt.source||"story",quiet:true})}catch(_){}
+ ensureCard();syncDot();return true
+}
+function repair(){if(!register())return false;if(!eligible())return true;if(!journalUnlocked())return ensureUnlocked({unread:true,source:"story",quiet:true});setStoryFlags(gs()?.flags?.ch5_p2_narin_journal_unread===true);ensureCard();syncDot();return true}
+function journalOpen(){return Boolean($("#charactersModal")?.classList.contains("open"))}
+function onJournalOpened(){if(!journalOpen())return;ensureCard();markRead()}
+function watchGrid(){const grid=$("#characterGrid");if(!grid||observer)return;observer=new MutationObserver(()=>{if(journalUnlocked()&&!grid.querySelector('[data-character="narin"]'))queueMicrotask(ensureCard);if(journalOpen()&&journalUnlocked())queueMicrotask(onJournalOpened)});observer.observe(grid,{childList:true})}
+function watchJournalModal(){const modal=$("#charactersModal");if(!modal||modalObserver)return;modalObserver=new MutationObserver(()=>{if(modal.classList.contains("open")&&journalUnlocked())queueMicrotask(onJournalOpened)});modalObserver.observe(modal,{attributes:true,attributeFilter:["class"]});if(modal.classList.contains("open")&&journalUnlocked())queueMicrotask(onJournalOpened)}
+function afterJournalOpen(){setTimeout(onJournalOpened,0);setTimeout(()=>{ensureCard();if(journalOpen())markRead()},80)}
+function schedule(){[0,80,220,600,1400,3000].forEach(ms=>setTimeout(()=>{register();watchGrid();watchJournalModal();repair()},ms))}
+document.addEventListener("click",event=>{if(event.target.closest?.("#charactersButton"))afterJournalOpen();if(event.target.closest?.("[data-lang]"))setTimeout(()=>{if(journalUnlocked()){const old=$("#characterGrid [data-character='narin']");if(old)old.remove();ensureCard();if($("#characterDetail [data-narin-detail='1']"))showDetail()}},0)},true);
+window.LastWitnessNarinCharacterRegistry={version:VERSION,installed:true,register,ensureUnlocked,repair,present,eligible,ensureCard,syncDot,showDetail,watchJournalModal};
+if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",schedule,{once:true});else schedule();window.addEventListener("pageshow",()=>setTimeout(()=>{repair();watchGrid();watchJournalModal()},40));document.addEventListener("visibilitychange",()=>{if(!document.hidden)setTimeout(repair,60)});
 })();
