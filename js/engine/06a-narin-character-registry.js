@@ -1,13 +1,13 @@
-/* LAST WITNESS - Narin Character Journal Integration 0.22.19-nj9
+/* LAST WITNESS - Narin Character Journal Integration 0.22.20-nj10
  * Surgical Chapter V Phase II bridge for the legacy Character Journal allowlist.
  * Narin remains story-gated to completed secure contact; existing characters/rendering
  * are untouched. The extension augments only Narin's card/detail and unread state.
  */
 (function(){
 "use strict";
-const VERSION="0.22.19-nj9";
+const VERSION="0.22.20-nj10";
 if(window.LastWitnessNarinCharacterRegistry?.version===VERSION&&window.LastWitnessNarinCharacterRegistry?.installed){try{window.LastWitnessNarinCharacterRegistry.repair?.()}catch(_){}return}
-const THUMB_SRC="assets/images/chapter-05/phase-02/narin-journal.png?v=0239nj9";
+const THUMB_SRC="assets/images/chapter-05/phase-02/narin-journal.png?v=0240nj10";
 const DATA={
  name:{en:"Narin",th:"Narin"},
  role:{en:"Bangkok Deployment Operations",th:"ฝ่ายปฏิบัติการ Deployment กรุงเทพฯ"},
@@ -34,8 +34,15 @@ function present(){return journalUnlocked()}
 function setStoryFlags(unread=true){const s=gs();if(!s)return false;s.flags=s.flags||{};s.flags.ch5_p2=s.flags.ch5_p2&&typeof s.flags.ch5_p2==="object"?s.flags.ch5_p2:{};s.flags.ch5_p2_narin_journal_unlocked=true;s.flags.ch5_p2.narinJournalUnlocked=true;s.flags.ch5_p2_narin_journal_unread=unread===true;s.characters=s.characters||{};s.characters.Narin=true;return true}
 function relationSummary(){return`<div class="relation-summary"><div class="relation-label-row"><span>${thai()?"ความสัมพันธ์":"Relationship"}</span><strong>${DATA.relation.value}%</strong></div><div class="relation-bar"><div class="relation-fill" style="width:${DATA.relation.value}%"></div></div></div>`}
 function metricMarkup(){return`<div class="relation-metrics">${DATA.metrics.map(m=>`<div class="relation-metric"><div class="relation-metric-head"><span>${text(m.label)}</span><strong>${m.value}%</strong></div><div class="relation-bar"><div class="relation-fill" style="width:${m.value}%"></div></div></div>`).join("")}</div>`}
+function ensureNarinDetailStyle(){
+ if($("#lwNarinJournalDetailStyle"))return true;const style=document.createElement("style");style.id="lwNarinJournalDetailStyle";style.textContent=`
+ #characterDetail [data-narin-detail="1"] .character-detail-head{align-items:flex-start}
+ #characterDetail [data-narin-detail="1"] [data-detail-portrait]{width:112px!important;height:140px!important;flex:0 0 112px!important;border-radius:10px!important;object-fit:cover!important;object-position:center 18%!important;background:#090a0e}
+ @media(max-width:390px){#characterDetail [data-narin-detail="1"] [data-detail-portrait]{width:108px!important;height:135px!important;flex-basis:108px!important}}
+ `;document.head.appendChild(style);return true
+}
 function showDetail(){
- const grid=$("#characterGrid"),detail=$("#characterDetail"),back=$("#charactersBack");if(!detail)return false;
+ ensureNarinDetailStyle();const grid=$("#characterGrid"),detail=$("#characterDetail"),back=$("#charactersBack");if(!detail)return false;
  detail.innerHTML=`<div data-detail-shell data-narin-detail="1"><div class="character-detail-head"><img data-detail-portrait alt="" width="512" height="640" loading="eager" decoding="async" style="object-fit:cover"><div><div class="character-name" data-detail-name></div><div class="character-status" data-detail-status></div></div></div><div data-detail-metrics></div><div class="character-notes" data-detail-notes></div></div>`;
  const image=detail.querySelector("[data-detail-portrait]");if(image)image.src=DATA.src;detail.querySelector("[data-detail-name]").textContent=text(DATA.name);detail.querySelector("[data-detail-status]").textContent=text(DATA.role);detail.querySelector("[data-detail-metrics]").innerHTML=metricMarkup();detail.querySelector("[data-detail-notes]").textContent=text(DATA.bio);if(grid)grid.style.display="none";detail.style.display="block";if(back)back.style.display="block";return true
 }
@@ -61,7 +68,7 @@ function onJournalOpened(){if(!journalOpen())return;ensureCard();markRead()}
 function watchGrid(){const grid=$("#characterGrid");if(!grid||observer)return;observer=new MutationObserver(()=>{if(journalUnlocked()&&!grid.querySelector('[data-character="narin"]'))queueMicrotask(ensureCard);if(journalOpen()&&journalUnlocked())queueMicrotask(onJournalOpened)});observer.observe(grid,{childList:true})}
 function watchJournalModal(){const modal=$("#charactersModal");if(!modal||modalObserver)return;modalObserver=new MutationObserver(()=>{if(modal.classList.contains("open")&&journalUnlocked())queueMicrotask(onJournalOpened)});modalObserver.observe(modal,{attributes:true,attributeFilter:["class"]});if(modal.classList.contains("open")&&journalUnlocked())queueMicrotask(onJournalOpened)}
 function afterJournalOpen(){setTimeout(onJournalOpened,0);setTimeout(()=>{ensureCard();if(journalOpen())markRead()},80)}
-function schedule(){[0,80,220,600,1400,3000].forEach(ms=>setTimeout(()=>{register();watchGrid();watchJournalModal();repair()},ms))}
+function schedule(){ensureNarinDetailStyle();[0,80,220,600,1400,3000].forEach(ms=>setTimeout(()=>{register();watchGrid();watchJournalModal();repair()},ms))}
 document.addEventListener("click",event=>{if(event.target.closest?.("#charactersButton"))afterJournalOpen();if(event.target.closest?.("[data-lang]"))setTimeout(()=>{if(journalUnlocked()){const old=$("#characterGrid [data-character='narin']");if(old)old.remove();ensureCard();if($("#characterDetail [data-narin-detail='1']"))showDetail()}},0)},true);
 window.LastWitnessNarinCharacterRegistry={version:VERSION,installed:true,register,ensureUnlocked,repair,present,eligible,contactComplete,revokePrematureStoryUnlock,ensureCard,syncDot,showDetail,watchJournalModal};
 if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",schedule,{once:true});else schedule();window.addEventListener("pageshow",()=>setTimeout(()=>{repair();watchGrid();watchJournalModal()},40));document.addEventListener("visibilitychange",()=>{if(!document.hidden)setTimeout(repair,60)});
