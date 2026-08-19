@@ -1,13 +1,13 @@
-/* LAST WITNESS - Narin Character Journal Integration 0.22.13-nj3
+/* LAST WITNESS - Narin Character Journal Integration 0.22.14-nj4
  * Surgical Chapter V Phase II bridge for the legacy Character Journal allowlist.
  * Narin remains story-gated to first secure contact; existing characters/rendering
  * are untouched. The extension augments only Narin's card/detail and unread state.
  */
 (function(){
 "use strict";
-const VERSION="0.22.13-nj3";
+const VERSION="0.22.14-nj4";
 if(window.LastWitnessNarinCharacterRegistry?.version===VERSION&&window.LastWitnessNarinCharacterRegistry?.installed){try{window.LastWitnessNarinCharacterRegistry.repair?.()}catch(_){}return}
-const THUMB_SRC="assets/images/chapter-05/phase-02/narin-journal.png?v=0233nj3";
+const THUMB_SRC="assets/images/chapter-05/phase-02/narin-journal.png?v=0234nj4";
 const DATA={
  name:{en:"Narin",th:"Narin"},
  role:{en:"Bangkok Deployment Operations",th:"ฝ่ายปฏิบัติการ Deployment กรุงเทพฯ"},

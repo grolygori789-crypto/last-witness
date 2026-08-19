@@ -1,4 +1,4 @@
-/* LAST WITNESS - Chapter V / Phase II: NAME IN ROOM 1807 0.22.13-c5p2r9
+/* LAST WITNESS - Chapter V / Phase II: NAME IN ROOM 1807 0.22.14-c5p2r10
  * Reuse-first production surface. Scene/HUD/dialogue/progress language follows
  * accepted CH5P1. Phase II owns only workstation, reconciliation and secure contact.
  */
@@ -21,6 +21,7 @@
 .ch5-p2-scene .ch4-p5-objective,.ch5-p2-scene .ch4-p5-shade,.ch5-p2-scene-note{pointer-events:none!important}
 
 /* Accepted CH5P1 HUD / dialogue / progress contract. */
+#ch5P2RecordsNote:empty{display:none!important}
 .ch5-p2-scene-note{white-space:pre-line;position:absolute;z-index:13;top:calc(118px + env(safe-area-inset-top));left:16px;right:16px;max-width:min(86vw,600px);padding:0;border:0;background:none!important;color:#aebbc0;font:700 10px/1.32 ui-monospace,monospace;letter-spacing:.055em;text-transform:uppercase;text-shadow:0 2px 8px #000;box-shadow:none!important}
 .ch5-p2-dialogue.ch4-p5-dialogue{z-index:28;bottom:calc(46px + var(--bottom,14px));min-height:170px;grid-template-columns:minmax(0,1fr) 126px;position:absolute;background:linear-gradient(180deg,rgba(6,10,16,.94),rgba(3,7,12,.92));border:1px solid rgba(221,181,109,.28);box-shadow:0 16px 36px rgba(0,0,0,.42),inset 0 1px 0 rgba(255,255,255,.03);backdrop-filter:blur(8px);pointer-events:auto!important;touch-action:manipulation;cursor:pointer}
 .ch5-p2-dialogue.ch4-p5-dialogue.right{grid-template-columns:minmax(0,1fr) 126px}

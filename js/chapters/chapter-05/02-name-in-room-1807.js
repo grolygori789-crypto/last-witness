@@ -1,11 +1,11 @@
-/* LAST WITNESS - Chapter V / Phase II: NAME IN ROOM 1807 0.22.13-c5p2r9
- * Production module update under base Runtime 0.22.13.
+/* LAST WITNESS - Chapter V / Phase II: NAME IN ROOM 1807 0.22.14-c5p2r10
+ * Production module update under base Runtime 0.22.14.
  * Reuses accepted card/scene/HUD/dialogue shells; Phase II owns only its screens,
  * reconciliation interaction, scoped audio, state, content registration and test entry.
  */
 (function(){
 "use strict";
-const VERSION="0.22.13-c5p2r9";
+const VERSION="0.22.14-c5p2r10";
 if(window.LastWitnessChapter5Phase2?.version===VERSION){try{window.LastWitnessChapter5Phase2.install?.()}catch(_){}return}
 
 const BASE="assets/images/chapter-05/phase-02/";
@@ -82,8 +82,7 @@ function inject(){
  <audio id="ch5P2MusicA" preload="auto" loop><source src="${AUDIO}restricted-identity.webm?v=0233c5p2a3" type="audio/webm"><source src="${AUDIO}restricted-identity.mp3?v=0233c5p2a3" type="audio/mpeg"></audio>
  <audio id="ch5P2MusicB" preload="auto" loop><source src="${AUDIO}name-changes-everything.webm?v=0230c5p2a2" type="audio/webm"><source src="${AUDIO}name-changes-everything.mp3?v=0230c5p2a2" type="audio/mpeg"></audio>
  <audio id="ch5P2RoomTone" preload="auto" loop src="${AUDIO}restricted-room-tone.wav?v=0230c5p2r6"></audio>
- <audio id="ch5P2Reveal" preload="auto" src="${AUDIO}kavin-reveal.wav?v=0230c5p2r6"></audio>
- <audio id="ch5P2Handshake" preload="auto" src="${AUDIO}secure-call-establish.wav?v=0231c5p2c2"></audio>`);
+ <audio id="ch5P2Reveal" preload="auto" src="${AUDIO}kavin-reveal.wav?v=0230c5p2r6"></audio>`);
  const work=$("#"+WORK),monitor=$("#ch5P2Monitor");if(work&&monitor){work.appendChild(monitor);monitor.hidden=false;const image=$(":scope > img.scene",work);image?.addEventListener("load",positionMonitorOverlay,{once:true});requestAnimationFrame(positionMonitorOverlay)}
  bindUi();updateLanguage();syncProgress();registerContent();return true
 }
@@ -107,6 +106,13 @@ function openSave(){try{window.LastWitnessSaveManager?.open?.("save")}catch(_){}
 function openMenu(){try{$("#drawer")?.classList.add("open")}catch(_){} }
 function media(id){return $("#"+id)}
 function playOne(id,mult=.5){const a=media(id);if(!a||!soundOn())return;try{a.currentTime=0;a.volume=clamp(sfxLevel()*mult,0,.5);a.play().catch(()=>{})}catch(_){} }
+
+let secureCallCtx=null,secureCallBuffer=null,secureCallBufferPromise=null,secureCallSource=null,secureCallGain=null,secureCallOffset=0,secureCallStartedAt=0;
+function secureAudioContext(){try{const C=window.AudioContext||window.webkitAudioContext;if(!C)return null;if(!secureCallCtx)secureCallCtx=new C();return secureCallCtx}catch(_){return null}}
+function preloadHandshakeBuffer(){if(secureCallBuffer)return Promise.resolve(secureCallBuffer);if(secureCallBufferPromise)return secureCallBufferPromise;const ctx=secureAudioContext();if(!ctx)return Promise.resolve(null);secureCallBufferPromise=fetch(AUDIO+"secure-call-establish.wav?v=0231c5p2c2",{cache:"force-cache"}).then(r=>{if(!r.ok)throw new Error("handshake "+r.status);return r.arrayBuffer()}).then(b=>ctx.decodeAudioData(b.slice(0))).then(buf=>secureCallBuffer=buf).catch(()=>null);return secureCallBufferPromise}
+function stopHandshakePlayback(reset=false){const ctx=secureCallCtx;if(secureCallSource){if(ctx&&secureCallStartedAt>0)secureCallOffset=Math.max(0,secureCallOffset+(ctx.currentTime-secureCallStartedAt));try{secureCallSource.onended=null;secureCallSource.stop()}catch(_){};try{secureCallSource.disconnect()}catch(_){};secureCallSource=null}secureCallStartedAt=0;if(reset)secureCallOffset=0}
+function playHandshake(reset=false){if(!soundOn()||sfxLevel()<=0)return Promise.resolve(false);if(reset)stopHandshakePlayback(true);const ctx=secureAudioContext();if(!ctx)return Promise.resolve(false);const resume=ctx.state==="suspended"?ctx.resume().catch(()=>false):Promise.resolve(true);return resume.then(()=>preloadHandshakeBuffer()).then(buf=>{if(!buf||ctx.state!=="running")return false;stopHandshakePlayback(false);const src=ctx.createBufferSource(),gain=ctx.createGain(),offset=Math.max(0,Math.min(secureCallOffset,Math.max(0,buf.duration-.02)));gain.gain.value=clamp(sfxLevel()*.22,0,.16);src.buffer=buf;src.connect(gain).connect(ctx.destination);secureCallSource=src;secureCallGain=gain;secureCallStartedAt=ctx.currentTime;src.onended=()=>{if(secureCallSource===src){secureCallSource=null;secureCallStartedAt=0;secureCallOffset=0}};try{src.start(0,offset);return true}catch(_){secureCallSource=null;secureCallStartedAt=0;return false}}).catch(()=>false)}
+function pauseHandshakePlayback(){stopHandshakePlayback(false)}
 
 let activeScoreMode="a",scoreTransitionToken=0,audioWatchdogTimer=0,scoreTransitionMode="",scoreTransitionStartedAt=0;
 function scoreMode(){const p=phaseState();return p?.attributionComplete||p?.narinContactStarted?"b":"a"}
@@ -153,21 +159,22 @@ function ensureScorePlaying(fromGesture=false){
   activeScoreMode=desired;scoreTransitionMode="";try{next.muted=false}catch(_){};fade(next,target,150);
   if(fallback&&fallback!==next&&isPlaying(fallback)&&Number(fallback.volume)<=.001)pauseElement(fallback)
  }else if(isPlaying(fallback)){
-  activeScoreMode=modeForMedia(fallback);try{fallback.muted=false}catch(_){};if(Number(fallback.volume)<target*.55)fade(fallback,target,180);crossfadeScore(desired,target,fromGesture)
+  activeScoreMode=modeForMedia(fallback);try{fallback.muted=false}catch(_){};if(Number(fallback.volume)<target*.55)fade(fallback,target,180);if(desired==="b"){if(fromGesture)beginTrackBFromGesture();else armForegroundGestureRecovery()}else crossfadeScore(desired,target,fromGesture)
  }else if(!scoreTransitionMode){
-  crossfadeScore(desired,target,fromGesture)
+  if(desired==="b"){if(fromGesture)beginTrackBFromGesture();else armForegroundGestureRecovery()}else crossfadeScore(desired,target,fromGesture)
  }
  const room=media("ch5P2RoomTone");if(room){try{room.loop=true;room.muted=false;room.volume=roomTarget();if(room.volume>0&&room.paused){const r=room.play();if(r&&typeof r.catch==="function")r.catch(armForegroundGestureRecovery)}else if(room.volume<=0)room.pause()}catch(_){}}
  return Boolean(audibleScore())
 }
 
+function waitForPlaybackAdvance(a,start,timeout=900){return new Promise(resolve=>{const began=performance.now();let frame=0,done=false;const finish=ok=>{if(done)return;done=true;if(frame)cancelAnimationFrame(frame);resolve(Boolean(ok))};const step=()=>{if(!a||document.hidden||backgroundPaused)return finish(false);if(isPlaying(a)&&finiteMediaTime(a)>start+.025)return finish(true);if(performance.now()-began>=timeout)return finish(false);frame=requestAnimationFrame(step)};frame=requestAnimationFrame(step)})}
 function beginTrackBFromGesture(){
- if(!isP2()||document.hidden||backgroundPaused||!soundOn())return false;
- const target=scoreTarget(),next=scoreMedia("b"),previous=audibleScore()||scoreMedia("a");if(!next||target<=0)return false;
- try{next.loop=true;next.muted=false;next.volume=Math.max(.012,Math.min(.024,target*.08));const result=next.play();
-  const finish=()=>{if(!isPlaying(next)){if(previous&&isPlaying(previous))fade(previous,target,120);armForegroundGestureRecovery();return false}activeScoreMode="b";scoreTransitionMode="";fade(next,target,760);if(previous&&previous!==next&&isPlaying(previous))fade(previous,0,760,()=>{if(isPlaying(next))pauseElement(previous)});return true};
-  if(result&&typeof result.then==="function")result.then(finish).catch(()=>{if(previous&&isPlaying(previous))fade(previous,target,120);armForegroundGestureRecovery()});else finish();return true
- }catch(_){if(previous&&isPlaying(previous))fade(previous,target,120);armForegroundGestureRecovery();return false}
+ if(!isP2()||document.hidden||backgroundPaused||!soundOn())return Promise.resolve(false);
+ const target=scoreTarget(),next=scoreMedia("b"),previous=audibleScore()||scoreMedia("a");if(!next||target<=0)return Promise.resolve(false);
+ if(isPlaying(next)){activeScoreMode="b";fade(next,target,180);if(previous&&previous!==next&&isPlaying(previous))fade(previous,0,420,()=>{if(isPlaying(next))pauseElement(previous)});return Promise.resolve(true)}
+ const start=finiteMediaTime(next);if(previous&&previous!==next&&isPlaying(previous)){try{previous.muted=false;if(Number(previous.volume)<target*.82)fade(previous,target,120)}catch(_){}}
+ try{next.loop=true;next.muted=false;next.volume=Math.max(.012,Math.min(.024,target*.08));const result=next.play();const promise=result&&typeof result.then==="function"?result:Promise.resolve();return promise.then(()=>waitForPlaybackAdvance(next,start,900)).then(started=>{if(!started){try{next.pause()}catch(_){};if(previous&&isPlaying(previous))fade(previous,target,120);activeScoreMode=previous?modeForMedia(previous):"a";armForegroundGestureRecovery();return false}activeScoreMode="b";scoreTransitionMode="";fade(next,target,760);if(previous&&previous!==next&&isPlaying(previous))fade(previous,0,760,()=>{if(isPlaying(next))pauseElement(previous)});return true}).catch(()=>{try{next.pause()}catch(_){};if(previous&&isPlaying(previous))fade(previous,target,120);armForegroundGestureRecovery();return false})
+ }catch(_){if(previous&&isPlaying(previous))fade(previous,target,120);armForegroundGestureRecovery();return Promise.resolve(false)}
 }
 function syncAudio(){
  if(document.hidden||backgroundPaused||!isP2()){[scoreMedia("a"),scoreMedia("b"),media("ch5P2RoomTone")].forEach(pauseElement);return false}
@@ -178,7 +185,7 @@ function scheduleAudioStability(){[0,90,240,600,1200].forEach(ms=>setTimeout(()=
 function startAudioWatchdog(){if(audioWatchdogTimer)return;audioWatchdogTimer=setInterval(()=>{if(isP2()&&!document.hidden&&!backgroundPaused&&soundOn())ensureScorePlaying(false)},900)}
 function stopAudioWatchdog(){clearInterval(audioWatchdogTimer);audioWatchdogTimer=0}
 function stopAudio(reset=false){
- scoreTransitionToken++;scoreTransitionMode="";[scoreMedia("a"),scoreMedia("b"),media("ch5P2RoomTone"),media("ch5P2Reveal"),media("ch5P2Handshake")].forEach(a=>{if(!a)return;cancelFade(a);try{a.pause();if(reset)a.currentTime=0;if(a!==media("ch5P2RoomTone"))a.volume=0}catch(_){}});activeScoreMode="a"
+ scoreTransitionToken++;scoreTransitionMode="";[scoreMedia("a"),scoreMedia("b"),media("ch5P2RoomTone"),media("ch5P2Reveal")].forEach(a=>{if(!a)return;cancelFade(a);try{a.pause();if(reset)a.currentTime=0;if(a!==media("ch5P2RoomTone"))a.volume=0}catch(_){}});stopHandshakePlayback(reset);activeScoreMode="a"
 }
 function stopForeignMedia(){try{window.LastWitnessChapter5Phase1?.stopAudio?.(true)}catch(_){};["LastWitnessChapter4Phase8","LastWitnessChapter4Phase7","LastWitnessChapter4Phase6","LastWitnessChapter4Phase5","LastWitnessChapter4Phase4","LastWitnessChapter4Phase3","LastWitnessChapter4Phase2","LastWitnessChapter4Phase1"].forEach(name=>{try{window[name]?.stopAudio?.(true)}catch(_){}});try{typeof stopLoops==="function"&&stopLoops()}catch(_){} }
 function clearCardAuto(reset=true){if(cardAutoTimer){clearTimeout(cardAutoTimer);cardAutoTimer=0}cardAutoDeadline=0;if(reset)cardAutoRemaining=CARD_AUTO_MS}
@@ -193,7 +200,7 @@ function restoreMediaPosition(a,time){try{if(Number.isFinite(time)&&Math.abs(fin
 function pauseCapturedMedia(a,record){if(!a||!record)return;cancelFade(a);try{a.pause();restoreMediaPosition(a,record.time)}catch(_){} }
 function pauseForBackground(){
  if(backgroundPaused||!isP2())return false;pauseCardAuto();pauseConnectionTransition();
- const ids=["ch5P2MusicA","ch5P2MusicB","ch5P2RoomTone","ch5P2Handshake"],records={};
+ const ids=["ch5P2MusicA","ch5P2MusicB","ch5P2RoomTone"],records={};pauseHandshakePlayback();
  ids.forEach(id=>{const a=media(id),record=p2MediaSnapshotRecord(id,a);if(record)records[id]=record});
  backgroundSnapshot={activeMode:activeScoreMode,desiredMode:scoreMode(),records};backgroundPaused=true;
  ids.forEach(id=>{const a=media(id),record=records[id];if(a&&record)pauseCapturedMedia(a,record)});return true
@@ -216,7 +223,7 @@ function resumeForeground(){
 function queueForegroundResume(){[0,70,180,420,850,1500,2600].forEach(ms=>setTimeout(()=>{if(!document.hidden){if(backgroundPaused)resumeForeground();else retryForegroundAudio()}},ms))}
 function guardBackgroundP2Play(event){if(!backgroundPaused)return;const a=event.target,record=a?.id?backgroundSnapshot?.records?.[a.id]:null;if(record)pauseCapturedMedia(a,record)}
 function foregroundGestureRecovery(){
- if(document.hidden||backgroundPaused||!isP2()||!soundOn())return;const desired=scoreMedia(scoreMode());if(foregroundGesturePending||!isPlaying(desired)){foregroundGesturePending=false;ensureScorePlaying(true)}resumeConnectionTransition()
+ if(document.hidden||backgroundPaused||!isP2()||!soundOn())return;const desired=scoreMedia(scoreMode());if(foregroundGesturePending||!isPlaying(desired)){foregroundGesturePending=false;if(scoreMode()==="b")beginTrackBFromGesture();else ensureScorePlaying(true)}resumeConnectionTransition()
 }
 
 function positionSceneNotes(){
@@ -322,17 +329,16 @@ function unlockNarinJournal(){
  save("ch5_p2_narin_journal_unlocked");return true
 }
 function queueNarinJournalUnlock(){[0,80,220,520,1000].forEach(delay=>setTimeout(()=>{if(narinJournalPresent()){const p=phaseState();if(p)p.narinJournalUnlocked=true;return}unlockNarinJournal()},delay))}
-function openNarinDirect(){beginTrackBFromGesture();const p=phaseState();p.narinContactStarted=true;p.narinChannelEstablished=true;p.stage="narin-contact";const s=gs();s.flags=s.flags||{};s.flags.ch5_p2_narin_channel_established=true;narinOpen=true;$("#ch5P2Narin")?.classList.add("open");$("#ch5P2Narin")?.setAttribute("aria-hidden","false");renderNarin();save("ch5_p2_narin_contact");requestAnimationFrame(queueNarinJournalUnlock)}
+function openNarinDirect(){const p=phaseState();p.narinContactStarted=true;p.narinChannelEstablished=true;p.stage="narin-contact";const s=gs();s.flags=s.flags||{};s.flags.ch5_p2_narin_channel_established=true;narinOpen=true;$("#ch5P2Narin")?.classList.add("open");$("#ch5P2Narin")?.setAttribute("aria-hidden","false");renderNarin();save("ch5_p2_narin_contact");requestAnimationFrame(queueNarinJournalUnlock)}
 
 function setConnectEstablishedVisual(){const n=$("#ch5P2Connect");n?.classList.add("established");const status=$("#ch5P2ConnectStatus");if(status)status.textContent=tr("SECURE CHANNEL ESTABLISHED","เชื่อมต่อช่องสัญญาณปลอดภัยแล้ว")}
 function clearConnectTimer(){if(connectTimer){clearTimeout(connectTimer);connectTimer=0}connectDeadline=0}
 function scheduleConnectTimer(){clearConnectTimer();if(!connectOpen||backgroundPaused||document.hidden)return;const delay=Math.max(20,Number(connectRemaining)||20);connectDeadline=Date.now()+delay;connectTimer=setTimeout(advanceConnectPhase,delay)}
-function playHandshake(reset=false){const a=media("ch5P2Handshake");if(!a||!soundOn()||sfxLevel()<=0)return;try{a.loop=false;a.muted=false;if(reset)a.currentTime=0;a.volume=clamp(sfxLevel()*.22,0,.16);if(a.paused)a.play().catch(()=>{})}catch(_){} }
-function startNarinConnection(reset=true){beginTrackBFromGesture();const p=phaseState();if(p.narinChannelEstablished){openNarinDirect();return}p.narinContactStarted=true;p.stage="narin-connecting";connectOpen=true;connectPhase="handshake";connectRemaining=CONNECT_HANDSHAKE_MS;const n=$("#ch5P2Connect");n?.classList.add("open");n?.classList.remove("established");n?.setAttribute("aria-hidden","false");updateLanguage();playHandshake(reset);const score=scoreMedia(scoreMode());if(score)fade(score,scoreTarget(),180);save("ch5_p2_narin_connecting");scheduleConnectTimer()}
-function advanceConnectPhase(){clearConnectTimer();if(!connectOpen)return;if(document.hidden||backgroundPaused){scheduleConnectTimer();return}if(connectPhase==="handshake"){connectPhase="established";connectRemaining=CONNECT_ESTABLISHED_MS;const p=phaseState();p.narinChannelEstablished=true;const s=gs();s.flags=s.flags||{};s.flags.ch5_p2_narin_channel_established=true;setConnectEstablishedVisual();save("ch5_p2_narin_channel_established");scheduleConnectTimer();return}connectOpen=false;connectPhase="idle";connectRemaining=CONNECT_HANDSHAKE_MS;const n=$("#ch5P2Connect");n?.classList.remove("open","established");n?.setAttribute("aria-hidden","true");const a=media("ch5P2Handshake");if(a)try{a.pause()}catch(_){};syncAudio();openNarinDirect()}
-function pauseConnectionTransition(){if(!connectOpen)return;if(connectTimer){connectRemaining=Math.max(20,connectDeadline-Date.now());clearConnectTimer()}const a=media("ch5P2Handshake");if(a)try{a.pause()}catch(_){} }
+function startNarinConnection(reset=true){beginTrackBFromGesture();const p=phaseState();if(p.narinChannelEstablished){openNarinDirect();return}p.narinContactStarted=true;p.stage="narin-connecting";connectOpen=true;connectPhase="handshake";connectRemaining=CONNECT_HANDSHAKE_MS;const n=$("#ch5P2Connect");n?.classList.add("open");n?.classList.remove("established");n?.setAttribute("aria-hidden","false");updateLanguage();playHandshake(reset);const score=audibleScore();if(score)fade(score,scoreTarget(),180);save("ch5_p2_narin_connecting");scheduleConnectTimer()}
+function advanceConnectPhase(){clearConnectTimer();if(!connectOpen)return;if(document.hidden||backgroundPaused){scheduleConnectTimer();return}if(connectPhase==="handshake"){connectPhase="established";connectRemaining=CONNECT_ESTABLISHED_MS;const p=phaseState();p.narinChannelEstablished=true;const s=gs();s.flags=s.flags||{};s.flags.ch5_p2_narin_channel_established=true;setConnectEstablishedVisual();save("ch5_p2_narin_channel_established");scheduleConnectTimer();return}connectOpen=false;connectPhase="idle";connectRemaining=CONNECT_HANDSHAKE_MS;const n=$("#ch5P2Connect");n?.classList.remove("open","established");n?.setAttribute("aria-hidden","true");stopHandshakePlayback(true);syncAudio();openNarinDirect()}
+function pauseConnectionTransition(){if(!connectOpen)return;if(connectTimer){connectRemaining=Math.max(20,connectDeadline-Date.now());clearConnectTimer()}pauseHandshakePlayback() }
 function resumeConnectionTransition(){if(!connectOpen||document.hidden||backgroundPaused)return;if(connectPhase==="handshake")playHandshake(false);scheduleConnectTimer()}
-function closeConnection(reset=false){connectOpen=false;connectPhase="idle";connectRemaining=CONNECT_HANDSHAKE_MS;clearConnectTimer();const n=$("#ch5P2Connect");n?.classList.remove("open","established");n?.setAttribute("aria-hidden","true");const a=media("ch5P2Handshake");if(a)try{a.pause();if(reset)a.currentTime=0}catch(_){} }
+function closeConnection(reset=false){connectOpen=false;connectPhase="idle";connectRemaining=CONNECT_HANDSHAKE_MS;clearConnectTimer();const n=$("#ch5P2Connect");n?.classList.remove("open","established");n?.setAttribute("aria-hidden","true");stopHandshakePlayback(reset) }
 function closeNarin(paused=true){narinOpen=false;$("#ch5P2Narin")?.classList.remove("open");$("#ch5P2Narin")?.setAttribute("aria-hidden","true");updateMonitor();if(paused&&!phaseState().narinContactComplete)save("ch5_p2_narin_contact_paused")}
 function advanceNarin(){const p=phaseState();if(p.narinLine>=NARIN_LINES.length-1){p.narinContactComplete=true;p.stage="closing";const s=gs();s.flags.ch5_p2_narin_contact_complete=true;setProgress(94);save("ch5_p2_narin_contact_complete");closeNarin(false);startDialogue(closingLines(),()=>{const live=phaseState();live.closingComplete=true;live.stage="closing_complete";setProgress(99);save("ch5_p2_closing_complete");updateMonitor()});return}p.narinLine++;renderNarin();save()}
 
@@ -358,7 +364,7 @@ function ensureNarinJournalFromSave(){const s=gs(),p=phaseState();if(!s||!p)retu
 function updateLanguage(){
  const p=phaseState()||defaults(),map={
  ch5P2CardEye:tr("CHAPTER V · PHASE II","บทที่ V · เฟส II"),ch5P2CardCity:tr("POLICE STATION · RESTRICTED RECORDS","สถานีตำรวจ · RESTRICTED RECORDS"),ch5P2CardTitle:tr("NAME IN ROOM 1807","ชื่อในห้อง 1807"),ch5P2CardBody:tr("A protected identity reference forces the Room 1807 file open again.","ข้อมูลตัวตนที่ถูกปกป้องทำให้แฟ้มห้อง 1807 ต้องถูกเปิดขึ้นมาอีกครั้ง"),
- ch5P2RecordsLocation:tr("POLICE STATION · RESTRICTED RECORDS","สถานีตำรวจ · RESTRICTED RECORDS"),ch5P2RecordsScene:"",ch5P2RecordsObjective:tr("Resolve the protected Room 1807 identity without outrunning the record.","ยืนยันตัวตนที่ถูกปกป้องของห้อง 1807 โดยไม่สรุปไกลเกินหลักฐาน"),ch5P2RecordsNote:tr("NORTH · SECURE COMMS\nBENEDICT'S CONDO · SAFE LOCATION · REMOTE","NORTH · SECURE COMMS\nคอนโดของ BENEDICT · จุดปลอดภัย · REMOTE"),
+ ch5P2RecordsLocation:tr("POLICE STATION · RESTRICTED RECORDS","สถานีตำรวจ · RESTRICTED RECORDS"),ch5P2RecordsScene:"",ch5P2RecordsObjective:tr("Resolve the protected Room 1807 identity without outrunning the record.","ยืนยันตัวตนที่ถูกปกป้องของห้อง 1807 โดยไม่สรุปไกลเกินหลักฐาน"),ch5P2RecordsNote:"",
  ch5P2WorkLocation:tr("RESTRICTED WORKSTATION · INTERNAL","RESTRICTED WORKSTATION · INTERNAL"),ch5P2WorkstationScene:"",ch5P2WorkstationObjective:tr("Bridge the protected identity path, then separate concealment from attribution.","เชื่อมเส้นทางตัวตนที่ถูกปกป้อง แล้วแยกการปกปิดออกจากการระบุตัวผู้กระทำ"),ch5P2WorkstationNote:"ACCESS LOGGED · READ / RECONCILE ONLY",
  ch5P2MonitorTitle:"IDENTITY RECONCILIATION",ch5P2MonitorSession:"SESSION · ROOM 1807",ch5P2ReconEye:"RESTRICTED INTERNAL",ch5P2ReconTitle:"IDENTITY RECONCILIATION",ch5P2ReconBody:tr("Build the only source bridge the record supports. Closing pauses the task; it does not complete it.","เชื่อมเฉพาะแหล่งข้อมูลที่หลักฐานรองรับ การกด X เป็นเพียงการพัก ไม่ถือว่าจบขั้นตอน"),
  ch5P2ConnectKicker:tr("SECURE CONTACT REQUEST","คำขอเชื่อมต่อแบบปลอดภัย"),ch5P2ConnectTitle:tr("ESTABLISHING SECURE CONTACT","กำลังเชื่อมต่อช่องสัญญาณปลอดภัย"),ch5P2ConnectOrigin:tr("RESTRICTED RECORDS · BENEDICT","RESTRICTED RECORDS · BENEDICT"),ch5P2ConnectEndpoint:"NARIN · REMOTE ENDPOINT",ch5P2ConnectStatus:connectPhase==="established"?tr("SECURE CHANNEL ESTABLISHED","เชื่อมต่อช่องสัญญาณปลอดภัยแล้ว"):tr("ENCRYPTED HANDSHAKE · CONTROLLED LINE","ENCRYPTED HANDSHAKE · CONTROLLED LINE"),
@@ -407,7 +413,7 @@ function installSaveRestoreBridge(){
 
 async function copyText(value){try{if(navigator.clipboard?.writeText){await navigator.clipboard.writeText(value);return true}}catch(_){}const a=document.createElement("textarea");a.value=value;a.setAttribute("readonly","");a.style.position="fixed";a.style.opacity="0";document.body.appendChild(a);a.select();const ok=document.execCommand?.("copy")===true;a.remove();return ok}
 function testerAuthorized(){try{return sessionStorage.getItem("last_witness_north_qa_role")==="tester"}catch(_){return false}}
-function qaInfo(){const s=gs()||{},p=phaseState();return["LAST WITNESS QA","Build: "+String(window.LastWitnessRuntimeBuild||"0.22.13"),"Access: NORTH QA","QA Module: "+String(window.LastWitnessNorthQA?.version||"0.22.13"),"Chapter V Phase II: "+VERSION,"Chapter: 5","Phase: 2","Screen: "+activeScreen(),"Checkpoint: "+(s.checkpoint||"unresolved"),"Stage: "+(p?.stage||"unresolved"),"Language: "+(s.language==="th"?"TH":"EN"),"Visibility: "+(document.hidden?"hidden":"visible")].join("\n")}
+function qaInfo(){const s=gs()||{},p=phaseState();return["LAST WITNESS QA","Build: "+String(window.LastWitnessRuntimeBuild||"0.22.14"),"Access: NORTH QA","QA Module: "+String(window.LastWitnessNorthQA?.version||"0.22.14"),"Chapter V Phase II: "+VERSION,"Chapter: 5","Phase: 2","Screen: "+activeScreen(),"Checkpoint: "+(s.checkpoint||"unresolved"),"Stage: "+(p?.stage||"unresolved"),"Language: "+(s.language==="th"?"TH":"EN"),"Visibility: "+(document.hidden?"hidden":"visible")].join("\n")}
 function closeToolOverlays(){$("#drawer")?.classList.remove("open");$$('.modal.open').forEach(n=>n.classList.remove("open"));["developerModal","northQaModal","devAccessModal"].forEach(id=>$("#"+id)?.classList.remove("open"))}
 function positionAfter(node,anchor,container){if(!node||!container)return;if(anchor&&anchor.parentElement===container){if(anchor.nextElementSibling!==node)anchor.insertAdjacentElement("afterend",node)}else if(node.parentElement!==container||container.lastElementChild!==node)container.appendChild(node)}
 function installDevButton(){const grid=$("#developerModal .dev-grid");if(!grid)return false;let b=$("#ch5P2DeveloperJump");if(!b){b=document.createElement("button");b.id="ch5P2DeveloperJump";b.type="button";b.className="dev-button";b.dataset.ch5P2Jump="1";b.addEventListener("click",event=>{event.preventDefault();event.stopPropagation();event.stopImmediatePropagation();closeToolOverlays();startFreshForDev()},true)}positionAfter(b,$("#ch5P1DeveloperJump")||grid.querySelector('[data-dev-jump="chapter4ShadowTruth"]'),grid);installToolLabels();return true}
@@ -429,7 +435,7 @@ function installQaInterceptors(){if(document.documentElement.dataset.ch5P2QaInte
 function scheduleIntegrations(){installTimers.forEach(clearTimeout);installTimers=[];[0,180,500,1000,1900,3300,5500].forEach(ms=>installTimers.push(setTimeout(()=>{installDevButton();installQaButton();installP1AutoHandoff();registerContent()},ms)))}
 
 function install(){
- inject();startAudioWatchdog();installSaveRestoreBridge();installQaInterceptors();installP1AutoHandoff();scheduleIntegrations();
+ inject();preloadHandshakeBuffer();startAudioWatchdog();installSaveRestoreBridge();installQaInterceptors();installP1AutoHandoff();scheduleIntegrations();
  document.addEventListener("click",event=>{if(event.target.closest?.("#developerMenuButton,#northQaMenuButton,#northQaTitleButton,#settingsVersion"))setTimeout(()=>{installDevButton();installQaButton();installP1AutoHandoff()},0)},true);
  document.addEventListener("play",guardBackgroundP2Play,true);
  document.addEventListener("visibilitychange",()=>{if(document.hidden)pauseForBackground();else queueForegroundResume()});
