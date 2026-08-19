@@ -1,11 +1,11 @@
-/* LAST WITNESS - Chapter V / Phase II: NAME IN ROOM 1807 0.22.14-c5p2r10
- * Production module update under base Runtime 0.22.14.
+/* LAST WITNESS - Chapter V / Phase II: NAME IN ROOM 1807 0.22.15-c5p2r11
+ * Production module update under base Runtime 0.22.15.
  * Reuses accepted card/scene/HUD/dialogue shells; Phase II owns only its screens,
  * reconciliation interaction, scoped audio, state, content registration and test entry.
  */
 (function(){
 "use strict";
-const VERSION="0.22.14-c5p2r10";
+const VERSION="0.22.15-c5p2r11";
 if(window.LastWitnessChapter5Phase2?.version===VERSION){try{window.LastWitnessChapter5Phase2.install?.()}catch(_){}return}
 
 const BASE="assets/images/chapter-05/phase-02/";
@@ -31,7 +31,7 @@ const sfxLevel=()=>soundOn()?clamp(gs()?.sfx??.55):0;
 const isP2=()=>Number(gs()?.chapter)===5&&SCREENS.has(activeScreen());
 
 let dialogue=null,dialogueActive=false,miniOpen=false,narinOpen=false,selectedSource="";
-let backgroundPaused=false,backgroundSnapshot=null,registryInstalled=false;
+let backgroundPaused=false,backgroundSnapshot=null,registryInstalled=false,journalNoteTimer=0;
 let installTimers=[];
 const fadeFrames=new WeakMap();
 let cardAutoTimer=0,cardAutoDeadline=0,cardAutoRemaining=3000;
@@ -77,7 +77,7 @@ function inject(){
  <div id="ch5P2Monitor" class="ch5-p2-monitor-screen" hidden><div class="ch5-p2-monitor-glow"></div><div class="ch5-p2-monitor-ui"><div class="ch5-p2-monitor-head"><div><strong id="ch5P2MonitorTitle"></strong><br><small id="ch5P2MonitorSession"></small></div><small id="ch5P2MonitorFlag"></small></div><div class="ch5-p2-monitor-dashboard"><div class="ch5-p2-monitor-primary"><small>ACTIVE QUERY</small><div id="ch5P2MonitorState" class="ch5-p2-monitor-state"></div><div id="ch5P2MonitorSub" class="ch5-p2-monitor-sub"></div></div><div class="ch5-p2-monitor-path" aria-hidden="true"><div><small>SUBJECT</small><b>ROOM 1807</b></div><div><small>INDEX</small><b>PROTECTED</b></div><div><small>LOCAL</small><b>DEPLOYMENT</b></div></div></div><button id="ch5P2OpenRecon" class="primary ch5-p2-monitor-button" type="button"></button></div></div>
  <div id="ch5P2Recon" class="modal ch5-p2-modal" aria-hidden="true"><div class="modal-card"><header class="ch5-p2-modal-head"><div class="eyebrow" id="ch5P2ReconEye"></div><h3 id="ch5P2ReconTitle"></h3><p id="ch5P2ReconBody"></p><button id="ch5P2ReconClose" class="ghost ch5-p2-close" type="button" aria-label="Close">×</button><div class="ch5-p2-step"><span id="ch5P2ReconStep"></span><div><i id="ch5P2ReconStepFill"></i></div></div></header><div id="ch5P2ReconWork" class="ch5-p2-scroll"></div><div id="ch5P2ReconStatus" class="ch5-p2-status" aria-live="polite"></div><footer class="ch5-p2-modal-foot"><button id="ch5P2ReconReset" class="ghost" type="button"></button><button id="ch5P2ReconConfirm" class="primary" type="button"></button></footer></div></div>
  <div id="ch5P2Connect" class="modal ch5-p2-connect" aria-hidden="true"><div class="ch5-p2-connect-card"><div class="ch5-p2-connect-kicker" id="ch5P2ConnectKicker"></div><h3 id="ch5P2ConnectTitle"></h3><div class="ch5-p2-connect-route"><span id="ch5P2ConnectOrigin"></span><i aria-hidden="true"></i><span id="ch5P2ConnectEndpoint"></span></div><div class="ch5-p2-connect-steps" aria-hidden="true"><b></b><b></b><b></b></div><div id="ch5P2ConnectStatus" class="ch5-p2-connect-status"></div></div></div>
- <div id="ch5P2Narin" class="modal ch5-p2-narin-modal" aria-hidden="true"><div class="modal-card"><button id="ch5P2NarinClose" class="ghost ch5-p2-close" type="button" aria-label="Close">×</button><div class="ch5-p2-narin-shell"><div class="ch5-p2-narin-visual"><div class="ch5-p2-narin-feed"><div class="ch5-p2-narin-feed-label">SECURE REMOTE FEED</div><div class="ch5-p2-narin-feed-frame"><img id="ch5P2NarinImage" src="${BASE}narin-guarded.png?v=0233c5p2r9" alt=""></div></div></div><div class="ch5-p2-narin-copy"><div id="ch5P2NarinEye" class="eyebrow"></div><h3>NARIN</h3><div id="ch5P2NarinRole" class="ch5-p2-narin-role"></div><div class="ch5-p2-narin-line"><div class="ch5-p2-narin-speaker-row"><div id="ch5P2NarinSpeaker" class="ch5-p2-narin-speaker"></div><span id="ch5P2NarinChannel" class="ch5-p2-narin-channel"></span><img id="ch5P2BenedictMini" class="ch5-p2-benedict-mini" src="assets/images/381e0e1f9a98101c.jpg" alt="Benedict"></div><div id="ch5P2NarinText" class="ch5-p2-narin-text"></div></div><button id="ch5P2NarinNext" class="primary" type="button"></button><div id="ch5P2NarinCounter" class="ch5-p2-narin-next"></div></div></div></div></div>
+ <div id="ch5P2Narin" class="modal ch5-p2-narin-modal" aria-hidden="true"><div id="ch5P2NarinJournalNote" class="ch5-p2-journal-note" role="status" aria-live="polite"></div><div class="modal-card"><button id="ch5P2NarinClose" class="ghost ch5-p2-close" type="button" aria-label="Close">×</button><div class="ch5-p2-narin-shell"><div class="ch5-p2-narin-visual"><div class="ch5-p2-narin-feed"><div class="ch5-p2-narin-feed-label">SECURE REMOTE FEED</div><div class="ch5-p2-narin-feed-frame"><img id="ch5P2NarinImage" src="${BASE}narin-guarded.png?v=0233c5p2r9" alt=""></div></div></div><div class="ch5-p2-narin-copy"><div id="ch5P2NarinEye" class="eyebrow"></div><h3>NARIN</h3><div id="ch5P2NarinRole" class="ch5-p2-narin-role"></div><div class="ch5-p2-narin-line"><div class="ch5-p2-narin-speaker-row"><div id="ch5P2NarinSpeaker" class="ch5-p2-narin-speaker"></div><span id="ch5P2NarinChannel" class="ch5-p2-narin-channel"></span><img id="ch5P2BenedictMini" class="ch5-p2-benedict-mini" src="assets/images/381e0e1f9a98101c.jpg" alt="Benedict"></div><div id="ch5P2NarinText" class="ch5-p2-narin-text"></div></div><button id="ch5P2NarinNext" class="primary" type="button"></button><div id="ch5P2NarinCounter" class="ch5-p2-narin-next"></div></div></div></div></div>
  <section id="${COMPLETE}" class="screen ch4-p4-complete ch5-p2-complete"><div class="ch4-p4-complete-card"><div id="ch5P2CompleteEye" class="eyebrow"></div><h2 id="ch5P2CompleteTitle"></h2><div class="ch4-p4-location-rule"></div><p id="ch5P2CompleteBody"></p><div class="ch4-p4-complete-grid"><div><span id="ch5P2ResultIdentity"></span><b id="ch5P2ValueIdentity"></b></div><div><span id="ch5P2ResultNarin"></span><b id="ch5P2ValueNarin"></b></div><div><span id="ch5P2ResultRecord"></span><b id="ch5P2ValueRecord"></b></div><div><span id="ch5P2ResultAttribution"></span><b id="ch5P2ValueAttribution"></b></div></div><strong id="ch5P2Next"></strong><button id="ch5P2ReturnTitle" class="primary" type="button"></button></div>${progressMarkup()}</section>
  <audio id="ch5P2MusicA" preload="auto" loop><source src="${AUDIO}restricted-identity.webm?v=0233c5p2a3" type="audio/webm"><source src="${AUDIO}restricted-identity.mp3?v=0233c5p2a3" type="audio/mpeg"></audio>
  <audio id="ch5P2MusicB" preload="auto" loop><source src="${AUDIO}name-changes-everything.webm?v=0230c5p2a2" type="audio/webm"><source src="${AUDIO}name-changes-everything.mp3?v=0230c5p2a2" type="audio/mpeg"></audio>
@@ -115,6 +115,7 @@ function playHandshake(reset=false){if(!soundOn()||sfxLevel()<=0)return Promise.
 function pauseHandshakePlayback(){stopHandshakePlayback(false)}
 
 let activeScoreMode="a",scoreTransitionToken=0,audioWatchdogTimer=0,scoreTransitionMode="",scoreTransitionStartedAt=0;
+let trackBConfirmed=false,trackBLastTime=0,trackBLastAdvanceAt=0,trackBStartPromise=null;
 function scoreMode(){const p=phaseState();return p?.attributionComplete||p?.narinContactStarted?"b":"a"}
 function scoreTarget(){const duck=connectOpen?0.86:1;return isP2()&&soundOn()?clamp(musicLevel()*.34*duck,0,.36):0}
 function roomTarget(){return isP2()&&soundOn()?clamp(sfxLevel()*.045,0,.055):0}
@@ -123,14 +124,22 @@ function otherScore(mode){return scoreMedia(mode==="b"?"a":"b")}
 function modeForMedia(a){return a?.id==="ch5P2MusicB"?"b":"a"}
 function isPlaying(a){return Boolean(a&&!a.paused&&!a.ended)}
 function pauseElement(a){if(!a)return;cancelFade(a);try{a.pause()}catch(_){} }
+function resetTrackBHealth(){trackBConfirmed=false;trackBLastTime=0;trackBLastAdvanceAt=0}
+function markTrackBProgress(){
+ const b=scoreMedia("b");if(!b||!isPlaying(b))return false;const now=performance.now(),t=finiteMediaTime(b),moved=t>trackBLastTime+.02||t<trackBLastTime-.2;
+ if(moved){trackBConfirmed=true;trackBLastTime=t;trackBLastAdvanceAt=now;return true}
+ return Boolean(trackBConfirmed&&now-trackBLastAdvanceAt<1900)
+}
+function scoreReady(mode){const a=scoreMedia(mode);return mode==="b"?markTrackBProgress():isPlaying(a)}
+function parkWarmFallback(a,duration=520){if(!a||!isPlaying(a))return;try{a.muted=false}catch(_){};fade(a,0,duration)}
 function playPreservingTime(a,volume){
  if(!a||document.hidden||backgroundPaused||!soundOn())return Promise.resolve(false);
  try{a.loop=true;a.muted=false;a.volume=clamp(volume,0,.72);if(isPlaying(a))return Promise.resolve(true);const result=a.play();return result&&typeof result.then==="function"?result.then(()=>true).catch(()=>false):Promise.resolve(true)}catch(_){return Promise.resolve(false)}
 }
 function audibleScore(){
- const preferred=scoreMedia(activeScoreMode);if(isPlaying(preferred)&&Number(preferred.volume)>.001)return preferred;
- const a=scoreMedia("a"),b=scoreMedia("b");if(isPlaying(a)&&Number(a.volume)>.001)return a;if(isPlaying(b)&&Number(b.volume)>.001)return b;
- return isPlaying(preferred)?preferred:isPlaying(a)?a:isPlaying(b)?b:null
+ const preferred=scoreMedia(activeScoreMode),preferredReady=activeScoreMode==="b"?scoreReady("b"):isPlaying(preferred);if(preferredReady&&Number(preferred.volume)>.001)return preferred;
+ const a=scoreMedia("a"),b=scoreMedia("b");if(isPlaying(a)&&Number(a.volume)>.001)return a;if(scoreReady("b")&&Number(b.volume)>.001)return b;
+ return isPlaying(a)?a:scoreReady("b")?b:null
 }
 function preserveAudibleFallback(target){const a=audibleScore();if(!a)return false;activeScoreMode=modeForMedia(a);try{a.muted=false}catch(_){};fade(a,target,180);return true}
 function crossfadeScore(nextMode,target,fromGesture=false){
@@ -147,7 +156,7 @@ function crossfadeScore(nextMode,target,fromGesture=false){
   scoreTransitionMode="";
   if(!started){if(fallbackPlaying)preserveAudibleFallback(target);armForegroundGestureRecovery();return}
   activeScoreMode=nextMode;fade(next,target,900);
-  if(previous&&previous!==next&&isPlaying(previous))fade(previous,0,900,()=>{if(token===scoreTransitionToken&&previous!==scoreMedia(scoreMode())&&isPlaying(next))pauseElement(previous)})
+  if(previous&&previous!==next&&isPlaying(previous)){if(nextMode==="b")parkWarmFallback(previous,900);else fade(previous,0,900,()=>{if(token===scoreTransitionToken&&previous!==scoreMedia(scoreMode())&&isPlaying(next))pauseElement(previous)})}
  });
  setTimeout(()=>{if(token!==scoreTransitionToken||scoreTransitionMode!==nextMode)return;if(!isPlaying(next)){scoreTransitionMode="";if(fallbackPlaying)preserveAudibleFallback(target);armForegroundGestureRecovery()}},1450);
  return true
@@ -155,9 +164,10 @@ function crossfadeScore(nextMode,target,fromGesture=false){
 function ensureScorePlaying(fromGesture=false){
  if(!isP2()||document.hidden||backgroundPaused||!soundOn())return false;
  const desired=scoreMode(),target=scoreTarget(),next=scoreMedia(desired),fallback=otherScore(desired);if(target<=0)return false;
- if(isPlaying(next)){
-  activeScoreMode=desired;scoreTransitionMode="";try{next.muted=false}catch(_){};fade(next,target,150);
-  if(fallback&&fallback!==next&&isPlaying(fallback)&&Number(fallback.volume)<=.001)pauseElement(fallback)
+ const nextReady=desired==="b"?scoreReady("b"):isPlaying(next);
+ if(nextReady){
+  activeScoreMode=desired;scoreTransitionMode="";foregroundGesturePending=false;try{next.muted=false}catch(_){};fade(next,target,150);
+  if(fallback&&fallback!==next&&isPlaying(fallback)){if(desired==="b")parkWarmFallback(fallback,420);else if(Number(fallback.volume)<=.001)pauseElement(fallback)}
  }else if(isPlaying(fallback)){
   activeScoreMode=modeForMedia(fallback);try{fallback.muted=false}catch(_){};if(Number(fallback.volume)<target*.55)fade(fallback,target,180);if(desired==="b"){if(fromGesture)beginTrackBFromGesture();else armForegroundGestureRecovery()}else crossfadeScore(desired,target,fromGesture)
  }else if(!scoreTransitionMode){
@@ -170,11 +180,17 @@ function ensureScorePlaying(fromGesture=false){
 function waitForPlaybackAdvance(a,start,timeout=900){return new Promise(resolve=>{const began=performance.now();let frame=0,done=false;const finish=ok=>{if(done)return;done=true;if(frame)cancelAnimationFrame(frame);resolve(Boolean(ok))};const step=()=>{if(!a||document.hidden||backgroundPaused)return finish(false);if(isPlaying(a)&&finiteMediaTime(a)>start+.025)return finish(true);if(performance.now()-began>=timeout)return finish(false);frame=requestAnimationFrame(step)};frame=requestAnimationFrame(step)})}
 function beginTrackBFromGesture(){
  if(!isP2()||document.hidden||backgroundPaused||!soundOn())return Promise.resolve(false);
+ if(trackBStartPromise)return trackBStartPromise;
  const target=scoreTarget(),next=scoreMedia("b"),previous=audibleScore()||scoreMedia("a");if(!next||target<=0)return Promise.resolve(false);
- if(isPlaying(next)){activeScoreMode="b";fade(next,target,180);if(previous&&previous!==next&&isPlaying(previous))fade(previous,0,420,()=>{if(isPlaying(next))pauseElement(previous)});return Promise.resolve(true)}
- const start=finiteMediaTime(next);if(previous&&previous!==next&&isPlaying(previous)){try{previous.muted=false;if(Number(previous.volume)<target*.82)fade(previous,target,120)}catch(_){}}
- try{next.loop=true;next.muted=false;next.volume=Math.max(.012,Math.min(.024,target*.08));const result=next.play();const promise=result&&typeof result.then==="function"?result:Promise.resolve();return promise.then(()=>waitForPlaybackAdvance(next,start,900)).then(started=>{if(!started){try{next.pause()}catch(_){};if(previous&&isPlaying(previous))fade(previous,target,120);activeScoreMode=previous?modeForMedia(previous):"a";armForegroundGestureRecovery();return false}activeScoreMode="b";scoreTransitionMode="";fade(next,target,760);if(previous&&previous!==next&&isPlaying(previous))fade(previous,0,760,()=>{if(isPlaying(next))pauseElement(previous)});return true}).catch(()=>{try{next.pause()}catch(_){};if(previous&&isPlaying(previous))fade(previous,target,120);armForegroundGestureRecovery();return false})
- }catch(_){if(previous&&isPlaying(previous))fade(previous,target,120);armForegroundGestureRecovery();return Promise.resolve(false)}
+ /* Prime Track A synchronously inside the same user gesture. It remains a zero-volume warm standby after B starts, so a later mobile stall can recover without another autoplay grant. */
+ if(previous&&previous!==next){try{previous.loop=true;previous.muted=false;if(isPlaying(previous)){if(Number(previous.volume)<target*.82)fade(previous,target,120)}else{previous.volume=target;const fallbackStart=previous.play();if(fallbackStart&&typeof fallbackStart.catch==="function")fallbackStart.catch(()=>{})}}catch(_){}}
+ if(scoreReady("b")){activeScoreMode="b";fade(next,target,180);if(previous&&previous!==next&&isPlaying(previous))parkWarmFallback(previous,420);foregroundGesturePending=false;return Promise.resolve(true)}
+ if(isPlaying(next))try{next.pause()}catch(_){};resetTrackBHealth();const start=finiteMediaTime(next);
+ try{
+  next.loop=true;next.muted=false;next.volume=Math.max(.012,Math.min(.024,target*.08));const result=next.play(),promise=result&&typeof result.then==="function"?result:Promise.resolve();
+  const attempt=promise.then(()=>waitForPlaybackAdvance(next,start,900)).then(started=>{if(!started){try{next.pause()}catch(_){};resetTrackBHealth();if(previous&&isPlaying(previous))fade(previous,target,120);activeScoreMode=previous?modeForMedia(previous):"a";armForegroundGestureRecovery();return false}trackBConfirmed=true;trackBLastTime=finiteMediaTime(next);trackBLastAdvanceAt=performance.now();activeScoreMode="b";scoreTransitionMode="";foregroundGesturePending=false;fade(next,target,760);if(previous&&previous!==next&&isPlaying(previous))parkWarmFallback(previous,760);return true}).catch(()=>{try{next.pause()}catch(_){};resetTrackBHealth();if(previous&&isPlaying(previous))fade(previous,target,120);activeScoreMode=previous?modeForMedia(previous):"a";armForegroundGestureRecovery();return false});
+  trackBStartPromise=attempt.finally(()=>{trackBStartPromise=null});return trackBStartPromise
+ }catch(_){resetTrackBHealth();if(previous&&isPlaying(previous))fade(previous,target,120);activeScoreMode=previous?modeForMedia(previous):"a";armForegroundGestureRecovery();return Promise.resolve(false)}
 }
 function syncAudio(){
  if(document.hidden||backgroundPaused||!isP2()){[scoreMedia("a"),scoreMedia("b"),media("ch5P2RoomTone")].forEach(pauseElement);return false}
@@ -185,7 +201,7 @@ function scheduleAudioStability(){[0,90,240,600,1200].forEach(ms=>setTimeout(()=
 function startAudioWatchdog(){if(audioWatchdogTimer)return;audioWatchdogTimer=setInterval(()=>{if(isP2()&&!document.hidden&&!backgroundPaused&&soundOn())ensureScorePlaying(false)},900)}
 function stopAudioWatchdog(){clearInterval(audioWatchdogTimer);audioWatchdogTimer=0}
 function stopAudio(reset=false){
- scoreTransitionToken++;scoreTransitionMode="";[scoreMedia("a"),scoreMedia("b"),media("ch5P2RoomTone"),media("ch5P2Reveal")].forEach(a=>{if(!a)return;cancelFade(a);try{a.pause();if(reset)a.currentTime=0;if(a!==media("ch5P2RoomTone"))a.volume=0}catch(_){}});stopHandshakePlayback(reset);activeScoreMode="a"
+ scoreTransitionToken++;scoreTransitionMode="";resetTrackBHealth();[scoreMedia("a"),scoreMedia("b"),media("ch5P2RoomTone"),media("ch5P2Reveal")].forEach(a=>{if(!a)return;cancelFade(a);try{a.pause();if(reset)a.currentTime=0;if(a!==media("ch5P2RoomTone"))a.volume=0}catch(_){}});stopHandshakePlayback(reset);activeScoreMode="a"
 }
 function stopForeignMedia(){try{window.LastWitnessChapter5Phase1?.stopAudio?.(true)}catch(_){};["LastWitnessChapter4Phase8","LastWitnessChapter4Phase7","LastWitnessChapter4Phase6","LastWitnessChapter4Phase5","LastWitnessChapter4Phase4","LastWitnessChapter4Phase3","LastWitnessChapter4Phase2","LastWitnessChapter4Phase1"].forEach(name=>{try{window[name]?.stopAudio?.(true)}catch(_){}});try{typeof stopLoops==="function"&&stopLoops()}catch(_){} }
 function clearCardAuto(reset=true){if(cardAutoTimer){clearTimeout(cardAutoTimer);cardAutoTimer=0}cardAutoDeadline=0;if(reset)cardAutoRemaining=CARD_AUTO_MS}
@@ -209,7 +225,7 @@ let foregroundGesturePending=false;
 function armForegroundGestureRecovery(){if(isP2()&&!document.hidden&&soundOn())foregroundGesturePending=true}
 function retryForegroundAudio(){
  if(document.hidden||backgroundPaused||!isP2()||!soundOn())return false;ensureScorePlaying(false);
- const desired=scoreMedia(scoreMode()),any=audibleScore(),desiredReady=isPlaying(desired);if(!desiredReady)armForegroundGestureRecovery();else foregroundGesturePending=false;return Boolean(any)
+ const mode=scoreMode(),desired=scoreMedia(mode),any=audibleScore(),desiredReady=mode==="b"?scoreReady("b"):isPlaying(desired);if(!desiredReady)armForegroundGestureRecovery();else foregroundGesturePending=false;return Boolean(any)
 }
 function resumeForeground(){
  if(document.hidden)return false;const snap=backgroundSnapshot;
@@ -223,7 +239,7 @@ function resumeForeground(){
 function queueForegroundResume(){[0,70,180,420,850,1500,2600].forEach(ms=>setTimeout(()=>{if(!document.hidden){if(backgroundPaused)resumeForeground();else retryForegroundAudio()}},ms))}
 function guardBackgroundP2Play(event){if(!backgroundPaused)return;const a=event.target,record=a?.id?backgroundSnapshot?.records?.[a.id]:null;if(record)pauseCapturedMedia(a,record)}
 function foregroundGestureRecovery(){
- if(document.hidden||backgroundPaused||!isP2()||!soundOn())return;const desired=scoreMedia(scoreMode());if(foregroundGesturePending||!isPlaying(desired)){foregroundGesturePending=false;if(scoreMode()==="b")beginTrackBFromGesture();else ensureScorePlaying(true)}resumeConnectionTransition()
+ if(document.hidden||backgroundPaused||!isP2()||!soundOn())return;const mode=scoreMode(),desired=scoreMedia(mode),ready=mode==="b"?scoreReady("b"):isPlaying(desired);if(foregroundGesturePending||!ready){foregroundGesturePending=false;if(mode==="b")beginTrackBFromGesture();else ensureScorePlaying(true)}resumeConnectionTransition()
 }
 
 function positionSceneNotes(){
@@ -307,6 +323,7 @@ function confirmRecon(){
 }
 
 function narinImage(emotion){return BASE+`narin-${emotion}.png?v=0233c5p2r9`}
+function showNarinJournalNote(){const note=$("#ch5P2NarinJournalNote");if(!note)return false;note.textContent=tr("Narin has been added to the Character Journal","เพิ่ม Narin ลงในบันทึกตัวละครแล้ว");note.classList.add("show");clearTimeout(journalNoteTimer);journalNoteTimer=setTimeout(()=>note.classList.remove("show"),2600);return true}
 function narinJournalPresent(){const s=gs(),ext=window.LastWitnessNarinCharacterRegistry;try{if(ext?.present?.())return true}catch(_){};return Boolean(s?.flags?.ch5_p2_narin_journal_unlocked===true||s?.flags?.ch5_p2?.narinJournalUnlocked===true)}
 function renderNarin(){
  const p=phaseState(),i=Math.max(0,Math.min(NARIN_LINES.length-1,p.narinLine||0)),line=NARIN_LINES[i],benedict=line.speaker==="Benedict";
@@ -321,21 +338,22 @@ function renderNarin(){
 function unlockNarinJournal(){
  registerContent();const s=gs(),p=phaseState(),api=window.LastWitnessContentRegistry,ext=window.LastWitnessNarinCharacterRegistry;
  if(!s||!p||!api?.characters?.narin)return false;s.flags=s.flags||{};s.characters=s.characters||{};s.characters.Narin=true;
- let present=narinJournalPresent();
+ const wasPresent=narinJournalPresent();let present=wasPresent;
  if(!present)try{present=Boolean(ext?.ensureUnlocked?.({unread:true,source:"story"}))}catch(error){console.error("LAST WITNESS Narin registry extension unlock failed",error)}
  if(!present)try{api.unlockCharacter?.("narin",{unread:true,source:"story"});present=narinJournalPresent()}catch(error){console.error("LAST WITNESS Narin journal unlock failed",error)}
  if(!present)return false;
  p.narinJournalUnlocked=true;s.flags.ch5_p2_narin_journal_unlocked=true;try{api.renderCharacters?.(true);api.updateDots?.()}catch(_){}
- save("ch5_p2_narin_journal_unlocked");return true
+ save("ch5_p2_narin_journal_unlocked");if(!wasPresent)showNarinJournalNote();return true
 }
 function queueNarinJournalUnlock(){[0,80,220,520,1000].forEach(delay=>setTimeout(()=>{if(narinJournalPresent()){const p=phaseState();if(p)p.narinJournalUnlocked=true;return}unlockNarinJournal()},delay))}
-function openNarinDirect(){const p=phaseState();p.narinContactStarted=true;p.narinChannelEstablished=true;p.stage="narin-contact";const s=gs();s.flags=s.flags||{};s.flags.ch5_p2_narin_channel_established=true;narinOpen=true;$("#ch5P2Narin")?.classList.add("open");$("#ch5P2Narin")?.setAttribute("aria-hidden","false");renderNarin();save("ch5_p2_narin_contact");requestAnimationFrame(queueNarinJournalUnlock)}
+function stabilizeNarinScore(){const target=scoreTarget(),b=scoreMedia("b"),a=scoreMedia("a");if(target<=0)return false;if(scoreReady("b")){activeScoreMode="b";fade(b,target,120);if(a&&isPlaying(a))parkWarmFallback(a,220);foregroundGesturePending=false;return true}if(a&&isPlaying(a)){activeScoreMode="a";try{a.muted=false}catch(_){};fade(a,target,90)}armForegroundGestureRecovery();return false}
+function openNarinDirect(){const p=phaseState();p.narinContactStarted=true;p.narinChannelEstablished=true;p.stage="narin-contact";const s=gs();s.flags=s.flags||{};s.flags.ch5_p2_narin_channel_established=true;narinOpen=true;$("#ch5P2Narin")?.classList.add("open");$("#ch5P2Narin")?.setAttribute("aria-hidden","false");renderNarin();stabilizeNarinScore();save("ch5_p2_narin_contact");requestAnimationFrame(queueNarinJournalUnlock)}
 
 function setConnectEstablishedVisual(){const n=$("#ch5P2Connect");n?.classList.add("established");const status=$("#ch5P2ConnectStatus");if(status)status.textContent=tr("SECURE CHANNEL ESTABLISHED","เชื่อมต่อช่องสัญญาณปลอดภัยแล้ว")}
 function clearConnectTimer(){if(connectTimer){clearTimeout(connectTimer);connectTimer=0}connectDeadline=0}
 function scheduleConnectTimer(){clearConnectTimer();if(!connectOpen||backgroundPaused||document.hidden)return;const delay=Math.max(20,Number(connectRemaining)||20);connectDeadline=Date.now()+delay;connectTimer=setTimeout(advanceConnectPhase,delay)}
 function startNarinConnection(reset=true){beginTrackBFromGesture();const p=phaseState();if(p.narinChannelEstablished){openNarinDirect();return}p.narinContactStarted=true;p.stage="narin-connecting";connectOpen=true;connectPhase="handshake";connectRemaining=CONNECT_HANDSHAKE_MS;const n=$("#ch5P2Connect");n?.classList.add("open");n?.classList.remove("established");n?.setAttribute("aria-hidden","false");updateLanguage();playHandshake(reset);const score=audibleScore();if(score)fade(score,scoreTarget(),180);save("ch5_p2_narin_connecting");scheduleConnectTimer()}
-function advanceConnectPhase(){clearConnectTimer();if(!connectOpen)return;if(document.hidden||backgroundPaused){scheduleConnectTimer();return}if(connectPhase==="handshake"){connectPhase="established";connectRemaining=CONNECT_ESTABLISHED_MS;const p=phaseState();p.narinChannelEstablished=true;const s=gs();s.flags=s.flags||{};s.flags.ch5_p2_narin_channel_established=true;setConnectEstablishedVisual();save("ch5_p2_narin_channel_established");scheduleConnectTimer();return}connectOpen=false;connectPhase="idle";connectRemaining=CONNECT_HANDSHAKE_MS;const n=$("#ch5P2Connect");n?.classList.remove("open","established");n?.setAttribute("aria-hidden","true");stopHandshakePlayback(true);syncAudio();openNarinDirect()}
+function advanceConnectPhase(){clearConnectTimer();if(!connectOpen)return;if(document.hidden||backgroundPaused){scheduleConnectTimer();return}if(connectPhase==="handshake"){connectPhase="established";connectRemaining=CONNECT_ESTABLISHED_MS;const p=phaseState();p.narinChannelEstablished=true;const s=gs();s.flags=s.flags||{};s.flags.ch5_p2_narin_channel_established=true;setConnectEstablishedVisual();save("ch5_p2_narin_channel_established");scheduleConnectTimer();return}connectOpen=false;connectPhase="idle";connectRemaining=CONNECT_HANDSHAKE_MS;const n=$("#ch5P2Connect");n?.classList.remove("open","established");n?.setAttribute("aria-hidden","true");stopHandshakePlayback(true);openNarinDirect()}
 function pauseConnectionTransition(){if(!connectOpen)return;if(connectTimer){connectRemaining=Math.max(20,connectDeadline-Date.now());clearConnectTimer()}pauseHandshakePlayback() }
 function resumeConnectionTransition(){if(!connectOpen||document.hidden||backgroundPaused)return;if(connectPhase==="handshake")playHandshake(false);scheduleConnectTimer()}
 function closeConnection(reset=false){connectOpen=false;connectPhase="idle";connectRemaining=CONNECT_HANDSHAKE_MS;clearConnectTimer();const n=$("#ch5P2Connect");n?.classList.remove("open","established");n?.setAttribute("aria-hidden","true");stopHandshakePlayback(reset) }
@@ -413,7 +431,7 @@ function installSaveRestoreBridge(){
 
 async function copyText(value){try{if(navigator.clipboard?.writeText){await navigator.clipboard.writeText(value);return true}}catch(_){}const a=document.createElement("textarea");a.value=value;a.setAttribute("readonly","");a.style.position="fixed";a.style.opacity="0";document.body.appendChild(a);a.select();const ok=document.execCommand?.("copy")===true;a.remove();return ok}
 function testerAuthorized(){try{return sessionStorage.getItem("last_witness_north_qa_role")==="tester"}catch(_){return false}}
-function qaInfo(){const s=gs()||{},p=phaseState();return["LAST WITNESS QA","Build: "+String(window.LastWitnessRuntimeBuild||"0.22.14"),"Access: NORTH QA","QA Module: "+String(window.LastWitnessNorthQA?.version||"0.22.14"),"Chapter V Phase II: "+VERSION,"Chapter: 5","Phase: 2","Screen: "+activeScreen(),"Checkpoint: "+(s.checkpoint||"unresolved"),"Stage: "+(p?.stage||"unresolved"),"Language: "+(s.language==="th"?"TH":"EN"),"Visibility: "+(document.hidden?"hidden":"visible")].join("\n")}
+function qaInfo(){const s=gs()||{},p=phaseState();return["LAST WITNESS QA","Build: "+String(window.LastWitnessRuntimeBuild||"0.22.15"),"Access: NORTH QA","QA Module: "+String(window.LastWitnessNorthQA?.version||"0.22.15"),"Chapter V Phase II: "+VERSION,"Chapter: 5","Phase: 2","Screen: "+activeScreen(),"Checkpoint: "+(s.checkpoint||"unresolved"),"Stage: "+(p?.stage||"unresolved"),"Language: "+(s.language==="th"?"TH":"EN"),"Visibility: "+(document.hidden?"hidden":"visible")].join("\n")}
 function closeToolOverlays(){$("#drawer")?.classList.remove("open");$$('.modal.open').forEach(n=>n.classList.remove("open"));["developerModal","northQaModal","devAccessModal"].forEach(id=>$("#"+id)?.classList.remove("open"))}
 function positionAfter(node,anchor,container){if(!node||!container)return;if(anchor&&anchor.parentElement===container){if(anchor.nextElementSibling!==node)anchor.insertAdjacentElement("afterend",node)}else if(node.parentElement!==container||container.lastElementChild!==node)container.appendChild(node)}
 function installDevButton(){const grid=$("#developerModal .dev-grid");if(!grid)return false;let b=$("#ch5P2DeveloperJump");if(!b){b=document.createElement("button");b.id="ch5P2DeveloperJump";b.type="button";b.className="dev-button";b.dataset.ch5P2Jump="1";b.addEventListener("click",event=>{event.preventDefault();event.stopPropagation();event.stopImmediatePropagation();closeToolOverlays();startFreshForDev()},true)}positionAfter(b,$("#ch5P1DeveloperJump")||grid.querySelector('[data-dev-jump="chapter4ShadowTruth"]'),grid);installToolLabels();return true}
