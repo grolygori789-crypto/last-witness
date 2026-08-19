@@ -1,13 +1,13 @@
-/* LAST WITNESS - Narin Character Journal Integration 0.22.15-nj5
+/* LAST WITNESS - Narin Character Journal Integration 0.22.16-nj6
  * Surgical Chapter V Phase II bridge for the legacy Character Journal allowlist.
- * Narin remains story-gated to first secure contact; existing characters/rendering
+ * Narin remains story-gated to completed secure contact; existing characters/rendering
  * are untouched. The extension augments only Narin's card/detail and unread state.
  */
 (function(){
 "use strict";
-const VERSION="0.22.15-nj5";
+const VERSION="0.22.16-nj6";
 if(window.LastWitnessNarinCharacterRegistry?.version===VERSION&&window.LastWitnessNarinCharacterRegistry?.installed){try{window.LastWitnessNarinCharacterRegistry.repair?.()}catch(_){}return}
-const THUMB_SRC="assets/images/chapter-05/phase-02/narin-journal.png?v=0235nj5";
+const THUMB_SRC="assets/images/chapter-05/phase-02/narin-journal.png?v=0236nj6";
 const DATA={
  name:{en:"Narin",th:"Narin"},
  role:{en:"Bangkok Deployment Operations",th:"ฝ่ายปฏิบัติการ Deployment กรุงเทพฯ"},
@@ -27,7 +27,8 @@ function api(){return window.LastWitnessContentRegistry}
 function thai(){return gs()?.language==="th"||document.documentElement.lang==="th"}
 function text(pair){return pair?.[thai()?"th":"en"]||pair?.en||""}
 function journalUnlocked(){const s=gs(),p=s?.flags?.ch5_p2;return Boolean(s&&(s.flags?.ch5_p2_narin_journal_unlocked===true||p?.narinJournalUnlocked===true))}
-function eligible(){const s=gs(),p=s?.flags?.ch5_p2;return Boolean(s&&(journalUnlocked()||p?.narinChannelEstablished===true||s.flags?.ch5_p2_narin_channel_established===true))}
+function contactComplete(){const s=gs(),p=s?.flags?.ch5_p2;return Boolean(s&&(p?.narinContactComplete===true||p?.complete===true||s.flags?.ch5_p2_narin_contact_complete===true||s.flags?.ch5_p2_complete===true))}
+function eligible(){return Boolean(journalUnlocked()||contactComplete())}
 function register(){const a=api();if(!a?.characters)return false;a.characters.narin=DATA;return true}
 function present(){return journalUnlocked()}
 function setStoryFlags(unread=true){const s=gs();if(!s)return false;s.flags=s.flags||{};s.flags.ch5_p2=s.flags.ch5_p2&&typeof s.flags.ch5_p2==="object"?s.flags.ch5_p2:{};s.flags.ch5_p2_narin_journal_unlocked=true;s.flags.ch5_p2.narinJournalUnlocked=true;s.flags.ch5_p2_narin_journal_unread=unread===true;s.characters=s.characters||{};s.characters.Narin=true;return true}
@@ -47,13 +48,14 @@ function syncDot(){const s=gs();if(!s)return;const own=journalUnlocked()&&s.flag
 function persist(){try{typeof autoSave==="function"&&autoSave()}catch(_){} }
 function markRead(){const s=gs();if(!s?.flags)return;s.flags.ch5_p2_narin_journal_unread=false;syncDot();persist()}
 function ensureUnlocked(opt={}){
- if(!register())return false;const s=gs(),a=api();if(!s||!a)return false;const wasUnlocked=journalUnlocked();setStoryFlags(opt.unread!==false&&!wasUnlocked);
+ if(!register())return false;const s=gs(),a=api();if(!s||!a||!contactComplete())return false;const wasUnlocked=journalUnlocked(),unread=opt.forceUnread===true?true:(opt.unread!==false&&!wasUnlocked);setStoryFlags(unread);
  /* Best-effort base registration is retained for future registry versions, but
     visibility does not depend on the legacy fixed allowlist. */
  try{a.unlockCharacter?.("narin",{unread:opt.unread!==false,source:opt.source||"story",quiet:true})}catch(_){}
  ensureCard();syncDot();return true
 }
-function repair(){if(!register())return false;if(!eligible())return true;if(!journalUnlocked())return ensureUnlocked({unread:true,source:"story",quiet:true});setStoryFlags(gs()?.flags?.ch5_p2_narin_journal_unread===true);ensureCard();syncDot();return true}
+function revokePrematureStoryUnlock(){const s=gs(),p=s?.flags?.ch5_p2;if(!s||!p||contactComplete()||!journalUnlocked())return false;s.flags.ch5_p2_narin_journal_unlocked=false;p.narinJournalUnlocked=false;s.flags.ch5_p2_narin_journal_unread=false;s.flags.ch5_p2_narin_journal_notified=false;if(Array.isArray(s.lwCharactersUnlocked))s.lwCharactersUnlocked=s.lwCharactersUnlocked.filter(id=>id!=="narin");if(Array.isArray(s.lwCharactersUnread))s.lwCharactersUnread=s.lwCharactersUnread.filter(id=>id!=="narin");if(s.characters)delete s.characters.Narin;$("#characterGrid [data-character='narin']")?.remove();syncDot();return true}
+function repair(){if(!register())return false;if(!contactComplete()&&journalUnlocked())revokePrematureStoryUnlock();if(!eligible())return true;if(!journalUnlocked())return ensureUnlocked({unread:true,source:"story",quiet:true});setStoryFlags(gs()?.flags?.ch5_p2_narin_journal_unread===true);ensureCard();syncDot();return true}
 function journalOpen(){return Boolean($("#charactersModal")?.classList.contains("open"))}
 function onJournalOpened(){if(!journalOpen())return;ensureCard();markRead()}
 function watchGrid(){const grid=$("#characterGrid");if(!grid||observer)return;observer=new MutationObserver(()=>{if(journalUnlocked()&&!grid.querySelector('[data-character="narin"]'))queueMicrotask(ensureCard);if(journalOpen()&&journalUnlocked())queueMicrotask(onJournalOpened)});observer.observe(grid,{childList:true})}
@@ -61,6 +63,6 @@ function watchJournalModal(){const modal=$("#charactersModal");if(!modal||modalO
 function afterJournalOpen(){setTimeout(onJournalOpened,0);setTimeout(()=>{ensureCard();if(journalOpen())markRead()},80)}
 function schedule(){[0,80,220,600,1400,3000].forEach(ms=>setTimeout(()=>{register();watchGrid();watchJournalModal();repair()},ms))}
 document.addEventListener("click",event=>{if(event.target.closest?.("#charactersButton"))afterJournalOpen();if(event.target.closest?.("[data-lang]"))setTimeout(()=>{if(journalUnlocked()){const old=$("#characterGrid [data-character='narin']");if(old)old.remove();ensureCard();if($("#characterDetail [data-narin-detail='1']"))showDetail()}},0)},true);
-window.LastWitnessNarinCharacterRegistry={version:VERSION,installed:true,register,ensureUnlocked,repair,present,eligible,ensureCard,syncDot,showDetail,watchJournalModal};
+window.LastWitnessNarinCharacterRegistry={version:VERSION,installed:true,register,ensureUnlocked,repair,present,eligible,contactComplete,revokePrematureStoryUnlock,ensureCard,syncDot,showDetail,watchJournalModal};
 if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",schedule,{once:true});else schedule();window.addEventListener("pageshow",()=>setTimeout(()=>{repair();watchGrid();watchJournalModal()},40));document.addEventListener("visibilitychange",()=>{if(!document.hidden)setTimeout(repair,60)});
 })();

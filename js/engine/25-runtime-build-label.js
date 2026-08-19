@@ -1,9 +1,9 @@
-/* LAST WITNESS - Authoritative Runtime Build Label 0.22.15
- * STARTUP RECOVERY 0235R3. Safe implementation; no Phase VIII repair loader.
+/* LAST WITNESS - Authoritative Runtime Build Label 0.22.16
+ * STARTUP RECOVERY 0236R4. Safe implementation; no Phase VIII repair loader.
  */
 (function(){
 "use strict";
-const VERSION="0.22.15";
+const VERSION="0.22.16";
 const SETTINGS_TEXT=`LAST WITNESS · BUILD ${VERSION}`;
 const QA_TEXT=`BUILD ${VERSION}`;
 const DEV_TEXT=`BUILD ${VERSION}`;

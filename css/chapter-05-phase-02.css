@@ -1,4 +1,4 @@
-/* LAST WITNESS - Chapter V / Phase II: NAME IN ROOM 1807 0.22.15-c5p2r11
+/* LAST WITNESS - Chapter V / Phase II: NAME IN ROOM 1807 0.22.16-c5p2r12
  * Reuse-first production surface. Scene/HUD/dialogue/progress language follows
  * accepted CH5P1. Phase II owns only workstation, reconciliation and secure contact.
  */
@@ -111,9 +111,8 @@
 @keyframes ch5P2Packet{from{transform:translateX(0)}to{transform:translateX(49px)}}
 @keyframes ch5P2HandshakePulse{0%,100%{opacity:.38;transform:scale(.86)}50%{opacity:1;transform:scale(1.08)}}
 
-/* Character Journal unlock feedback: same visual grammar as the accepted Chapter II cafe note. */
-.ch5-p2-journal-note{position:absolute;z-index:4;left:18px;right:18px;top:calc(10px + env(safe-area-inset-top));max-width:min(88vw,620px);margin:0 auto;padding:12px 14px;border-radius:10px;background:rgba(7,8,12,.94);border:1px solid rgba(221,181,109,.28);box-shadow:0 12px 28px rgba(0,0,0,.42);color:#d8cec0;font-size:12px;line-height:1.48;opacity:0;transform:translateY(-6px);pointer-events:none;transition:opacity .3s ease,transform .3s ease}
-.ch5-p2-journal-note.show{opacity:1;transform:translateY(0)}
+/* Character Journal unlock feedback appears only after Narin contact completes, in the established workstation note lane. */
+.ch5-p2-scene-note.ch5-p2-journal-feedback{color:#ddb56d!important;font-size:10.5px!important;letter-spacing:.06em!important;text-shadow:0 2px 8px #000,0 0 12px rgba(221,181,109,.22)}
 
 /* Narin secure contact: balanced remote-call composition with explicit local/remote endpoints. */
 .ch5-p2-narin-modal{z-index:90!important;background:radial-gradient(circle at 42% 20%,rgba(221,181,109,.07),transparent 42%),rgba(1,3,6,.91);backdrop-filter:blur(8px)}
