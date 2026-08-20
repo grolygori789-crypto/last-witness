@@ -1,11 +1,11 @@
-/* LAST WITNESS - Chapter V / Phase II: NAME IN ROOM 1807 0.22.19-c5p2r16
+/* LAST WITNESS - Chapter V / Phase II: NAME IN ROOM 1807 0.22.19-c5p2r17
  * Production module update under base Runtime 0.22.19.
  * Reuses accepted card/scene/HUD/dialogue shells; Phase II owns only its screens,
  * reconciliation interaction, scoped audio, state, content registration and test entry.
  */
 (function(){
 "use strict";
-const VERSION="0.22.19-c5p2r16";
+const VERSION="0.22.19-c5p2r17";
 if(window.LastWitnessChapter5Phase2?.version===VERSION){try{window.LastWitnessChapter5Phase2.install?.()}catch(_){}return}
 
 const BASE="assets/images/chapter-05/phase-02/";
@@ -82,7 +82,6 @@ function inject(){
  <div id="ch5P2JournalToast" class="ch5-p2-journal-toast" role="status" aria-live="polite" aria-atomic="true"><small>CHARACTER JOURNAL UPDATED</small><strong>NARIN HAS BEEN ADDED TO THE CHARACTER JOURNAL</strong></div>
  <section id="${COMPLETE}" class="screen ch4-p4-complete ch5-p2-complete"><div class="ch4-p4-complete-card"><div id="ch5P2CompleteEye" class="eyebrow"></div><h2 id="ch5P2CompleteTitle"></h2><div class="ch4-p4-location-rule"></div><p id="ch5P2CompleteBody"></p><div class="ch4-p4-complete-grid"><div><span id="ch5P2ResultIdentity"></span><b id="ch5P2ValueIdentity"></b></div><div><span id="ch5P2ResultNarin"></span><b id="ch5P2ValueNarin"></b></div><div><span id="ch5P2ResultRecord"></span><b id="ch5P2ValueRecord"></b></div><div><span id="ch5P2ResultAttribution"></span><b id="ch5P2ValueAttribution"></b></div></div><strong id="ch5P2Next"></strong><button id="ch5P2ReturnTitle" class="primary" type="button"></button></div>${progressMarkup()}</section>
  <audio id="ch5P2MusicA" preload="auto" loop><source src="${AUDIO}restricted-identity.webm?v=0233c5p2a3" type="audio/webm"><source src="${AUDIO}restricted-identity.mp3?v=0233c5p2a3" type="audio/mpeg"></audio>
- <audio id="ch5P2MusicB" preload="auto" loop><source src="${AUDIO}name-changes-everything.webm?v=0230c5p2a2" type="audio/webm"><source src="${AUDIO}name-changes-everything.mp3?v=0230c5p2a2" type="audio/mpeg"></audio>
  <audio id="ch5P2RoomTone" preload="auto" loop src="${AUDIO}restricted-room-tone.wav?v=0230c5p2r6"></audio>
  <audio id="ch5P2Reveal" preload="auto" src="${AUDIO}kavin-reveal.wav?v=0230c5p2r6"></audio>`);
  const work=$("#"+WORK),monitor=$("#ch5P2Monitor");if(work&&monitor){work.appendChild(monitor);monitor.hidden=false;const image=$(":scope > img.scene",work);image?.addEventListener("load",positionMonitorOverlay,{once:true});requestAnimationFrame(positionMonitorOverlay)}
@@ -116,172 +115,112 @@ function stopHandshakePlayback(reset=false){const ctx=secureCallCtx;if(secureCal
 function playHandshake(reset=false){if(!soundOn()||sfxLevel()<=0)return Promise.resolve(false);if(reset)stopHandshakePlayback(true);const ctx=secureAudioContext();if(!ctx)return Promise.resolve(false);const resume=ctx.state==="suspended"?ctx.resume().catch(()=>false):Promise.resolve(true);return resume.then(()=>preloadHandshakeBuffer()).then(buf=>{if(!buf||ctx.state!=="running")return false;stopHandshakePlayback(false);const src=ctx.createBufferSource(),gain=ctx.createGain(),offset=Math.max(0,Math.min(secureCallOffset,Math.max(0,buf.duration-.02)));gain.gain.value=clamp(sfxLevel()*.95,0,.72);src.buffer=buf;src.connect(gain).connect(ctx.destination);secureCallSource=src;secureCallGain=gain;secureCallStartedAt=ctx.currentTime;src.onended=()=>{if(secureCallSource===src){secureCallSource=null;secureCallStartedAt=0;secureCallOffset=0}};try{src.start(0,offset);return true}catch(_){secureCallSource=null;secureCallStartedAt=0;return false}}).catch(()=>false)}
 function pauseHandshakePlayback(){stopHandshakePlayback(false)}
 
-let activeScoreMode="a",scoreTransitionToken=0,audioWatchdogTimer=0,scoreTransitionMode="",scoreTransitionStartedAt=0;
-let trackBConfirmed=false,trackBLastTime=0,trackBLastAdvanceAt=0,trackBStartPromise=null,trackBArmedForNarin=false,trackBRevealFromStart=false;
-function scoreMode(){const p=phaseState();return p?.narinMusicActive||p?.narinContactComplete||p?.complete?"b":"a"}
-function scoreTarget(){return isP2()&&soundOn()?clamp(musicLevel()*.34,0,.36):0}
+let activeScoreMode="a",audioWatchdogTimer=0,foregroundGesturePending=false,scoreLoopTailArmed=false;
+function scoreMode(){return "a"}
+function dbGain(db){return Math.pow(10,Number(db||0)/20)}
+function scoreBaseTarget(){return isP2()&&soundOn()?clamp(musicLevel()*.30,0,.32):0}
+function scoreTarget(){
+ const base=scoreBaseTarget();if(base<=0)return 0;
+ if(connectOpen)return clamp(base*dbGain(-8.0),0,.32);
+ if(narinOpen)return clamp(base*dbGain(-2.2),0,.32);
+ if(dialogueActive)return clamp(base*dbGain(-1.6),0,.32);
+ return base
+}
 function roomTarget(){return isP2()&&soundOn()&&!connectOpen?clamp(sfxLevel()*.045,0,.055):0}
-function scoreMedia(mode){return media(mode==="b"?"ch5P2MusicB":"ch5P2MusicA")}
-function otherScore(mode){return scoreMedia(mode==="b"?"a":"b")}
-function modeForMedia(a){return a?.id==="ch5P2MusicB"?"b":"a"}
+function scoreMedia(){return media("ch5P2MusicA")}
 function isPlaying(a){return Boolean(a&&!a.paused&&!a.ended)}
 function pauseElement(a){if(!a)return;cancelFade(a);try{a.pause()}catch(_){} }
-function holdConnectSilence(){
- const a=scoreMedia("a"),b=scoreMedia("b"),room=media("ch5P2RoomTone"),target=scoreTarget(),bDuck=target>0?Math.min(target,Math.max(.003,target*.18)):0;[a,b,room].forEach(cancelFade);
- /* Keep Track B at a real positive gain while the secure-call handshake owns the foreground.
-  * Android can resolve play() with paused=false while a zero-gain start never advances decode time;
-  * a tiny bounded duck preserves the established SFX mix without creating that silent zombie state. */
- try{if(a){a.muted=false;a.volume=0}}catch(_){};try{if(b){b.muted=false;b.volume=bDuck}}catch(_){};try{if(room)room.volume=0}catch(_){};return true
+function finiteMediaTime(a){const n=Number(a?.currentTime);return Number.isFinite(n)&&n>=0?n:0}
+function restoreMediaPosition(a,time){try{if(Number.isFinite(time)&&Math.abs(finiteMediaTime(a)-time)>.04)a.currentTime=time}catch(_){} }
+function installSoftLoopEnvelope(){
+ const a=scoreMedia();if(!a||a.dataset.ch5P2SoftLoop==="1")return false;a.dataset.ch5P2SoftLoop="1";
+ a.addEventListener("timeupdate",()=>{
+  if(!isP2()||document.hidden||backgroundPaused||!soundOn())return;
+  const d=Number(a.duration),t=finiteMediaTime(a);if(!Number.isFinite(d)||d<4)return;
+  if(!scoreLoopTailArmed&&t>=Math.max(0,d-1.15)){
+   scoreLoopTailArmed=true;const target=scoreTarget();if(target>0)fade(a,Math.max(.004,target*.42),620)
+  }else if(scoreLoopTailArmed&&t<.70){
+   scoreLoopTailArmed=false;const target=scoreTarget();if(target>0)fade(a,target,820)
+  }
+ });
+ return true
 }
-function resetTrackBHealth(){trackBConfirmed=false;trackBLastTime=0;trackBLastAdvanceAt=0}
-function markTrackBProgress(){
- const b=scoreMedia("b");if(!b||!isPlaying(b))return false;const now=performance.now(),t=finiteMediaTime(b),moved=t>trackBLastTime+.02||t<trackBLastTime-.2;
- if(moved){trackBConfirmed=true;trackBLastTime=t;trackBLastAdvanceAt=now;return true}
- return Boolean(trackBConfirmed&&now-trackBLastAdvanceAt<1900)
-}
-function scoreReady(mode){const a=scoreMedia(mode);return mode==="b"?markTrackBProgress():isPlaying(a)}
-function parkWarmFallback(a,duration=520){if(!a||!isPlaying(a))return;const floor=clamp(Math.max(.0025,scoreTarget()*.025),0,.006);try{a.muted=false}catch(_){};fade(a,floor,duration)}
 function playPreservingTime(a,volume){
  if(!a||document.hidden||backgroundPaused||!soundOn())return Promise.resolve(false);
- try{a.loop=true;a.muted=false;a.volume=clamp(volume,0,.72);if(isPlaying(a))return Promise.resolve(true);const result=a.play();return result&&typeof result.then==="function"?result.then(()=>true).catch(()=>false):Promise.resolve(true)}catch(_){return Promise.resolve(false)}
+ try{
+  a.loop=true;a.muted=false;installSoftLoopEnvelope();const target=clamp(volume,0,.72);
+  if(isPlaying(a)){fade(a,target,260);return Promise.resolve(true)}
+  a.volume=Math.min(target,Math.max(.008,target*.22));const result=a.play();
+  const promise=result&&typeof result.then==="function"?result:Promise.resolve();
+  return promise.then(()=>{foregroundGesturePending=false;fade(a,target,900);return true}).catch(()=>{foregroundGesturePending=true;return false})
+ }catch(_){foregroundGesturePending=true;return Promise.resolve(false)}
 }
-function audibleScore(){
- const preferred=scoreMedia(activeScoreMode),preferredReady=activeScoreMode==="b"?scoreReady("b"):isPlaying(preferred);if(preferredReady&&Number(preferred.volume)>.001)return preferred;
- const a=scoreMedia("a"),b=scoreMedia("b");if(isPlaying(a)&&Number(a.volume)>.001)return a;if(scoreReady("b")&&Number(b.volume)>.001)return b;
- return isPlaying(a)?a:scoreReady("b")?b:null
-}
-function preserveAudibleFallback(target){const a=audibleScore();if(!a)return false;activeScoreMode=modeForMedia(a);try{a.muted=false}catch(_){};fade(a,target,180);return true}
-function crossfadeScore(nextMode,target,fromGesture=false){
- if(!isP2()||document.hidden||backgroundPaused||!soundOn())return false;
- const next=scoreMedia(nextMode),previous=audibleScore()||scoreMedia(activeScoreMode);if(!next)return false;
- if(next===previous&&isPlaying(next)){activeScoreMode=nextMode;scoreTransitionMode="";fade(next,target,160);return true}
- const now=Date.now();if(scoreTransitionMode===nextMode&&now-scoreTransitionStartedAt<1800)return true;
- const token=++scoreTransitionToken;scoreTransitionMode=nextMode;scoreTransitionStartedAt=now;
- const fallbackPlaying=Boolean(previous&&previous!==next&&isPlaying(previous));
- if(fallbackPlaying)try{previous.muted=false;previous.volume=Math.max(Number(previous.volume)||0,target*.72)}catch(_){}
- try{next.loop=true;next.muted=false;next.volume=fallbackPlaying?Math.min(.018,Math.max(.008,target*.08)):target}catch(_){}
- playPreservingTime(next,next.volume).then(started=>{
-  if(token!==scoreTransitionToken)return;
-  scoreTransitionMode="";
-  if(!started){if(fallbackPlaying)preserveAudibleFallback(target);armForegroundGestureRecovery();return}
-  activeScoreMode=nextMode;fade(next,target,900);
-  if(previous&&previous!==next&&isPlaying(previous)){if(nextMode==="b")parkWarmFallback(previous,900);else fade(previous,0,900,()=>{if(token===scoreTransitionToken&&previous!==scoreMedia(scoreMode())&&isPlaying(next))pauseElement(previous)})}
- });
- setTimeout(()=>{if(token!==scoreTransitionToken||scoreTransitionMode!==nextMode)return;if(!isPlaying(next)){scoreTransitionMode="";if(fallbackPlaying)preserveAudibleFallback(target);armForegroundGestureRecovery()}},1450);
- return true
+function ensureRoomTone(){
+ const room=media("ch5P2RoomTone");if(!room)return;
+ const target=roomTarget();try{room.loop=true;room.muted=false;if(target>0){room.volume=target;if(room.paused){const r=room.play();if(r&&typeof r.catch==="function")r.catch(()=>{})}}else room.pause()}catch(_){}
 }
 function ensureScorePlaying(fromGesture=false){
  if(!isP2()||document.hidden||backgroundPaused||!soundOn())return false;
- if(connectOpen){holdConnectSilence();return Boolean(trackBArmedForNarin&&isPlaying(scoreMedia("b")))}
- const desired=scoreMode(),target=scoreTarget(),next=scoreMedia(desired),fallback=otherScore(desired);if(target<=0)return false;
- const nextReady=desired==="b"?scoreReady("b"):isPlaying(next);
- if(nextReady){
-  activeScoreMode=desired;scoreTransitionMode="";foregroundGesturePending=false;try{next.muted=false}catch(_){};fade(next,target,150);
-  if(fallback&&fallback!==next&&isPlaying(fallback)){if(desired==="b"&&trackBArmedForNarin)pauseElement(fallback);else if(desired==="b")parkWarmFallback(fallback,420);else if(Number(fallback.volume)<=.001)pauseElement(fallback)}
- }else if(isPlaying(fallback)){
-  activeScoreMode=modeForMedia(fallback);try{fallback.muted=false}catch(_){};if(Number(fallback.volume)<target*.55)fade(fallback,target,180);if(desired==="b"){if(fromGesture)beginTrackBFromGesture();else armForegroundGestureRecovery()}else crossfadeScore(desired,target,fromGesture)
- }else if(!scoreTransitionMode){
-  if(desired==="b"){if(fromGesture)beginTrackBFromGesture();else armForegroundGestureRecovery()}else crossfadeScore(desired,target,fromGesture)
- }
- const room=media("ch5P2RoomTone");if(room){try{room.loop=true;room.muted=false;room.volume=roomTarget();if(room.volume>0&&room.paused){const r=room.play();if(r&&typeof r.catch==="function")r.catch(armForegroundGestureRecovery)}else if(room.volume<=0)room.pause()}catch(_){}}
- return Boolean(audibleScore())
-}
-
-function waitForPlaybackAdvance(a,start,timeout=900){return new Promise(resolve=>{const began=performance.now();let frame=0,done=false;const finish=ok=>{if(done)return;done=true;if(frame)cancelAnimationFrame(frame);resolve(Boolean(ok))};const step=()=>{if(!a||document.hidden||backgroundPaused)return finish(false);if(isPlaying(a)&&finiteMediaTime(a)>start+.025)return finish(true);if(performance.now()-began>=timeout)return finish(false);frame=requestAnimationFrame(step)};frame=requestAnimationFrame(step)})}
-function beginTrackBFromGesture(){
- if(!isP2()||document.hidden||backgroundPaused||!soundOn())return Promise.resolve(false);
- if(trackBStartPromise)return trackBStartPromise;
- const target=scoreTarget(),next=scoreMedia("b"),previous=audibleScore()||scoreMedia("a");if(!next||target<=0)return Promise.resolve(false);
- /* Prime Track A synchronously inside the same user gesture. It remains a very-low-volume warm standby after B starts, so a later mobile stall can recover without another autoplay grant. */
- if(previous&&previous!==next){try{previous.loop=true;previous.muted=false;if(isPlaying(previous)){if(Number(previous.volume)<target*.82)fade(previous,target,120)}else{previous.volume=target;const fallbackStart=previous.play();if(fallbackStart&&typeof fallbackStart.catch==="function")fallbackStart.catch(()=>{})}}catch(_){}}
- if(scoreReady("b")){activeScoreMode="b";fade(next,target,180);if(previous&&previous!==next&&isPlaying(previous))parkWarmFallback(previous,420);foregroundGesturePending=false;return Promise.resolve(true)}
- if(isPlaying(next))try{next.pause()}catch(_){};resetTrackBHealth();const start=finiteMediaTime(next);
- try{
-  next.loop=true;next.muted=false;next.volume=Math.max(.012,Math.min(.024,target*.08));const result=next.play(),promise=result&&typeof result.then==="function"?result:Promise.resolve();
-  const attempt=promise.then(()=>waitForPlaybackAdvance(next,start,900)).then(started=>{if(!started){try{next.pause()}catch(_){};resetTrackBHealth();if(previous&&isPlaying(previous))fade(previous,target,120);activeScoreMode=previous?modeForMedia(previous):"a";armForegroundGestureRecovery();return false}trackBConfirmed=true;trackBLastTime=finiteMediaTime(next);trackBLastAdvanceAt=performance.now();activeScoreMode="b";scoreTransitionMode="";foregroundGesturePending=false;fade(next,target,760);if(previous&&previous!==next&&isPlaying(previous))parkWarmFallback(previous,760);return true}).catch(()=>{try{next.pause()}catch(_){};resetTrackBHealth();if(previous&&isPlaying(previous))fade(previous,target,120);activeScoreMode=previous?modeForMedia(previous):"a";armForegroundGestureRecovery();return false});
-  trackBStartPromise=attempt.finally(()=>{trackBStartPromise=null});return trackBStartPromise
- }catch(_){resetTrackBHealth();if(previous&&isPlaying(previous))fade(previous,target,120);activeScoreMode=previous?modeForMedia(previous):"a";armForegroundGestureRecovery();return Promise.resolve(false)}
+ const a=scoreMedia(),target=scoreTarget();if(!a||target<=0){pauseElement(a);const room=media("ch5P2RoomTone");if(room)room.pause();return false}
+ activeScoreMode="a";installSoftLoopEnvelope();
+ if(isPlaying(a)){foregroundGesturePending=false;try{a.muted=false}catch(_){};fade(a,target,fromGesture?180:300)}
+ else void playPreservingTime(a,target);
+ ensureRoomTone();return isPlaying(a)
 }
 function syncAudio(){
- if(!isP2()){[scoreMedia("a"),scoreMedia("b"),media("ch5P2RoomTone")].forEach(pauseElement);return false}
- /* Android Chrome can revoke autoplay when script explicitly pauses a previously-authorized BGM during app backgrounding.
-  * While hidden we leave score elements in their native play-intent state and let the browser suspend them. */
+ if(!isP2()){[scoreMedia(),media("ch5P2RoomTone")].forEach(pauseElement);return false}
  if(document.hidden||backgroundPaused)return false;
- const target=scoreTarget();if(target<=0){[scoreMedia("a"),scoreMedia("b")].forEach(pauseElement);const room=media("ch5P2RoomTone");if(room)room.pause();return false}
  return ensureScorePlaying(false)
 }
 function scheduleAudioStability(){[0,90,240,600,1200].forEach(ms=>setTimeout(()=>{if(isP2()&&!document.hidden&&!backgroundPaused&&soundOn())ensureScorePlaying(false)},ms))}
-function startAudioWatchdog(){if(audioWatchdogTimer)return;audioWatchdogTimer=setInterval(()=>{if(isP2()&&!document.hidden&&!backgroundPaused&&soundOn())ensureScorePlaying(false)},900)}
+function startAudioWatchdog(){if(audioWatchdogTimer)return;audioWatchdogTimer=setInterval(()=>{if(isP2()&&!document.hidden&&!backgroundPaused&&soundOn())ensureScorePlaying(false)},1200)}
 function stopAudioWatchdog(){clearInterval(audioWatchdogTimer);audioWatchdogTimer=0}
 function stopAudio(reset=false){
- scoreTransitionToken++;scoreTransitionMode="";resetTrackBHealth();trackBArmedForNarin=false;trackBRevealFromStart=false;try{delete scoreMedia("b")?.dataset.ch5P2Armed}catch(_){};[scoreMedia("a"),scoreMedia("b"),media("ch5P2RoomTone"),media("ch5P2Reveal")].forEach(a=>{if(!a)return;cancelFade(a);try{a.pause();if(reset)a.currentTime=0;if(a!==media("ch5P2RoomTone"))a.volume=0}catch(_){}});stopHandshakePlayback(reset);activeScoreMode="a"
+ const a=scoreMedia();[a,media("ch5P2RoomTone"),media("ch5P2Reveal")].forEach(x=>{if(!x)return;cancelFade(x);try{x.pause();if(reset)x.currentTime=0;if(x!==media("ch5P2RoomTone"))x.volume=0}catch(_){}});stopHandshakePlayback(reset);activeScoreMode="a";scoreLoopTailArmed=false;foregroundGesturePending=false
 }
 function stopForeignMedia(){try{window.LastWitnessChapter5Phase1?.stopAudio?.(true)}catch(_){};["LastWitnessChapter4Phase8","LastWitnessChapter4Phase7","LastWitnessChapter4Phase6","LastWitnessChapter4Phase5","LastWitnessChapter4Phase4","LastWitnessChapter4Phase3","LastWitnessChapter4Phase2","LastWitnessChapter4Phase1"].forEach(name=>{try{window[name]?.stopAudio?.(true)}catch(_){}});try{typeof stopLoops==="function"&&stopLoops()}catch(_){} }
 function clearCardAuto(reset=true){if(cardAutoTimer){clearTimeout(cardAutoTimer);cardAutoTimer=0}cardAutoDeadline=0;if(reset)cardAutoRemaining=CARD_AUTO_MS}
 function scheduleCardAuto(reset=true){clearCardAuto(reset);if(reset)cardAutoRemaining=CARD_AUTO_MS;if(activeScreen()!==CARD)return;const delay=Math.max(0,Number(cardAutoRemaining)||CARD_AUTO_MS);cardAutoDeadline=Date.now()+delay;cardAutoTimer=setTimeout(()=>{cardAutoTimer=0;cardAutoDeadline=0;cardAutoRemaining=CARD_AUTO_MS;if(activeScreen()===CARD)showRecords()},delay)}
 function pauseCardAuto(){if(!cardAutoTimer)return;cardAutoRemaining=Math.max(0,cardAutoDeadline-Date.now());clearTimeout(cardAutoTimer);cardAutoTimer=0;cardAutoDeadline=0}
 function resumeCardAuto(){if(activeScreen()===CARD&&!cardAutoTimer)scheduleCardAuto(false)}
-function finiteMediaTime(a){const n=Number(a?.currentTime);return Number.isFinite(n)&&n>=0?n:0}
 function p2MediaSnapshotRecord(id,a){
- if(!a)return null;const p=phaseState(),desired=scoreMode();let shouldResume=isPlaying(a);
- /* Chrome may mark media paused before dispatching freeze/pagehide. Preserve the phase's intended music
-  * owner instead of trusting paused at lifecycle-event time, otherwise foreground restore has no target. */
- if(id==="ch5P2MusicA"&&!shouldResume)shouldResume=desired==="a"&&finiteMediaTime(a)>.02;
- if(id==="ch5P2MusicB"&&!shouldResume)shouldResume=(desired==="b"&&Boolean(p?.narinContactStarted||p?.narinContactComplete||p?.complete))||(connectOpen&&a.dataset.ch5P2Armed==="1");
+ if(!a)return null;let shouldResume=isPlaying(a);if(id==="ch5P2MusicA"&&!shouldResume)shouldResume=finiteMediaTime(a)>.02;
  return{id,time:finiteMediaTime(a),volume:Number.isFinite(Number(a.volume))?Number(a.volume):1,muted:Boolean(a.muted),playbackRate:Number.isFinite(Number(a.playbackRate))?Number(a.playbackRate):1,wasPlaying:shouldResume}
 }
-function restoreMediaPosition(a,time){try{if(Number.isFinite(time)&&Math.abs(finiteMediaTime(a)-time)>.04)a.currentTime=time}catch(_){} }
 function pauseCapturedMedia(a,record){if(!a||!record)return;cancelFade(a);try{a.pause();restoreMediaPosition(a,record.time)}catch(_){} }
 function pauseForBackground(){
  if(backgroundPaused||!isP2())return false;pauseCardAuto();pauseConnectionTransition();pauseHandshakePlayback();
- const ids=["ch5P2MusicA","ch5P2MusicB","ch5P2RoomTone"],records={};
- ids.forEach(id=>{const a=media(id),record=p2MediaSnapshotRecord(id,a);if(record)records[id]=record});
- backgroundSnapshot={activeMode:activeScoreMode,desiredMode:scoreMode(),records};backgroundPaused=true;
- /* IMPORTANT: never call pause() on the two BGM elements here. On Android Chrome that destroys the
-  * existing playback grant and is exactly what caused silent returns. Keep the element's play intent
-  * alive at zero volume and let the browser natively suspend/resume decoding. */
- [scoreMedia("a"),scoreMedia("b")].forEach(a=>{if(!a)return;cancelFade(a);try{a.volume=0}catch(_){}});
- const room=media("ch5P2RoomTone");if(room)pauseElement(room);return true
+ const ids=["ch5P2MusicA","ch5P2RoomTone"],records={};ids.forEach(id=>{const a=media(id),record=p2MediaSnapshotRecord(id,a);if(record)records[id]=record});
+ backgroundSnapshot={activeMode:"a",desiredMode:"a",records};backgroundPaused=true;
+ const a=scoreMedia();if(a){cancelFade(a);try{a.volume=0}catch(_){}};const room=media("ch5P2RoomTone");if(room)pauseElement(room);return true
 }
-let foregroundGesturePending=false;
 function armForegroundGestureRecovery(){if(isP2()&&!document.hidden&&soundOn())foregroundGesturePending=true}
 function resumePreviouslyAuthorizedMedia(a,record){
  if(!a||!record?.wasPlaying||!soundOn()||!isP2())return Promise.resolve(false);
  const finalMuted=record.muted,finalVolume=record.volume,start=Math.max(0,Number(record.time)||0);restoreMediaPosition(a,start);a.loop=true;
  const restoreLevel=()=>{try{a.muted=finalMuted;a.volume=finalVolume}catch(_){}};
- const verify=()=>waitForPlaybackAdvance(a,start,620).then(ok=>{if(ok){restoreLevel();return true}return false});
- /* First give the browser-native resume path a chance. If Android kept paused=false but the decoder is
-  * still suspended, currentTime will expose that stall instead of us mistaking paused=false for success. */
- if(isPlaying(a))return verify().then(ok=>{if(ok)return true;try{a.pause();restoreMediaPosition(a,start);a.muted=true;a.volume=0;const r=a.play(),promise=r&&typeof r.then==="function"?r:Promise.resolve();return promise.then(()=>waitForPlaybackAdvance(a,start,900)).then(restarted=>{restoreLevel();if(!restarted)armForegroundGestureRecovery();return restarted}).catch(()=>{restoreLevel();armForegroundGestureRecovery();return false})}catch(_){restoreLevel();armForegroundGestureRecovery();return false}});
- /* Muted restart is permitted by mobile autoplay policy and reuses the same already-authorized element. */
- try{a.muted=true;a.volume=0;const result=a.play(),promise=result&&typeof result.then==="function"?result:Promise.resolve();return promise.then(()=>waitForPlaybackAdvance(a,start,900)).then(ok=>{restoreLevel();if(!ok)armForegroundGestureRecovery();return ok}).catch(()=>{restoreLevel();armForegroundGestureRecovery();return false})}catch(_){restoreLevel();armForegroundGestureRecovery();return Promise.resolve(false)}
+ if(isPlaying(a)){restoreLevel();return Promise.resolve(true)}
+ try{a.muted=true;a.volume=0;const result=a.play(),promise=result&&typeof result.then==="function"?result:Promise.resolve();return promise.then(()=>{restoreLevel();return true}).catch(()=>{restoreLevel();armForegroundGestureRecovery();return false})}catch(_){restoreLevel();armForegroundGestureRecovery();return Promise.resolve(false)}
 }
 function retryForegroundAudio(){
- if(document.hidden||backgroundPaused||!isP2()||!soundOn())return false;ensureScorePlaying(false);
- const mode=scoreMode(),desired=scoreMedia(mode),any=audibleScore(),desiredReady=mode==="b"?scoreReady("b"):isPlaying(desired);if(!desiredReady)armForegroundGestureRecovery();else foregroundGesturePending=false;return Boolean(any)
+ if(document.hidden||backgroundPaused||!isP2()||!soundOn())return false;const a=scoreMedia();if(!isPlaying(a))armForegroundGestureRecovery();else foregroundGesturePending=false;ensureScorePlaying(false);return Boolean(isPlaying(a))
 }
 function resumeForeground(){
  if(document.hidden)return false;const snap=backgroundSnapshot;
  if(backgroundPaused){
-  backgroundPaused=false;activeScoreMode=snap?.activeMode||snap?.desiredMode||scoreMode();const records=snap?.records||{};
-  /* First restore position/levels without pausing a score that the browser may already have resumed. */
-  ["ch5P2MusicA","ch5P2MusicB"].forEach(id=>{const a=media(id),record=records[id];if(!a||!record)return;restoreMediaPosition(a,record.time);try{a.playbackRate=record.playbackRate;a.muted=record.muted;a.volume=record.volume}catch(_){}});
-  const resumes=["ch5P2MusicA","ch5P2MusicB"].map(id=>resumePreviouslyAuthorizedMedia(media(id),records[id]));
+  backgroundPaused=false;activeScoreMode="a";const records=snap?.records||{},a=scoreMedia(),record=records.ch5P2MusicA;
+  if(a&&record){restoreMediaPosition(a,record.time);try{a.playbackRate=record.playbackRate;a.muted=record.muted;a.volume=record.volume}catch(_){};resumePreviouslyAuthorizedMedia(a,record).then(ok=>{if(ok){foregroundGesturePending=false;ensureScorePlaying(false)}else armForegroundGestureRecovery()})}
   const roomRecord=records.ch5P2RoomTone,room=media("ch5P2RoomTone");if(room&&roomRecord){restoreMediaPosition(room,roomRecord.time);try{room.playbackRate=roomRecord.playbackRate;room.muted=roomRecord.muted;room.volume=roomRecord.volume}catch(_){};if(roomRecord.wasPlaying){const r=room.play();if(r&&typeof r.catch==="function")r.catch(()=>{})}}
-  Promise.all(resumes).then(results=>{if(results.some(Boolean)){foregroundGesturePending=false;ensureScorePlaying(false)}else armForegroundGestureRecovery()});
   backgroundSnapshot=null;resumeCardAuto();resumeConnectionTransition()
  }
  if(!isP2())return false;scheduleAudioStability();retryForegroundAudio();return true
 }
 function queueForegroundResume(){[0,80,220,520,1000,1800].forEach(ms=>setTimeout(()=>{if(!document.hidden){if(backgroundPaused)resumeForeground();else retryForegroundAudio()}},ms))}
 function guardBackgroundP2Play(event){
- /* Do NOT intercept browser-native BGM resume. R13's capture guard could pause the exact play event
-  * Android emits while returning to the foreground, leaving the phase permanently silent. */
- if(!backgroundPaused)return;const a=event.target;if(!a||a===scoreMedia("a")||a===scoreMedia("b"))return;
- const record=a?.id?backgroundSnapshot?.records?.[a.id]:null;if(record)pauseCapturedMedia(a,record)
+ if(!backgroundPaused)return;const a=event.target;if(!a||a===scoreMedia())return;const record=a?.id?backgroundSnapshot?.records?.[a.id]:null;if(record)pauseCapturedMedia(a,record)
 }
 function foregroundGestureRecovery(){
- if(document.hidden||backgroundPaused||!isP2()||!soundOn())return;const mode=scoreMode(),desired=scoreMedia(mode),ready=mode==="b"?scoreReady("b"):isPlaying(desired);if(foregroundGesturePending||!ready){foregroundGesturePending=false;if(mode==="b")beginTrackBFromGesture();else ensureScorePlaying(true)}resumeConnectionTransition()
+ if(document.hidden||backgroundPaused||!isP2()||!soundOn())return;const a=scoreMedia();if(foregroundGesturePending||!isPlaying(a)){foregroundGesturePending=false;ensureScorePlaying(true)}resumeConnectionTransition()
 }
 
 function positionSceneNotes(){
@@ -389,51 +328,28 @@ function unlockNarinJournal(opt={}){
  if(notify)s.flags.ch5_p2_narin_journal_notified=true;
  save("ch5_p2_narin_journal_unlocked");return true
 }
-function prepareTrackBForNarin(){
- const b=scoreMedia("b");if(!b)return false;try{b.preload="auto";if(b.readyState<2)b.load()}catch(_){};return true
-}
-function armTrackBForNarinFromGesture(reset=true){
- if(!isP2()||document.hidden||backgroundPaused||!soundOn())return Promise.resolve(scoreTarget()<=0);
- const b=scoreMedia("b"),a=scoreMedia("a"),target=scoreTarget();if(!b)return Promise.resolve(false);if(target<=0){trackBArmedForNarin=true;return Promise.resolve(true)}
- if(trackBStartPromise)return trackBStartPromise;cancelFade(b);if(a)cancelFade(a);resetTrackBHealth();trackBArmedForNarin=false;trackBRevealFromStart=Boolean(reset);
- try{
-  /* OPEN SECURE CONTACT is the authoritative user gesture for Track B. Start B at a small but
-   * genuinely positive gain, then require currentTime to advance before declaring it armed.
-   * play() resolution / paused=false alone are explicitly not accepted as playback proof. */
-  b.pause();if(reset)restoreMediaPosition(b,0);b.loop=true;b.muted=false;b.volume=Math.min(target,Math.max(.012,target*.22));delete b.dataset.ch5P2Warm;delete b.dataset.ch5P2Primed;delete b.dataset.ch5P2Armed;
-  const start=finiteMediaTime(b),result=b.play(),promise=result&&typeof result.then==="function"?result:Promise.resolve();
-  const attempt=promise.then(()=>waitForPlaybackAdvance(b,start,900)).then(started=>{
-   if(!started){try{b.pause()}catch(_){};resetTrackBHealth();trackBArmedForNarin=false;delete b.dataset.ch5P2Armed;if(a&&isPlaying(a))fade(a,target,120);armForegroundGestureRecovery();return false}
-   trackBConfirmed=true;trackBLastTime=finiteMediaTime(b);trackBLastAdvanceAt=performance.now();trackBArmedForNarin=true;b.dataset.ch5P2Armed="1";holdConnectSilence();return true
-  }).catch(()=>{try{b.pause()}catch(_){};resetTrackBHealth();trackBArmedForNarin=false;delete b.dataset.ch5P2Armed;if(a&&isPlaying(a))fade(a,target,120);armForegroundGestureRecovery();return false});
-  trackBStartPromise=attempt.finally(()=>{trackBStartPromise=null});return trackBStartPromise
- }catch(_){resetTrackBHealth();trackBArmedForNarin=false;delete b.dataset.ch5P2Armed;if(a&&isPlaying(a))fade(a,target,120);armForegroundGestureRecovery();return Promise.resolve(false)}
-}
-function promoteArmedTrackB(){
- const target=scoreTarget(),b=scoreMedia("b"),a=scoreMedia("a");if(target<=0){activeScoreMode="b";foregroundGesturePending=false;return true}if(!b||!trackBArmedForNarin||!scoreReady("b"))return false;
- cancelFade(b);if(trackBRevealFromStart){restoreMediaPosition(b,0);trackBRevealFromStart=false}try{b.loop=true;b.muted=false;b.volume=target}catch(_){};trackBConfirmed=true;trackBLastTime=finiteMediaTime(b);trackBLastAdvanceAt=performance.now();activeScoreMode="b";scoreTransitionMode="";foregroundGesturePending=false;
- if(a&&a!==b)pauseElement(a);return true
-}
-function activateNarinTrackB(){
- const p=phaseState();if(p)p.narinMusicActive=true;if(promoteArmedTrackB())return true;armForegroundGestureRecovery();return false
-}
+/* Legacy function names are retained only so accepted gameplay call-sites remain untouched.
+ * Phase II now has one music owner: Track A. These functions only duck/restore that same stream. */
+function prepareTrackBForNarin(){return true}
+function armTrackBForNarinFromGesture(){ensureScorePlaying(true);return Promise.resolve(true)}
+function promoteArmedTrackB(){ensureScorePlaying(false);return true}
+function activateNarinTrackB(){const p=phaseState();if(p)p.narinMusicActive=true;ensureScorePlaying(false);return true}
 function stabilizeNarinScore(){return activateNarinTrackB()}
-function reassertNarinTrackBFromGesture(){const p=phaseState();if(p)p.narinMusicActive=true;if(!isP2()||document.hidden||backgroundPaused||!soundOn()||scoreMode()!=="b")return Promise.resolve(false);const b=scoreMedia("b"),target=scoreTarget();if(target<=0)return Promise.resolve(true);if(b&&scoreReady("b")){trackBArmedForNarin=true;b.dataset.ch5P2Armed="1";try{b.muted=false;b.volume=Math.max(Number(b.volume)||0,target)}catch(_){};fade(b,target,80);foregroundGesturePending=false;return Promise.resolve(true)}return beginTrackBFromGesture()}
-function openNarinDirect(){const p=phaseState();p.narinContactStarted=true;p.narinChannelEstablished=true;p.narinMusicActive=true;p.stage="narin-contact";if(!stabilizeNarinScore()){p.narinMusicActive=false;p.stage="narin-connecting";return false}const s=gs();s.flags=s.flags||{};s.flags.ch5_p2_narin_channel_established=true;narinOpen=true;$("#ch5P2Narin")?.classList.add("open");$("#ch5P2Narin")?.setAttribute("aria-hidden","false");renderNarin();save("ch5_p2_narin_contact");return true}
+function reassertNarinTrackBFromGesture(){const p=phaseState();if(p)p.narinMusicActive=true;ensureScorePlaying(true);return Promise.resolve(true)}
+function openNarinDirect(){const p=phaseState();p.narinContactStarted=true;p.narinChannelEstablished=true;p.narinMusicActive=true;p.stage="narin-contact";const s=gs();s.flags=s.flags||{};s.flags.ch5_p2_narin_channel_established=true;narinOpen=true;$("#ch5P2Narin")?.classList.add("open");$("#ch5P2Narin")?.setAttribute("aria-hidden","false");ensureScorePlaying(false);renderNarin();save("ch5_p2_narin_contact");return true}
 
 function setConnectEstablishedVisual(){const n=$("#ch5P2Connect");n?.classList.add("established");const status=$("#ch5P2ConnectStatus");if(status)status.textContent=tr("SECURE CHANNEL ESTABLISHED","เชื่อมต่อช่องสัญญาณปลอดภัยแล้ว")}
 function clearConnectTimer(){if(connectTimer){clearTimeout(connectTimer);connectTimer=0}connectDeadline=0}
 function scheduleConnectTimer(){clearConnectTimer();if(!connectOpen||backgroundPaused||document.hidden)return;const delay=Math.max(20,Number(connectRemaining)||20);connectDeadline=Date.now()+delay;connectTimer=setTimeout(advanceConnectPhase,delay)}
 function startNarinConnection(reset=true){
- const p=phaseState(),fresh=!p.narinContactStarted;p.narinContactStarted=true;
- if(p.narinChannelEstablished){p.stage="narin-contact";p.narinMusicActive=true;const b=scoreMedia("b");if(scoreTarget()<=0||(b&&scoreReady("b"))){trackBArmedForNarin=true;if(b)b.dataset.ch5P2Armed="1";openNarinDirect()}else armTrackBForNarinFromGesture(false).then(ok=>{if(ok&&!narinOpen)openNarinDirect()});return}
+ const p=phaseState();p.narinContactStarted=true;
+ if(p.narinChannelEstablished){p.stage="narin-contact";p.narinMusicActive=true;openNarinDirect();return}
  p.narinMusicActive=false;p.stage="narin-connecting";connectOpen=true;connectPhase="handshake";connectRemaining=CONNECT_HANDSHAKE_MS;
  const n=$("#ch5P2Connect");n?.classList.add("open");n?.classList.remove("established");n?.setAttribute("aria-hidden","false");updateLanguage();
- prepareTrackBForNarin();armTrackBForNarinFromGesture(fresh||reset);holdConnectSilence();playHandshake(reset);save("ch5_p2_narin_connecting");scheduleConnectTimer()
+ ensureScorePlaying(true);playHandshake(reset);save("ch5_p2_narin_connecting");scheduleConnectTimer()
 }
 function revealNarinWhenScoreReady(){
- const finish=()=>{if(scoreTarget()>0&&(!trackBArmedForNarin||!scoreReady("b"))){armForegroundGestureRecovery();return false}connectOpen=false;connectPhase="idle";connectRemaining=CONNECT_HANDSHAKE_MS;const n=$("#ch5P2Connect");n?.classList.remove("open","established");n?.setAttribute("aria-hidden","true");stopHandshakePlayback(true);return openNarinDirect()};
- if(trackBStartPromise){trackBStartPromise.then(ok=>{if(ok||scoreTarget()<=0)finish();else armForegroundGestureRecovery()});return true}return finish()
+ connectOpen=false;connectPhase="idle";connectRemaining=CONNECT_HANDSHAKE_MS;const n=$("#ch5P2Connect");n?.classList.remove("open","established");n?.setAttribute("aria-hidden","true");stopHandshakePlayback(true);return openNarinDirect()
 }
 function advanceConnectPhase(){clearConnectTimer();if(!connectOpen)return;if(document.hidden||backgroundPaused){scheduleConnectTimer();return}if(connectPhase==="handshake"){connectPhase="established";connectRemaining=CONNECT_ESTABLISHED_MS;const p=phaseState();p.narinChannelEstablished=true;const s=gs();s.flags=s.flags||{};s.flags.ch5_p2_narin_channel_established=true;setConnectEstablishedVisual();save("ch5_p2_narin_channel_established");scheduleConnectTimer();return}revealNarinWhenScoreReady()}
 function pauseConnectionTransition(){if(!connectOpen)return;if(connectTimer){connectRemaining=Math.max(20,connectDeadline-Date.now());clearConnectTimer()}pauseHandshakePlayback() }
@@ -545,6 +461,6 @@ function install(){
  resumeSavedEntry();return true
 }
 
-window.LastWitnessChapter5Phase2={version:VERSION,installed:true,install,start,startFreshForDev,resumeFromState,stopAudio,openReconciliation:openRecon,getState:()=>clone(phaseState()),audioState:()=>({mode:scoreMode(),activeMode:activeScoreMode,aPaused:media("ch5P2MusicA")?.paused,bPaused:media("ch5P2MusicB")?.paused,aTime:media("ch5P2MusicA")?.currentTime||0,bTime:media("ch5P2MusicB")?.currentTime||0,aVolume:media("ch5P2MusicA")?.volume||0,bVolume:media("ch5P2MusicB")?.volume||0,trackBConfirmed,trackBArmedForNarin,trackBRevealFromStart,handshakeContext:secureCallCtx?.state||"none",connectOpen,connectPhase,backgroundPaused,foregroundGesturePending}),screens:[...SCREENS],qaInfo,installP1AutoHandoff};
+window.LastWitnessChapter5Phase2={version:VERSION,installed:true,install,start,startFreshForDev,resumeFromState,stopAudio,openReconciliation:openRecon,getState:()=>clone(phaseState()),audioState:()=>({mode:"a",activeMode:"a",aPaused:media("ch5P2MusicA")?.paused,bPaused:true,aTime:media("ch5P2MusicA")?.currentTime||0,bTime:0,aVolume:media("ch5P2MusicA")?.volume||0,bVolume:0,trackBConfirmed:false,trackBArmedForNarin:false,trackBRevealFromStart:false,handshakeContext:secureCallCtx?.state||"none",connectOpen,connectPhase,backgroundPaused,foregroundGesturePending,singleTrack:true}),screens:[...SCREENS],qaInfo,installP1AutoHandoff};
 if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",install,{once:true});else install();
 })();
