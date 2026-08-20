@@ -1,11 +1,11 @@
-/* LAST WITNESS - Chapter V / Phase II: NAME IN ROOM 1807 0.22.27-c5p2r23
- * Production module update under base Runtime 0.22.27.
+/* LAST WITNESS - Chapter V / Phase II: NAME IN ROOM 1807 0.22.28-c5p2r24
+ * Production module update under base Runtime 0.22.28.
  * Reuses accepted card/scene/HUD/dialogue shells; Phase II owns only its screens,
  * reconciliation interaction, scoped audio, state, content registration and test entry.
  */
 (function(){
 "use strict";
-const VERSION="0.22.27-c5p2r23";
+const VERSION="0.22.28-c5p2r24";
 if(window.LastWitnessChapter5Phase2?.version===VERSION){try{window.LastWitnessChapter5Phase2.install?.()}catch(_){}return}
 
 const BASE="assets/images/chapter-05/phase-02/";
@@ -109,7 +109,7 @@ function media(id){return $("#"+id)}
 function playOne(id,mult=.5){const a=media(id);if(!a||!soundOn())return;try{a.currentTime=0;a.volume=clamp(sfxLevel()*mult,0,.5);a.play().catch(()=>{})}catch(_){} }
 
 let secureCallCtx=null,secureCallBuffer=null,secureCallBufferPromise=null,secureCallSource=null,secureCallGain=null,secureCallOffset=0,secureCallStartedAt=0;
-let scoreDuckSource=null,scoreDuckGain=null,scoreDuckMedia=null;
+let scoreDuckSource=null,scoreDuckGain=null,scoreDuckMedia=null,scoreDuckReleaseFrame=0,scoreDuckReleaseTimer=0;
 const CONNECT_RELATIVE_GAIN=Math.pow(10,-28/20);
 function ensureScoreDuckBridge(){
  const a=scoreMedia(),ctx=secureAudioContext();if(!a||!ctx||typeof ctx.createMediaElementSource!=="function"||typeof ctx.createGain!=="function")return null;
@@ -122,8 +122,15 @@ function setRelativeScoreGain(target,duration=100,allowCreate=true){
  try{g.cancelScheduledValues(now);g.setValueAtTime(clamp(g.value,0,1),now);g.linearRampToValueAtTime(to,now+seconds);return true}catch(_){try{g.value=to;return true}catch(__){return false}}
 }
 function engageSecureConnectDuck(){const ctx=secureAudioContext();if(!ctx)return Promise.resolve(false);const resume=ctx.state==="suspended"?ctx.resume().catch(()=>false):Promise.resolve(true);return Promise.resolve(resume).then(()=>ctx.state==="running"?setRelativeScoreGain(CONNECT_RELATIVE_GAIN,100,true):false).catch(()=>false)}
-function releaseSecureConnectDuck(duration=700){return setRelativeScoreGain(1,duration,false)}
-function resetSecureConnectDuck(){if(!scoreDuckGain)return false;const ctx=secureCallCtx;try{const now=ctx?.currentTime||0;scoreDuckGain.gain.cancelScheduledValues(now);scoreDuckGain.gain.setValueAtTime(1,now);return true}catch(_){try{scoreDuckGain.gain.value=1;return true}catch(__){return false}}}
+function cancelScoreDuckRelease(){if(scoreDuckReleaseFrame){cancelAnimationFrame(scoreDuckReleaseFrame);scoreDuckReleaseFrame=0}if(scoreDuckReleaseTimer){clearTimeout(scoreDuckReleaseTimer);scoreDuckReleaseTimer=0}}
+function releaseSecureConnectDuck(duration=700){
+ if(!scoreDuckGain)return false;cancelScoreDuckRelease();const ctx=secureCallCtx,g=scoreDuckGain.gain,ms=Math.max(1,Number(duration)||1),start=CONNECT_RELATIVE_GAIN,began=performance.now();
+ try{const now=ctx?.currentTime||0;g.cancelScheduledValues(now);g.value=start}catch(_){try{g.value=start}catch(__){return false}}
+ const finish=()=>{if(scoreDuckReleaseFrame){cancelAnimationFrame(scoreDuckReleaseFrame);scoreDuckReleaseFrame=0}if(scoreDuckReleaseTimer){clearTimeout(scoreDuckReleaseTimer);scoreDuckReleaseTimer=0}try{g.value=1}catch(_){}};
+ const step=now=>{const q=clamp((now-began)/ms),smooth=q*q*(3-2*q),value=start+(1-start)*smooth;try{g.value=value}catch(_){finish();return}if(q<1)scoreDuckReleaseFrame=requestAnimationFrame(step);else finish()};
+ scoreDuckReleaseTimer=setTimeout(finish,ms+140);scoreDuckReleaseFrame=requestAnimationFrame(step);return true
+}
+function resetSecureConnectDuck(){if(!scoreDuckGain)return false;cancelScoreDuckRelease();const ctx=secureCallCtx;try{const now=ctx?.currentTime||0;scoreDuckGain.gain.cancelScheduledValues(now);scoreDuckGain.gain.value=1;return true}catch(_){try{scoreDuckGain.gain.value=1;return true}catch(__){return false}}}
 function resumeScoreDuckContext(){const ctx=secureCallCtx;if(!scoreDuckGain||!ctx||ctx.state!=="suspended")return Promise.resolve(true);return ctx.resume().then(()=>true).catch(()=>false)}
 function secureAudioContext(){try{const C=window.AudioContext||window.webkitAudioContext;if(!C)return null;if(!secureCallCtx)secureCallCtx=new C();return secureCallCtx}catch(_){return null}}
 function preloadHandshakeBuffer(){if(secureCallBuffer)return Promise.resolve(secureCallBuffer);if(secureCallBufferPromise)return secureCallBufferPromise;const ctx=secureAudioContext();if(!ctx)return Promise.resolve(null);secureCallBufferPromise=fetch(AUDIO+"secure-call-establish.wav?v=0231c5p2c2",{cache:"force-cache"}).then(r=>{if(!r.ok)throw new Error("handshake "+r.status);return r.arrayBuffer()}).then(b=>ctx.decodeAudioData(b.slice(0))).then(buf=>secureCallBuffer=buf).catch(()=>null);return secureCallBufferPromise}
@@ -449,7 +456,7 @@ function installSaveRestoreBridge(){
 
 async function copyText(value){try{if(navigator.clipboard?.writeText){await navigator.clipboard.writeText(value);return true}}catch(_){}const a=document.createElement("textarea");a.value=value;a.setAttribute("readonly","");a.style.position="fixed";a.style.opacity="0";document.body.appendChild(a);a.select();const ok=document.execCommand?.("copy")===true;a.remove();return ok}
 function testerAuthorized(){try{return sessionStorage.getItem("last_witness_north_qa_role")==="tester"}catch(_){return false}}
-function qaInfo(){const s=gs()||{},p=phaseState();return["LAST WITNESS QA","Build: "+String(window.LastWitnessRuntimeBuild||"0.22.27"),"Access: NORTH QA","QA Module: "+String(window.LastWitnessNorthQA?.version||"0.22.27"),"Chapter V Phase II: "+VERSION,"Chapter: 5","Phase: 2","Screen: "+activeScreen(),"Checkpoint: "+(s.checkpoint||"unresolved"),"Stage: "+(p?.stage||"unresolved"),"Language: "+(s.language==="th"?"TH":"EN"),"Visibility: "+(document.hidden?"hidden":"visible")].join("\n")}
+function qaInfo(){const s=gs()||{},p=phaseState();return["LAST WITNESS QA","Build: "+String(window.LastWitnessRuntimeBuild||"0.22.28"),"Access: NORTH QA","QA Module: "+String(window.LastWitnessNorthQA?.version||"0.22.28"),"Chapter V Phase II: "+VERSION,"Chapter: 5","Phase: 2","Screen: "+activeScreen(),"Checkpoint: "+(s.checkpoint||"unresolved"),"Stage: "+(p?.stage||"unresolved"),"Language: "+(s.language==="th"?"TH":"EN"),"Visibility: "+(document.hidden?"hidden":"visible")].join("\n")}
 function closeToolOverlays(){$("#drawer")?.classList.remove("open");$$('.modal.open').forEach(n=>n.classList.remove("open"));["developerModal","northQaModal","devAccessModal"].forEach(id=>$("#"+id)?.classList.remove("open"))}
 function positionAfter(node,anchor,container){if(!node||!container)return;if(anchor&&anchor.parentElement===container){if(anchor.nextElementSibling!==node)anchor.insertAdjacentElement("afterend",node)}else if(node.parentElement!==container||container.lastElementChild!==node)container.appendChild(node)}
 function installDevButton(){const grid=$("#developerModal .dev-grid");if(!grid)return false;let b=$("#ch5P2DeveloperJump");if(!b){b=document.createElement("button");b.id="ch5P2DeveloperJump";b.type="button";b.className="dev-button";b.dataset.ch5P2Jump="1";b.addEventListener("click",event=>{event.preventDefault();event.stopPropagation();event.stopImmediatePropagation();closeToolOverlays();startFreshForDev()},true)}positionAfter(b,$("#ch5P1DeveloperJump")||grid.querySelector('[data-dev-jump="chapter4ShadowTruth"]'),grid);installToolLabels();return true}
