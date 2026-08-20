@@ -1,11 +1,11 @@
-/* LAST WITNESS - Chapter V / Phase II: NAME IN ROOM 1807 0.22.19-c5p2r17
+/* LAST WITNESS - Chapter V / Phase II: NAME IN ROOM 1807 0.22.19-c5p2r18
  * Production module update under base Runtime 0.22.19.
  * Reuses accepted card/scene/HUD/dialogue shells; Phase II owns only its screens,
  * reconciliation interaction, scoped audio, state, content registration and test entry.
  */
 (function(){
 "use strict";
-const VERSION="0.22.19-c5p2r17";
+const VERSION="0.22.19-c5p2r18";
 if(window.LastWitnessChapter5Phase2?.version===VERSION){try{window.LastWitnessChapter5Phase2.install?.()}catch(_){}return}
 
 const BASE="assets/images/chapter-05/phase-02/";
@@ -118,12 +118,12 @@ function pauseHandshakePlayback(){stopHandshakePlayback(false)}
 let activeScoreMode="a",audioWatchdogTimer=0,foregroundGesturePending=false,scoreLoopTailArmed=false;
 function scoreMode(){return "a"}
 function dbGain(db){return Math.pow(10,Number(db||0)/20)}
-function scoreBaseTarget(){return isP2()&&soundOn()?clamp(musicLevel()*.30,0,.32):0}
+function scoreBaseTarget(){return isP2()&&soundOn()?clamp(musicLevel()*.28,0,.30):0}
 function scoreTarget(){
  const base=scoreBaseTarget();if(base<=0)return 0;
- if(connectOpen)return clamp(base*dbGain(-8.0),0,.32);
- if(narinOpen)return clamp(base*dbGain(-2.2),0,.32);
- if(dialogueActive)return clamp(base*dbGain(-1.6),0,.32);
+ if(connectOpen)return clamp(base*dbGain(-13.0),0,.30);
+ if(narinOpen)return clamp(base*dbGain(-2.8),0,.30);
+ if(dialogueActive)return clamp(base*dbGain(-2.0),0,.30);
  return base
 }
 function roomTarget(){return isP2()&&soundOn()&&!connectOpen?clamp(sfxLevel()*.045,0,.055):0}
@@ -163,7 +163,11 @@ function ensureScorePlaying(fromGesture=false){
  if(!isP2()||document.hidden||backgroundPaused||!soundOn())return false;
  const a=scoreMedia(),target=scoreTarget();if(!a||target<=0){pauseElement(a);const room=media("ch5P2RoomTone");if(room)room.pause();return false}
  activeScoreMode="a";installSoftLoopEnvelope();
- if(isPlaying(a)){foregroundGesturePending=false;try{a.muted=false}catch(_){};fade(a,target,fromGesture?180:300)}
+ /* Professional single-track mix:
+  * fast, smooth duck under the secure-connect signal; slower release when Narin appears.
+  * This changes gain only — never pause/seek/restart the accepted Track A stream. */
+ const fadeMs=connectOpen?140:(narinOpen?700:(dialogueActive?300:(fromGesture?180:360)));
+ if(isPlaying(a)){foregroundGesturePending=false;try{a.muted=false}catch(_){};fade(a,target,fadeMs)}
  else void playPreservingTime(a,target);
  ensureRoomTone();return isPlaying(a)
 }

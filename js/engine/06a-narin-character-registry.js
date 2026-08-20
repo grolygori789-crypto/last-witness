@@ -1,19 +1,20 @@
-/* LAST WITNESS - Narin Character Journal Integration 0.22.19-nj9
+/* LAST WITNESS - Narin Character Journal Integration 0.22.19-nj10
  * Surgical Chapter V Phase II bridge for the legacy Character Journal allowlist.
  * Narin remains story-gated to completed secure contact; existing characters/rendering
  * are untouched. The extension augments only Narin's card/detail and unread state.
  */
 (function(){
 "use strict";
-const VERSION="0.22.19-nj9";
+const VERSION="0.22.19-nj10";
 if(window.LastWitnessNarinCharacterRegistry?.version===VERSION&&window.LastWitnessNarinCharacterRegistry?.installed){try{window.LastWitnessNarinCharacterRegistry.repair?.()}catch(_){}return}
 const THUMB_SRC="assets/images/chapter-05/phase-02/narin-journal.png?v=0239nj9";
+const DETAIL_SRC="assets/images/chapter-05/phase-02/narin-journal.png?v=0242nj10";
 const DATA={
  name:{en:"Narin",th:"Narin"},
  role:{en:"Bangkok Deployment Operations",th:"ฝ่ายปฏิบัติการ Deployment กรุงเทพฯ"},
  status:{en:"Active Scrutiny",th:"อยู่ระหว่างการตรวจเชิงรุก"},
  bio:{en:"A trusted Bangkok deployment actor with real access and real record-concealment exposure. Phase II makes his operational proximity serious evidence without treating it as proof of murder.",th:"บุคคลฝั่งงาน Deployment กรุงเทพฯ ที่ได้รับความไว้วางใจ มีสิทธิ์เข้าถึงจริง และมีความเสี่ยงจากการปกปิดบันทึกจริง เฟส II ทำให้ความใกล้ชิดเชิงปฏิบัติการของเขากลายเป็นหลักฐานสำคัญ โดยยังไม่ถือว่าเป็นหลักฐานฆาตกรรม"},
- src:"assets/images/chapter-05/phase-02/narin-neutral.png?v=0231c5p2r7",
+ src:DETAIL_SRC,
  relation:{value:31},
  metrics:[
   {key:"access",label:{en:"Operational Access",th:"สิทธิ์เข้าถึงเชิงปฏิบัติการ"},value:82},
