@@ -1,11 +1,11 @@
-/* LAST WITNESS - Chapter V / Phase II: NAME IN ROOM 1807 0.22.19-c5p2r15
+/* LAST WITNESS - Chapter V / Phase II: NAME IN ROOM 1807 0.22.19-c5p2r16
  * Production module update under base Runtime 0.22.19.
  * Reuses accepted card/scene/HUD/dialogue shells; Phase II owns only its screens,
  * reconciliation interaction, scoped audio, state, content registration and test entry.
  */
 (function(){
 "use strict";
-const VERSION="0.22.19-c5p2r15";
+const VERSION="0.22.19-c5p2r16";
 if(window.LastWitnessChapter5Phase2?.version===VERSION){try{window.LastWitnessChapter5Phase2.install?.()}catch(_){}return}
 
 const BASE="assets/images/chapter-05/phase-02/";
@@ -127,8 +127,11 @@ function modeForMedia(a){return a?.id==="ch5P2MusicB"?"b":"a"}
 function isPlaying(a){return Boolean(a&&!a.paused&&!a.ended)}
 function pauseElement(a){if(!a)return;cancelFade(a);try{a.pause()}catch(_){} }
 function holdConnectSilence(){
- const a=scoreMedia("a"),b=scoreMedia("b"),room=media("ch5P2RoomTone");[a,b,room].forEach(cancelFade);
- try{if(a){a.muted=false;a.volume=0}}catch(_){};try{if(b){b.muted=false;b.volume=0}}catch(_){};try{if(room)room.volume=0}catch(_){};return true
+ const a=scoreMedia("a"),b=scoreMedia("b"),room=media("ch5P2RoomTone"),target=scoreTarget(),bDuck=target>0?Math.min(target,Math.max(.003,target*.18)):0;[a,b,room].forEach(cancelFade);
+ /* Keep Track B at a real positive gain while the secure-call handshake owns the foreground.
+  * Android can resolve play() with paused=false while a zero-gain start never advances decode time;
+  * a tiny bounded duck preserves the established SFX mix without creating that silent zombie state. */
+ try{if(a){a.muted=false;a.volume=0}}catch(_){};try{if(b){b.muted=false;b.volume=bDuck}}catch(_){};try{if(room)room.volume=0}catch(_){};return true
 }
 function resetTrackBHealth(){trackBConfirmed=false;trackBLastTime=0;trackBLastAdvanceAt=0}
 function markTrackBProgress(){
@@ -394,17 +397,20 @@ function armTrackBForNarinFromGesture(reset=true){
  const b=scoreMedia("b"),a=scoreMedia("a"),target=scoreTarget();if(!b)return Promise.resolve(false);if(target<=0){trackBArmedForNarin=true;return Promise.resolve(true)}
  if(trackBStartPromise)return trackBStartPromise;cancelFade(b);if(a)cancelFade(a);resetTrackBHealth();trackBArmedForNarin=false;trackBRevealFromStart=Boolean(reset);
  try{
-  /* Authoritative acquisition: discard any pre-existing silent/zombie playback and invoke play()
-   * synchronously inside the player's OPEN SECURE CONTACT click. The element then runs at zero
-   * volume through the handshake; Narin reveal only raises volume and never attempts autoplay. */
-  b.pause();if(reset)restoreMediaPosition(b,0);b.loop=true;b.muted=false;b.volume=0;delete b.dataset.ch5P2Warm;delete b.dataset.ch5P2Primed;
-  const result=b.play(),promise=result&&typeof result.then==="function"?result:Promise.resolve();
-  const attempt=promise.then(()=>{if(b.paused)return false;trackBArmedForNarin=true;b.dataset.ch5P2Armed="1";holdConnectSilence();return true}).catch(()=>{trackBArmedForNarin=false;delete b.dataset.ch5P2Armed;return false});
+  /* OPEN SECURE CONTACT is the authoritative user gesture for Track B. Start B at a small but
+   * genuinely positive gain, then require currentTime to advance before declaring it armed.
+   * play() resolution / paused=false alone are explicitly not accepted as playback proof. */
+  b.pause();if(reset)restoreMediaPosition(b,0);b.loop=true;b.muted=false;b.volume=Math.min(target,Math.max(.012,target*.22));delete b.dataset.ch5P2Warm;delete b.dataset.ch5P2Primed;delete b.dataset.ch5P2Armed;
+  const start=finiteMediaTime(b),result=b.play(),promise=result&&typeof result.then==="function"?result:Promise.resolve();
+  const attempt=promise.then(()=>waitForPlaybackAdvance(b,start,900)).then(started=>{
+   if(!started){try{b.pause()}catch(_){};resetTrackBHealth();trackBArmedForNarin=false;delete b.dataset.ch5P2Armed;if(a&&isPlaying(a))fade(a,target,120);armForegroundGestureRecovery();return false}
+   trackBConfirmed=true;trackBLastTime=finiteMediaTime(b);trackBLastAdvanceAt=performance.now();trackBArmedForNarin=true;b.dataset.ch5P2Armed="1";holdConnectSilence();return true
+  }).catch(()=>{try{b.pause()}catch(_){};resetTrackBHealth();trackBArmedForNarin=false;delete b.dataset.ch5P2Armed;if(a&&isPlaying(a))fade(a,target,120);armForegroundGestureRecovery();return false});
   trackBStartPromise=attempt.finally(()=>{trackBStartPromise=null});return trackBStartPromise
- }catch(_){trackBArmedForNarin=false;delete b.dataset.ch5P2Armed;return Promise.resolve(false)}
+ }catch(_){resetTrackBHealth();trackBArmedForNarin=false;delete b.dataset.ch5P2Armed;if(a&&isPlaying(a))fade(a,target,120);armForegroundGestureRecovery();return Promise.resolve(false)}
 }
 function promoteArmedTrackB(){
- const target=scoreTarget(),b=scoreMedia("b"),a=scoreMedia("a");if(target<=0){activeScoreMode="b";foregroundGesturePending=false;return true}if(!b||!trackBArmedForNarin||b.paused)return false;
+ const target=scoreTarget(),b=scoreMedia("b"),a=scoreMedia("a");if(target<=0){activeScoreMode="b";foregroundGesturePending=false;return true}if(!b||!trackBArmedForNarin||!scoreReady("b"))return false;
  cancelFade(b);if(trackBRevealFromStart){restoreMediaPosition(b,0);trackBRevealFromStart=false}try{b.loop=true;b.muted=false;b.volume=target}catch(_){};trackBConfirmed=true;trackBLastTime=finiteMediaTime(b);trackBLastAdvanceAt=performance.now();activeScoreMode="b";scoreTransitionMode="";foregroundGesturePending=false;
  if(a&&a!==b)pauseElement(a);return true
 }
@@ -412,7 +418,7 @@ function activateNarinTrackB(){
  const p=phaseState();if(p)p.narinMusicActive=true;if(promoteArmedTrackB())return true;armForegroundGestureRecovery();return false
 }
 function stabilizeNarinScore(){return activateNarinTrackB()}
-function reassertNarinTrackBFromGesture(){const p=phaseState();if(p)p.narinMusicActive=true;if(!isP2()||document.hidden||backgroundPaused||!soundOn()||scoreMode()!=="b")return Promise.resolve(false);const b=scoreMedia("b"),target=scoreTarget();if(target<=0)return Promise.resolve(true);if(b&&isPlaying(b)){trackBArmedForNarin=true;b.dataset.ch5P2Armed="1";try{b.muted=false;b.volume=Math.max(Number(b.volume)||0,target)}catch(_){};fade(b,target,80);foregroundGesturePending=false;return Promise.resolve(true)}return armTrackBForNarinFromGesture(false)}
+function reassertNarinTrackBFromGesture(){const p=phaseState();if(p)p.narinMusicActive=true;if(!isP2()||document.hidden||backgroundPaused||!soundOn()||scoreMode()!=="b")return Promise.resolve(false);const b=scoreMedia("b"),target=scoreTarget();if(target<=0)return Promise.resolve(true);if(b&&scoreReady("b")){trackBArmedForNarin=true;b.dataset.ch5P2Armed="1";try{b.muted=false;b.volume=Math.max(Number(b.volume)||0,target)}catch(_){};fade(b,target,80);foregroundGesturePending=false;return Promise.resolve(true)}return beginTrackBFromGesture()}
 function openNarinDirect(){const p=phaseState();p.narinContactStarted=true;p.narinChannelEstablished=true;p.narinMusicActive=true;p.stage="narin-contact";if(!stabilizeNarinScore()){p.narinMusicActive=false;p.stage="narin-connecting";return false}const s=gs();s.flags=s.flags||{};s.flags.ch5_p2_narin_channel_established=true;narinOpen=true;$("#ch5P2Narin")?.classList.add("open");$("#ch5P2Narin")?.setAttribute("aria-hidden","false");renderNarin();save("ch5_p2_narin_contact");return true}
 
 function setConnectEstablishedVisual(){const n=$("#ch5P2Connect");n?.classList.add("established");const status=$("#ch5P2ConnectStatus");if(status)status.textContent=tr("SECURE CHANNEL ESTABLISHED","เชื่อมต่อช่องสัญญาณปลอดภัยแล้ว")}
@@ -420,13 +426,13 @@ function clearConnectTimer(){if(connectTimer){clearTimeout(connectTimer);connect
 function scheduleConnectTimer(){clearConnectTimer();if(!connectOpen||backgroundPaused||document.hidden)return;const delay=Math.max(20,Number(connectRemaining)||20);connectDeadline=Date.now()+delay;connectTimer=setTimeout(advanceConnectPhase,delay)}
 function startNarinConnection(reset=true){
  const p=phaseState(),fresh=!p.narinContactStarted;p.narinContactStarted=true;
- if(p.narinChannelEstablished){p.stage="narin-contact";p.narinMusicActive=true;const b=scoreMedia("b");if(scoreTarget()<=0||(b&&isPlaying(b))){trackBArmedForNarin=true;if(b)b.dataset.ch5P2Armed="1";openNarinDirect()}else armTrackBForNarinFromGesture(false).then(ok=>{if(ok&&!narinOpen)openNarinDirect()});return}
+ if(p.narinChannelEstablished){p.stage="narin-contact";p.narinMusicActive=true;const b=scoreMedia("b");if(scoreTarget()<=0||(b&&scoreReady("b"))){trackBArmedForNarin=true;if(b)b.dataset.ch5P2Armed="1";openNarinDirect()}else armTrackBForNarinFromGesture(false).then(ok=>{if(ok&&!narinOpen)openNarinDirect()});return}
  p.narinMusicActive=false;p.stage="narin-connecting";connectOpen=true;connectPhase="handshake";connectRemaining=CONNECT_HANDSHAKE_MS;
  const n=$("#ch5P2Connect");n?.classList.add("open");n?.classList.remove("established");n?.setAttribute("aria-hidden","false");updateLanguage();
  prepareTrackBForNarin();armTrackBForNarinFromGesture(fresh||reset);holdConnectSilence();playHandshake(reset);save("ch5_p2_narin_connecting");scheduleConnectTimer()
 }
 function revealNarinWhenScoreReady(){
- const finish=()=>{if(scoreTarget()>0&&(!trackBArmedForNarin||scoreMedia("b")?.paused)){armForegroundGestureRecovery();return false}connectOpen=false;connectPhase="idle";connectRemaining=CONNECT_HANDSHAKE_MS;const n=$("#ch5P2Connect");n?.classList.remove("open","established");n?.setAttribute("aria-hidden","true");stopHandshakePlayback(true);return openNarinDirect()};
+ const finish=()=>{if(scoreTarget()>0&&(!trackBArmedForNarin||!scoreReady("b"))){armForegroundGestureRecovery();return false}connectOpen=false;connectPhase="idle";connectRemaining=CONNECT_HANDSHAKE_MS;const n=$("#ch5P2Connect");n?.classList.remove("open","established");n?.setAttribute("aria-hidden","true");stopHandshakePlayback(true);return openNarinDirect()};
  if(trackBStartPromise){trackBStartPromise.then(ok=>{if(ok||scoreTarget()<=0)finish();else armForegroundGestureRecovery()});return true}return finish()
 }
 function advanceConnectPhase(){clearConnectTimer();if(!connectOpen)return;if(document.hidden||backgroundPaused){scheduleConnectTimer();return}if(connectPhase==="handshake"){connectPhase="established";connectRemaining=CONNECT_ESTABLISHED_MS;const p=phaseState();p.narinChannelEstablished=true;const s=gs();s.flags=s.flags||{};s.flags.ch5_p2_narin_channel_established=true;setConnectEstablishedVisual();save("ch5_p2_narin_channel_established");scheduleConnectTimer();return}revealNarinWhenScoreReady()}
