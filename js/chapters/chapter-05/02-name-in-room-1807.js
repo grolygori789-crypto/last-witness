@@ -1,11 +1,11 @@
-/* LAST WITNESS - Chapter V / Phase II: NAME IN ROOM 1807 0.22.19-c5p2r18
- * Production module update under base Runtime 0.22.19.
+/* LAST WITNESS - Chapter V / Phase II: NAME IN ROOM 1807 0.22.26-c5p2r22
+ * Production module update under base Runtime 0.22.26.
  * Reuses accepted card/scene/HUD/dialogue shells; Phase II owns only its screens,
  * reconciliation interaction, scoped audio, state, content registration and test entry.
  */
 (function(){
 "use strict";
-const VERSION="0.22.19-c5p2r18";
+const VERSION="0.22.26-c5p2r22";
 if(window.LastWitnessChapter5Phase2?.version===VERSION){try{window.LastWitnessChapter5Phase2.install?.()}catch(_){}return}
 
 const BASE="assets/images/chapter-05/phase-02/";
@@ -121,7 +121,7 @@ function dbGain(db){return Math.pow(10,Number(db||0)/20)}
 function scoreBaseTarget(){return isP2()&&soundOn()?clamp(musicLevel()*.28,0,.30):0}
 function scoreTarget(){
  const base=scoreBaseTarget();if(base<=0)return 0;
- if(connectOpen)return clamp(base*dbGain(-13.0),0,.30);
+ if(connectOpen)return clamp(base*dbGain(-28.0),0,.30);
  if(narinOpen)return clamp(base*dbGain(-2.8),0,.30);
  if(dialogueActive)return clamp(base*dbGain(-2.0),0,.30);
  return base
@@ -166,7 +166,7 @@ function ensureScorePlaying(fromGesture=false){
  /* Professional single-track mix:
   * fast, smooth duck under the secure-connect signal; slower release when Narin appears.
   * This changes gain only — never pause/seek/restart the accepted Track A stream. */
- const fadeMs=connectOpen?140:(narinOpen?700:(dialogueActive?300:(fromGesture?180:360)));
+ const fadeMs=connectOpen?100:(narinOpen?700:(dialogueActive?300:(fromGesture?180:360)));
  if(isPlaying(a)){foregroundGesturePending=false;try{a.muted=false}catch(_){};fade(a,target,fadeMs)}
  else void playPreservingTime(a,target);
  ensureRoomTone();return isPlaying(a)
@@ -433,7 +433,7 @@ function installSaveRestoreBridge(){
 
 async function copyText(value){try{if(navigator.clipboard?.writeText){await navigator.clipboard.writeText(value);return true}}catch(_){}const a=document.createElement("textarea");a.value=value;a.setAttribute("readonly","");a.style.position="fixed";a.style.opacity="0";document.body.appendChild(a);a.select();const ok=document.execCommand?.("copy")===true;a.remove();return ok}
 function testerAuthorized(){try{return sessionStorage.getItem("last_witness_north_qa_role")==="tester"}catch(_){return false}}
-function qaInfo(){const s=gs()||{},p=phaseState();return["LAST WITNESS QA","Build: "+String(window.LastWitnessRuntimeBuild||"0.22.19"),"Access: NORTH QA","QA Module: "+String(window.LastWitnessNorthQA?.version||"0.22.19"),"Chapter V Phase II: "+VERSION,"Chapter: 5","Phase: 2","Screen: "+activeScreen(),"Checkpoint: "+(s.checkpoint||"unresolved"),"Stage: "+(p?.stage||"unresolved"),"Language: "+(s.language==="th"?"TH":"EN"),"Visibility: "+(document.hidden?"hidden":"visible")].join("\n")}
+function qaInfo(){const s=gs()||{},p=phaseState();return["LAST WITNESS QA","Build: "+String(window.LastWitnessRuntimeBuild||"0.22.26"),"Access: NORTH QA","QA Module: "+String(window.LastWitnessNorthQA?.version||"0.22.26"),"Chapter V Phase II: "+VERSION,"Chapter: 5","Phase: 2","Screen: "+activeScreen(),"Checkpoint: "+(s.checkpoint||"unresolved"),"Stage: "+(p?.stage||"unresolved"),"Language: "+(s.language==="th"?"TH":"EN"),"Visibility: "+(document.hidden?"hidden":"visible")].join("\n")}
 function closeToolOverlays(){$("#drawer")?.classList.remove("open");$$('.modal.open').forEach(n=>n.classList.remove("open"));["developerModal","northQaModal","devAccessModal"].forEach(id=>$("#"+id)?.classList.remove("open"))}
 function positionAfter(node,anchor,container){if(!node||!container)return;if(anchor&&anchor.parentElement===container){if(anchor.nextElementSibling!==node)anchor.insertAdjacentElement("afterend",node)}else if(node.parentElement!==container||container.lastElementChild!==node)container.appendChild(node)}
 function installDevButton(){const grid=$("#developerModal .dev-grid");if(!grid)return false;let b=$("#ch5P2DeveloperJump");if(!b){b=document.createElement("button");b.id="ch5P2DeveloperJump";b.type="button";b.className="dev-button";b.dataset.ch5P2Jump="1";b.addEventListener("click",event=>{event.preventDefault();event.stopPropagation();event.stopImmediatePropagation();closeToolOverlays();startFreshForDev()},true)}positionAfter(b,$("#ch5P1DeveloperJump")||grid.querySelector('[data-dev-jump="chapter4ShadowTruth"]'),grid);installToolLabels();return true}
