@@ -1,13 +1,13 @@
-/* LAST WITNESS - Narin Character Journal Integration 0.22.21-nj11
+/* LAST WITNESS - Narin Character Journal Integration 0.22.22-nj12
  * Surgical Chapter V Phase II bridge for the legacy Character Journal allowlist.
  * Narin remains story-gated to completed secure contact; existing characters/rendering
  * are untouched. The extension augments only Narin's card/detail and unread state.
  */
 (function(){
 "use strict";
-const VERSION="0.22.21-nj11";
+const VERSION="0.22.22-nj12";
 if(window.LastWitnessNarinCharacterRegistry?.version===VERSION&&window.LastWitnessNarinCharacterRegistry?.installed){try{window.LastWitnessNarinCharacterRegistry.repair?.()}catch(_){}return}
-const THUMB_SRC="assets/images/chapter-05/phase-02/narin-journal.png?v=0241nj11";
+const THUMB_SRC="assets/images/chapter-05/phase-02/narin-journal.png?v=0242nj12";
 const DATA={
  name:{en:"Narin",th:"Narin"},
  role:{en:"Bangkok Deployment Operations",th:"ฝ่ายปฏิบัติการ Deployment กรุงเทพฯ"},
@@ -38,7 +38,7 @@ function ensureNarinDetailStyle(){
  if($("#lwNarinJournalDetailStyle"))return true;const style=document.createElement("style");style.id="lwNarinJournalDetailStyle";style.textContent=`
  #characterDetail [data-narin-detail="1"] .character-detail-head{align-items:flex-start;gap:14px}
  #characterDetail [data-narin-detail="1"] [data-detail-portrait-frame]{width:138px;height:173px;flex:0 0 138px;overflow:hidden;border-radius:11px;background:#090a0e}
- #characterDetail [data-narin-detail="1"] [data-detail-portrait]{display:block;width:100%!important;height:100%!important;max-width:none!important;object-fit:cover!important;object-position:center center!important;transform:scale(1.30);transform-origin:50% 20%;border-radius:0!important;margin:0!important}
+ #characterDetail [data-narin-detail="1"] [data-detail-portrait]{display:block;width:100%!important;height:100%!important;max-width:none!important;object-fit:cover!important;object-position:center center!important;transform:scale(1.90);transform-origin:50% 50%;border-radius:0!important;margin:0!important}
  @media(max-width:390px){#characterDetail [data-narin-detail="1"] [data-detail-portrait-frame]{width:132px;height:165px;flex-basis:132px}}
  `;document.head.appendChild(style);return true
 }
