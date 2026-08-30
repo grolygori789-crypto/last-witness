@@ -1,11 +1,11 @@
-/* LAST WITNESS - Chapter V / Phase I: RETURN TO BANGKOK 0.22.8-c5p1r10
+/* LAST WITNESS - Chapter V / Phase I: RETURN TO BANGKOK 0.22.8-c5p1r11
  * Production Chapter V opening. Reuses the accepted Phase V/VII ordinary-scene
  * shell and Phase IV/VII location/completion language. Only CUSTODY WINDOW is
  * bespoke. No Hidden Case values are displayed or mutated here.
  */
 (function(){
 "use strict";
-const VERSION="0.22.8-c5p1r10";
+const VERSION="0.22.8-c5p1r11";
 if(window.LastWitnessChapter5Phase1?.version===VERSION){try{window.LastWitnessChapter5Phase1.install?.()}catch(_){}return}
 
 const BASE="assets/images/chapter-05/phase-01/";
@@ -279,7 +279,14 @@ function finishWalk(){const p=phaseState();p.walkSeen=true;p.stage="condo_card";
 function showCondo(){const p=phaseState();p.condoCardSeen=true;p.stage="condo";safeShow(CONDO);setProgress(83);save("ch5_p1_condo");if(!p.condoIntroComplete){startDialogue(condoIntroLines(),()=>{p.condoIntroComplete=true;save("ch5_p1_condo_ready");const b=$("#"+CONDO+"Action");if(b){b.hidden=false;b.textContent=tr("CONTINUE","ดำเนินต่อ")}})}else{const b=$("#"+CONDO+"Action");if(b)b.hidden=false}}
 function showReveal(){const p=phaseState();p.stage="reveal";revealDuckUntil=performance.now()+2800;safeShow(REVEAL);setProgress(88);save("ch5_p1_north_reveal");setTimeout(()=>syncAudio(),2900);if(!p.revealSeen){startDialogue(revealLines(),()=>{p.revealSeen=true;setProgress(92);save("ch5_p1_reveal_complete");startDebrief()})}else if(!p.debriefComplete)startDebrief();else completePhase()}
 function startDebrief(){const p=phaseState();safeShow(CONDO);p.stage="debrief";setProgress(93);save("ch5_p1_debrief");startDialogue(debriefLines(),()=>{p.debriefComplete=true;setProgress(99);save("ch5_p1_debrief_complete");completePhase()})}
-function completePhase(){const p=phaseState();p.complete=true;p.stage="complete";const s=gs();if(s){s.flags=s.flags||{};s.flags.ch5_p1_complete=true;s.flags.ch5_p1_room1807_identity_reference=true;s.chapter=5}safeShow(COMPLETE);setProgress(100);save("ch5_phase1_complete")}
+function completePhase(){
+ const p=phaseState();p.complete=true;p.stage="complete";const s=gs();
+ if(s){s.flags=s.flags||{};s.flags.ch5_p1_complete=true;s.flags.ch5_p1_room1807_identity_reference=true;s.chapter=5}
+ setProgress(100);save("ch5_phase1_complete");
+ const next=window.LastWitnessChapter5Phase2;
+ if(next?.start){try{if(next.start()!==false)return}catch(error){console.error("LAST WITNESS CH5P1 to CH5P2 handoff failed",error)}}
+ safeShow(COMPLETE)
+}
 
 const RECORDS={
  order:{time:"RETURN FLIGHT · AIRBORNE",en:"PROTECTION ORDER",th:"คำสั่งคุ้มครองแหล่งข้อมูล",detailEn:"Kittisak authorizes restricted handling of the registrar-linked records.",detailTh:"Kittisak อนุมัติให้จำกัดการเข้าถึงบันทึกที่โยงกับ Registrar"},
@@ -357,7 +364,7 @@ function prepareStart(dev=false){
 function start(){if(!prepareStart(false))return false;showLanding();return true}
 function startFreshForDev(){closeToolOverlays();if(!prepareStart(true))return false;showLanding();return true}
 function resumeFromState(target){
- inject();const s=gs();if(!s)return false;s.chapter=5;const p=phaseState();const known=SCREENS.has(target)?target:(p.complete?COMPLETE:p.stage==="reveal"?REVEAL:p.stage==="debrief"?CONDO:p.stage==="condo"?CONDO:p.stage==="condo_card"?CONDO_CARD:p.stage==="walk"?WALK:p.stage==="custody"||p.stage.startsWith("briefing")?BRIEFING:p.stage==="police"?POLICE:p.stage==="arrival"?ARRIVAL:LANDING);safeShow(known);setProgress(progressFor());
+ inject();const s=gs();if(!s)return false;s.chapter=5;const p=phaseState();if(p.complete){completePhase();return true}const known=SCREENS.has(target)?target:(p.stage==="reveal"?REVEAL:p.stage==="debrief"?CONDO:p.stage==="condo"?CONDO:p.stage==="condo_card"?CONDO_CARD:p.stage==="walk"?WALK:p.stage==="custody"||p.stage.startsWith("briefing")?BRIEFING:p.stage==="police"?POLICE:p.stage==="arrival"?ARRIVAL:LANDING);safeShow(known);setProgress(progressFor());
  if(known===ARRIVAL)showArrivalCard(true);else if(known===POLICE)showPolice();else if(known===BRIEFING)showBriefing();else if(known===CONDO_CARD){finishWalk()}else if(known===CONDO){if(p.stage==="debrief"&&!p.debriefComplete)startDebrief();else showCondo()}else if(known===REVEAL)showReveal();else if(known===COMPLETE)completePhase();else syncAudio(true);return true
 }
 
